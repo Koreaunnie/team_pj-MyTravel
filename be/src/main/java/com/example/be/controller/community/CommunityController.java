@@ -27,12 +27,13 @@ public class CommunityController {
         service.view(id);
     }
 
+    @PostMapping("edit")
+    public void edit(Community community) {
+        service.edit(community);
+    }
+
+
     // TODO : UPDATE 기능 추가
-//    @PostMapping("edit")
-//    public Map<String, Object> edit(Community community) {
-//        service.edit(community);
-//
-//        return null;
-//    }
+
 
 }

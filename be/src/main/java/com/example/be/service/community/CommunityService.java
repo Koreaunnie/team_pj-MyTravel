@@ -23,4 +23,8 @@ public class CommunityService {
     public void view(Integer id) {
         mapper.viewCommunity(id);
     }
+
+    public void edit(Community community) {
+        mapper.editCommunity(community);
+    }
 }

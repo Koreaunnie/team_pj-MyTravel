@@ -4,8 +4,7 @@ import com.example.be.dto.Community;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
-
-import java.util.List;
+import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface CommunityMapper {
@@ -21,7 +20,7 @@ public interface CommunityMapper {
             INSERT INTO community (title, content, writer)
             VALUES (#{title}, #{content}, #{writer})
             """)
-    List<String> writeCommunity(Community community);
+    int writeCommunity(Community community);
 
     @Select("""
             SELECT *
@@ -29,6 +28,13 @@ public interface CommunityMapper {
             WHERE id = #{id}
             """)
     int viewCommunity(Integer id);
+
+    @Update("""
+            UPDATE community
+            SET title = #{title}, content = #{content}
+            WHERE id=#{id}
+            """)
+    int editCommunity(Community community);
 
     // TODO : SQL 이름 합의 후 적용하기
 }
