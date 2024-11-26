@@ -1,10 +1,7 @@
 package com.example.be.mapper.community;
 
 import com.example.be.dto.Community;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface CommunityMapper {
@@ -35,6 +32,12 @@ public interface CommunityMapper {
             WHERE id=#{id}
             """)
     int editCommunity(Community community);
+
+    @Delete("""
+            DELETE FROM community
+            WHERE id = #{id}
+            """)
+    int deleteCommunity(Integer id);
 
     // TODO : SQL 이름 합의 후 적용하기
 }

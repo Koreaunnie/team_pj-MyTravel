@@ -32,6 +32,10 @@ public class CommunityController {
         service.edit(community);
     }
 
+    @DeleteMapping("delete/{id}")
+    public void delete(@PathVariable Integer id) {
+        service.delete(id);
+    }
 
     // TODO : UPDATE 기능 추가
 

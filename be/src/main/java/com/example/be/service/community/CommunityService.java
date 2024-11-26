@@ -27,4 +27,8 @@ public class CommunityService {
     public void edit(Community community) {
         mapper.editCommunity(community);
     }
+
+    public void delete(Integer id) {
+        mapper.deleteCommunity(id);
+    }
 }
