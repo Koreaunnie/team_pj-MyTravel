@@ -7,13 +7,19 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
+@RestController
 @RequestMapping("/api/member")
 @RequiredArgsConstructor
-@RestController
 public class MemberController {
   final MemberService service;
+
+  @GetMapping("list")
+  public List<Member> list() {
+    return service.list();
+  }
 
   @GetMapping("checkEmail")
   public ResponseEntity<Map<String, Object>> checkEmail(@RequestParam String email) {

@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -19,5 +21,9 @@ public class MemberService {
 
   public boolean checkEmail(String email) {
     return mapper.selectByEmail(email) != null;
+  }
+
+  public List<Member> list() {
+    return mapper.selectAll();
   }
 }

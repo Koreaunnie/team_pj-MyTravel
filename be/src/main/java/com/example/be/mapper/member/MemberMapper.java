@@ -5,13 +5,15 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 @Mapper
 public interface MemberMapper {
 
   @Insert("""
           INSERT INTO member 
-          (email, nickname, password, name, phone, inserted)
-          VALUES (#{email}, #{nickname}, #{password}, #{name}, #{phone}, #{inserted})
+          (email, nickname, password, name, phone)
+          VALUES (#{email}, #{nickname}, #{password}, #{name}, #{phone})
           """)
   int insert(Member member);
 
@@ -19,4 +21,10 @@ public interface MemberMapper {
           SELECT * FROM member
           WHERE email = #{email}""")
   Member selectByEmail(String email);
+
+  @Select("""
+          SELECT email, nickname, inserted
+          FROM member
+          ORDER BY inserted""")
+  List<Member> selectAll();
 }
