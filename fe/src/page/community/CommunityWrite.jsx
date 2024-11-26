@@ -1,18 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { Box, HStack, Input, Textarea } from "@chakra-ui/react";
 import { Field } from "../../components/ui/field.jsx";
 import { Button } from "../../components/ui/button.jsx";
+import { useNavigate } from "react-router-dom";
 
 function CommunityWrite(props) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
-  useEffect(() => {
-    axios.put(`/community/write`, { title, content });
-  }, []);
+  const navigate = useNavigate();
 
-  const handleSaveClick = () => {};
+  const handleSaveClick = () => {
+    axios
+      .put(`/api/community/write`, { title, content })
+      .then(navigate(`/list`));
+  };
 
   return (
     <div>
