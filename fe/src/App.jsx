@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { RootLayout } from "./page/root/RootLayout.jsx";
 import { Index } from "./page/Index.jsx";
 import PlanAdd from "./page/plan/PlanAdd.jsx";
+import PlanList from "./page/plan/PlanList.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "plan/add",
         element: <PlanAdd />,
+      },
+      {
+        path: "plan/list",
+        element: <PlanList />,
       },
     ],
   },
