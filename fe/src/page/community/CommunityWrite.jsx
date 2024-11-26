@@ -13,7 +13,7 @@ function CommunityWrite(props) {
 
   const handleSaveClick = () => {
     axios
-      .put(`/api/community/write`, { title, content })
+      .post(`/api/community/write`, { title, content })
       .then(navigate(`/list`));
   };
 
