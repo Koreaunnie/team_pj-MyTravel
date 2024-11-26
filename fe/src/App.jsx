@@ -5,6 +5,7 @@ import { Index } from "./page/Index.jsx";
 import PlanAdd from "./page/plan/PlanAdd.jsx";
 import MemberList from "./page/member/MemberList.jsx";
 import MemberSignup from "./page/member/MemberSignup.jsx";
+import MemberInfo from "./page/member/MemberInfo.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
       },
       { path: "member/signup", element: <MemberSignup /> },
       { path: "member/list", element: <MemberList /> },
+      { path: "member/:email", element: <MemberInfo /> },
     ],
   },
 ]);
