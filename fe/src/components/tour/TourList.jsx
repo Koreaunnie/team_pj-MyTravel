@@ -1,11 +1,11 @@
 import React from "react";
-import { Box, Flex } from "@chakra-ui/react";
+import {Box, Flex} from "@chakra-ui/react";
 
 function TourList(props) {
   return (
     <div>
-      <Flex>
-        <Box>서울</Box>
+      <Flex justify="space-between" align="center" wrap="wrap">
+        <Box onClick={}>서울</Box>
         <Box>부산</Box>
         <Box>제주</Box>
         <Box>강원</Box>
