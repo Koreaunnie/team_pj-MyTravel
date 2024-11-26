@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Input, Spinner, Stack } from "@chakra-ui/react";
+import { Box, Group, Input, Spinner, Stack } from "@chakra-ui/react";
 import { Field } from "../../components/ui/field.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -22,6 +22,7 @@ export function MemberEdit() {
   const [oldPassword, setOldPassword] = useState("");
   const [nickname, setNickname] = useState("");
   const [phone, setPhone] = useState("");
+  const [nicknameCheck, setNicknameCheck] = useState(true);
   const [open, setOpen] = useState(false);
   const { email } = useParams();
   const navigate = useNavigate();
@@ -65,7 +66,26 @@ export function MemberEdit() {
       });
   }
 
-  if (member === null) {
+  const handleNicknameCheckClick = () => {
+    axios
+      .get(`/api/member/check`, {
+        params: { nickname },
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        const message = data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+        setNicknameCheck(data.available);
+      });
+  };
+
+  const nicknameCheckButtonDisabled = nickname === member?.nickname;
+  const saveButtonDisabled = !nicknameCheck;
+
+  if (!member) {
     return <Spinner />;
   }
 
@@ -77,7 +97,25 @@ export function MemberEdit() {
           <Input defaultValue={member.email} />
         </Field>
         <Field label={"닉네임"}>
-          <Input defaultValue={member.nickname} />
+          <Group attached w={"100%"}>
+            <Input
+              value={nickname}
+              onChange={(e) => {
+                setNickname(e.target.value);
+                if (e.target.value === member.nickname) {
+                  setNicknameCheck(true);
+                } else {
+                  setNicknameCheck(false);
+                }
+              }}
+            />
+            <Button
+              onClick={handleNicknameCheckClick}
+              disabled={nicknameCheckButtonDisabled}
+            >
+              중복 확인
+            </Button>
+          </Group>
         </Field>
         <Field label={"비밀번호"}>
           <Input
@@ -94,7 +132,7 @@ export function MemberEdit() {
         <Box>
           <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
             <DialogTrigger>
-              <Button>저장</Button>
+              <Button disabled={saveButtonDisabled}>저장</Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>

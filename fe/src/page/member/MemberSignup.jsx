@@ -76,7 +76,7 @@ function MemberSignup(props) {
   let disabled = true;
 
   if (emailCheck) {
-    if (nicknameCheck) {
+    if (nicknameCheck && nickname != "") {
       if (password === passwordCheck) {
         disabled = false;
       }
