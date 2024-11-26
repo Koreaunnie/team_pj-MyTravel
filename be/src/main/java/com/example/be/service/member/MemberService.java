@@ -16,4 +16,8 @@ public class MemberService {
     int cnt = mapper.insert(member);
     return cnt == 1;
   }
+
+  public boolean checkEmail(String email) {
+    return mapper.selectByEmail(email) != null;
+  }
 }

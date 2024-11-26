@@ -10,6 +10,7 @@ function MemberSignup(props) {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [emailCheck, setEmailCheck] = useState(false);
 
   function handleSignupClick() {
     axios
@@ -34,6 +35,25 @@ function MemberSignup(props) {
         console.log("무조건 실행: 아마 경로 이동");
       });
   }
+
+  const handleEmailCheckClick = () => {
+    axios
+      .get("/api/member/checkEmail", {
+        params: { email: email },
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        const message = data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+        setEmailCheck(data.available);
+      });
+  };
+
+  let disabled = true;
+  disabled = !emailCheck;
 
   return (
     <Box>
@@ -62,7 +82,9 @@ function MemberSignup(props) {
         </Field>
 
         <Box>
-          <Button onClick={handleSignupClick}>가입</Button>
+          <Button onClick={handleSignupClick} disabled={disabled}>
+            가입
+          </Button>
         </Box>
       </Stack>
     </Box>
