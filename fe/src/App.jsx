@@ -3,6 +3,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { RootLayout } from "./page/root/RootLayout.jsx";
 import { Index } from "./page/Index.jsx";
 import PlanAdd from "./page/plan/PlanAdd.jsx";
+import CommunityWrite from "./page/community/CommunityWrite.jsx";
+import CommunityView from "./page/community/CommunityView.jsx";
+import CommunityList from "./page/community/CommunityList.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -31,6 +34,18 @@ const router = createBrowserRouter([
       {
         path: "plan/add",
         element: <PlanAdd />,
+      },
+      {
+        path: "community/write",
+        element: <CommunityWrite />,
+      },
+      {
+        path: "community/view/:id",
+        element: <CommunityView />,
+      },
+      {
+        path: "community/list",
+        element: <CommunityList />,
       },
     ],
   },
