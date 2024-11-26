@@ -15,6 +15,10 @@ function CommunityView(props) {
   const handleDeleteClick = () => {
     axios.delete(`/community/delete/${id}`);
   };
+
+  const handleEditClick = () => {
+    axios.post(`/community/edit`);
+  };
   return (
     <div>
       <Box>
