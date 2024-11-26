@@ -34,10 +34,16 @@ public class MemberController {
 
   @PutMapping("update")
   public ResponseEntity<Map<String, Object>> update(@RequestBody MemberEdit member) {
-    if (service.update(member)) {
-      return ResponseEntity.ok(Map.of("message",
-              Map.of("type", "success", "text", "수정 완료")));
-    } else {
+
+    try {
+      if (service.update(member)) {
+        return ResponseEntity.ok(Map.of("message",
+                Map.of("type", "success", "text", "수정 완료")));
+      } else {
+        return ResponseEntity.badRequest().body(Map.of("message",
+                Map.of("type", "warning", "text", "수정 실패")));
+      }
+    } catch (Exception e) {
       return ResponseEntity.badRequest().body(Map.of("message",
               Map.of("type", "warning", "text", "수정 실패")));
     }
