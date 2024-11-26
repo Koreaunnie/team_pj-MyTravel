@@ -7,6 +7,7 @@ import MemberList from "./page/member/MemberList.jsx";
 import MemberSignup from "./page/member/MemberSignup.jsx";
 import MemberInfo from "./page/member/MemberInfo.jsx";
 import MemberEdit from "./page/member/MemberEdit.jsx";
+import MemberLogin from "./page/member/MemberLogin.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -37,6 +38,7 @@ const router = createBrowserRouter([
         element: <PlanAdd />,
       },
       { path: "member/signup", element: <MemberSignup /> },
+      { path: "member/login", element: <MemberLogin /> },
       { path: "member/list", element: <MemberList /> },
       { path: "member/:email", element: <MemberInfo /> },
       { path: "member/edit/:email", element: <MemberEdit /> },

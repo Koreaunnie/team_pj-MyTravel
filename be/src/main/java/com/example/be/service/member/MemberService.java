@@ -3,9 +3,13 @@ package com.example.be.service.member;
 import com.example.be.dto.member.Member;
 import com.example.be.mapper.member.MemberMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -13,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberService {
   final MemberMapper mapper;
+  final JwtEncoder jwtEncoder;
 
   public boolean add(Member member) {
     int cnt = mapper.insert(member);
@@ -41,5 +46,23 @@ public class MemberService {
       }
     }
     return cnt == 1;
+  }
+
+  public String token(Member member) {
+    Member db = mapper.selectByEmail(member.getEmail());
+    if (db != null) {
+      if (db.getPassword().equals(member.getPassword())) {
+        //token 생성
+        JwtClaimsSet claims = JwtClaimsSet.builder()
+                .issuer("self")
+                .subject(member.getEmail())
+                .issuedAt(Instant.now())
+                .expiresAt(Instant.now().plusSeconds(60 * 60 * 24 * 7))
+                .build();
+        return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+      }
+    }
+
+    return null;
   }
 }

@@ -16,6 +16,22 @@ import java.util.Map;
 public class MemberController {
   final MemberService service;
 
+  @PostMapping("login")
+  public ResponseEntity<Map<String, Object>> login(@RequestBody Member member) {
+    String token = service.token(member);
+
+    if (token == null) {
+      //로그인 실패
+      return ResponseEntity.status(401).body(Map.of("message",
+              Map.of("type", "warning", "text", "정보가 일치하지 않습니다.")));
+    } else {
+      //로그인 성공
+      return ResponseEntity.ok(Map.of("token", token, "message",
+              Map.of("type", "success", "text", "로그인 되었습니다.")));
+    }
+  }
+
+
   @DeleteMapping("remove")
   public ResponseEntity<Map<String, Object>> remove(@RequestBody Member member) {
     if (service.remove(member)) {
