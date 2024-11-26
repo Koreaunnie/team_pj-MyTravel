@@ -39,9 +39,7 @@ function Navbar(props) {
         <NavbarItem onClick={() => navigate("/member/login")}>
           내 계정
         </NavbarItem>
-        <NavbarItem onClick={() => navigate("/schedule/add")}>
-          내 여행
-        </NavbarItem>
+        <NavbarItem onClick={() => navigate("/plan/add")}>내 여행</NavbarItem>
         <NavbarItem onClick={() => navigate("/")}>좋아요</NavbarItem>
         <NavbarItem onClick={() => navigate("/")}>장바구니</NavbarItem>
         <NavbarItem onClick={() => navigate("/")}>알림</NavbarItem>
