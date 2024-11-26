@@ -1,4 +1,7 @@
 import axios from "axios";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import MemberSignup from "./page/member/MemberSignup.jsx";
+import { RootLayout } from "./page/root/RootLayout.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -12,12 +15,18 @@ axios.interceptors.request.use(function (config) {
   return config;
 });
 
-function App() {
-  // const [count, setCount] = useState(0)
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <RootLayout />,
+    children: [{ path: "member/signup", element: <MemberSignup /> }],
+  },
+]);
 
+function App() {
   return (
     <>
-      <div>hello</div>
+      <RouterProvider router={router} />
     </>
   );
 }
