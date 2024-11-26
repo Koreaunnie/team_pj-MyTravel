@@ -45,11 +45,13 @@ public class AppConfiguration {
     @Bean
     S3Client s3Client() {
         AwsBasicCredentials credential = AwsBasicCredentials.create(accessKey, secretKey);
-        AwsCredentialsProvider credentialsProvider = StaticCredentialsProvider.create(credential);
+        AwsCredentialsProvider credentialProvider = StaticCredentialsProvider.create(credential);
+
         S3Client s3 = S3Client.builder()
                 .region(Region.AP_NORTHEAST_2)
-                .credentialsProvider(credentialsProvider)
+                .credentialsProvider(credentialProvider)
                 .build();
+
         return s3;
     }
 
@@ -71,5 +73,4 @@ public class AppConfiguration {
         JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
         return new NimbusJwtEncoder(jwks);
     }
-
 }

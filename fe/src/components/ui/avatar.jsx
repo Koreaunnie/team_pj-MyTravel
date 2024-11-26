@@ -1,9 +1,9 @@
 'use client'
 
 import { Avatar as ChakraAvatar, Group } from '@chakra-ui/react'
-import * as React from 'react'
+import { forwardRef } from 'react'
 
-export const Avatar = React.forwardRef(function Avatar(props, ref) {
+export const Avatar = forwardRef(function Avatar(props, ref) {
   const { name, src, srcSet, loading, icon, fallback, children, ...rest } =
     props
   return (
@@ -17,7 +17,7 @@ export const Avatar = React.forwardRef(function Avatar(props, ref) {
   )
 })
 
-const AvatarFallback = React.forwardRef(function AvatarFallback(props, ref) {
+const AvatarFallback = forwardRef(function AvatarFallback(props, ref) {
   const { name, icon, children, ...rest } = props
   return (
     <ChakraAvatar.Fallback ref={ref} {...rest}>
@@ -39,7 +39,7 @@ function getInitials(name) {
     : firstName.charAt(0)
 }
 
-export const AvatarGroup = React.forwardRef(function AvatarGroup(props, ref) {
+export const AvatarGroup = forwardRef(function AvatarGroup(props, ref) {
   const { size, variant, borderless, ...rest } = props
   return (
     <ChakraAvatar.PropsProvider value={{ size, variant, borderless }}>

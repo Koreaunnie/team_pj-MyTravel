@@ -1,0 +1,145 @@
+:root {
+    --table-header-color: #f7f7f7;
+    --table-border-color: #eaeaea;
+    --table-hover-color: #f9f9f9;
+
+    --btn-normal-dark: #212529;
+    --btn-normal-light: #fff;
+    --btn-normal-info: #727373;
+    --btn-normal-hover: #424649;
+    --btn-normal-hover-border: #373b3e;
+
+    --btn-warning-dark: #dc3545;
+    --btn-warning-light: #fff;
+    --btn-warning-hover: #bb2d3b;
+    --btn-warning-hover-border: #b02a37;
+
+    --small-font-size: 14px;
+    --normal-font-size: 16px;
+}
+
+* {
+    text-decoration: none;
+    list-style: none;
+}
+
+body, a, p, ul, li {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: inherit;
+    display: block;
+}
+
+fieldset {
+    border: 0;
+}
+
+legend {
+    margin: 10px auto;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin: 10px 5px;
+}
+
+input {
+    border: 1px solid #dee2e6;
+    box-sizing: border-box;
+    border-radius: 5px;
+    width: 100%;
+    height: 40px;
+    padding: 0 10px;
+}
+
+textarea {
+    border: 1px solid #dee2e6;
+    box-sizing: border-box;
+    border-radius: 5px;
+    width: 100%;
+    padding: 10px;
+}
+
+select {
+    border: 1px solid #dee2e6;
+    box-sizing: border-box;
+    border-radius: 5px;
+    height: 40px;
+    padding: 0 10px;
+    margin-right: 5px;
+    outline: none;
+}
+
+h1 {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+nav {
+    width: 100vw;
+}
+
+.body {
+    width: 60%;
+    margin: 0 auto;
+}
+
+/*------------------- 버튼 디자인 -------------------*/
+.btn-wrap {
+    margin: 10px;
+    text-align: center;
+}
+
+.btn-wrap ul {
+    display: flex;
+    justify-content: center;
+}
+
+.btn {
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.btn-dark {
+    background: var(--btn-normal-dark);
+    color: var(--btn-normal-light);
+    border: 1px solid var(--btn-normal-dark);
+    box-sizing: border-box;
+}
+
+.btn-dark:hover {
+    background: var(--btn-normal-hover);
+}
+
+.btn-dark-outline {
+    background: var(--btn-normal-light);
+    border: 1px solid var(--btn-normal-dark);
+    box-sizing: border-box;
+}
+
+.btn-dark-outline:hover {
+    background: var(--btn-normal-dark);
+    color: var(--btn-normal-light);
+}
+
+.btn-warning {
+    background: var(--btn-warning-dark);
+    color: var(--btn-normal-light);
+    border: 1px solid var(--btn-warning-dark);
+    box-sizing: border-box;
+}
+
+.btn-warning:hover {
+    background: var(--btn-warning-hover);
+}
