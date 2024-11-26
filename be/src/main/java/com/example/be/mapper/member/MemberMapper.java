@@ -1,6 +1,7 @@
 package com.example.be.mapper.member;
 
 import com.example.be.dto.member.Member;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -27,4 +28,10 @@ public interface MemberMapper {
           FROM member
           ORDER BY inserted""")
   List<Member> selectAll();
+
+  @Delete("""
+          DELETE FROM member
+          WHERE email = #{email}    
+          """)
+  int deleteByEmail(String email);
 }

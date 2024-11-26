@@ -16,6 +16,17 @@ import java.util.Map;
 public class MemberController {
   final MemberService service;
 
+  @DeleteMapping("remove")
+  public ResponseEntity<Map<String, Object>> remove(@RequestBody Member member) {
+    if (service.remove(member)) {
+      return ResponseEntity.ok(Map.of("message",
+              Map.of("type", "success", "text", "탈퇴 완료")));
+    } else {
+      return ResponseEntity.badRequest().body(Map.of("message",
+              Map.of("type", "warning", "text", "비밀번호가 일치하지 않습니다.")));
+    }
+  }
+
   @GetMapping("{email}")
   public Member getMember(@PathVariable String email) {
     return service.get(email);

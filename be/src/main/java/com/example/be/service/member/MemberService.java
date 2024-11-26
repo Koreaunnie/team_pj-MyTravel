@@ -30,4 +30,16 @@ public class MemberService {
   public Member get(String email) {
     return mapper.selectByEmail(email);
   }
+
+  public boolean remove(Member member) {
+    int cnt = 0;
+
+    Member db = mapper.selectByEmail(member.getEmail());
+    if (db != null) {
+      if (db.getPassword().equals(member.getPassword())) {
+        cnt = mapper.deleteByEmail(member.getEmail());
+      }
+    }
+    return cnt == 1;
+  }
 }
