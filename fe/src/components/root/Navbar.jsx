@@ -35,10 +35,11 @@ function Navbar(props) {
         borderColor="#ececec"
         bgColor="#f9f9f9"
       >
+        <NavbarItem onClick={() => navigate("/")}>HOME</NavbarItem>
         <NavbarItem onClick={() => navigate("/member/login")}>
           내 계정
         </NavbarItem>
-        <NavbarItem onClick={() => navigate("/schedule/new")}>
+        <NavbarItem onClick={() => navigate("/schedule/add")}>
           내 여행
         </NavbarItem>
         <NavbarItem onClick={() => navigate("/")}>좋아요</NavbarItem>
