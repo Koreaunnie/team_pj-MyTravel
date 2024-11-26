@@ -16,6 +16,11 @@ import java.util.Map;
 public class MemberController {
   final MemberService service;
 
+  @GetMapping("{email}")
+  public Member getMember(@PathVariable String email) {
+    return service.get(email);
+  }
+
   @GetMapping("list")
   public List<Member> list() {
     return service.list();
