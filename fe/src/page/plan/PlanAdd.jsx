@@ -5,8 +5,8 @@ import "./PlanAdd.css";
 
 function PlanAdd(props) {
   const [title, setTitle] = useState("");
-  const [due, setDue] = useState("");
   const [destination, setDestination] = useState("");
+  const [due, setDue] = useState("");
 
   // 상태 정의: 추가할 div들을 관리
   const [fields, setFields] = useState([
@@ -48,15 +48,29 @@ function PlanAdd(props) {
   // 폼 제출 처리 함수
   const handleSaveClick = () => {
     axios
-      .post("plan/add", {
+      .post("/api/plan/add", {
         title,
-        due,
         destination,
+        due,
         fields, // 필드 배열(+버튼으로 추가한 항목)을 그대로 전달
       })
-      .then()
+      .then(() => alert("일정이 저장되었습니다."))
       .catch()
-      .finally();
+      .finally(() => {
+        // 요청 완료 후 처리
+        setTitle("");
+        setDestination("");
+        setDue("");
+        setFields([
+          {
+            date: "",
+            schedule: "",
+            place: "",
+            time: "",
+            memo: "",
+          },
+        ]);
+      });
   };
 
   return (
@@ -76,16 +90,7 @@ function PlanAdd(props) {
 
           <ul className={"sub-title"}>
             <li>
-              <label htmlFor="due">기간</label>
-              <input
-                id="due"
-                value={due}
-                onChange={(e) => setDue(e.target.value)}
-              />
-            </li>
-
-            <li>
-              <label htmlFor="destination">목적지</label>
+              <label htmlFor="destination">여행지</label>
               <input
                 type="text"
                 id="destination"
@@ -93,6 +98,15 @@ function PlanAdd(props) {
                 placeholder="어디로 떠나시나요?"
                 value={destination}
                 onChange={(e) => setDestination(e.target.value)}
+              />
+            </li>
+
+            <li>
+              <label htmlFor="due">기간</label>
+              <input
+                id="due"
+                value={due}
+                onChange={(e) => setDue(e.target.value)}
               />
             </li>
           </ul>
@@ -148,8 +162,12 @@ function PlanAdd(props) {
               />
 
               <div className={"btn-wrap"}>
-                <Button onClick={handleAddField}>+</Button>
-                <Button onClick={() => handleDeleteField(index)}>-</Button>
+                <Button type="button" onClick={handleAddField}>
+                  +
+                </Button>
+                <Button type="button" onClick={() => handleDeleteField(index)}>
+                  -
+                </Button>
               </div>
             </div>
           ))}
