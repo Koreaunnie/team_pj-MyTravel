@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Box, Field, Input, Stack } from "@chakra-ui/react";
+import { Box, Group, Input, Stack } from "@chakra-ui/react";
 import { Button } from "../../components/ui/button.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
 import axios from "axios";
+import { Field } from "../../components/ui/field.jsx";
 
 function MemberSignup(props) {
   const [email, setEmail] = useState("");
@@ -11,6 +12,7 @@ function MemberSignup(props) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [emailCheck, setEmailCheck] = useState(false);
+  const [passwordCheck, setPasswordCheck] = useState("");
 
   function handleSignupClick() {
     axios
@@ -28,7 +30,7 @@ function MemberSignup(props) {
         const message = e.response.data.message;
         toaster.create({
           type: message.type,
-          description: message.txt,
+          description: message.text,
         });
       })
       .finally(() => {
@@ -53,14 +55,30 @@ function MemberSignup(props) {
   };
 
   let disabled = true;
-  disabled = !emailCheck;
+
+  if (emailCheck) {
+    if (password === passwordCheck) {
+      disabled = false;
+    }
+  }
 
   return (
     <Box>
-      <h3>회원 가입</h3>
+      <h1>회원 가입</h1>
       <Stack>
         <Field label={"이메일"}>
-          <Input value={email} onChange={(e) => setEmail(e.target.value)} />
+          <Group attached w={"100%"}>
+            <Input
+              value={email}
+              onChange={(e) => {
+                setEmailCheck(false);
+                setEmail(e.target.value);
+              }}
+            />
+            <Button onClick={handleEmailCheckClick} variant={"outline"}>
+              중복 확인
+            </Button>
+          </Group>
         </Field>
         <Field label={"닉네임"}>
           <Input
@@ -72,6 +90,12 @@ function MemberSignup(props) {
           <Input
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+          />
+        </Field>
+        <Field label={"비밀번호 확인"}>
+          <Input
+            value={passwordCheck}
+            onChange={(e) => setPasswordCheck(e.target.value)}
           />
         </Field>
         <Field label={"이름"}>

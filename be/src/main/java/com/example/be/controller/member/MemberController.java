@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-@RequestMapping
+@RequestMapping("/api/member")
 @RequiredArgsConstructor
-@RestController("/api/member")
+@RestController
 public class MemberController {
   final MemberService service;
 
