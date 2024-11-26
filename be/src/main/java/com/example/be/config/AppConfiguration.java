@@ -45,22 +45,20 @@ public class AppConfiguration {
   S3Client s3Client() {
     AwsBasicCredentials credential = AwsBasicCredentials.create(accessKey, secretKey);
 
-    AwsCredentialsProvider credentialsProvider = StaticCredentialsProvider.create(credential);
-
-    S3Client s3 = S3Client.builder()
-            .region(Region.AP_NORTHEAST_2)
-            .credentialsProvider(credentialsProvider)
-            .build();
+        S3Client s3 = S3Client.builder()
+                .region(Region.AP_NORTHEAST_2)
+                .credentialsProvider(credentialProvider)
+                .build();
 
     return s3;
   }
 
-  @Bean
-  SecurityFilterChain SecurityFilterChain(HttpSecurity http) throws Exception {
-    http.csrf(c -> c.disable());
-    http.oauth2ResourceServer(configurer -> configurer.jwt(Customizer.withDefaults()));
-    return http.build();
-  }
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf(c -> c.disable());
+        http.oauth2ResourceServer(configurer -> configurer.jwt(Customizer.withDefaults()));
+        return http.build();
+    }
 
   @Bean
   JwtDecoder jwtDecoder() {

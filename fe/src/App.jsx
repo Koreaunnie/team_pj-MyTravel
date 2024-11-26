@@ -1,12 +1,15 @@
 import axios from "axios";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import MemberSignup from "./page/member/MemberSignup.jsx";
 import { RootLayout } from "./page/root/RootLayout.jsx";
+import { Index } from "./page/Index.jsx";
+import PlanAdd from "./page/plan/PlanAdd.jsx";
 import MemberList from "./page/member/MemberList.jsx";
+import MemberSignup from "./page/member/MemberSignup.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
 
+// axios 인터셉터 설정
 axios.interceptors.request.use(function (config) {
   const token = localStorage.getItem("token");
 
@@ -16,11 +19,21 @@ axios.interceptors.request.use(function (config) {
   return config;
 });
 
+// react router 설정
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
     children: [
+      // 메인 화면
+      {
+        index: true,
+        element: <Index />,
+      },
+      {
+        path: "plan/add",
+        element: <PlanAdd />,
+      },
       { path: "member/signup", element: <MemberSignup /> },
       { path: "member/list", element: <MemberList /> },
     ],
@@ -28,11 +41,7 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return (
-    <>
-      <RouterProvider router={router} />
-    </>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
