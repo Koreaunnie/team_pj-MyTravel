@@ -64,7 +64,22 @@ public class MemberController {
     return service.list();
   }
 
-  @GetMapping("checkEmail")
+  @GetMapping(value = "check", params = "nickname")
+  public ResponseEntity<Map<String, Object>> checkNickname(@RequestParam String nickname) {
+    if (service.checkNickname(nickname)) {
+      //중복
+      return ResponseEntity.ok().body(Map.of("message",
+              Map.of("type", "warning", "text", "이미 존재하는 닉네임입니다."),
+              "available", false));
+    } else {
+      //중복 아님
+      return ResponseEntity.ok().body(Map.of("message",
+              Map.of("type", "info", "text", "사용 가능한 닉네임입니다."),
+              "available", true));
+    }
+  }
+
+  @GetMapping(value = "check", params = "email")
   public ResponseEntity<Map<String, Object>> checkEmail(@RequestParam String email) {
     if (service.checkEmail(email)) {
       //중복

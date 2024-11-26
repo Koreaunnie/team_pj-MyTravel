@@ -80,4 +80,7 @@ public class MemberService {
   }
 
 
+  public boolean checkNickname(String nickname) {
+    return mapper.selectByNickname(nickname) != null;
+  }
 }

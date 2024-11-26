@@ -12,6 +12,7 @@ function MemberSignup(props) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [emailCheck, setEmailCheck] = useState(false);
+  const [nicknameCheck, setNicknameCheck] = useState(true);
   const [passwordCheck, setPasswordCheck] = useState("");
 
   function handleSignupClick() {
@@ -40,8 +41,8 @@ function MemberSignup(props) {
 
   const handleEmailCheckClick = () => {
     axios
-      .get("/api/member/checkEmail", {
-        params: { email: email },
+      .get("/api/member/check", {
+        params: { email },
       })
       .then((res) => res.data)
       .then((data) => {
@@ -54,11 +55,31 @@ function MemberSignup(props) {
       });
   };
 
+  const handleNicknameCheckClick = () => {
+    axios
+      .get(`/api/member/check`, {
+        params: { nickname },
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        const message = data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+        setNicknameCheck(data.available);
+      });
+  };
+
+  let nicknameCheckButtonDisabled = nickname.length === 0;
+
   let disabled = true;
 
   if (emailCheck) {
-    if (password === passwordCheck) {
-      disabled = false;
+    if (nicknameCheck) {
+      if (password === passwordCheck) {
+        disabled = false;
+      }
     }
   }
 
@@ -81,10 +102,22 @@ function MemberSignup(props) {
           </Group>
         </Field>
         <Field label={"닉네임"}>
-          <Input
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-          />
+          <Group attached w={"100%"}>
+            <Input
+              value={nickname}
+              onChange={(e) => {
+                setNicknameCheck(false);
+                setNickname(e.target.value);
+              }}
+            />
+            <Button
+              onClick={handleNicknameCheckClick}
+              disabled={nicknameCheckButtonDisabled}
+              variant={"outline"}
+            >
+              중복 확인
+            </Button>
+          </Group>
         </Field>
         <Field label={"비밀번호"}>
           <Input
