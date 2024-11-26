@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { Box, Spinner, Table } from "@chakra-ui/react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function MemberList(props) {
   const [memberList, setMemberList] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get("/api/member/list").then((res) => setMemberList(res.data));
   }, []);
+
+  function handleRowClick(email) {
+    navigate(`/member/${email}`);
+  }
 
   if (!memberList || memberList.length === 0) {
     return <Spinner />;
@@ -26,7 +32,10 @@ function MemberList(props) {
         </Table.Header>
         <Table.Body>
           {memberList.map((member) => (
-            <Table.Row key={member.email}>
+            <Table.Row
+              onClick={() => handleRowClick(member.email)}
+              key={member.email}
+            >
               <Table.Cell>{member.email}</Table.Cell>
               <Table.Cell>{member.nickname}</Table.Cell>
               <Table.Cell>{member.inserted}</Table.Cell>
