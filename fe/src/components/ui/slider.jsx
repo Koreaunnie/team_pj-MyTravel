@@ -27,9 +27,9 @@ function _optionalChain(ops) {
   return value
 }
 import { Slider as ChakraSlider, HStack } from '@chakra-ui/react'
-import * as React from 'react'
+import { forwardRef } from 'react'
 
-export const Slider = React.forwardRef(function Slider(props, ref) {
+export const Slider = forwardRef(function Slider(props, ref) {
   const { marks: marksProp, label, showValue, ...rest } = props
   const value = _nullishCoalesce(props.defaultValue, () => props.value)
 

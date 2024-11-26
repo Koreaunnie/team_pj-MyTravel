@@ -1,15 +1,13 @@
 import { Group, InputElement } from '@chakra-ui/react'
-import * as React from 'react'
+import { cloneElement, forwardRef } from 'react'
 
-export const InputGroup = React.forwardRef(function InputGroup(props, ref) {
+export const InputGroup = forwardRef(function InputGroup(props, ref) {
   const {
     startElement,
     startElementProps,
     endElement,
     endElementProps,
     children,
-    startOffset = '6px',
-    endOffset = '6px',
     ...rest
   } = props
 
@@ -20,11 +18,9 @@ export const InputGroup = React.forwardRef(function InputGroup(props, ref) {
           {startElement}
         </InputElement>
       )}
-      {React.cloneElement(children, {
-        ...(startElement && {
-          ps: `calc(var(--input-height) - ${startOffset})`,
-        }),
-        ...(endElement && { pe: `calc(var(--input-height) - ${endOffset})` }),
+      {cloneElement(children, {
+        ...(startElement && { ps: 'calc(var(--input-height) - 6px)' }),
+        ...(endElement && { pe: 'calc(var(--input-height) - 6px)' }),
         ...children.props,
       })}
       {endElement && (
