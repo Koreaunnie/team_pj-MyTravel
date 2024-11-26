@@ -4,6 +4,7 @@ import { Button } from "../../components/ui/button.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
 import axios from "axios";
 import { Field } from "../../components/ui/field.jsx";
+import { useNavigate } from "react-router-dom";
 
 function MemberSignup(props) {
   const [email, setEmail] = useState("");
@@ -14,28 +15,25 @@ function MemberSignup(props) {
   const [emailCheck, setEmailCheck] = useState(false);
   const [nicknameCheck, setNicknameCheck] = useState(true);
   const [passwordCheck, setPasswordCheck] = useState("");
+  const navigate = useNavigate();
 
   function handleSignupClick() {
     axios
       .post("/api/member/signup", { email, nickname, password, name, phone })
       .then((res) => {
-        console.log("가입 성공");
         const message = res.data.message;
         toaster.create({
           type: message.type,
           description: message.text,
         });
+        navigate(`/member/login`);
       })
       .catch((e) => {
-        console.log("가입 실패");
         const message = e.response.data.message;
         toaster.create({
           type: message.type,
           description: message.text,
         });
-      })
-      .finally(() => {
-        console.log("무조건 실행: 아마 경로 이동");
       });
   }
 
