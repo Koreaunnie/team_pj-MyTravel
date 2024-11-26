@@ -29,6 +29,7 @@ import java.security.interfaces.RSAPublicKey;
 @Configuration
 @EnableMethodSecurity
 public class AppConfiguration {
+
   @Value("classpath:secret/app.pub")
   RSAPublicKey pub;
 
@@ -44,21 +45,22 @@ public class AppConfiguration {
   @Bean
   S3Client s3Client() {
     AwsBasicCredentials credential = AwsBasicCredentials.create(accessKey, secretKey);
+    AwsCredentialsProvider credentialProvider = StaticCredentialsProvider.create(credential);
 
-        S3Client s3 = S3Client.builder()
-                .region(Region.AP_NORTHEAST_2)
-                .credentialsProvider(credentialProvider)
-                .build();
+    S3Client s3 = S3Client.builder()
+            .region(Region.AP_NORTHEAST_2)
+            .credentialsProvider(credentialProvider)
+            .build();
 
     return s3;
   }
 
-    @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(c -> c.disable());
-        http.oauth2ResourceServer(configurer -> configurer.jwt(Customizer.withDefaults()));
-        return http.build();
-    }
+  @Bean
+  SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http.csrf(c -> c.disable());
+    http.oauth2ResourceServer(configurer -> configurer.jwt(Customizer.withDefaults()));
+    return http.build();
+  }
 
   @Bean
   JwtDecoder jwtDecoder() {
