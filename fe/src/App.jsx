@@ -6,8 +6,8 @@ import PlanAdd from "./page/plan/PlanAdd.jsx";
 import MemberList from "./page/member/MemberList.jsx";
 import MemberSignup from "./page/member/MemberSignup.jsx";
 import MemberInfo from "./page/member/MemberInfo.jsx";
-import MemberEdit from "./page/member/MemberEdit.jsx";
 import MemberLogin from "./page/member/MemberLogin.jsx";
+import { MemberEdit } from "./page/member/MemberEdit.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'

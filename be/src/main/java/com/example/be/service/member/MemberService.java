@@ -1,6 +1,7 @@
 package com.example.be.service.member;
 
 import com.example.be.dto.member.Member;
+import com.example.be.dto.member.MemberEdit;
 import com.example.be.mapper.member.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -48,6 +49,18 @@ public class MemberService {
     return cnt == 1;
   }
 
+  public boolean update(MemberEdit member) {
+    int cnt = 0;
+    Member db = mapper.selectByEmail(member.getEmail());
+    if (db != null) {
+      if (db.getPassword().equals(member.getOldPassword())) {
+        cnt = mapper.update(member);
+
+      }
+    }
+    return cnt == 1;
+  }
+
   public String token(Member member) {
     Member db = mapper.selectByEmail(member.getEmail());
     if (db != null) {
@@ -65,4 +78,6 @@ public class MemberService {
 
     return null;
   }
+
+
 }
