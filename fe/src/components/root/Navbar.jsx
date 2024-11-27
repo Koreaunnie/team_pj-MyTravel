@@ -37,6 +37,7 @@ function Navbar(props) {
       >
         <NavbarItem onClick={() => navigate("/")}>HOME</NavbarItem>
         <NavbarItem onClick={() => navigate("/plan/add")}>내 여행</NavbarItem>
+        <NavbarItem onClick={() => navigate("/tour/list")}>투어</NavbarItem>
         <NavbarItem onClick={() => navigate("/")}>좋아요</NavbarItem>
         <NavbarItem onClick={() => navigate("/")}>장바구니</NavbarItem>
         <NavbarItem onClick={() => navigate("/")}>알림</NavbarItem>

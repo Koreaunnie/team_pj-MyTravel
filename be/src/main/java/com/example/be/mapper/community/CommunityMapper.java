@@ -42,5 +42,12 @@ public interface CommunityMapper {
             """)
     int deleteCommunity(Integer id);
 
+    @Select("""
+            SELECT nickname
+            FROM member
+            WHERE email = #{email}
+            """)
+    String findNickname(String email);
+
     // TODO : SQL 이름 합의 후 적용하기
 }

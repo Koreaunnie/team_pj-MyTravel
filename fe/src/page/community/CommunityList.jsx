@@ -32,7 +32,7 @@ function CommunityList(props) {
           </Table.Header>
           <Table.Body>
             {community.map((c) => (
-              <Table.Row>
+              <Table.Row key={c.id}>
                 <Table.Cell>{c.id}</Table.Cell>
                 <Table.Cell>{c.title}</Table.Cell>
                 <Table.Cell>{c.writer}</Table.Cell>

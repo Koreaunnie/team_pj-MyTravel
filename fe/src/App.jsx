@@ -52,6 +52,18 @@ const router = createBrowserRouter([
         element: <TourAdd />,
       },
       {
+        path: "community/write",
+        element: <CommunityWrite />,
+      },
+      {
+        path: "community/view/:id",
+        element: <CommunityView />,
+      },
+      {
+        path: "community/list",
+        element: <CommunityList />,
+      },
+      {
         path: "tour/view/:id",
         element: <TourView />,
       },

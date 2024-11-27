@@ -3,6 +3,7 @@ package com.example.be.service.community;
 import com.example.be.dto.community.Community;
 import com.example.be.mapper.community.CommunityMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,8 +19,10 @@ public class CommunityService {
         return mapper.listUp(page);
     }
 
-    public void write(Community community) {
+    public void write(Community community, Authentication auth) {
 
+        String nickname = mapper.findNickname(auth.getName());
+        community.setWriter(nickname);
         mapper.writeCommunity(community);
     }
 
