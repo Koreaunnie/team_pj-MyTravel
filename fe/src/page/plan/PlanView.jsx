@@ -30,6 +30,9 @@ function PlanView(props) {
       <button className={"btn"} onClick={() => navigate(`/plan/add`)}>
         새 일정 작성
       </button>
+      <button className={"btn"} onClick={() => navigate(`/plan/edit/${id}`)}>
+        수정
+      </button>
 
       <h1>{plan.title}</h1>
       <p>{plan.description}</p>

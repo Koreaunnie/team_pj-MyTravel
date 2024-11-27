@@ -9,9 +9,6 @@ function PlanAdd(props) {
   const [description, setDescription] = useState("");
   const [destination, setDestination] = useState("");
   const [due, setDue] = useState("");
-  const navigate = useNavigate();
-
-  // + 버튼으로 추가할 field
   const [fields, setFields] = useState([
     {
       date: "",
@@ -21,13 +18,7 @@ function PlanAdd(props) {
       memo: "",
     },
   ]);
-
-  // div 입력값을 상태로 업데이트하는 함수
-  const handleFieldChange = (index, field, value) => {
-    const updatedFields = [...fields];
-    updatedFields[index][field] = value;
-    setFields(updatedFields);
-  };
+  const navigate = useNavigate();
 
   // + 버튼 클릭 시 새로운 필드 추가
   function handleAddField() {
@@ -44,11 +35,11 @@ function PlanAdd(props) {
   }
 
   // - 버튼 클릭 시 필드 삭제
-  function handleDeleteField(fieldIndex) {
-    setFields(fields.filter((_, i) => i !== fieldIndex));
+  function handleDeleteField(index) {
+    setFields(fields.filter((_, i) => i !== index));
   }
 
-  // 폼 제출 처리 함수
+  // 저장 폼 제출 처리 함수
   function handleSaveClick() {
     axios
       .post("/api/plan/add", {
