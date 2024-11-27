@@ -3,6 +3,7 @@ package com.example.be.service.tour;
 import com.example.be.dto.tour.Tour;
 import com.example.be.mapper.tour.TourMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +15,29 @@ import java.util.List;
 public class TourService {
   final TourMapper mapper;
 
-  public boolean add(Tour tour) {
+  public boolean add(Tour tour, Authentication authentication) {
+    String nickname = mapper.findNickname(authentication.getName());
+    tour.setPartner(nickname);
+
+//    //TODO: 파일 업로드 기능 AWS?
+//    if (files != null && files.length > 0) {
+//      //폴더 생성
+//      String directory = "C:/Temp/team1126/" + tour.getId() + "}";
+//      File dir = new File(directory);
+//      if (!dir.exists()) {
+//        dir.mkdirs();
+//      }
+//    }
+//
+//    for (MultipartFile file : files) {
+//      String filePath = "C:/Temp/team1126/" + tour.getId() + "{file.getOriginalFilename()}";
+//      try {
+//        file.transferTo(new File(filePath));
+//      } catch (IOException e) {
+//        throw new RuntimeException(e);
+//      }
+//    }
+
     int cnt = mapper.insert(tour);
     return cnt == 1;
   }

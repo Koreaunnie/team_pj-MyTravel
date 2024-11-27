@@ -12,7 +12,8 @@ export function TourAdd() {
   const [price, setPrice] = useState("");
   const [location, setLocation] = useState("");
   const [content, setContent] = useState("");
-  const [partner, setPartner] = useState("");
+  // const [partner, setPartner] = useState("");
+  const [files, setFiles] = useState([]);
   const navigate = useNavigate();
 
   const handleSaveClick = () => {
@@ -23,10 +24,10 @@ export function TourAdd() {
         price,
         location,
         content,
-        partner,
+        // partner,
+        files,
       })
       .then((res) => {
-        console.log(res.data); // Inspect the response structure
         const { message, data } = res.data;
         toaster.create({
           type: message.type,
@@ -42,6 +43,15 @@ export function TourAdd() {
         });
       });
   };
+
+  const filesList = [];
+  for (const file of files) {
+    filesList.push(
+      <li>
+        {file.name}({Math.floor(file.size / 1024)}kb)
+      </li>,
+    );
+  }
 
   return (
     <Box>
@@ -81,9 +91,12 @@ export function TourAdd() {
             onChange={(e) => setContent(e.target.value)}
           />
         </Field>
-        <Field label={"파트너사"}>
-          <Input value={partner} onChange={(e) => setPartner(e.target.value)} />
-        </Field>
+        <Box>
+          <Input type={"file"} accept={"image/*"} multiple />
+        </Box>
+        {/*<Field label={"파트너사"}>*/}
+        {/*  <Input value={partner} onChange={(e) => setPartner(e.target.value)} />*/}
+        {/*</Field>*/}
         <Box>
           <Button onClick={handleSaveClick}>저장</Button>
         </Box>

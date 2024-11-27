@@ -4,7 +4,9 @@ import com.example.be.dto.tour.Tour;
 import com.example.be.service.tour.TourService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -48,14 +50,17 @@ public class TourController {
   }
 
   @PostMapping("add")
-  public ResponseEntity<Map<String, Object>> add(@RequestBody Tour tour) {
+  public ResponseEntity<Map<String, Object>> add(
+          @RequestBody Tour tour,
+          @RequestParam(required = false) MultipartFile[] files,
+          Authentication authentication) {
 
     try {
       if (!service.validate(tour)) {
         return ResponseEntity.badRequest().body(Map.of("message",
                 Map.of("type", "warning", "text", "미완성 폼입니다.")));
       } else {
-        if (service.add(tour)) {
+        if (service.add(tour, authentication)) {
           return ResponseEntity.ok().body(Map.of("message",
                   Map.of("type", "success", "text", "상품이 등록되었습니다."),
                   "data", tour));
