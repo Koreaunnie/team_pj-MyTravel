@@ -51,4 +51,17 @@ public interface TourMapper {
           WHERE email=#{email}
           """)
   String findNickname(String name);
+
+  @Insert("""
+          INSERT INTO tour_img
+          VALUES (#{id}, #{fileName})
+          """)
+  void insertFile(Integer id, String fileName);
+
+  @Select("""
+          SELECT *
+          FROM tour_img
+          WHERE tour_id=#{id}    
+          """)
+  List<String> selectFilesByTourId(int id);
 }

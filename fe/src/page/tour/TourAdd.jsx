@@ -12,19 +12,17 @@ export function TourAdd() {
   const [price, setPrice] = useState("");
   const [location, setLocation] = useState("");
   const [content, setContent] = useState("");
-  // const [partner, setPartner] = useState("");
   const [files, setFiles] = useState([]);
   const navigate = useNavigate();
 
   const handleSaveClick = () => {
     axios
-      .post(`/api/tour/add`, {
+      .postForm(`/api/tour/add`, {
         title,
         product,
         price,
         location,
         content,
-        // partner,
         files,
       })
       .then((res) => {
@@ -45,12 +43,9 @@ export function TourAdd() {
   };
 
   const filesList = [];
+
   for (const file of files) {
-    filesList.push(
-      <li>
-        {file.name}({Math.floor(file.size / 1024)}kb)
-      </li>,
-    );
+    filesList.push(<li>{file.name}</li>);
   }
 
   return (
@@ -92,11 +87,17 @@ export function TourAdd() {
           />
         </Field>
         <Box>
-          <Input type={"file"} accept={"image/*"} multiple />
+          <Field label={"파일"}>
+            <Input
+              type={"file"}
+              accept={"image/*"}
+              multiple
+              onChange={(e) => setFiles(e.target.files)}
+            />
+          </Field>
+          <Box>{filesList}</Box>
         </Box>
-        {/*<Field label={"파트너사"}>*/}
-        {/*  <Input value={partner} onChange={(e) => setPartner(e.target.value)} />*/}
-        {/*</Field>*/}
+
         <Box>
           <Button onClick={handleSaveClick}>저장</Button>
         </Box>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Input, Stack, Textarea } from "@chakra-ui/react";
+import { Box, Image, Input, Stack, Textarea } from "@chakra-ui/react";
 import { Field } from "../../components/ui/field.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -15,8 +15,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../components/ui/dialog.jsx";
+import PropTypes from "prop-types";
 
-function TourView(props) {
+function ImageFileView({ files }) {
+  return (
+    <Box>
+      {files.map((file) => (
+        <Image key={file.name} src={file.src} />
+      ))}
+    </Box>
+  );
+}
+
+ImageFileView.propTypes = { files: PropTypes.any };
+
+function TourView() {
   const { id } = useParams();
   const [tour, setTour] = useState(null);
   const navigate = useNavigate();
@@ -56,6 +69,7 @@ function TourView(props) {
         <Field label={"상품"} readOnly>
           <Input value={tour.product} />
         </Field>
+        <ImageFileView files={tour.fileList} />
         <Field label={"위치"} readOnly>
           <Input value={tour.location} />
         </Field>

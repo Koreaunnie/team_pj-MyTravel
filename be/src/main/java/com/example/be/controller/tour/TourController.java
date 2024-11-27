@@ -51,8 +51,8 @@ public class TourController {
 
   @PostMapping("add")
   public ResponseEntity<Map<String, Object>> add(
-          @RequestBody Tour tour,
-          @RequestParam(required = false) MultipartFile[] files,
+          Tour tour,
+          @RequestParam(value = "files[]", required = false) MultipartFile[] files,
           Authentication authentication) {
 
     try {
@@ -60,7 +60,7 @@ public class TourController {
         return ResponseEntity.badRequest().body(Map.of("message",
                 Map.of("type", "warning", "text", "미완성 폼입니다.")));
       } else {
-        if (service.add(tour, authentication)) {
+        if (service.add(tour, files, authentication)) {
           return ResponseEntity.ok().body(Map.of("message",
                   Map.of("type", "success", "text", "상품이 등록되었습니다."),
                   "data", tour));

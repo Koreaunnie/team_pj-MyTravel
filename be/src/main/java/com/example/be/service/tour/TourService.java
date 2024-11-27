@@ -1,12 +1,20 @@
 package com.example.be.service.tour;
 
 import com.example.be.dto.tour.Tour;
+import com.example.be.dto.tour.TourImg;
 import com.example.be.mapper.tour.TourMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -14,40 +22,57 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TourService {
   final TourMapper mapper;
+  final S3Client s3;
 
-  public boolean add(Tour tour, Authentication authentication) {
+  @Value("${image.src.prefix}")
+  String imageSrcPrefix;
+
+  @Value("${bucket.name}")
+  String bucketName;
+
+  public boolean add(Tour tour, MultipartFile[] files, Authentication authentication) {
     String nickname = mapper.findNickname(authentication.getName());
     tour.setPartner(nickname);
 
-//    //TODO: 파일 업로드 기능 AWS?
-//    if (files != null && files.length > 0) {
-//      //폴더 생성
-//      String directory = "C:/Temp/team1126/" + tour.getId() + "}";
-//      File dir = new File(directory);
-//      if (!dir.exists()) {
-//        dir.mkdirs();
-//      }
-//    }
-//
-//    for (MultipartFile file : files) {
-//      String filePath = "C:/Temp/team1126/" + tour.getId() + "{file.getOriginalFilename()}";
-//      try {
-//        file.transferTo(new File(filePath));
-//      } catch (IOException e) {
-//        throw new RuntimeException(e);
-//      }
-//    }
-
     int cnt = mapper.insert(tour);
+
+    if (files != null && files.length > 0) {
+      //file upload
+      for (MultipartFile file : files) {
+        String objectKey = "teamPrj1126/" + tour.getId() + "/" + file.getOriginalFilename();
+        PutObjectRequest por = PutObjectRequest.builder()
+                .bucket(bucketName)
+                .key(objectKey)
+                .acl(ObjectCannedACL.PUBLIC_READ)
+                .build();
+
+        try {
+          s3.putObject(por, RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
+        } catch (IOException e) {
+          throw new RuntimeException(e.getMessage(), e);
+        }
+
+        //board_file테이블에 등록
+        mapper.insertFile(tour.getId(), file.getOriginalFilename());
+      }
+    }
+
     return cnt == 1;
+  }
+
+  public Tour get(int id) {
+    Tour tour = mapper.selectById(id);
+    List<String> fileNameList = mapper.selectFilesByTourId(id);
+    List<TourImg> fileSrcList = fileNameList.stream()
+            .map(name -> new TourImg(name, imageSrcPrefix + "/" + id + "/" + name))
+            .toList();
+
+    tour.setFileList(fileSrcList);
+    return tour;
   }
 
   public List<Tour> list() {
     return mapper.selectAll();
-  }
-
-  public Tour get(int id) {
-    return mapper.selectById(id);
   }
 
   public boolean validate(Tour tour) {
