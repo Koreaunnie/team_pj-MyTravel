@@ -11,13 +11,13 @@ function PlanAdd(props) {
   const [due, setDue] = useState("");
   const navigate = useNavigate();
 
-  // 상태 정의: 추가할 div들을 관리
+  // + 버튼으로 추가할 field
   const [fields, setFields] = useState([
     {
       date: "",
+      time: "",
       schedule: "",
       place: "",
-      time: "",
       memo: "",
     },
   ]);
@@ -30,33 +30,33 @@ function PlanAdd(props) {
   };
 
   // + 버튼 클릭 시 새로운 필드 추가
-  const handleAddField = () => {
+  function handleAddField() {
     setFields([
       ...fields,
       {
         date: "",
+        time: "",
         schedule: "",
         place: "",
-        time: "",
         memo: "",
       },
     ]);
-  };
+  }
 
   // - 버튼 클릭 시 필드 삭제
-  const handleDeleteField = (index) => {
-    setFields(fields.filter((_, i) => i !== index));
-  };
+  function handleDeleteField(fieldIndex) {
+    setFields(fields.filter((_, i) => i !== fieldIndex));
+  }
 
   // 폼 제출 처리 함수
-  const handleSaveClick = () => {
+  function handleSaveClick() {
     axios
       .post("/api/plan/add", {
         title,
         description,
         destination,
         due,
-        planFieldList: fields, // 필드 배열(+버튼으로 추가한 항목)을 그대로 전달
+        planFieldList: fields, // 필드 배열을 그대로 전달
       })
       .then(() => alert("일정이 저장되었습니다."))
       .catch()
@@ -69,14 +69,14 @@ function PlanAdd(props) {
         setFields([
           {
             date: "",
+            time: "",
             schedule: "",
             place: "",
-            time: "",
             memo: "",
           },
         ]);
       });
-  };
+  }
 
   return (
     <div className={"body"}>
@@ -146,7 +146,17 @@ function PlanAdd(props) {
                 value={field.date}
                 onChange={(e) =>
                   handleFieldChange(index, "date", e.target.value)
-                } // 상태 업데이트
+                }
+              />
+
+              <label htmlFor="time">시간</label>
+              <input
+                name="time"
+                type="time"
+                value={field.time}
+                onChange={(e) =>
+                  handleFieldChange(index, "time", e.target.value)
+                }
               />
 
               <label htmlFor="schedule">일정명</label>
@@ -155,7 +165,7 @@ function PlanAdd(props) {
                 value={field.schedule}
                 onChange={(e) =>
                   handleFieldChange(index, "schedule", e.target.value)
-                } // 상태 업데이트
+                }
               />
 
               <label htmlFor="location">장소</label>
@@ -164,16 +174,7 @@ function PlanAdd(props) {
                 value={field.place}
                 onChange={(e) =>
                   handleFieldChange(index, "place", e.target.value)
-                } // 상태 업데이트
-              />
-
-              <label htmlFor="time">시간</label>
-              <input
-                name="time"
-                value={field.time}
-                onChange={(e) =>
-                  handleFieldChange(index, "time", e.target.value)
-                } // 상태 업데이트
+                }
               />
 
               <label htmlFor="memo">메모</label>
@@ -182,15 +183,15 @@ function PlanAdd(props) {
                 value={field.memo}
                 onChange={(e) =>
                   handleFieldChange(index, "memo", e.target.value)
-                } // 상태 업데이트
+                }
               />
 
               <div className={"btn-wrap"}>
                 <Button type="button" onClick={handleAddField}>
-                  +
+                  일정 추가
                 </Button>
                 <Button type="button" onClick={() => handleDeleteField(index)}>
-                  -
+                  일정 삭제
                 </Button>
               </div>
             </div>

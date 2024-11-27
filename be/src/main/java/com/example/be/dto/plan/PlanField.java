@@ -7,8 +7,8 @@ public class PlanField {
     private Integer planId;
     private Integer id;
     private String date;
+    private String time;
     private String schedule;
     private String place;
-    private String time;
     private String memo;
 }

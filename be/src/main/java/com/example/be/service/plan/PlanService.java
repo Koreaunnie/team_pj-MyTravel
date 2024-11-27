@@ -23,11 +23,25 @@ public class PlanService {
         // 2. plan body fields 데이터를 반복적으로 저장
         if (plan.getPlanFieldList() != null) {
             for (PlanField field : plan.getPlanFieldList()) {
-                // plan 의 id 를 PlanField 에 저장하여 plan 과 planField 를 연결
+                // plan 의 id 를 PlanField 에서 참조
                 field.setPlanId(plan.getId());
+
+                // 여행 추가 시 날짜 입력되지 않았을 때 NULL로 처리
+                if (field.getDate() == null || field.getDate().isEmpty()) {
+                    field.setDate(null);
+                }
+
+                // 여행 추가 시 시간이 입력되지 않았을 때 NULL로 처리
+                if (field.getTime() == null || field.getTime().isEmpty()) {
+                    field.setTime(null);
+                }
+
+                // PlanField 에 저장
                 mapper.insertPlanField(field);
             }
         }
+
+
     }
 
     // 내 여행 목록
