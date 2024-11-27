@@ -22,6 +22,10 @@ function PlanView(props) {
     return <Spinner />;
   }
 
+  const handleDeleteButton = () => {
+    axios.delete(`/api/plan/delete/${id}`).then().catch().finally();
+  };
+
   return (
     <div className={"body"}>
       <button className={"btn"} onClick={() => navigate(`/plan/list`)}>
@@ -32,6 +36,9 @@ function PlanView(props) {
       </button>
       <button className={"btn"} onClick={() => navigate(`/plan/edit/${id}`)}>
         수정
+      </button>
+      <button className={"btn"} onClick={() => handleDeleteButton}>
+        삭제
       </button>
 
       <h1>{plan.title}</h1>

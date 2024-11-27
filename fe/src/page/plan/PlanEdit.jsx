@@ -61,7 +61,7 @@ function PlanEdit(props) {
   }
 
   // 저장 폼 제출 처리 함수
-  function handleSaveClick() {
+  function handleSaveButton() {
     axios
       .put("/api/plan/update", {
         id: id,
@@ -202,7 +202,7 @@ function PlanEdit(props) {
         </fieldset>
 
         <div className={"btn-wrap"}>
-          <Button alignSelf="flex-start" onClick={handleSaveClick}>
+          <Button alignSelf="flex-start" onClick={handleSaveButton}>
             저장
           </Button>
         </div>
