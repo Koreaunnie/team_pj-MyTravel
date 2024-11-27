@@ -17,9 +17,30 @@ public interface TourMapper {
   int insert(Tour tour);
 
   @Select("""
-          SELECT id, title, product, price, location FROM tour
-          ORDER BY inserted DESC""")
-  List<Tour> selectAll();
+            <script>
+                SELECT id, title, product, price, location FROM tour
+                WHERE
+                  <trim prefixOverrides="OR">
+                    <if test="searchType == 'all' or searchType == 'title'">
+                        title LIKE CONCAT('%', #{keyword}, '%')
+                    </if>
+                    <if test="searchType == 'all' or searchType == 'product'">
+                        OR product LIKE CONCAT('%', #{keyword}, '%')
+                    </if>
+                    <if test="searchType == 'all' or searchType == 'location'">
+                        OR location LIKE CONCAT('%', #{keyword}, '%')
+                    </if>
+                    <if test="searchType == 'all' or searchType == 'content'">
+                        OR content LIKE CONCAT('%', #{keyword}, '%')
+                    </if>
+                    <if test="searchType == 'all' or searchType == 'partner'">
+                        OR partner LIKE CONCAT('%', #{keyword}, '%')
+                    </if>
+                  </trim>
+                ORDER BY id DESC
+            </script>
+          """)
+  List<Tour> selectAll(String searchType, String keyword);
 
   @Select("""
           SELECT *

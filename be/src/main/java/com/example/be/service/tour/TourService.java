@@ -16,6 +16,7 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -71,8 +72,12 @@ public class TourService {
     return tour;
   }
 
-  public List<Tour> list() {
-    return mapper.selectAll();
+  public Map<String, Object> list(String searchType, String keyword) {
+    List<Tour> tourList = mapper.selectAll(searchType, keyword);
+    if (tourList == null || tourList.isEmpty()) {
+      return Map.of("tourList", List.of()); // 빈 리스트 반환
+    }
+    return Map.of("tourList", tourList);
   }
 
   public boolean validate(Tour tour) {

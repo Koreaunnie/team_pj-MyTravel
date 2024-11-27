@@ -8,7 +8,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -45,8 +44,11 @@ public class TourController {
   }
 
   @GetMapping("list")
-  public List<Tour> list() {
-    return service.list();
+  public Map<String, Object> list(
+          @RequestParam(value = "type", defaultValue = "all") String searchType,
+          @RequestParam(value = "key", defaultValue = "") String keyword
+  ) {
+    return service.list(searchType, keyword);
   }
 
   @PostMapping("add")
