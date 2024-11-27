@@ -32,8 +32,8 @@ public class TourController {
       return ResponseEntity.ok().body(Map.of("msg",
               Map.of("type", "success", "text", "상품 삭제")));
     } else {
-      return ResponseEntity.ok().body(Map.of("msg",
-              Map.of("type", "error", "text", "상품 삭제 실패")));
+      return ResponseEntity.status(400).body(Map.of("message",
+              Map.of("type", "warning", "text", "상품 수정 실패")));
     }
   }
 
@@ -50,18 +50,23 @@ public class TourController {
   @PostMapping("add")
   public ResponseEntity<Map<String, Object>> add(@RequestBody Tour tour) {
 
-    if (service.validate(tour)) {
-      if (service.add(tour)) {
-        return ResponseEntity.ok().body(Map.of("message",
-                Map.of("type", "success", "text", "상품이 등록되었습니다."),
-                "data", tour));
+    try {
+      if (!service.validate(tour)) {
+        return ResponseEntity.badRequest().body(Map.of("message",
+                Map.of("type", "warning", "text", "미완성 폼입니다.")));
       } else {
-        return ResponseEntity.internalServerError().body(Map.of("message",
-                Map.of("type", "warning", "text", "상품을 등록하지 못했습니다.")));
+        if (service.add(tour)) {
+          return ResponseEntity.ok().body(Map.of("message",
+                  Map.of("type", "success", "text", "상품이 등록되었습니다."),
+                  "data", tour));
+        } else {
+          return ResponseEntity.badRequest().body(Map.of("message",
+                  Map.of("type", "warning", "text", "상품을 등록하지 못했습니다.")));
+        }
       }
-    } else {
+    } catch (Exception e) {
       return ResponseEntity.badRequest().body(Map.of("message",
-              Map.of("type", "warning", "text", "제목이나 본문이 비어있을 수 없습니다.")));
+              Map.of("type", "warning", "text", "상품을 등록 실패")));
     }
   }
 

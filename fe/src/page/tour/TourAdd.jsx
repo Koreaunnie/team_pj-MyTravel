@@ -10,7 +10,7 @@ export function TourAdd() {
   const [title, setTitle] = useState("");
   const [product, setProduct] = useState("");
   const [price, setPrice] = useState("");
-  const [location, setLocation] = useState("")
+  const [location, setLocation] = useState("");
   const [content, setContent] = useState("");
   const [partner, setPartner] = useState("");
   const navigate = useNavigate();
@@ -54,10 +54,26 @@ export function TourAdd() {
           <Input value={product} onChange={(e) => setProduct(e.target.value)} />
         </Field>
         <Field label={"가격"}>
-          <Input value={price} onChange={(e) => setPrice(e.target.value)} />
+          <Input
+            value={price}
+            onChange={(e) => {
+              const value = e.target.value;
+              if (/^\d*$/.test(value)) {
+                setPrice(value);
+              } else {
+                toaster.create({
+                  type: "warning",
+                  description: "가격은 숫자만 입력 가능합니다.",
+                });
+              }
+            }}
+          />
         </Field>
         <Field label={"위치"}>
-          <Input value={location} onChange={(e) => setLocation(e.target.value)} />
+          <Input
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+          />
         </Field>
         <Field label={"본문"}>
           <Textarea

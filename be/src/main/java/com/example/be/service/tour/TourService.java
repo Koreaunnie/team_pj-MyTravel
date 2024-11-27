@@ -12,35 +12,43 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class TourService {
-    final TourMapper mapper;
+  final TourMapper mapper;
 
-    public boolean add(Tour tour) {
-        int cnt = mapper.insert(tour);
-        return cnt == 1;
-    }
+  public boolean add(Tour tour) {
+    int cnt = mapper.insert(tour);
+    return cnt == 1;
+  }
 
-    public List<Tour> list() {
-        return mapper.selectAll();
-    }
+  public List<Tour> list() {
+    return mapper.selectAll();
+  }
 
-    public Tour get(int id) {
-        return mapper.selectById(id);
-    }
+  public Tour get(int id) {
+    return mapper.selectById(id);
+  }
 
-    public boolean validate(Tour tour) {
-        boolean title = tour.getTitle().trim().length() > 0;
-        boolean product = tour.getProduct().trim().length() > 0;
-        boolean price = tour.getPrice() != 0 || tour.getPrice() != null;
-        return title && product && price;
+  public boolean validate(Tour tour) {
+    boolean title = tour.getTitle().trim().length() > 0;
+    boolean product = tour.getProduct().trim().length() > 0;
+    boolean priceValid = false;
+    try {
+      // price가 null이 아니면서 0보다 크거나 같은지 확인
+      if (tour.getPrice() != null) {
+        priceValid = tour.getPrice() >= 0;
+      }
+    } catch (Exception e) {
+      priceValid = false; // 예외 발생 시 유효하지 않은 가격으로 처리
     }
+    return title && product && priceValid;
+  }
 
-    public boolean delete(int id) {
-        int cnt = mapper.deleteById(id);
-        return cnt == 1;
-    }
+  public boolean delete(int id) {
+    int cnt = mapper.deleteById(id);
+    return cnt == 1;
+  }
 
-    public boolean update(Tour tour) {
-        int cnt = mapper.update(tour);
-        return cnt==1;
-    }
+  public boolean update(Tour tour) {
+    int cnt = mapper.update(tour);
+    return cnt == 1;
+  }
 }
