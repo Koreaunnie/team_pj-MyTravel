@@ -1,12 +1,9 @@
 package com.example.be.controller.plan;
 
-import com.example.be.dto.schedule.Plan.Plan;
+import com.example.be.dto.plan.Plan;
 import com.example.be.service.plan.PlanService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,7 +15,7 @@ public class PlanController {
 
     // 일정 추가
     @PostMapping("add")
-    public void add(Plan plan) {
+    public void add(@RequestBody Plan plan) {
         service.add(plan);
     }
 

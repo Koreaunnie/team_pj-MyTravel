@@ -1,8 +1,9 @@
-package com.example.be.dto.schedule.Plan;
+package com.example.be.dto.plan;
 
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class Plan {
@@ -13,9 +14,6 @@ public class Plan {
     private String destination;
     private String due;
 
-    private String date;
-    private String schedule;
-    private String location;
-    private String time;
-    private String memo;
+    // 여러 일정을 저장할 plan body fields
+    private List<PlanField> planFieldList;
 }

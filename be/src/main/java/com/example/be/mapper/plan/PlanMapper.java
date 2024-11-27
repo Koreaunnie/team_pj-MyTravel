@@ -1,6 +1,7 @@
 package com.example.be.mapper.plan;
 
-import com.example.be.dto.schedule.Plan.Plan;
+import com.example.be.dto.plan.Plan;
+import com.example.be.dto.plan.PlanField;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -11,18 +12,35 @@ import java.util.List;
 @Mapper
 public interface PlanMapper {
 
+    // 1. plan header 항목 추가
     @Insert("""
             INSERT INTO plan
-            (title, destination, due, date, schedule, location, time, memo)
-            VALUES (#{title}, #{destination}, #{due},  #{date}, #{schedule}, #{location}, #{time}, #{memo})
+                (inserted, title, destination, due)
+            VALUES 
+                (NOW(), #{title}, #{destination}, #{due})
             """)
     @Options(keyProperty = "id", useGeneratedKeys = true)
-    int inset(Plan plan);
+    int insertPlan(Plan plan);
 
+    // 2. plan body 항목 추가
+    @Insert("""
+            INSERT INTO plan_field
+                (plan_id, date, schedule, place, time, memo)
+            VALUES 
+                (#{planId}, #{date}, #{schedule}, #{place}, #{time}, #{memo})
+            """)
+    @Options(keyProperty = "id", useGeneratedKeys = true)
+    int insertPlanField(PlanField field);
+
+    // 1. plan header 조회
     @Select("""
             SELECT * 
             FROM plan
             ORDER BY inserted DESC;
             """)
-    List<Plan> select();
+    List<Plan> selectPlan();
+
+    // 1. plan body 조회
+
+
 }

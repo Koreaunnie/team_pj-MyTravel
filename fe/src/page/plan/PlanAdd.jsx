@@ -52,7 +52,7 @@ function PlanAdd(props) {
         title,
         destination,
         due,
-        fields, // 필드 배열(+버튼으로 추가한 항목)을 그대로 전달
+        planFieldList: fields, // 필드 배열(+버튼으로 추가한 항목)을 그대로 전달
       })
       .then(() => alert("일정이 저장되었습니다."))
       .catch()
@@ -78,7 +78,7 @@ function PlanAdd(props) {
       <h1>일정 등록하기</h1>
 
       <form className={"plan-container"}>
-        <fieldset>
+        <fieldset className={"plan-header"}>
           <label htmlFor="title">여행명</label>
           <input
             type="text"
@@ -112,7 +112,7 @@ function PlanAdd(props) {
           </ul>
         </fieldset>
 
-        <fieldset>
+        <fieldset className={"plan-body"}>
           {fields.map((field, index) => (
             <div key={index}>
               <label htmlFor="date">날짜</label>

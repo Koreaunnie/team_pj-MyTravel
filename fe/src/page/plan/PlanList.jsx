@@ -59,7 +59,7 @@ function PlanList(props) {
             </Card.Body>
 
             <Card.Footer>
-              <Button>Buy Latte</Button>
+              <Button>여행 보기</Button>
             </Card.Footer>
           </Box>
         ))}
