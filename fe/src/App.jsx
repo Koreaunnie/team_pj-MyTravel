@@ -8,7 +8,6 @@ import MemberSignup from "./page/member/MemberSignup.jsx";
 import MemberInfo from "./page/member/MemberInfo.jsx";
 import MemberLogin from "./page/member/MemberLogin.jsx";
 import { MemberEdit } from "./page/member/MemberEdit.jsx";
-import TourList from "./page/tour/TourList.jsx";
 import { TourAdd } from "./page/tour/TourAdd.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
