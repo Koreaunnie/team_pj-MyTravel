@@ -4,6 +4,11 @@ import { RootLayout } from "./page/root/RootLayout.jsx";
 import { Index } from "./page/Index.jsx";
 import PlanAdd from "./page/plan/PlanAdd.jsx";
 import PlanList from "./page/plan/PlanList.jsx";
+import MemberList from "./page/member/MemberList.jsx";
+import MemberSignup from "./page/member/MemberSignup.jsx";
+import MemberInfo from "./page/member/MemberInfo.jsx";
+import MemberLogin from "./page/member/MemberLogin.jsx";
+import { MemberEdit } from "./page/member/MemberEdit.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -37,6 +42,11 @@ const router = createBrowserRouter([
         path: "plan/list",
         element: <PlanList />,
       },
+      { path: "member/signup", element: <MemberSignup /> },
+      { path: "member/login", element: <MemberLogin /> },
+      { path: "member/list", element: <MemberList /> },
+      { path: "member/:email", element: <MemberInfo /> },
+      { path: "member/edit/:email", element: <MemberEdit /> },
     ],
   },
 ]);

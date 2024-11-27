@@ -30,47 +30,47 @@ import java.security.interfaces.RSAPublicKey;
 @EnableMethodSecurity
 public class AppConfiguration {
 
-    @Value("classpath:secret/app.pub")
-    RSAPublicKey pub;
+  @Value("classpath:secret/app.pub")
+  RSAPublicKey pub;
 
-    @Value("classpath:secret/app.key")
-    RSAPrivateKey priv;
+  @Value("classpath:secret/app.key")
+  RSAPrivateKey priv;
 
-    @Value("${aws.access.key}")
-    String accessKey;
+  @Value("${aws.access.key}")
+  String accessKey;
 
-    @Value("${aws.secret.key}")
-    String secretKey;
+  @Value("${aws.secret.key}")
+  String secretKey;
 
-    @Bean
-    S3Client s3Client() {
-        AwsBasicCredentials credential = AwsBasicCredentials.create(accessKey, secretKey);
-        AwsCredentialsProvider credentialProvider = StaticCredentialsProvider.create(credential);
+  @Bean
+  S3Client s3Client() {
+    AwsBasicCredentials credential = AwsBasicCredentials.create(accessKey, secretKey);
+    AwsCredentialsProvider credentialProvider = StaticCredentialsProvider.create(credential);
 
-        S3Client s3 = S3Client.builder()
-                .region(Region.AP_NORTHEAST_2)
-                .credentialsProvider(credentialProvider)
-                .build();
+    S3Client s3 = S3Client.builder()
+            .region(Region.AP_NORTHEAST_2)
+            .credentialsProvider(credentialProvider)
+            .build();
 
-        return s3;
-    }
+    return s3;
+  }
 
-    @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(c -> c.disable());
-        http.oauth2ResourceServer(configurer -> configurer.jwt(Customizer.withDefaults()));
-        return http.build();
-    }
+  @Bean
+  SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http.csrf(c -> c.disable());
+    http.oauth2ResourceServer(configurer -> configurer.jwt(Customizer.withDefaults()));
+    return http.build();
+  }
 
-    @Bean
-    JwtDecoder jwtDecoder() {
-        return NimbusJwtDecoder.withPublicKey(pub).build();
-    }
+  @Bean
+  JwtDecoder jwtDecoder() {
+    return NimbusJwtDecoder.withPublicKey(pub).build();
+  }
 
-    @Bean
-    JwtEncoder jwtEncoder() {
-        JWK jwk = new RSAKey.Builder(pub).privateKey(priv).build();
-        JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
-        return new NimbusJwtEncoder(jwks);
-    }
+  @Bean
+  JwtEncoder jwtEncoder() {
+    JWK jwk = new RSAKey.Builder(pub).privateKey(priv).build();
+    JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
+    return new NimbusJwtEncoder(jwks);
+  }
 }
