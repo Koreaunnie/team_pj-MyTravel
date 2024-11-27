@@ -51,7 +51,7 @@ function TourView(props) {
 
   return (
     <Box>
-      <h1>Title</h1>
+      <h1>{tour.title}</h1>
       <Stack>
         <Field label={"상품"} readOnly>
           <Input value={tour.product} />
