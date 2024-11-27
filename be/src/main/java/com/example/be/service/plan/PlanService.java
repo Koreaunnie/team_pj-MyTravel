@@ -86,4 +86,7 @@ public class PlanService {
         return result;
     }
 
+    public void delete(int id) {
+        mapper.deleteById(id);
+    }
 }

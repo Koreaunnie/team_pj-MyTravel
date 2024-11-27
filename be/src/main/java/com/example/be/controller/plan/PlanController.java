@@ -38,4 +38,10 @@ public class PlanController {
         return service.update(plan);
     }
 
+    // 내 여행 삭제
+    @DeleteMapping("delete/{id}")
+    public void delete(@PathVariable int id) {
+        service.delete(id);
+    }
+
 }

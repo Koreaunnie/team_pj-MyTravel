@@ -79,4 +79,10 @@ public interface PlanMapper {
             WHERE id = #{id};
             """)
     int updatePlanFieldByPlanId(PlanField planField);
+
+    @Delete("""
+            DELETE FROM plan
+            WHERE id = #{id}
+            """)
+    int deleteById(int id);
 }
