@@ -77,15 +77,13 @@ public class PlanService {
         // 결과를 담을 Map 객체 생성
         Map<String, Object> result = new HashMap<>();
 
-        // 두 항목 모두 수정되었을 경우
-//        if (cntPlan == 1 && cntPlanField == 1) {
-//            result.put("success", true);
-//        } else {
-//            result.put("success", false);
-//        }
-
+        // 수정되었을 경우
+        if (cntPlan == 1) {
+            result.put("success", true);
+        } else {
+            result.put("success", false);
+        }
         return result;
     }
-
 
 }

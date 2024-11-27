@@ -71,6 +71,7 @@ function PlanEdit(props) {
         due: plan.due,
         planFieldList: planFields, // 필드 배열을 그대로 전달
       })
+      .then((res) => navigate(`/plan/view/${id}`))
       .then(() => alert("일정이 수정되었습니다."))
       .catch((error) => alert("수정에 실패했습니다."))
       .finally();
