@@ -20,7 +20,6 @@ public class PlanController {
     @PostMapping("add")
     public void add(Plan plan) {
         service.add(plan);
-        System.out.println(plan);
     }
 
     // 일정 목록

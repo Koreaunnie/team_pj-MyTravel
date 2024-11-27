@@ -13,8 +13,8 @@ public interface PlanMapper {
 
     @Insert("""
             INSERT INTO plan
-            (title, due, destination, date, schedule, location, time, memo)
-            VALUES (#{title}, #{due}, #{destination}, #{date}, #{schedule}, #{location}, #{time}, #{memo})
+            (title, destination, due, date, schedule, location, time, memo)
+            VALUES (#{title}, #{destination}, #{due},  #{date}, #{schedule}, #{location}, #{time}, #{memo})
             """)
     @Options(keyProperty = "id", useGeneratedKeys = true)
     int inset(Plan plan);
