@@ -3,6 +3,8 @@ import { Box, Input, Stack, Textarea } from "@chakra-ui/react";
 import { Button } from "../../components/ui/button.jsx";
 import axios from "axios";
 import { Field } from "../../components/ui/field.jsx";
+import { toaster } from "../../components/ui/toaster.jsx";
+import { useNavigate } from "react-router-dom";
 
 export function TourAdd() {
   const [title, setTitle] = useState("");
@@ -10,15 +12,34 @@ export function TourAdd() {
   const [price, setPrice] = useState("");
   const [content, setContent] = useState("");
   const [writer, setWriter] = useState("");
+  const navigate = useNavigate();
 
   const handleSaveClick = () => {
-    axios.post(`/api/tour/add`, {
-      title,
-      product,
-      price,
-      content,
-      writer,
-    });
+    axios
+      .post(`/api/tour/add`, {
+        title,
+        product,
+        price,
+        content,
+        writer,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        const message = data.message;
+        console.log(data);
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+        navigate(`/tour/view/${data.data.id}`);
+      })
+      .cath((e) => {
+        const message = e.response.data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+      });
   };
 
   return (

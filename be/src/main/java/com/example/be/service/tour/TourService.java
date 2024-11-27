@@ -14,11 +14,16 @@ import java.util.List;
 public class TourService {
     final TourMapper mapper;
 
-    public void add(Tour tour) {
-        mapper.insert(tour);
+    public boolean add(Tour tour) {
+        int cnt = mapper.insert(tour);
+        return cnt == 1;
     }
 
     public List<Tour> list() {
         return mapper.selectAll();
+    }
+
+    public Tour get(int id) {
+        return mapper.selectById(id);
     }
 }

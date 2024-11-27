@@ -8,20 +8,15 @@ function TourList() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios
-      .get(`/api/tour/list`)
-      .then((res) => {
-        console.log(res.data);
-        setTourList(res.data);
-      })
-      .catch((error) => console.log("failure", error));
+    axios.get(`/api/tour/list`).then((res) => {
+      setTourList(res.data);
+    });
   }, []);
 
   function handleRowClick(id) {
-    navigate(`/view/${id}`);
+    navigate(`/tour/view/${id}`);
   }
 
-  console.log(tourList);
   return (
     <Box>
       <h1>Tour 목록</h1>
