@@ -69,6 +69,7 @@ function TourView(props) {
           <Input value={tour.partner} />
         </Field>
         <Box>
+          <Button onClick={() => navigate(`/tour/update/${id}`)}>수정</Button>
           <DialogRoot>
             <DialogTrigger>
               <Button>삭제</Button>

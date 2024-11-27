@@ -11,6 +11,7 @@ import { MemberEdit } from "./page/member/MemberEdit.jsx";
 import { TourAdd } from "./page/tour/TourAdd.jsx";
 import TourList from "./page/tour/TourList.jsx";
 import TourView from "./page/tour/TourView.jsx";
+import TourUpdate from "./page/tour/TourUpdate.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
       {
         path: "tour/view/:id",
         element: <TourView />,
+      },
+      {
+        path: "tour/update/:id",
+        element: <TourUpdate />,
       },
       {
         path: "member/signup",

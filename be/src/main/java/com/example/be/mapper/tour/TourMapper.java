@@ -33,4 +33,15 @@ public interface TourMapper {
             WHERE id=#{id}
             """)
     int deleteById(int id);
+
+    @Update("""
+            UPDATE tour
+            SET title=#{title}, 
+                product=#{product}, 
+                price=#{price},
+                location=#{location}, 
+                content=#{content}
+            WHERE id=#{id}
+            """)
+    int update(Tour tour);
 }

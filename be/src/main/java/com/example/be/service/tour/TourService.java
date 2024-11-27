@@ -38,4 +38,9 @@ public class TourService {
         int cnt = mapper.deleteById(id);
         return cnt == 1;
     }
+
+    public boolean update(Tour tour) {
+        int cnt = mapper.update(tour);
+        return cnt==1;
+    }
 }
