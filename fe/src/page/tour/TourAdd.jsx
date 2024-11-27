@@ -10,8 +10,9 @@ export function TourAdd() {
   const [title, setTitle] = useState("");
   const [product, setProduct] = useState("");
   const [price, setPrice] = useState("");
+  const [location, setLocation] = useState("")
   const [content, setContent] = useState("");
-  const [writer, setWriter] = useState("");
+  const [partner, setPartner] = useState("");
   const navigate = useNavigate();
 
   const handleSaveClick = () => {
@@ -20,8 +21,9 @@ export function TourAdd() {
         title,
         product,
         price,
+        location,
         content,
-        writer,
+        partner,
       })
       .then((res) => {
         console.log(res.data); // Inspect the response structure
@@ -54,14 +56,17 @@ export function TourAdd() {
         <Field label={"가격"}>
           <Input value={price} onChange={(e) => setPrice(e.target.value)} />
         </Field>
+        <Field label={"위치"}>
+          <Input value={location} onChange={(e) => setLocation(e.target.value)} />
+        </Field>
         <Field label={"본문"}>
           <Textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
           />
         </Field>
-        <Field label={"작성자"}>
-          <Input value={writer} onChange={(e) => setWriter(e.target.value)} />
+        <Field label={"파트너사"}>
+          <Input value={partner} onChange={(e) => setPartner(e.target.value)} />
         </Field>
         <Box>
           <Button onClick={handleSaveClick}>저장</Button>

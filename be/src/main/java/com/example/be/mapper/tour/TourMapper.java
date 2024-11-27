@@ -10,14 +10,14 @@ public interface TourMapper {
 
     @Insert("""
             INSERT INTO tour
-            (title, product, price, content, writer)
-            VALUES (#{title}, #{product}, #{price}, #{content}, #{writer})
+            (title, product, price, location, content, partner)
+            VALUES (#{title}, #{product}, #{price}, #{location}, #{content}, #{partner})
             """)
     @Options(keyProperty = "id", useGeneratedKeys = true)
     int insert(Tour tour);
 
     @Select("""
-            SELECT id, title, product, price FROM tour
+            SELECT id, title, product, price, location FROM tour
             ORDER BY inserted DESC""")
     List<Tour> selectAll();
 

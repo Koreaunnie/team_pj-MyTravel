@@ -29,6 +29,7 @@ function TourList() {
             <Table.Row>
               <Table.ColumnHeader>제목</Table.ColumnHeader>
               <Table.ColumnHeader>제품</Table.ColumnHeader>
+              <Table.ColumnHeader>위치</Table.ColumnHeader>
               <Table.ColumnHeader>가격</Table.ColumnHeader>
             </Table.Row>
           </Table.Header>
@@ -36,6 +37,7 @@ function TourList() {
             {tourList.map((tour) => (
               <Table.Row onClick={() => handleRowClick(tour.id)} key={tour.id}>
                 <Table.Cell>{tour.title}</Table.Cell>
+                <Table.Cell>{tour.location}</Table.Cell>
                 <Table.Cell>{tour.product}</Table.Cell>
                 <Table.Cell>{tour.price}</Table.Cell>
               </Table.Row>

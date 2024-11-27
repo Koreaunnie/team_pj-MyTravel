@@ -11,8 +11,9 @@ public class Tour {
     private String title;
     private String product;
     private Integer price;
+    private String location;
     private String content;
-    private String writer;
+    private String partner;
     private LocalDateTime inserted;
     private List<String> fileSrc;
 }

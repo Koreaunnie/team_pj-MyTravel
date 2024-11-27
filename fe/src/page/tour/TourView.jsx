@@ -56,6 +56,9 @@ function TourView(props) {
         <Field label={"상품"} readOnly>
           <Input value={tour.product} />
         </Field>
+        <Field label={"위치"} readOnly>
+          <Input value={tour.location} />
+        </Field>
         <Field label={"가격"} readOnly>
           <Input value={tour.price} />
         </Field>
@@ -63,7 +66,7 @@ function TourView(props) {
           <Textarea value={tour.content} />
         </Field>
         <Field label={"제공사"} readOnly>
-          <Input value={tour.writer} />
+          <Input value={tour.partner} />
         </Field>
         <Box>
           <DialogRoot>
