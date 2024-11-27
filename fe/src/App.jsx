@@ -4,6 +4,7 @@ import { RootLayout } from "./page/root/RootLayout.jsx";
 import { Index } from "./page/Index.jsx";
 import PlanAdd from "./page/plan/PlanAdd.jsx";
 import PlanList from "./page/plan/PlanList.jsx";
+import PlanView from "./page/plan/PlanView.jsx";
 import MemberList from "./page/member/MemberList.jsx";
 import MemberSignup from "./page/member/MemberSignup.jsx";
 import MemberInfo from "./page/member/MemberInfo.jsx";
@@ -34,6 +35,7 @@ const router = createBrowserRouter([
         index: true,
         element: <Index />,
       },
+      // 내 여행
       {
         path: "plan/add",
         element: <PlanAdd />,
@@ -43,13 +45,24 @@ const router = createBrowserRouter([
         element: <PlanList />,
       },
       {
+        path: "plan/list",
+        element: <PlanList />,
+      },
+      {
+        path: "plan/view/:id",
+        element: <PlanView />,
+      },
+      // 회원 가입
+      {
         path: "member/signup",
         element: <MemberSignup />,
       },
+      // 로그인
       {
         path: "member/login",
         element: <MemberLogin />,
       },
+      // 회원 관리
       {
         path: "member/list",
         element: <MemberList />,

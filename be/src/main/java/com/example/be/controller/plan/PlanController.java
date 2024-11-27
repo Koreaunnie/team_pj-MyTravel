@@ -13,15 +13,23 @@ import java.util.List;
 public class PlanController {
     final PlanService service;
 
-    // 일정 추가
+    // 내 여행 추가
     @PostMapping("add")
     public void add(@RequestBody Plan plan) {
         service.add(plan);
     }
 
-    // 일정 목록
+    // 내 여행 목록
     @GetMapping("list")
     public List<Plan> list() {
         return service.list();
     }
+
+    // 내 여행 세부사항
+    @GetMapping("view/{id}")
+    public List<Plan> view(@PathVariable int id) {
+        return service.view(id);
+    }
+
+
 }

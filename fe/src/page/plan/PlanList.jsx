@@ -36,7 +36,7 @@ function PlanList(props) {
             <Card.Footer>
               <Button
                 onClick={() => {
-                  navigate(`/plan/view`);
+                  navigate(`/plan/view/${plan.id}`);
                 }}
               >
                 여행 보기

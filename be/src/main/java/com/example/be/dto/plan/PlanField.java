@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class PlanField {
-    private Integer id;
     private Integer planId;
+    private Integer id;
     private String date;
     private String schedule;
     private String place;

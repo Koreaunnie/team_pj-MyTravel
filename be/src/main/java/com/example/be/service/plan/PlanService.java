@@ -15,7 +15,7 @@ import java.util.List;
 public class PlanService {
     final PlanMapper mapper;
 
-    // 일정 추가
+    // 내 여행 추가
     public void add(Plan plan) {
         // 1. Plan의 기본 정보 저장 (ID 생성)
         mapper.insertPlan(plan);
@@ -30,8 +30,14 @@ public class PlanService {
         }
     }
 
-    // 일정 목록
+    // 내 여행 목록
     public List<Plan> list() {
         return mapper.selectPlan();
+    }
+
+    // 내 여행 세부사항
+    public List<Plan> view(int id) {
+        List<Plan> plan = mapper.selectPlanById(id);
+        return plan;
     }
 }

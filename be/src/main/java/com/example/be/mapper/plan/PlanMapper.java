@@ -12,6 +12,7 @@ import java.util.List;
 @Mapper
 public interface PlanMapper {
 
+    // 내 여행 추가
     // 1. plan header 항목 추가
     @Insert("""
             INSERT INTO plan
@@ -32,7 +33,7 @@ public interface PlanMapper {
     @Options(keyProperty = "id", useGeneratedKeys = true)
     int insertPlanField(PlanField field);
 
-    // 1. plan header 조회
+    // 내 여행 목록
     @Select("""
             SELECT * 
             FROM plan
@@ -40,7 +41,13 @@ public interface PlanMapper {
             """)
     List<Plan> selectPlan();
 
-    // 1. plan body 조회
+    // 내 여행 세부사항
+    @Select("""
+            SELECT *
+            FROM plan
+            WHERE id = #{id};
+            """)
+    List<Plan> selectPlanById(int id);
 
 
 }
