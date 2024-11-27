@@ -1,0 +1,118 @@
+package com.example.be.controller.member;
+
+import com.example.be.dto.member.Member;
+import com.example.be.dto.member.MemberEdit;
+import com.example.be.service.member.MemberService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/member")
+@RequiredArgsConstructor
+public class MemberController {
+  final MemberService service;
+
+  @PostMapping("login")
+  public ResponseEntity<Map<String, Object>> login(@RequestBody Member member) {
+    String token = service.token(member);
+
+    if (token == null) {
+      //로그인 실패
+      return ResponseEntity.status(401).body(Map.of("message",
+              Map.of("type", "warning", "text", "정보가 일치하지 않습니다.")));
+    } else {
+      //로그인 성공
+      return ResponseEntity.ok(Map.of("token", token, "message",
+              Map.of("type", "success", "text", "로그인 되었습니다.")));
+    }
+  }
+
+  @PutMapping("update")
+  public ResponseEntity<Map<String, Object>> update(@RequestBody MemberEdit member) {
+
+    try {
+      if (service.update(member)) {
+        return ResponseEntity.ok(Map.of("message",
+                Map.of("type", "success", "text", "수정 완료")));
+      } else {
+        return ResponseEntity.badRequest().body(Map.of("message",
+                Map.of("type", "warning", "text", "수정 실패")));
+      }
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body(Map.of("message",
+              Map.of("type", "warning", "text", "수정 실패")));
+    }
+  }
+
+  @DeleteMapping("remove")
+  public ResponseEntity<Map<String, Object>> remove(@RequestBody Member member) {
+    if (service.remove(member)) {
+      return ResponseEntity.ok(Map.of("message",
+              Map.of("type", "success", "text", "탈퇴 완료")));
+    } else {
+      return ResponseEntity.badRequest().body(Map.of("message",
+              Map.of("type", "warning", "text", "비밀번호가 일치하지 않습니다.")));
+    }
+  }
+
+  @GetMapping("{email}")
+  public Member getMember(@PathVariable String email) {
+    return service.get(email);
+  }
+
+  @GetMapping("list")
+  public List<Member> list() {
+    return service.list();
+  }
+
+  @GetMapping(value = "check", params = "nickname")
+  public ResponseEntity<Map<String, Object>> checkNickname(@RequestParam String nickname) {
+    if (service.checkNickname(nickname)) {
+      //중복
+      return ResponseEntity.ok().body(Map.of("message",
+              Map.of("type", "warning", "text", "이미 존재하는 닉네임입니다."),
+              "available", false));
+    } else {
+      //중복 아님
+      return ResponseEntity.ok().body(Map.of("message",
+              Map.of("type", "info", "text", "사용 가능한 닉네임입니다."),
+              "available", true));
+    }
+  }
+
+  @GetMapping(value = "check", params = "email")
+  public ResponseEntity<Map<String, Object>> checkEmail(@RequestParam String email) {
+    if (service.checkEmail(email)) {
+      //중복
+      return ResponseEntity.ok().body(Map.of("message",
+              Map.of("type", "warning", "text", "이미 가입된 이메일입니다."),
+              "available", false));
+    } else {
+      //중복 아님
+      return ResponseEntity.ok().body(Map.of("message",
+              Map.of("type", "info", "text", "사용 가능한 아이디입니다."),
+              "available", true));
+    }
+  }
+
+  @PostMapping("signup")
+  public ResponseEntity<Map<String, Object>> signup(@RequestBody Member member) {
+    try {
+      if (service.add(member)) {
+        return ResponseEntity.ok().body(Map.of("message",
+                Map.of("type", "success", "text", "회원 가입 완료")));
+      } else {
+        return ResponseEntity.internalServerError().body(Map.of("message",
+                Map.of("type", "error", "text", "회원 가입 중 문제가 발생하였습니다.")));
+      }
+    } catch (DuplicateKeyException e) {
+      return ResponseEntity.internalServerError().body(Map.of("message",
+              Map.of("type", "error", "text", "이미 존재하는 이메일 혹은 닉네임입니다.")));
+    }
+  }
+}
