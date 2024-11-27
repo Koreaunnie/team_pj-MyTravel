@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Button, Flex, Input, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 
 function TourList(props) {
   const [search, setSearch] = useState("");
@@ -24,7 +24,7 @@ function TourList(props) {
     <div>
       {/* 검색 기능 추가 */}
       <Flex direction="column" align="center" mb={4}>
-        <Input
+        <Input1
           placeholder="지역을 검색하세요..."
           value={search}
           onChange={handleSearchChange}

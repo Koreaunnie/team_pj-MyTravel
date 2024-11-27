@@ -36,7 +36,7 @@ function Navbar(props) {
         bgColor="#f9f9f9"
       >
         <NavbarItem onClick={() => navigate("/")}>HOME</NavbarItem>
-        <NavbarItem onClick={() => navigate("/plan/add")}>내 여행</NavbarItem>
+        <NavbarItem onClick={() => navigate("/plan/add")}>내 여행</NavbarItem>1
         <NavbarItem onClick={() => navigate("/")}>좋아요</NavbarItem>
         <NavbarItem onClick={() => navigate("/")}>장바구니</NavbarItem>
         <NavbarItem onClick={() => navigate("/")}>알림</NavbarItem>
