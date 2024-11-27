@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Table } from "@chakra-ui/react";
+import { Box, SimpleGrid, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -24,26 +24,28 @@ function TourList() {
       {tourList.length === 0 ? (
         <p>찾으시는 상품이 존재하지 않습니다.</p>
       ) : (
-        <Table.Root interactive>
-          <Table.Header>
-            <Table.Row>
-              <Table.ColumnHeader>제목</Table.ColumnHeader>
-              <Table.ColumnHeader>제품</Table.ColumnHeader>
-              <Table.ColumnHeader>위치</Table.ColumnHeader>
-              <Table.ColumnHeader>가격</Table.ColumnHeader>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {tourList.map((tour) => (
-              <Table.Row onClick={() => handleRowClick(tour.id)} key={tour.id}>
-                <Table.Cell>{tour.title}</Table.Cell>
-                <Table.Cell>{tour.location}</Table.Cell>
-                <Table.Cell>{tour.product}</Table.Cell>
-                <Table.Cell>{tour.price}</Table.Cell>
-              </Table.Row>
-            ))}
-          </Table.Body>
-        </Table.Root>
+        <SimpleGrid
+          columns={{ base: 2, md: 4, lg: 6, xl: 7, "2xl": 8 }}
+          spacing={6}
+        >
+          {tourList.map((tour) => (
+            <Box
+              key={tour.id}
+              borderWidth={"1px"}
+              borderRadius={"1g"}
+              overflow={"hidden"}
+              p={4}
+              m={1}
+              _hover={{ boxShadow: "1g" }}
+              onClick={() => handleRowClick(tour.id)}
+            >
+              <Text>{tour.title}</Text>
+              <Text>{tour.location}</Text>
+              <Text>{tour.product}</Text>
+              <Text>{tour.price}</Text>
+            </Box>
+          ))}
+        </SimpleGrid>
       )}
     </Box>
   );
