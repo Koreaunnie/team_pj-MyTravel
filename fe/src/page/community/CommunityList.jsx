@@ -1,23 +1,28 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Table } from "@chakra-ui/react";
 import { Button } from "../../components/ui/button.jsx";
 import axios from "axios";
-import { useParams } from "react-router-dom";
 
 function CommunityList(props) {
-  const number = useParams();
+  const [community, setCommunity] = useState([]);
+  // const number = useParams();
+  // const [communityList, setCommunityList] = useState([]);
 
   useEffect(() => {
-    axios.get(`/community/list?page=${number}`);
+    axios.get(`/api/community/list`).then((res) => {
+      setCommunity(res.data);
+    });
   }, []);
 
-  const handleWriteClick = () => {};
+  const handleWriteClick = () => {
+    axios.post(`/api/community/write`);
+  };
 
   return (
     <div>
       {/*  NavBar*/}
       <Box>
-        <Table>
+        <Table.Root>
           <Table.Header>
             <Table.Row>
               <Table.ColumnHeader>제목</Table.ColumnHeader>
@@ -26,13 +31,16 @@ function CommunityList(props) {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            <Table.Row>
-              <Table.Cell>${community.title}</Table.Cell>
-              <Table.Cell>${community.writer}</Table.Cell>
-              <Table.Cell>${community.creationDate}</Table.Cell>
-            </Table.Row>
+            {community.map((c) => (
+              <Table.Row>
+                <Table.Cell>{c.id}</Table.Cell>
+                <Table.Cell>{c.title}</Table.Cell>
+                <Table.Cell>{c.writer}</Table.Cell>
+                <Table.Cell>{c.inserted}</Table.Cell>
+              </Table.Row>
+            ))}
           </Table.Body>
-        </Table>
+        </Table.Root>
       </Box>
       <Box>
         <Button onClick={handleWriteClick}>글 쓰기</Button>

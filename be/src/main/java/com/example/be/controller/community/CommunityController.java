@@ -1,9 +1,13 @@
 package com.example.be.controller.community;
 
-import com.example.be.dto.Community;
+import com.example.be.dto.community.Community;
+import com.example.be.dto.member.Member;
 import com.example.be.service.community.CommunityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/community")
@@ -13,12 +17,15 @@ public class CommunityController {
     final CommunityService service;
 
     @GetMapping("list")
-    public void list(@RequestParam(value = "page", defaultValue = "1") Integer page) {
-        service.list(page);
+    public List<Map<String, Object>> list(@RequestParam(value = "page", defaultValue = "1") Integer page) {
+
+        return service.list(page);
     }
 
+
     @PostMapping("write")
-    public void write(Community community) {
+    public void write(Community community, Member member) {
+        community.setWriter(member.getNickname());
         service.write(community);
     }
 

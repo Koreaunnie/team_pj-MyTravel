@@ -1,17 +1,20 @@
 package com.example.be.mapper.community;
 
-import com.example.be.dto.Community;
+import com.example.be.dto.community.Community;
 import org.apache.ibatis.annotations.*;
+
+import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface CommunityMapper {
 
     @Select("""
-            SELECT title, writer, inserted
+            SELECT id, title, writer, inserted
             FROM community
             ORDER BY id DESC
             """)
-    int listUp(Integer page);
+    List<Map<String, Object>> listUp(Integer page);
 
     @Insert("""
             INSERT INTO community (title, content, writer)

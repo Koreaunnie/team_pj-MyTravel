@@ -14,7 +14,7 @@ function CommunityWrite(props) {
   const handleSaveClick = () => {
     axios
       .post(`/api/community/write`, { title, content })
-      .then(navigate(`/list`));
+      .then(navigate(`/community/list`));
   };
 
   return (
