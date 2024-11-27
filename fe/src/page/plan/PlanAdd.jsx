@@ -5,6 +5,7 @@ import "./PlanAdd.css";
 
 function PlanAdd(props) {
   const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [destination, setDestination] = useState("");
   const [due, setDue] = useState("");
 
@@ -50,6 +51,7 @@ function PlanAdd(props) {
     axios
       .post("/api/plan/add", {
         title,
+        description,
         destination,
         due,
         planFieldList: fields, // 필드 배열(+버튼으로 추가한 항목)을 그대로 전달
@@ -59,6 +61,7 @@ function PlanAdd(props) {
       .finally(() => {
         // 요청 완료 후 처리
         setTitle("");
+        setDescription("");
         setDestination("");
         setDue("");
         setFields([
@@ -79,14 +82,29 @@ function PlanAdd(props) {
 
       <form className={"plan-container"}>
         <fieldset className={"plan-header"}>
-          <label htmlFor="title">여행명</label>
-          <input
-            type="text"
-            id="name"
-            size="50"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
+          <ul className={"title"}>
+            <li>
+              <label htmlFor="title">여행명</label>
+              <input
+                type="text"
+                id="name"
+                size="20"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </li>
+
+            <li>
+              <label htmlFor="description">설명</label>
+              <input
+                type="text"
+                id="description"
+                size="50"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </li>
+          </ul>
 
           <ul className={"sub-title"}>
             <li>

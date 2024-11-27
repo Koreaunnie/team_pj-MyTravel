@@ -15,9 +15,9 @@ public interface PlanMapper {
     // 1. plan header 항목 추가
     @Insert("""
             INSERT INTO plan
-                (inserted, title, destination, due)
+                (inserted, title, description, destination, due)
             VALUES 
-                (NOW(), #{title}, #{destination}, #{due})
+                (NOW(), #{title}, #{description}, #{destination}, #{due})
             """)
     @Options(keyProperty = "id", useGeneratedKeys = true)
     int insertPlan(Plan plan);

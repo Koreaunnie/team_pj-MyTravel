@@ -11,6 +11,7 @@ public class Plan {
     private LocalDateTime inserted;
 
     private String title;
+    private String description;
     private String destination;
     private String due;
 
