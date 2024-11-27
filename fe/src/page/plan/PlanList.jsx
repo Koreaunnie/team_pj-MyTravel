@@ -22,28 +22,30 @@ function PlanList(props) {
       </button>
 
       {planList.map((plan) => (
-        <Card.Root flexDirection="row" overflow="hidden" maxW="xl" my={5}>
-          <Box>
-            <Card.Body>
-              <Card.Title mb="5">{plan.title}</Card.Title>
-              <Card.Description>{plan.description}</Card.Description>
-              <HStack mt="5">
-                <Badge>{plan.destination}</Badge>
-                <Badge>{plan.due}</Badge>
-              </HStack>
-            </Card.Body>
+        <div key={plan.id}>
+          <Card.Root flexDirection="row" overflow="hidden" maxW="xl" my={5}>
+            <Box>
+              <Card.Body>
+                <Card.Title mb="5">{plan.title}</Card.Title>
+                <Card.Description>{plan.description}</Card.Description>
+                <HStack mt="5">
+                  <Badge>{plan.destination}</Badge>
+                  <Badge>{plan.due}</Badge>
+                </HStack>
+              </Card.Body>
 
-            <Card.Footer>
-              <Button
-                onClick={() => {
-                  navigate(`/plan/view/${plan.id}`);
-                }}
-              >
-                여행 보기
-              </Button>
-            </Card.Footer>
-          </Box>
-        </Card.Root>
+              <Card.Footer>
+                <Button
+                  onClick={() => {
+                    navigate(`/plan/view/${plan.id}`);
+                  }}
+                >
+                  여행 보기
+                </Button>
+              </Card.Footer>
+            </Box>
+          </Card.Root>
+        </div>
       ))}
     </div>
   );
