@@ -18,7 +18,7 @@ public interface TourMapper {
     void insert(Tour tour);
 
     @Select("""
-            SELECT id, title, product, price, writer FROM tour
+            SELECT title, product, price FROM tour
             ORDER BY inserted DESC""")
     List<Tour> selectAll();
 }

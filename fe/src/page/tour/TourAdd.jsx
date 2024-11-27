@@ -29,10 +29,7 @@ export function TourAdd() {
           <Input value={title} onChange={(e) => setTitle(e.target.value)} />
         </Field>
         <Field label={"제품"}>
-          <Input
-            defaultvalue={product}
-            onChange={(e) => setProduct(e.target.value)}
-          />
+          <Input value={product} onChange={(e) => setProduct(e.target.value)} />
         </Field>
         <Field label={"가격"}>
           <Input value={price} onChange={(e) => setPrice(e.target.value)} />
