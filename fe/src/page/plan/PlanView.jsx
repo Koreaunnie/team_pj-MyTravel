@@ -10,9 +10,9 @@ function PlanView(props) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`api/plan/view/${id}`).then((res) => {
+    axios.get(`/api/plan/view/${id}`).then((res) => {
       // plan 객체
-      setPlan(res.data);
+      setPlan(res.data.plan);
       // planFields 배열 (응답이 없으면 빈 배열)
       setPlanFields(res.data.planFields || []);
     });

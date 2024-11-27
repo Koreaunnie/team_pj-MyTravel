@@ -3,8 +3,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { RootLayout } from "./page/root/RootLayout.jsx";
 import { Index } from "./page/Index.jsx";
 import PlanAdd from "./page/plan/PlanAdd.jsx";
-import PlanList from "./page/plan/PlanList.jsx";
-import PlanView from "./page/plan/PlanView.jsx";
 import MemberList from "./page/member/MemberList.jsx";
 import MemberSignup from "./page/member/MemberSignup.jsx";
 import MemberInfo from "./page/member/MemberInfo.jsx";
@@ -13,6 +11,8 @@ import { MemberEdit } from "./page/member/MemberEdit.jsx";
 import { TourAdd } from "./page/tour/TourAdd.jsx";
 import TourList from "./page/tour/TourList.jsx";
 import TourView from "./page/tour/TourView.jsx";
+import PlanList from "./page/plan/PlanList.jsx";
+import PlanView from "./page/plan/PlanView.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -42,6 +42,14 @@ const router = createBrowserRouter([
       {
         path: "plan/add",
         element: <PlanAdd />,
+      },
+      {
+        path: "plan/list",
+        element: <PlanList />,
+      },
+      {
+        path: "plan/view/:id",
+        element: <PlanView />,
       },
       // 여행 상품
       {
