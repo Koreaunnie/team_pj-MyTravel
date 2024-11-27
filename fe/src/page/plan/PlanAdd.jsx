@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { Button } from "../../components/ui/button.jsx";
 import axios from "axios";
 import "./PlanAdd.css";
+import { useNavigate } from "react-router-dom";
 
 function PlanAdd(props) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [destination, setDestination] = useState("");
   const [due, setDue] = useState("");
+  const navigate = useNavigate();
 
   // 상태 정의: 추가할 div들을 관리
   const [fields, setFields] = useState([
@@ -78,6 +80,10 @@ function PlanAdd(props) {
 
   return (
     <div className={"body"}>
+      <button className={"btn"} onClick={() => navigate(`/plan/list`)}>
+        목록
+      </button>
+
       <h1>일정 등록하기</h1>
 
       <form className={"plan-container"}>
