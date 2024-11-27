@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Badge, Box, Card, HStack } from "@chakra-ui/react";
 import { Button } from "../../components/ui/button.jsx";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function PlanList(props) {
   const [planList, setPlanList] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -15,55 +17,34 @@ function PlanList(props) {
 
   return (
     <div className={"body"}>
-      <table className="table-list">
-        <thead>
-          <tr>
-            <th className="th-id">#</th>
-            <th className="th-title">여행명</th>
-            <th className="th-destination">여행지</th>
-            <th className="th-date">여행일</th>
-            <th className="th-inserted">작성일</th>
-          </tr>
-        </thead>
+      <button className={"btn"} onClick={() => navigate(`/plan/add`)}>
+        추가
+      </button>
 
-        <tbody>
-          <tr>
-            <td>s</td>
-            <td>s</td>
-            <td>s</td>
-            <th>작성일</th>
-            <td>s</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <Card.Root flexDirection="row" overflow="hidden" maxW="xl">
-        {/*<Image*/}
-        {/*  objectFit="cover"*/}
-        {/*  maxW="200px"*/}
-        {/*  src=""*/}
-        {/*  alt="Caffe Latte"*/}
-        {/*/>*/}
-        {planList.map((plan) => (
+      {planList.map((plan) => (
+        <Card.Root flexDirection="row" overflow="hidden" maxW="xl" my={5}>
           <Box>
             <Card.Body>
-              <Card.Title mb="2">{plan.title}</Card.Title>
-              <Card.Description>
-                Caffè latte is a coffee beverage of Italian origin made with
-                espresso and steamed milk.
-              </Card.Description>
-              <HStack mt="4">
-                <Badge>{plan.inserted}</Badge>
-                <Badge>Caffeine</Badge>
+              <Card.Title mb="5">{plan.title}</Card.Title>
+              <Card.Description>{plan.description}</Card.Description>
+              <HStack mt="5">
+                <Badge>{plan.destination}</Badge>
+                <Badge>{plan.due}</Badge>
               </HStack>
             </Card.Body>
 
             <Card.Footer>
-              <Button>여행 보기</Button>
+              <Button
+                onClick={() => {
+                  navigate(``);
+                }}
+              >
+                여행 보기
+              </Button>
             </Card.Footer>
           </Box>
-        ))}
-      </Card.Root>
+        </Card.Root>
+      ))}
     </div>
   );
 }
