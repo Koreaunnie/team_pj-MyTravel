@@ -1,7 +1,6 @@
 package com.example.be.controller.plan;
 
 import com.example.be.dto.plan.Plan;
-import com.example.be.dto.plan.PlanField;
 import com.example.be.service.plan.PlanService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -35,8 +34,8 @@ public class PlanController {
 
     // 내 여행 수정
     @PutMapping("update")
-    public Map<String, Object> update(Plan plan, PlanField planField) {
-        return service.update(plan, planField);
+    public Map<String, Object> update(@RequestBody Plan plan) {
+        return service.update(plan);
     }
 
 }

@@ -64,13 +64,12 @@ function PlanEdit(props) {
   function handleSaveClick() {
     axios
       .put("/api/plan/update", {
-        plan: {
-          title: plan.title,
-          description: plan.description,
-          destination: plan.destination,
-          due: plan.due,
-        },
-        planField: planFields, // 필드 배열을 그대로 전달
+        id: id,
+        title: plan.title,
+        description: plan.description,
+        destination: plan.destination,
+        due: plan.due,
+        planFieldList: planFields, // 필드 배열을 그대로 전달
       })
       .then(() => alert("일정이 수정되었습니다."))
       .catch((error) => alert("수정에 실패했습니다."))

@@ -65,21 +65,24 @@ public class PlanService {
     }
 
     // 내 여행 수정
-    public Map<String, Object> update(Plan plan, PlanField planField) {
+    public Map<String, Object> update(Plan plan) {
+        System.out.println(plan);
         // Plan 객체 수정
         int cntPlan = mapper.updatePlanById(plan);
         // 해당 Plan 에 대한 PlanField 목록 수정
-        int cntPlanField = mapper.updatePlanFieldByPlanId(planField);
+        for (PlanField field : plan.getPlanFieldList()) {
+            mapper.updatePlanFieldByPlanId(field);
+        }
 
         // 결과를 담을 Map 객체 생성
         Map<String, Object> result = new HashMap<>();
 
         // 두 항목 모두 수정되었을 경우
-        if (cntPlan == 1 && cntPlanField == 1) {
-            result.put("success", true);
-        } else {
-            result.put("success", false);
-        }
+//        if (cntPlan == 1 && cntPlanField == 1) {
+//            result.put("success", true);
+//        } else {
+//            result.put("success", false);
+//        }
 
         return result;
     }

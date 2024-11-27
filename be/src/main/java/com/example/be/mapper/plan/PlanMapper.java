@@ -76,7 +76,7 @@ public interface PlanMapper {
                 schedule=#{schedule}, 
                 place=#{place}, 
                 memo=#{memo}
-            WHERE plan_id = #{id};
+            WHERE id = #{id};
             """)
     int updatePlanFieldByPlanId(PlanField planField);
 }
