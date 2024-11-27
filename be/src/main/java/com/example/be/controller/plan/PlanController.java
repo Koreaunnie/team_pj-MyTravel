@@ -34,8 +34,8 @@ public class PlanController {
     }
 
     // 내 여행 수정
-    @PostMapping("update")
-    public Map<String, Object> edit(Plan plan, PlanField planField) {
+    @PutMapping("update")
+    public Map<String, Object> update(Plan plan, PlanField planField) {
         return service.update(plan, planField);
     }
 

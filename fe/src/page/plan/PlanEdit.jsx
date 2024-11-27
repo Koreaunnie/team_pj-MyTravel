@@ -63,33 +63,18 @@ function PlanEdit(props) {
   // 저장 폼 제출 처리 함수
   function handleSaveClick() {
     axios
-      .post("/api/plan/update", {
-        title: plan.title,
-        description: plan.description,
-        destination: plan.destination,
-        due: plan.due,
-        planFieldList: planFields, // 필드 배열을 그대로 전달
+      .put("/api/plan/update", {
+        plan: {
+          title: plan.title,
+          description: plan.description,
+          destination: plan.destination,
+          due: plan.due,
+        },
+        planField: planFields, // 필드 배열을 그대로 전달
       })
       .then(() => alert("일정이 수정되었습니다."))
       .catch((error) => alert("수정에 실패했습니다."))
-      .finally(() => {
-        // 요청 완료 후 처리
-        setPlan({
-          title: "",
-          description: "",
-          destination: "",
-          due: "",
-        });
-        setPlanFields([
-          {
-            date: "",
-            time: "",
-            schedule: "",
-            place: "",
-            memo: "",
-          },
-        ]);
-      });
+      .finally();
   }
 
   return (
@@ -98,7 +83,7 @@ function PlanEdit(props) {
         목록
       </button>
 
-      <h1>일정 수정하기</h1>
+      <h1>일정 수정</h1>
 
       <form className={"plan-container"}>
         <fieldset className={"plan-header"}>

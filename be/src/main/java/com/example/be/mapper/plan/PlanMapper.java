@@ -66,7 +66,7 @@ public interface PlanMapper {
                 updated=NOW()
             WHERE id = #{id};
             """)
-    Plan updatePlanById(Plan plan);
+    int updatePlanById(Plan plan);
 
     // 2. PlanField
     @Update("""
@@ -78,5 +78,5 @@ public interface PlanMapper {
                 memo=#{memo}
             WHERE plan_id = #{id};
             """)
-    PlanField updatePlanFieldByPlanId(PlanField planField);
+    int updatePlanFieldByPlanId(PlanField planField);
 }
