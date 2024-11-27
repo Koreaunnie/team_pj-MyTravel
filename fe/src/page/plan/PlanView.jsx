@@ -25,7 +25,10 @@ function PlanView(props) {
   const handleDeleteButton = () => {
     axios
       .delete(`/api/plan/delete/${id}`)
-      .then((res) => navigate(`/plan/list`))
+      .then((res) => {
+        navigate(`/plan/list`);
+        alert("일정이 삭제되었습니다.");
+      })
       .catch()
       .finally();
   };
