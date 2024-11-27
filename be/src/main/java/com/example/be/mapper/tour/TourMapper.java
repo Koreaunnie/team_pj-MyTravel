@@ -1,10 +1,7 @@
 package com.example.be.mapper.tour;
 
 import com.example.be.dto.tour.Tour;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -30,4 +27,10 @@ public interface TourMapper {
             WHERE id=#{id}
             """)
     Tour selectById(int id);
+
+    @Delete("""
+            DELETE FROM tour
+            WHERE id=#{id}
+            """)
+    int deleteById(int id);
 }

@@ -15,6 +15,17 @@ import java.util.Map;
 public class TourController {
     final TourService service;
 
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<Map<String, Object>> delete(@PathVariable int id) {
+        if (service.delete(id)) {
+            return ResponseEntity.ok().body(Map.of("msg",
+                    Map.of("type", "success", "text", "상품 삭제")));
+        } else {
+            return ResponseEntity.ok().body(Map.of("msg",
+                    Map.of("type", "error", "text", "상품 삭제 실패")));
+        }
+    }
+
     @GetMapping("view/{id}")
     public Tour view(@PathVariable int id) {
         return service.get(id);
@@ -27,14 +38,21 @@ public class TourController {
 
     @PostMapping("add")
     public ResponseEntity<Map<String, Object>> add(@RequestBody Tour tour) {
-        if (service.add(tour)) {
-            return ResponseEntity.ok().body(Map.of("message",
-                    Map.of("type", "success", "text", "상품이 등록되었습니다."),
-                    "data", tour));
+
+        if (service.validate(tour)) {
+            if (service.add(tour)) {
+                return ResponseEntity.ok().body(Map.of("message",
+                        Map.of("type", "success", "text", "상품이 등록되었습니다."),
+                        "data", tour));
+            } else {
+                return ResponseEntity.internalServerError().body(Map.of("message",
+                        Map.of("type", "warning", "text", "상품을 등록하지 못했습니다.")));
+            }
         } else {
-            return ResponseEntity.internalServerError().body(Map.of("message",
-                    Map.of("type", "warning", "text", "상품을 등록하지 못했습니다.")));
+            return ResponseEntity.badRequest().body(Map.of("message",
+                    Map.of("type", "warning", "text", "제목이나 본문이 비어있을 수 없습니다.")));
         }
     }
+
 
 }

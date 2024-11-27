@@ -26,4 +26,16 @@ public class TourService {
     public Tour get(int id) {
         return mapper.selectById(id);
     }
+
+    public boolean validate(Tour tour) {
+        boolean title = tour.getTitle().trim().length() > 0;
+        boolean product = tour.getProduct().trim().length() > 0;
+        boolean price = tour.getPrice() != 0 || tour.getPrice() != null;
+        return title && product && price;
+    }
+
+    public boolean delete(int id) {
+        int cnt = mapper.deleteById(id);
+        return cnt == 1;
+    }
 }
