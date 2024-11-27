@@ -19,8 +19,3 @@ SELECT id, title, writer, inserted
 FROM community
 ORDER BY id DESC;
 
-DESC member;
-
-SELECT member.nickname
-FROM member
-WHERE email = 'hana';

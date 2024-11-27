@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Box, HStack, Input, Textarea } from "@chakra-ui/react";
@@ -7,9 +7,12 @@ import { Button } from "../../components/ui/button.jsx";
 
 function CommunityView(props) {
   const { id } = useParams();
+  const [community, setCommunity] = useState({});
 
   useEffect(() => {
-    axios.get(`/community/view/${id}`);
+    axios
+      .get(`/community/view/${id}`, { id })
+      .then((e) => setCommunity(e.data));
   }, []);
 
   const handleDeleteClick = () => {
@@ -21,18 +24,19 @@ function CommunityView(props) {
   };
   return (
     <div>
+      <h1>{id}번 게시물</h1>
       <Box>
         <Field label={"제목"}>
-          <Input readOnly />
+          <Input value={community.title} readOnly />
         </Field>
         <Field label={"본문"}>
-          <Textarea readOnly />
+          <Textarea value={community.content} readOnly />
         </Field>
-        <Filed label={"작성자"}>
-          <Input readOnly />
-        </Filed>
+        <Field label={"작성자"}>
+          <Input value={community.writer} readOnly />
+        </Field>
         <Field label={"작성일시"}>
-          <Input readOnly />
+          <Input value={community.creationDate} readOnly />
         </Field>
       </Box>
       <Box>

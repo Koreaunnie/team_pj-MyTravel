@@ -26,8 +26,8 @@ public class CommunityService {
         mapper.writeCommunity(community);
     }
 
-    public void view(Integer id) {
-        mapper.viewCommunity(id);
+    public Map<String, Object> view(Integer id) {
+        return mapper.viewCommunity(id);
     }
 
     public void edit(Community community) {

@@ -1,7 +1,6 @@
 package com.example.be.controller.community;
 
 import com.example.be.dto.community.Community;
-import com.example.be.dto.member.Member;
 import com.example.be.service.community.CommunityService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,14 +26,15 @@ public class CommunityController {
 
 
     @PostMapping("write")
-    public void write(@RequestBody Community community, Authentication auth, Member member) {
+    public void write(@RequestBody Community community, Authentication auth) {
 
         service.write(community, auth);
     }
 
     @GetMapping("view/{id}")
-    public void view(@PathVariable Integer id) {
-        service.view(id);
+    public Map<String, Object> view(@PathVariable Integer id) {
+        System.out.println(service.view(id));
+        return service.view(id);
     }
 
     @PostMapping("edit")

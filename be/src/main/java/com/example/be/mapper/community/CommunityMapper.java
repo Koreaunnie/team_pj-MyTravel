@@ -23,11 +23,11 @@ public interface CommunityMapper {
     int writeCommunity(Community community);
 
     @Select("""
-            SELECT *
+            SELECT title, content, writer, inserted
             FROM community
             WHERE id = #{id}
             """)
-    int viewCommunity(Integer id);
+    Map<String, Object> viewCommunity(Integer id);
 
     @Update("""
             UPDATE community
@@ -49,5 +49,4 @@ public interface CommunityMapper {
             """)
     String findNickname(String email);
 
-    // TODO : SQL 이름 합의 후 적용하기
 }
