@@ -17,6 +17,7 @@ public class PlanController {
     // 내 여행 추가
     @PostMapping("add")
     public void add(@RequestBody Plan plan) {
+        System.out.println(plan);
         service.add(plan);
     }
 

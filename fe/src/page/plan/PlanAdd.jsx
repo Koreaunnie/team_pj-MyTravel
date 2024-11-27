@@ -56,7 +56,11 @@ function PlanAdd(props) {
         due,
         planFieldList: fields, // 필드 배열을 그대로 전달
       })
-      .then(() => alert("일정이 저장되었습니다."))
+      .then((res) => res.data)
+      .then((data) => {
+        navigate(`/view/${data.id}`);
+        alert("일정이 저장되었습니다.");
+      })
       .catch()
       .finally(() => {
         // 요청 완료 후 처리
