@@ -29,7 +29,8 @@ public class TourController {
     public ResponseEntity<Map<String, Object>> add(@RequestBody Tour tour) {
         if (service.add(tour)) {
             return ResponseEntity.ok().body(Map.of("message",
-                    Map.of("type", "success", "text", "상품이 등록되었습니다.")));
+                    Map.of("type", "success", "text", "상품이 등록되었습니다."),
+                    "data", tour));
         } else {
             return ResponseEntity.internalServerError().body(Map.of("message",
                     Map.of("type", "warning", "text", "상품을 등록하지 못했습니다.")));

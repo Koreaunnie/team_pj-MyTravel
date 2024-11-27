@@ -23,17 +23,16 @@ export function TourAdd() {
         content,
         writer,
       })
-      .then((res) => res.data)
-      .then((data) => {
-        const message = data.message;
-        console.log(data);
+      .then((res) => {
+        console.log(res.data); // Inspect the response structure
+        const { message, data } = res.data;
         toaster.create({
           type: message.type,
           description: message.text,
         });
-        navigate(`/tour/view/${data.data.id}`);
+        navigate(`/tour/view/${data.id}`);
       })
-      .cath((e) => {
+      .catch((e) => {
         const message = e.response.data.message;
         toaster.create({
           type: message.type,
