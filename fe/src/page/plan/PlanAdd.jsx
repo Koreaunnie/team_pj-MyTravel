@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "../../components/ui/button.jsx";
 import axios from "axios";
-import "./PlanAdd.css";
+import "./Plan.css";
 import { useNavigate } from "react-router-dom";
 
 function PlanAdd(props) {
