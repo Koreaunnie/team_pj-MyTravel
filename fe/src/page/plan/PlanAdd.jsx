@@ -20,6 +20,13 @@ function PlanAdd(props) {
   ]);
   const navigate = useNavigate();
 
+  // div 입력값을 상태로 업데이트하는 함수
+  const handleFieldChange = (index, field, value) => {
+    const updatedFields = [...fields];
+    updatedFields[index][field] = value;
+    setFields(updatedFields);
+  };
+
   // + 버튼 클릭 시 새로운 필드 추가
   function handleAddField() {
     setFields([
