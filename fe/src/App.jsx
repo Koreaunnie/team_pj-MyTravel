@@ -8,6 +8,9 @@ import MemberSignup from "./page/member/MemberSignup.jsx";
 import MemberInfo from "./page/member/MemberInfo.jsx";
 import MemberLogin from "./page/member/MemberLogin.jsx";
 import { MemberEdit } from "./page/member/MemberEdit.jsx";
+import { TourAdd } from "./page/tour/TourAdd.jsx";
+import TourList from "./page/tour/TourList.jsx";
+import TourView from "./page/tour/TourView.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -37,11 +40,38 @@ const router = createBrowserRouter([
         path: "plan/add",
         element: <PlanAdd />,
       },
-      { path: "member/signup", element: <MemberSignup /> },
-      { path: "member/login", element: <MemberLogin /> },
-      { path: "member/list", element: <MemberList /> },
-      { path: "member/:email", element: <MemberInfo /> },
-      { path: "member/edit/:email", element: <MemberEdit /> },
+      {
+        path: "tour/list",
+        element: <TourList />,
+      },
+      {
+        path: "tour/add",
+        element: <TourAdd />,
+      },
+      {
+        path: "tour/view/:id",
+        element: <TourView />,
+      },
+      {
+        path: "member/signup",
+        element: <MemberSignup />,
+      },
+      {
+        path: "member/login",
+        element: <MemberLogin />,
+      },
+      {
+        path: "member/list",
+        element: <MemberList />,
+      },
+      {
+        path: "member/:email",
+        element: <MemberInfo />,
+      },
+      {
+        path: "member/edit/:email",
+        element: <MemberEdit />,
+      },
     ],
   },
 ]);
