@@ -42,11 +42,26 @@ const router = createBrowserRouter([
         path: "plan/list",
         element: <PlanList />,
       },
-      { path: "member/signup", element: <MemberSignup /> },
-      { path: "member/login", element: <MemberLogin /> },
-      { path: "member/list", element: <MemberList /> },
-      { path: "member/:email", element: <MemberInfo /> },
-      { path: "member/edit/:email", element: <MemberEdit /> },
+      {
+        path: "member/signup",
+        element: <MemberSignup />,
+      },
+      {
+        path: "member/login",
+        element: <MemberLogin />,
+      },
+      {
+        path: "member/list",
+        element: <MemberList />,
+      },
+      {
+        path: "member/:email",
+        element: <MemberInfo />,
+      },
+      {
+        path: "member/edit/:email",
+        element: <MemberEdit />,
+      },
     ],
   },
 ]);
