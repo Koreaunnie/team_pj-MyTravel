@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,7 +28,7 @@ public class PlanController {
 
     // 내 여행 세부사항
     @GetMapping("view/{id}")
-    public List<Plan> view(@PathVariable int id) {
+    public Map<String, Object> view(@PathVariable int id) {
         return service.view(id);
     }
 

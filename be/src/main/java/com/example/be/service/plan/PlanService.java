@@ -7,7 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -17,7 +19,7 @@ public class PlanService {
 
     // 내 여행 추가
     public void add(Plan plan) {
-        // 1. Plan의 기본 정보 저장 (ID 생성)
+        // 1. Plan 의 기본 정보 저장 (ID 생성)
         mapper.insertPlan(plan);
 
         // 2. plan body fields 데이터를 반복적으로 저장
@@ -40,8 +42,6 @@ public class PlanService {
                 mapper.insertPlanField(field);
             }
         }
-
-
     }
 
     // 내 여행 목록
@@ -50,8 +50,18 @@ public class PlanService {
     }
 
     // 내 여행 세부사항
-    public List<Plan> view(int id) {
-        List<Plan> plan = mapper.selectPlanById(id);
-        return plan;
+    public Map<String, Object> view(int id) {
+        // Plan 객체 조회
+        Plan plan = mapper.selectPlanById(id);
+
+        // 해당 Plan 에 대한 PlanField 목록을 조회
+        List<PlanField> planFields = mapper.selectPlanFieldsByPlanId(id);
+
+        // 결과를 Map 에 담아서 변환
+        Map<String, Object> result = new HashMap<>();
+        result.put("plan", plan);
+        result.put("planFields", planFields);
+
+        return result;
     }
 }

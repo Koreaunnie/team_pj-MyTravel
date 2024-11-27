@@ -42,12 +42,19 @@ public interface PlanMapper {
     List<Plan> selectPlan();
 
     // 내 여행 세부사항
+    // 1. Plan
     @Select("""
             SELECT *
             FROM plan
             WHERE id = #{id};
             """)
-    List<Plan> selectPlanById(int id);
+    Plan selectPlanById(int id);
 
-
+    // 2. PlanField
+    @Select("""
+            SELECT *
+            FROM plan_field
+            WHERE plan_id = #{id};
+            """)
+    List<PlanField> selectPlanFieldsByPlanId(int id);
 }
