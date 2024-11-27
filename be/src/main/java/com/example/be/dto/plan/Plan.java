@@ -17,4 +17,6 @@ public class Plan {
 
     // 여러 일정을 저장할 plan body fields
     private List<PlanField> planFieldList;
+
+    private LocalDateTime updated;
 }

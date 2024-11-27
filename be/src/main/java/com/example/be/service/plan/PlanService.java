@@ -53,7 +53,6 @@ public class PlanService {
     public Map<String, Object> view(int id) {
         // Plan 객체 조회
         Plan plan = mapper.selectPlanById(id);
-
         // 해당 Plan 에 대한 PlanField 목록을 조회
         List<PlanField> planFields = mapper.selectPlanFieldsByPlanId(id);
 
@@ -64,4 +63,21 @@ public class PlanService {
 
         return result;
     }
+
+    // 내 여행 수정
+    public Map<String, Object> update(Plan plan, PlanField planField) {
+        // Plan 객체 수정
+        Plan plan1 = mapper.updatePlanById(plan);
+        // 해당 Plan 에 대한 PlanField 목록 수정
+        PlanField planField1 = mapper.updatePlanFieldByPlanId(planField);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("plan1", plan);
+        result.put("planField1", planField);
+
+
+        return result;
+    }
+
+
 }

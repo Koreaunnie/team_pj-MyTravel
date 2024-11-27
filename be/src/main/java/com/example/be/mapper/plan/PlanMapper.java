@@ -2,10 +2,7 @@ package com.example.be.mapper.plan;
 
 import com.example.be.dto.plan.Plan;
 import com.example.be.dto.plan.PlanField;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -57,4 +54,29 @@ public interface PlanMapper {
             WHERE plan_id = #{id};
             """)
     List<PlanField> selectPlanFieldsByPlanId(int id);
+
+    // 내 여행 수정
+    // 1. Plan
+    @Update("""
+            UPDATE plan 
+            SET title=#{title}, 
+                description=#{description}, 
+                destination=#{destination}, 
+                due=#{due},
+                updated=NOW()
+            WHERE id = #{id};
+            """)
+    Plan updatePlanById(Plan plan);
+
+    // 2. PlanField
+    @Update("""
+            UPDATE plan_field
+            SET date=#{date}, 
+                time=#{time}, 
+                schedule=#{schedule}, 
+                place=#{place}, 
+                memo=#{memo}
+            WHERE plan_id = #{id};
+            """)
+    PlanField updatePlanFieldByPlanId(PlanField planField);
 }
