@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Stack, Table } from "@chakra-ui/react";
+import { Box, HStack, Input, Stack, Table } from "@chakra-ui/react";
 import { Button } from "../../components/ui/button.jsx";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -52,12 +52,20 @@ function CommunityList(props) {
           </Table.Root>
         </Box>
         <Box>
-          <Button onClick={handleWriteClick}>글 쓰기</Button>
+          <HStack>
+            <Box>
+              <HStack>
+                <Input w={300} />
+                <Button>검색</Button>
+              </HStack>
+            </Box>
+            <Button onClick={handleWriteClick}>글 쓰기</Button>
+          </HStack>
         </Box>
+        // TODO : 페이지네이션 추가
       </Stack>
     </div>
   );
 }
 
-// TODO : 페이지네이션 추가
 export default CommunityList;

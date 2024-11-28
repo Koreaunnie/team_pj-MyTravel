@@ -37,7 +37,7 @@ public class CommunityController {
     }
 
     @PostMapping("edit")
-    public void edit(Community community) {
+    public void edit(@RequestBody Community community) {
         service.edit(community);
     }
 
