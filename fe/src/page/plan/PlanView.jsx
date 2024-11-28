@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { Spinner } from "@chakra-ui/react";
+import "/src/components/root/common.css";
 
 function PlanView(props) {
   const { id } = useParams();
@@ -41,39 +42,56 @@ function PlanView(props) {
 
   return (
     <div className={"body"}>
-      <button className={"btn"} onClick={() => navigate(`/plan/list`)}>
-        목록
-      </button>
-      <button className={"btn"} onClick={() => navigate(`/plan/add`)}>
-        새 일정 작성
-      </button>
-      <button className={"btn"} onClick={() => navigate(`/plan/edit/${id}`)}>
-        수정
-      </button>
-      <button className={"btn"} onClick={setModalOpen}>
-        삭제
-      </button>
+      <div className={"btn-warp"}>
+        <button
+          className={"btn btn-dark-outline"}
+          onClick={() => navigate(`/plan/list`)}
+        >
+          목록
+        </button>
+
+        <button
+          className={"btn btn-dark"}
+          onClick={() => navigate(`/plan/add`)}
+        >
+          새 일정 작성
+        </button>
+
+        <button
+          className={"btn btn-dark"}
+          onClick={() => navigate(`/plan/edit/${id}`)}
+        >
+          수정
+        </button>
+
+        <button className={"btn btn-warning"} onClick={setModalOpen}>
+          삭제
+        </button>
+      </div>
 
       {/* modal */}
       {modalOpen && (
-        <div className="modal">
-          <div className="modal-content">
-            <div className="modal-header">
-              <a href="#" className="close" onClick={closeModal}>
+        <div className={"modal"}>
+          <div className={"modal-content"}>
+            <div className={"modal-header"}>
+              <a href="#" className={"close"} onClick={closeModal}>
                 &times;
               </a>
             </div>
 
-            <div className="modal-body">
+            <div className={"modal-body"}>
               <p>정말로 이 여행을 삭제하시겠습니까?</p>
             </div>
 
-            <div className="modal-footer btn-wrap">
-              <button className="btn btn-dark-outline" onClick={closeModal}>
+            <div className={"modal-footer btn-wrap"}>
+              <button className={"btn btn-dark-outline"} onClick={closeModal}>
                 닫기
               </button>
 
-              <button className="btn btn-warning" onClick={handleDeleteButton}>
+              <button
+                className={"btn btn-warning"}
+                onClick={handleDeleteButton}
+              >
                 삭제
               </button>
             </div>

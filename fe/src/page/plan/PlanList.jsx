@@ -76,19 +76,21 @@ function PlanList(props) {
 
       {/* pagination */}
 
-      <PaginationRoot
-        onPageChange={handlePageChange}
-        count={count}
-        pageSize={10}
-        page={page}
-        variant="solid"
-      >
-        <HStack>
-          <PaginationPrevTrigger />
-          <PaginationItems />
-          <PaginationNextTrigger />
-        </HStack>
-      </PaginationRoot>
+      <div className="pagination">
+        <PaginationRoot
+          onPageChange={handlePageChange}
+          count={count}
+          pageSize={10}
+          page={page}
+          variant="solid"
+        >
+          <HStack>
+            <PaginationPrevTrigger />
+            <PaginationItems />
+            <PaginationNextTrigger />
+          </HStack>
+        </PaginationRoot>
+      </div>
     </div>
   );
 }
