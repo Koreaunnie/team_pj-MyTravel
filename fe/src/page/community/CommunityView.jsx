@@ -11,32 +11,32 @@ function CommunityView(props) {
 
   useEffect(() => {
     axios
-      .get(`/community/view/${id}`, { id })
+      .get(`/api/community/view/${id}`, { id })
       .then((e) => setCommunity(e.data));
   }, []);
 
   const handleDeleteClick = () => {
-    axios.delete(`/community/delete/${id}`);
+    axios.delete(`/api/community/delete/${id}`);
   };
 
   const handleEditClick = () => {
-    axios.post(`/community/edit`);
+    axios.post(`/api/community/edit`);
   };
   return (
     <div>
       <h1>{id}번 게시물</h1>
       <Box>
-        <Field label={"제목"}>
-          <Input value={community.title} readOnly />
+        <Field label={"제목"} readOnly>
+          <Input value={community.title} />
         </Field>
-        <Field label={"본문"}>
-          <Textarea value={community.content} readOnly />
+        <Field label={"본문"} readOnly>
+          <Textarea value={community.content} />
         </Field>
-        <Field label={"작성자"}>
-          <Input value={community.writer} readOnly />
+        <Field label={"작성자"} readOnly>
+          <Input value={community.writer} />
         </Field>
-        <Field label={"작성일시"}>
-          <Input value={community.creationDate} readOnly />
+        <Field label={"작성일시"} readOnly>
+          <Input value={community.creationDate} />
         </Field>
       </Box>
       <Box>

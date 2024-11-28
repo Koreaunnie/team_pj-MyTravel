@@ -23,7 +23,7 @@ public interface CommunityMapper {
     int writeCommunity(Community community);
 
     @Select("""
-            SELECT title, content, writer, inserted
+            SELECT title, content, writer, inserted creationDate
             FROM community
             WHERE id = #{id}
             """)
