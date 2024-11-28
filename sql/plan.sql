@@ -1,0 +1,25 @@
+USE teamPrj1126;
+
+CREATE TABLE plan
+(
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    inserted    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    title       VARCHAR(20) NOT NULL,
+    description VARCHAR(50),
+    destination VARCHAR(20),
+    due         VARCHAR(20),
+    updated     TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+DROP TABLE plan;
+
+ALTER TABLE plan
+    ADD COLUMN updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
+ALTER TABLE plan
+    MODIFY title VARCHAR(20) NOT NULL;
+
+SELECT *
+FROM plan_field
+
+WHERE id = 2;

@@ -12,6 +12,10 @@ import { TourAdd } from "./page/tour/TourAdd.jsx";
 import TourList from "./page/tour/TourList.jsx";
 import TourView from "./page/tour/TourView.jsx";
 import TourUpdate from "./page/tour/TourUpdate.jsx";
+import PlanAdd from "./page/plan/PlanAdd.jsx";
+import PlanList from "./page/plan/PlanList.jsx";
+import PlanView from "./page/plan/PlanView.jsx";
+import PlanEdit from "./page/plan/PlanEdit.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -37,10 +41,24 @@ const router = createBrowserRouter([
         index: true,
         element: <Index />,
       },
+      // 내 여행
       {
         path: "plan/add",
         element: <PlanAdd />,
       },
+      {
+        path: "plan/list",
+        element: <PlanList />,
+      },
+      {
+        path: "plan/view/:id",
+        element: <PlanView />,
+      },
+      {
+        path: "plan/edit/:id",
+        element: <PlanEdit />,
+      },
+      // 여행 상품
       {
         path: "tour/list",
         element: <TourList />,
@@ -53,6 +71,7 @@ const router = createBrowserRouter([
         path: "tour/view/:id",
         element: <TourView />,
       },
+      // 회원 가입
       {
         path: "tour/update/:id",
         element: <TourUpdate />,
@@ -61,10 +80,12 @@ const router = createBrowserRouter([
         path: "member/signup",
         element: <MemberSignup />,
       },
+      // 로그인
       {
         path: "member/login",
         element: <MemberLogin />,
       },
+      // 회원 관리
       {
         path: "member/list",
         element: <MemberList />,

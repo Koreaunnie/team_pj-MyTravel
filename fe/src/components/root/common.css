@@ -14,6 +14,8 @@
     --btn-warning-hover: #bb2d3b;
     --btn-warning-hover-border: #b02a37;
 
+    --font-gray-color: #52525b;
+
     --small-font-size: 14px;
     --normal-font-size: 16px;
 }
@@ -49,11 +51,21 @@ label {
     margin: 10px 5px;
 }
 
-input {
+input[type="text"],
+input[type="date"],
+input[type="time"] {
     border: 1px solid #dee2e6;
     box-sizing: border-box;
     border-radius: 5px;
     width: 100%;
+    height: 40px;
+    padding: 0 10px;
+}
+
+input[type=search] {
+    border: 1px solid #dee2e6;
+    box-sizing: border-box;
+    border-radius: 5px;
     height: 40px;
     padding: 0 10px;
 }
@@ -63,6 +75,7 @@ textarea {
     box-sizing: border-box;
     border-radius: 5px;
     width: 100%;
+    height: 200px;
     padding: 10px;
 }
 
@@ -88,27 +101,37 @@ nav {
 }
 
 .body {
-    width: 60%;
+    width: 50%;
     margin: 0 auto;
 }
 
-/*------------------- 버튼 디자인 -------------------*/
+/*------------------- button design -------------------*/
 .btn-wrap {
-    margin: 10px;
-    text-align: center;
-}
-
-.btn-wrap ul {
     display: flex;
     justify-content: center;
+
 }
 
 .btn {
     cursor: pointer;
     border-radius: 5px;
-    padding: 10px 20px;
-    font-size: 16px;
+    padding: 8px 15px;
+    text-align: center;
+    font-size: 14px;
     font-weight: bold;
+    margin: 10px;
+}
+
+.btn-search {
+    cursor: pointer;
+    border-radius: 0 5px 5px 0;
+    padding: 8px 15px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: -5px;
+    vertical-align: top;
+    width: 60px;
 }
 
 .btn-dark {
@@ -142,4 +165,100 @@ nav {
 
 .btn-warning:hover {
     background: var(--btn-warning-hover);
+}
+
+/*------------------- modal design -------------------*/
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+    float: right;
+}
+
+.modal-body {
+    margin: 30px;
+    text-align: center;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.modal-footer button {
+    margin-left: 10px;
+}
+
+/*------------------- pagination position -------------------*/
+.pagination {
+
+}
+
+/*------------------- search form -------------------*/
+.search-form {
+    width: 100%;
+    display: flex;
+    margin: 20px 0;
+}
+
+.search-form-input {
+    width: 100%;
+    margin-left: 5px;
+}
+
+.search-form-input input {
+    width: calc(100% - 55px);
+}
+
+/*------------------- empty list -------------------*/
+.empty-container {
+    width: 100%;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.empty-container-icon {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+}
+
+.empty-container-title {
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.empty-container-description {
+    margin-top: 5px;
+    font-size: 0.9rem;
+    color: var(--font-gray-color);
 }
