@@ -57,13 +57,13 @@ public class TourService {
         mapper.insertFile(tour.getId(), file.getOriginalFilename());
       }
     }
-
     return cnt == 1;
   }
 
   public Tour get(int id) {
     Tour tour = mapper.selectById(id);
     List<String> fileNameList = mapper.selectFilesByTourId(id);
+
     List<TourImg> fileSrcList = fileNameList.stream()
             .map(name -> new TourImg(name, imageSrcPrefix + "/" + id + "/" + name))
             .toList();

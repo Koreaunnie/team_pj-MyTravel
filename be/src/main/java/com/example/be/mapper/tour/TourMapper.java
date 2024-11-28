@@ -80,7 +80,7 @@ public interface TourMapper {
   void insertFile(Integer id, String fileName);
 
   @Select("""
-          SELECT *
+          SELECT name
           FROM tour_img
           WHERE tour_id=#{id}    
           """)
