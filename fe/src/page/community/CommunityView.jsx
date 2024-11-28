@@ -32,8 +32,9 @@ function CommunityView(props) {
   };
 
   const handleEditClick = () => {
-    axios.post(`/api/community/edit`);
+    axios.put(`/api/community/edit/`);
   };
+
   return (
     <div>
       <h1>{id}번 게시물</h1>

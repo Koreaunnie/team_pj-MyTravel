@@ -10,7 +10,7 @@ function CommunityEdit(props) {
 
   const handleSaveClick = () => {
     axios
-      .post(`/api/community/edit`, { title, content })
+      .put(`/api/community/edit`, { title, content })
       .then(navigate(`/community/list`));
   };
 
