@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toaster } from "../../components/ui/toaster.jsx";
 
 function PlanAdd(props) {
+  const [saveModalOpen, setSaveModalOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [destination, setDestination] = useState("");
@@ -97,11 +98,24 @@ function PlanAdd(props) {
       });
   }
 
+  const closeModal = () => {
+    setSaveModalOpen(false);
+  };
+
   return (
     <div className={"body"}>
-      <button className="btn btn-dark" onClick={() => navigate(`/plan/list`)}>
-        목록
-      </button>
+      <div className="btn-wrap">
+        <button
+          className="btn btn-dark-outline"
+          onClick={() => navigate(`/plan/list`)}
+        >
+          목록
+        </button>
+
+        <button className="btn btn-dark" onClick={setSaveModalOpen}>
+          저장
+        </button>
+      </div>
 
       <h1>일정 등록하기</h1>
 
@@ -208,36 +222,53 @@ function PlanAdd(props) {
                 }
               />
 
-              <div className="btn-wrap">
+              <div className={"btn-wrap"}>
                 <button
-                  className="btn btn-dark"
+                  className={"btn btn-dark"}
                   type="button"
                   onClick={handleAddField}
                 >
-                  일정 추가
+                  +
                 </button>
                 <button
-                  className="btn btn-dark"
+                  className={"btn btn-dark"}
                   type="button"
                   onClick={() => handleDeleteField(index)}
                 >
-                  일정 삭제
+                  -
                 </button>
               </div>
             </div>
           ))}
         </fieldset>
-
-        <div className="btn-wrap">
-          <button
-            className="btn btn-dark"
-            alignSelf="flex-start"
-            onClick={handleSaveButton}
-          >
-            저장
-          </button>
-        </div>
       </form>
+
+      {/* 저장 modal */}
+      {saveModalOpen && (
+        <div className={"modal"}>
+          <div className={"modal-content"}>
+            <div className={"modal-header"}>
+              <a href="#" className={"close"} onClick={closeModal}>
+                &times;
+              </a>
+            </div>
+
+            <div className={"modal-body"}>
+              <p>여행을 저장하시겠습니까?</p>
+            </div>
+
+            <div className={"modal-footer btn-wrap"}>
+              <button className={"btn btn-dark-outline"} onClick={closeModal}>
+                닫기
+              </button>
+
+              <button className={"btn btn-dark"} onClick={handleSaveButton}>
+                저장
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

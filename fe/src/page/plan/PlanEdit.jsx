@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import { Button } from "../../components/ui/button.jsx";
 import { Spinner } from "@chakra-ui/react";
 
 function PlanEdit(props) {
   const { id } = useParams();
+  const [backToListModalOpen, setBackToListModalOpen] = useState(false);
+  const [saveModalOpen, setSaveModalOpen] = useState(false);
   const [plan, setPlan] = useState({
     title: "",
     description: "",
@@ -77,11 +78,25 @@ function PlanEdit(props) {
       .finally();
   }
 
+  const closeModal = () => {
+    setBackToListModalOpen(false);
+    setSaveModalOpen(false);
+  };
+
   return (
     <div className={"body"}>
-      <button className={"btn"} onClick={() => navigate(`/plan/list`)}>
-        목록
-      </button>
+      <div className={"btn-wrap"}>
+        <button
+          className={"btn btn-dark-outline"}
+          onClick={setBackToListModalOpen}
+        >
+          목록
+        </button>
+
+        <button className={"btn btn-dark"} onClick={setSaveModalOpen}>
+          저장
+        </button>
+      </div>
 
       <h1>일정 수정</h1>
 
@@ -190,23 +205,82 @@ function PlanEdit(props) {
               />
 
               <div className={"btn-wrap"}>
-                <Button type="button" onClick={handleAddField}>
-                  일정 추가
-                </Button>
-                <Button type="button" onClick={() => handleDeleteField(index)}>
-                  일정 삭제
-                </Button>
+                <button
+                  className={"btn btn-dark"}
+                  type="button"
+                  onClick={handleAddField}
+                >
+                  +
+                </button>
+                <button
+                  className={"btn btn-dark"}
+                  type="button"
+                  onClick={() => handleDeleteField(index)}
+                >
+                  -
+                </button>
               </div>
             </div>
           ))}
         </fieldset>
-
-        <div className={"btn-wrap"}>
-          <Button alignSelf="flex-start" onClick={handleSaveButton}>
-            저장
-          </Button>
-        </div>
       </form>
+
+      {/* 목록 modal */}
+      {backToListModalOpen && (
+        <div className={"modal"}>
+          <div className={"modal-content"}>
+            <div className={"modal-header"}>
+              <a href="#" className={"close"} onClick={closeModal}>
+                &times;
+              </a>
+            </div>
+
+            <div className={"modal-body"}>
+              <p>목록으로 돌아가시겠습니까?</p>
+            </div>
+
+            <div className={"modal-footer btn-wrap"}>
+              <button className={"btn btn-dark-outline"} onClick={closeModal}>
+                닫기
+              </button>
+
+              <button
+                className={"btn btn-dark"}
+                onClick={() => navigate(`/plan/list`)}
+              >
+                목록
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 저장 modal */}
+      {saveModalOpen && (
+        <div className={"modal"}>
+          <div className={"modal-content"}>
+            <div className={"modal-header"}>
+              <a href="#" className={"close"} onClick={closeModal}>
+                &times;
+              </a>
+            </div>
+
+            <div className={"modal-body"}>
+              <p>여행을 저장하시겠습니까?</p>
+            </div>
+
+            <div className={"modal-footer btn-wrap"}>
+              <button className={"btn btn-dark-outline"} onClick={closeModal}>
+                닫기
+              </button>
+
+              <button className={"btn btn-dark"} onClick={handleSaveButton}>
+                저장
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
