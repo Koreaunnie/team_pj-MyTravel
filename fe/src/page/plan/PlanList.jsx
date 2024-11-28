@@ -12,7 +12,7 @@ import {
 function PlanList(props) {
   const [planList, setPlanList] = useState([]);
   const [addModalOpen, setAddModalOpen] = useState(false);
-  const [search, setSearch] = useState({ type: "all", keyword: "" });
+  const [search, setSearch] = useState({ type: "all", keyword: "" }); // 검색 정보 유지
   const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -29,25 +29,41 @@ function PlanList(props) {
       });
   }, [searchParams]);
 
-  const closeModal = () => {
-    setAddModalOpen(false);
-  };
+  useEffect(() => {
+    const nextSearch = { ...search };
+
+    if (searchParams.get("st")) {
+      nextSearch.type = searchParams.get("st");
+    } else {
+      nextSearch.type = "all";
+    }
+
+    if (searchParams.get("sk")) {
+      nextSearch.keyword = searchParams.get("sk");
+    } else {
+      nextSearch.keyword = "";
+    }
+
+    setSearch(nextSearch);
+  }, [searchParams]);
 
   // search
   function handleSearchButton(e) {
     const nextSearchParam = new URLSearchParams(searchParams);
 
     if (search.keyword.trim().length > 0) {
-      // 검색
+      // 검색 (검색 파라미터 추가)
+      const nextSearchParam = new URLSearchParams(searchParams);
       nextSearchParam.set("st", search.type);
       nextSearchParam.set("sk", search.keyword);
-      nextSearchParam.set("page", 1);
+      setSearchParams(nextSearchParam);
     } else {
-      // 검색 안함
+      // 검색 안함 (검색 파라미터 삭제)
+      const nextSearchParam = new URLSearchParams(searchParams);
       nextSearchParam.delete("st");
       nextSearchParam.delete("sk");
+      setSearchParams(nextSearchParam);
     }
-    setSearchParams(nextSearchParam);
   }
 
   // pagination
@@ -56,12 +72,17 @@ function PlanList(props) {
   // 문자열로 가져온 page 값을 숫자 타입으로 변환
   const page = Number(pageParam);
 
-  // 페이지 번호 변경 시 URL의 쿼리 파라미터를 업데이트
+  // 페이지 번호 변경 시 URL 의 쿼리 파라미터를 업데이트
   function handlePageChange(e) {
     const nextSearchParams = new URLSearchParams(searchParams);
     nextSearchParams.set("page", e.page);
     setSearchParams(nextSearchParams);
   }
+
+  // modal
+  const closeModal = () => {
+    setAddModalOpen(false);
+  };
 
   return (
     <div className="body">

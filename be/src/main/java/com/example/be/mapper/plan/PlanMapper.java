@@ -33,19 +33,43 @@ public interface PlanMapper {
     // 내 여행 목록 조회
     // 1. pagination : 한 행에 10개씩 조회
     @Select("""
-            SELECT * 
-            FROM plan
-            ORDER BY inserted DESC
-            LIMIT #{offset}, 10;
+            <script>
+                SELECT * 
+                FROM plan p JOIN plan_field pf 
+                    ON p.id = pf.plan_id
+               WHERE
+                    <trim prefixOverrides="OR">
+                        <if test="searchType == 'all' or searchType == 'title'">
+                            title LIKE CONCAT('%', #{searchKeyword}, '%')
+                        </if>
+                        <if test="searchType == 'all' or searchType == 'destination'">
+                            OR destination LIKE CONCAT('%', #{searchKeyword}, '%')
+                        </if>
+                    </trim>
+                GROUP BY p.id
+                ORDER BY p.updated DESC, p.inserted DESC
+                LIMIT #{offset}, 10;
+            </script>
             """)
-    List<Plan> selectPlanByPageOffset(Integer offset);
+    List<Plan> selectPlanByPageOffset(Integer offset, String searchType, String searchKeyword);
 
     // 2. pagination : 전체 plan 개수 조회
     @Select("""
-            SELECT COUNT(*)
-            FROM plan 
+            <script>
+                SELECT COUNT(*)
+                FROM plan 
+                WHERE
+                    <trim prefixOverrides="OR">
+                        <if test="searchType == 'all' or searchType == 'title'">
+                            title LIKE CONCAT('%', #{searchKeyword}, '%')
+                        </if>
+                        <if test="searchType == 'all' or searchType == 'destination'">
+                            OR destination LIKE CONCAT('%', #{searchKeyword}, '%')
+                        </if>
+                    </trim>
+            </script>
             """)
-    Integer countAll();
+    Integer countAll(String searchType, String searchKeyword);
 
     // 내 여행 세부사항
     // 1. Plan

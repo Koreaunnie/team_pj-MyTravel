@@ -37,8 +37,10 @@ public class PlanController {
 
     // 내 여행 목록 조회
     @GetMapping("list")
-    public Map<String, Object> list(@RequestParam(value = "page", defaultValue = "1") Integer page) {
-        return service.list(page);
+    public Map<String, Object> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                                    @RequestParam(value = "st", defaultValue = "all") String searchType,
+                                    @RequestParam(value = "sk", defaultValue = "") String searchKeyword) {
+        return service.list(page, searchType, searchKeyword);
     }
 
     // 내 여행 세부사항

@@ -18,6 +18,7 @@ public class PlanService {
     final PlanMapper mapper;
 
     // 내 여행 추가
+    // 1. 여행 저장
     public boolean add(Plan plan) {
         // 1. Plan 의 기본 정보 저장 (ID 생성)
         int cnt = mapper.insertPlan(plan);
@@ -45,16 +46,21 @@ public class PlanService {
         return cnt == 1;
     }
 
-    // 여행 제목이 공백이 아니고 길이가 1자 이상인 경우에만 true
+    // 2. 여행 저장 시여행 제목이 공백이 아니고 길이가 1자 이상인 경우에만 true
     public boolean validate(Plan plan) {
         return plan.getTitle() != null && !plan.getTitle().trim().isEmpty();
     }
 
     // 내 여행 목록 조회
-    public Map<String, Object> list(Integer page) {
-        Integer count = mapper.countAll();
+    public Map<String, Object> list(Integer page, String searchType, String searchKeyword) {
+        // SQL 의 LIMIT 키워드에서 사용되는 offset
         Integer offset = (page - 1) * 10;
-        List<Plan> list = mapper.selectPlanByPageOffset(offset);
+
+        // 조회되는 게시물
+        List<Plan> list = mapper.selectPlanByPageOffset(offset, searchType, searchKeyword);
+
+        // 전체 게시물 수
+        Integer count = mapper.countAll(searchType, searchKeyword);
 
         return Map.of("list", list, "count", count);
     }

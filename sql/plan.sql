@@ -7,7 +7,8 @@ CREATE TABLE plan
     title       VARCHAR(20) NOT NULL,
     description VARCHAR(50),
     destination VARCHAR(20),
-    due         VARCHAR(20)
+    due         VARCHAR(20),
+    updated     TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 DROP TABLE plan;
