@@ -1,3 +1,4 @@
+/*-------------------- PlanAdd --------------------*/
 .plan-container {
     background-color: #fff;
     padding: 20px;
@@ -12,4 +13,9 @@
     border: 2px solid #ccc;
     padding: 20px;
     margin-bottom: 20px;
+}
+
+/*-------------------- PlanList --------------------*/
+.plan-container {
+
 }

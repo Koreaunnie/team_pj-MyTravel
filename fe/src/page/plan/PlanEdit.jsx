@@ -1,17 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "./Plan.css";
-import { useNavigate } from "react-router-dom";
-import { toaster } from "../../components/ui/toaster.jsx";
+import { useNavigate, useParams } from "react-router-dom";
+import { Spinner } from "@chakra-ui/react";
 
-function PlanAdd(props) {
+function PlanEdit(props) {
+  const { id } = useParams();
   const [backToListModalOpen, setBackToListModalOpen] = useState(false);
   const [saveModalOpen, setSaveModalOpen] = useState(false);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [destination, setDestination] = useState("");
-  const [due, setDue] = useState("");
-  const [fields, setFields] = useState([
+  const [plan, setPlan] = useState({
+    title: "",
+    description: "",
+    destination: "",
+    due: "",
+  });
+  const [planFields, setPlanFields] = useState([
     {
       date: "",
       time: "",
@@ -22,17 +24,28 @@ function PlanAdd(props) {
   ]);
   const navigate = useNavigate();
 
-  // div 입력값을 상태로 업데이트하는 함수
+  useEffect(() => {
+    axios.get(`/api/plan/view/${id}`).then((res) => {
+      setPlan(res.data.plan);
+      setPlanFields(res.data.planFields);
+    });
+  }, []);
+
+  if (plan === null) {
+    return <Spinner />;
+  }
+
+  // field 입력값을 상태로 업데이트하는 함수
   const handleFieldChange = (index, field, value) => {
-    const updatedFields = [...fields];
+    const updatedFields = [...planFields];
     updatedFields[index][field] = value;
-    setFields(updatedFields);
+    setPlanFields(updatedFields);
   };
 
   // + 버튼 클릭 시 새로운 필드 추가
   function handleAddField() {
-    setFields([
-      ...fields,
+    setPlanFields([
+      ...planFields,
       {
         date: "",
         time: "",
@@ -45,56 +58,24 @@ function PlanAdd(props) {
 
   // - 버튼 클릭 시 필드 삭제
   function handleDeleteField(index) {
-    setFields(fields.filter((_, i) => i !== index));
+    setPlanFields(planFields.filter((_, i) => i !== index));
   }
 
   // 저장 폼 제출 처리 함수
   function handleSaveButton() {
     axios
-      .post("/api/plan/add", {
-        title,
-        description,
-        destination,
-        due,
-        planFieldList: fields, // 필드 배열을 그대로 전달
+      .put("/api/plan/update", {
+        id: id,
+        title: plan.title,
+        description: plan.description,
+        destination: plan.destination,
+        due: plan.due,
+        planFieldList: planFields, // 필드 배열을 그대로 전달
       })
-      .then((res) => res.data)
-      .then((data) => {
-        const message = data.message;
-        console.log(message);
-        toaster.create({
-          description: message.text,
-          type: message.type,
-        });
-        navigate(`/plan/view/${data.id}`);
-      })
-      .catch((e) => {
-        const message = e.response.data.message;
-        toaster.create({
-          description: message.text,
-          type: message.type,
-        });
-
-        if (title.trim().length === 0) {
-          setSaveModalOpen(false);
-        }
-      })
-      .finally(() => {
-        // 요청 완료 후 처리
-        setTitle("");
-        setDescription("");
-        setDestination("");
-        setDue("");
-        setFields([
-          {
-            date: "",
-            time: "",
-            schedule: "",
-            place: "",
-            memo: "",
-          },
-        ]);
-      });
+      .then((res) => navigate(`/plan/view/${id}`))
+      .then(() => alert("일정이 수정되었습니다."))
+      .catch((error) => alert("수정에 실패했습니다."))
+      .finally();
   }
 
   const closeModal = () => {
@@ -104,20 +85,23 @@ function PlanAdd(props) {
 
   return (
     <div className={"body"}>
-      <div className="btn-wrap">
+      <div className={"btn-wrap"}>
         <button
-          className="btn btn-dark-outline"
+          className={"btn btn-dark-outline"}
           onClick={() => setBackToListModalOpen(true)}
         >
           목록
         </button>
 
-        <button className="btn btn-dark" onClick={() => setSaveModalOpen(true)}>
+        <button
+          className={"btn btn-dark"}
+          onClick={() => setSaveModalOpen(true)}
+        >
           저장
         </button>
       </div>
 
-      <h1>일정 등록하기</h1>
+      <h1>일정 수정</h1>
 
       <form className={"plan-container"}>
         <fieldset className={"plan-header"}>
@@ -128,9 +112,8 @@ function PlanAdd(props) {
                 type="text"
                 id="name"
                 size="20"
-                required
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                value={plan.title}
+                onChange={(e) => setPlan({ ...plan, title: e.target.value })}
               />
             </li>
 
@@ -140,8 +123,10 @@ function PlanAdd(props) {
                 type="text"
                 id="description"
                 size="50"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                value={plan.description}
+                onChange={(e) =>
+                  setPlan({ ...plan, description: e.target.value })
+                }
               />
             </li>
           </ul>
@@ -154,26 +139,26 @@ function PlanAdd(props) {
                 id="destination"
                 size="20"
                 placeholder="어디로 떠나시나요?"
-                value={destination}
-                onChange={(e) => setDestination(e.target.value)}
+                value={plan.destination}
+                onChange={
+                  (e) => setPlan({ ...plan, destination: e.target.value }) // plan.destination만 변경
+                }
               />
             </li>
 
             <li>
               <label htmlFor="due">기간</label>
               <input
-                type="text"
                 id="due"
-                size="20"
-                value={due}
-                onChange={(e) => setDue(e.target.value)}
+                value={plan.due}
+                onChange={(e) => setPlan({ ...plan, due: e.target.value })}
               />
             </li>
           </ul>
         </fieldset>
 
         <fieldset className={"plan-body"}>
-          {fields.map((field, index) => (
+          {planFields.map((field, index) => (
             <div key={index}>
               <label htmlFor="date">날짜</label>
               <input
@@ -197,7 +182,6 @@ function PlanAdd(props) {
 
               <label htmlFor="schedule">일정명</label>
               <input
-                type="text"
                 name="schedule"
                 value={field.schedule}
                 onChange={(e) =>
@@ -207,7 +191,6 @@ function PlanAdd(props) {
 
               <label htmlFor="location">장소</label>
               <input
-                type="text"
                 name="location"
                 value={field.place}
                 onChange={(e) =>
@@ -313,4 +296,4 @@ function PlanAdd(props) {
   );
 }
 
-export default PlanAdd;
+export default PlanEdit;
