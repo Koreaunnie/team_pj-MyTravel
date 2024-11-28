@@ -12,6 +12,7 @@ import {
 function PlanList(props) {
   const [planList, setPlanList] = useState([]);
   const [addModalOpen, setAddModalOpen] = useState(false);
+  const [search, setSearch] = useState({ type: "all", keyword: "" });
   const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -32,6 +33,9 @@ function PlanList(props) {
     setAddModalOpen(false);
   };
 
+  // search
+  console.log("검색조건", search);
+
   // pagination
   // page 번호 (searchParams : URL 쿼리 파라미터 관리)
   const pageParam = searchParams.get("page") ?? "1";
@@ -50,6 +54,21 @@ function PlanList(props) {
       <button className="btn btn-dark" onClick={() => setAddModalOpen(true)}>
         새로운 여행 작성하기
       </button>
+
+      <div className={"search-form"}>
+        <select
+          onChange={(e) => setSearch({ ...search, type: e.target.value })}
+        >
+          <option value="all">전체</option>
+          <option value="title">여행명</option>
+          <option value="destination">여행지</option>
+        </select>
+        <input
+          type="search"
+          placeholder={"내 여행을 검색해보세요."}
+          onChange={(e) => setSearch({ ...search, keyword: e.target.value })}
+        />
+      </div>
 
       {planList.map((plan) => (
         <div key={plan.id}>
