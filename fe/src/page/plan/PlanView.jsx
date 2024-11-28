@@ -7,6 +7,7 @@ function PlanView(props) {
   const { id } = useParams();
   const [plan, setPlan] = useState(null);
   const [planFields, setPlanFields] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,6 +22,11 @@ function PlanView(props) {
   if (plan === null) {
     return <Spinner />;
   }
+
+  // modal 팝업
+  const closeModal = () => {
+    setModalOpen(false);
+  };
 
   const handleDeleteButton = () => {
     axios
@@ -44,9 +50,36 @@ function PlanView(props) {
       <button className={"btn"} onClick={() => navigate(`/plan/edit/${id}`)}>
         수정
       </button>
-      <button className={"btn"} onClick={handleDeleteButton}>
+      <button className={"btn"} onClick={setModalOpen}>
         삭제
       </button>
+
+      {/* modal */}
+      {modalOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <div className="modal-header">
+              <a href="#" className="close" onClick={closeModal}>
+                &times;
+              </a>
+            </div>
+
+            <div className="modal-body">
+              <p>정말로 이 여행을 삭제하시겠습니까?</p>
+            </div>
+
+            <div className="modal-footer btn-wrap">
+              <button className="btn btn-dark-outline" onClick={closeModal}>
+                닫기
+              </button>
+
+              <button className="btn btn-warning" onClick={handleDeleteButton}>
+                삭제
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <h1>{plan.title}</h1>
       <p>{plan.description}</p>

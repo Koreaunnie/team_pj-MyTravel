@@ -92,7 +92,7 @@ nav {
     margin: 0 auto;
 }
 
-/*------------------- 버튼 디자인 -------------------*/
+/*------------------- button design -------------------*/
 .btn-wrap {
     margin: 10px;
     text-align: center;
@@ -143,3 +143,52 @@ nav {
 .btn-warning:hover {
     background: var(--btn-warning-hover);
 }
+
+/*------------------- modal design -------------------*/
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+    float: right;
+}
+
+.modal-body {
+    margin: 30px;
+    text-align: center;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.modal-footer button {
+    margin-left: 10px;
+}
+
