@@ -37,6 +37,7 @@ function TourUpdate() {
   const [tour, setTour] = useState(null);
   const [open, setOpen] = useState(false);
   const [removeFiles, setRemoveFiles] = useState([]);
+  const [uploadFiles, setUploadFiles] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -61,6 +62,7 @@ function TourUpdate() {
         location: tour.location,
         content: tour.content,
         removeFiles,
+        uploadFiles,
       })
       .then((res) => {
         const message = res.data.message;
@@ -100,6 +102,18 @@ function TourUpdate() {
           files={tour.fileList}
           onRemoveCheckClick={handleDeleteCheck}
         />
+        <Box>
+          <Input
+            onChange={(e) => setUploadFiles(e.target.files)}
+            type={"file"}
+            accept={"image/*"}
+          />
+        </Box>
+        <Box>
+          {Array.from(uploadFiles).map((file) => (
+            <li key={file.name}>{file.name}</li>
+          ))}
+        </Box>
         <Field label={"상품"}>
           <Input
             value={tour.product}

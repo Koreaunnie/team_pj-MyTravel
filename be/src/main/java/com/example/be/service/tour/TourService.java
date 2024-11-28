@@ -115,9 +115,9 @@ public class TourService {
     return cnt == 1;
   }
 
-  public boolean update(Tour tour, List<String> removeFiles) {
-    if (removeFiles != null) {
-      for (String file : removeFiles) {
+  public boolean update(Tour tour, List<String> removeFiles, MultipartFile[] uploadFiles) {
+    if (removeFiles != null) { //파일 유무
+      for (String file : removeFiles) { //파일 삭제
         String key = "teamPrj1126/" + tour.getId() + "/" + file;
         DeleteObjectRequest dor = DeleteObjectRequest.builder()
                 .bucket(bucketName)
@@ -127,6 +127,24 @@ public class TourService {
         mapper.deleteFileByTourIdAndName(tour.getId(), file);
       }
     }
+
+    if (uploadFiles != null && uploadFiles.length > 0) {
+      for (MultipartFile file : uploadFiles) {
+        String objectKey = "teamPrj1126/" + tour.getId() + "/" + file.getOriginalFilename();
+        PutObjectRequest por = PutObjectRequest.builder()
+                .bucket(bucketName)
+                .key(objectKey)
+                .acl(ObjectCannedACL.PUBLIC_READ)
+                .build();
+        try {
+          s3.putObject(por, RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
+        mapper.insertFile(tour.getId(), file.getOriginalFilename());
+      }
+    }
+
     int cnt = mapper.update(tour);
     return cnt == 1;
   }

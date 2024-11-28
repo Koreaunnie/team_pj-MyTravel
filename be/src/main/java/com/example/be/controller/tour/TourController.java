@@ -20,8 +20,9 @@ public class TourController {
   @PutMapping("update")
   public ResponseEntity<Map<String, Object>> update(
           Tour tour,
-          @RequestParam(value = "removeFiles[]", required = false) List<String> removeFiles) {
-    if (service.update(tour, removeFiles)) {
+          @RequestParam(value = "removeFiles[]", required = false) List<String> removeFiles,
+          @RequestParam(value = "uploadFiles[]", required = false) MultipartFile[] uploadFiles) {
+    if (service.update(tour, removeFiles, uploadFiles)) {
       return ResponseEntity.ok(Map.of("message",
               Map.of("type", "success", "text", "상품 수정 완료")));
     } else {
