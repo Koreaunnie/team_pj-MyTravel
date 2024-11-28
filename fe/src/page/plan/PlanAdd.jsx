@@ -197,6 +197,7 @@ function PlanAdd(props) {
 
               <label htmlFor="schedule">일정명</label>
               <input
+                type="text"
                 name="schedule"
                 value={field.schedule}
                 onChange={(e) =>
@@ -206,6 +207,7 @@ function PlanAdd(props) {
 
               <label htmlFor="location">장소</label>
               <input
+                type="text"
                 name="location"
                 value={field.place}
                 onChange={(e) =>

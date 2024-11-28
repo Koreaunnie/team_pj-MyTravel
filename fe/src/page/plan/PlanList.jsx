@@ -99,17 +99,23 @@ function PlanList(props) {
           <option value="title">여행명</option>
           <option value="destination">여행지</option>
         </select>
-        <input
-          type="search"
-          placeholder={"내 여행을 검색해보세요."}
-          value={search.keyword}
-          onChange={(e) =>
-            setSearch({ ...search, keyword: e.target.value.trim() })
-          }
-        />
-        <button className={"btn btn-dark"} onClick={handleSearchButton}>
-          검색
-        </button>
+
+        <div className={"search-form-input"}>
+          <input
+            type="search"
+            placeholder={"내 여행을 검색해보세요."}
+            value={search.keyword}
+            onChange={(e) =>
+              setSearch({ ...search, keyword: e.target.value.trim() })
+            }
+          />
+          <button
+            className={"btn-search btn-dark"}
+            onClick={handleSearchButton}
+          >
+            검색
+          </button>
+        </div>
       </div>
 
       {planList.length === 0 ? (
