@@ -1,16 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, HStack, Input, Textarea } from "@chakra-ui/react";
 import { Field } from "../../components/ui/field.jsx";
 import { Button } from "../../components/ui/button.jsx";
 import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
 
 function CommunityEdit(props) {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [community, setCommunity] = useState({});
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    axios.get(`/api/community/view/${id}`).then((res) => {
+      setCommunity(res.data);
+    });
+  }, []);
 
   const handleSaveClick = () => {
     axios
-      .put(`/api/community/edit`, { title, content })
+      .put(`/api/community/edit`, {
+        id: community.id,
+        title: community.title,
+        content: community.content,
+      })
       .then(navigate(`/community/list`));
   };
 
@@ -24,12 +36,19 @@ function CommunityEdit(props) {
         }}
       >
         <Field label={"제목"}>
-          <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+          <Input
+            value={community.title}
+            onChange={(e) =>
+              setCommunity({ ...community, title: e.target.value })
+            }
+          />
         </Field>
         <Field label={"본문"}>
           <Textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+            value={community.content}
+            onChange={(e) =>
+              setCommunity({ ...community, content: e.target.value })
+            }
             h={300}
           />
         </Field>

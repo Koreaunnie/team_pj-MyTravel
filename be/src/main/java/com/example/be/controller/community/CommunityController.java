@@ -37,7 +37,8 @@ public class CommunityController {
     }
 
     @PutMapping("edit")
-    public void edit(Community community) {
+    public void edit(@RequestBody Community community) {
+        System.out.println(community);
         service.edit(community);
     }
 
