@@ -3,6 +3,7 @@ import { Button } from "../../components/ui/button.jsx";
 import axios from "axios";
 import "./Plan.css";
 import { useNavigate } from "react-router-dom";
+import { toaster } from "../../components/ui/toaster.jsx";
 
 function PlanAdd(props) {
   const [title, setTitle] = useState("");
@@ -58,10 +59,27 @@ function PlanAdd(props) {
       })
       .then((res) => res.data)
       .then((data) => {
-        navigate(`/view/${data.id}`);
-        alert("일정이 저장되었습니다.");
+        const message = data.message;
+        if (data.message.type === "success") {
+          toaster.create({
+            description: message.text,
+            type: message.type,
+          });
+          navigate(`/plan/view/${data.id}`);
+        } else {
+          toaster.create({
+            description: message.text,
+            type: message.type,
+          });
+        }
       })
-      .catch()
+      .catch((e) => {
+        const message = data.message;
+        toaster.create({
+          description: message.text,
+          type: message.type,
+        });
+      })
       .finally(() => {
         // 요청 완료 후 처리
         setTitle("");

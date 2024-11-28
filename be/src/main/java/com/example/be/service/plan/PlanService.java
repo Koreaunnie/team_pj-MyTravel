@@ -18,9 +18,9 @@ public class PlanService {
     final PlanMapper mapper;
 
     // 내 여행 추가
-    public void add(Plan plan) {
+    public boolean add(Plan plan) {
         // 1. Plan 의 기본 정보 저장 (ID 생성)
-        mapper.insertPlan(plan);
+        int cnt = mapper.insertPlan(plan);
 
         // 2. plan body fields 데이터를 반복적으로 저장
         if (plan.getPlanFieldList() != null) {
@@ -42,6 +42,7 @@ public class PlanService {
                 mapper.insertPlanField(field);
             }
         }
+        return cnt == 1;
     }
 
     // 내 여행 목록
