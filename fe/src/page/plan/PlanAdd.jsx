@@ -114,6 +114,7 @@ function PlanAdd(props) {
                 type="text"
                 id="name"
                 size="20"
+                required
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
@@ -147,7 +148,9 @@ function PlanAdd(props) {
             <li>
               <label htmlFor="due">기간</label>
               <input
+                type="text"
                 id="due"
+                size="20"
                 value={due}
                 onChange={(e) => setDue(e.target.value)}
               />
