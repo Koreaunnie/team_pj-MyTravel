@@ -47,7 +47,7 @@ function PlanList(props) {
 
   return (
     <div className="body">
-      <button className="btn btn-dark" onClick={setAddModalOpen}>
+      <button className="btn btn-dark" onClick={() => setAddModalOpen(true)}>
         새로운 여행 작성하기
       </button>
 

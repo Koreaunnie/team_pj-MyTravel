@@ -88,12 +88,15 @@ function PlanEdit(props) {
       <div className={"btn-wrap"}>
         <button
           className={"btn btn-dark-outline"}
-          onClick={setBackToListModalOpen}
+          onClick={() => setBackToListModalOpen(true)}
         >
           목록
         </button>
 
-        <button className={"btn btn-dark"} onClick={setSaveModalOpen}>
+        <button
+          className={"btn btn-dark"}
+          onClick={() => setSaveModalOpen(true)}
+        >
           저장
         </button>
       </div>

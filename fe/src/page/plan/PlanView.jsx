@@ -54,15 +54,24 @@ function PlanView(props) {
           목록
         </button>
 
-        <button className={"btn btn-dark"} onClick={setAddModalOpen}>
+        <button
+          className={"btn btn-dark"}
+          onClick={() => setAddModalOpen(true)}
+        >
           새 여행 작성
         </button>
 
-        <button className={"btn btn-dark"} onClick={setEditModalOpen}>
+        <button
+          className={"btn btn-dark"}
+          onClick={() => setEditModalOpen(true)}
+        >
           수정
         </button>
 
-        <button className={"btn btn-warning"} onClick={setDeleteModalOpen}>
+        <button
+          className={"btn btn-warning"}
+          onClick={() => setDeleteModalOpen(true)}
+        >
           삭제
         </button>
       </div>

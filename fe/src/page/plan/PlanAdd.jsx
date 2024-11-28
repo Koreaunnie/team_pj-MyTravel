@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toaster } from "../../components/ui/toaster.jsx";
 
 function PlanAdd(props) {
+  const [backToListModalOpen, setBackToListModalOpen] = useState(false);
   const [saveModalOpen, setSaveModalOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -97,6 +98,7 @@ function PlanAdd(props) {
   };
 
   const closeModal = () => {
+    setBackToListModalOpen();
     setSaveModalOpen(false);
   };
 
@@ -105,7 +107,7 @@ function PlanAdd(props) {
       <div className="btn-wrap">
         <button
           className="btn btn-dark-outline"
-          onClick={() => navigate(`/plan/list`)}
+          onClick={() => setBackToListModalOpen(true)}
         >
           목록
         </button>
@@ -113,7 +115,7 @@ function PlanAdd(props) {
         <button
           className="btn btn-dark"
           disabled={disabled()}
-          onClick={setSaveModalOpen}
+          onClick={() => setSaveModalOpen(true)}
         >
           저장
         </button>
@@ -244,6 +246,36 @@ function PlanAdd(props) {
           ))}
         </fieldset>
       </form>
+
+      {/* 목록 modal */}
+      {backToListModalOpen && (
+        <div className={"modal"}>
+          <div className={"modal-content"}>
+            <div className={"modal-header"}>
+              <a href="#" className={"close"} onClick={closeModal}>
+                &times;
+              </a>
+            </div>
+
+            <div className={"modal-body"}>
+              <p>목록으로 돌아가시겠습니까?</p>
+            </div>
+
+            <div className={"modal-footer btn-wrap"}>
+              <button className={"btn btn-dark-outline"} onClick={closeModal}>
+                닫기
+              </button>
+
+              <button
+                className={"btn btn-dark"}
+                onClick={() => navigate(`/plan/list`)}
+              >
+                목록
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 저장 modal */}
       {saveModalOpen && (
