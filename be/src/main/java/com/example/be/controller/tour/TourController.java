@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -17,8 +18,10 @@ public class TourController {
   final TourService service;
 
   @PutMapping("update")
-  public ResponseEntity<Map<String, Object>> update(@RequestBody Tour tour) {
-    if (service.update(tour)) {
+  public ResponseEntity<Map<String, Object>> update(
+          Tour tour,
+          @RequestParam(value = "removeFiles[]", required = false) List<String> removeFiles) {
+    if (service.update(tour, removeFiles)) {
       return ResponseEntity.ok(Map.of("message",
               Map.of("type", "success", "text", "상품 수정 완료")));
     } else {

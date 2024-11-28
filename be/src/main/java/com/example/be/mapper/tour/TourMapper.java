@@ -98,4 +98,11 @@ public interface TourMapper {
           DELETE FROM tour_img
           WHERE tour_id=#{id}""")
   int deleteFileByTourId(int id);
+
+  @Delete("""
+          DELETE FROM tour_img
+          WHERE tour_id=#{id}
+            AND name=#{file}
+          """)
+  int deleteFileByTourIdAndName(Integer id, String file);
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Input, Stack, Textarea } from "@chakra-ui/react";
+import { Box, HStack, Image, Input, Stack, Textarea } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { Field } from "../../components/ui/field.jsx";
@@ -15,25 +15,53 @@ import {
   DialogTrigger,
 } from "../../components/ui/dialog.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
+import { Checkbox } from "../../components/ui/checkbox.jsx";
+
+function ImageView({ files, onRemoveCheckClick }) {
+  return (
+    <Box>
+      {files.map((file) => (
+        <HStack key={file.name}>
+          <Checkbox
+            onCheckedChange={(e) => onRemoveCheckClick(e.checked, file.name)}
+          />
+          <Image src={file.src} m={5}></Image>
+        </HStack>
+      ))}
+    </Box>
+  );
+}
 
 function TourUpdate() {
   const { id } = useParams();
   const [tour, setTour] = useState(null);
   const [open, setOpen] = useState(false);
+  const [removeFiles, setRemoveFiles] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios
-      .get(`/api/tour/view/${id}`)
-      .then((res) => setTour(res.data))
-      .then()
-      .catch()
-      .finally();
+    axios.get(`/api/tour/view/${id}`).then((res) => setTour(res.data));
   }, []);
+
+  const handleDeleteCheck = (checked, fileName) => {
+    if (checked) {
+      setRemoveFiles([...removeFiles, fileName]);
+    } else {
+      setRemoveFiles(removeFiles.filter((f) => f !== fileName));
+    }
+    console.log("삭제할 파일: ", removeFiles);
+  };
 
   const handleSaveClick = () => {
     axios
-      .put(`/api/tour/update`, tour)
+      .putForm(`/api/tour/update`, {
+        id: tour.id,
+        title: tour.title,
+        product: tour.product,
+        location: tour.location,
+        content: tour.content,
+        removeFiles,
+      })
       .then((res) => {
         const message = res.data.message;
         toaster.create({
@@ -68,6 +96,10 @@ function TourUpdate() {
             onChange={(e) => setTour({ ...tour, title: e.target.value })}
           />
         </Field>
+        <ImageView
+          files={tour.fileList}
+          onRemoveCheckClick={handleDeleteCheck}
+        />
         <Field label={"상품"}>
           <Input
             value={tour.product}
