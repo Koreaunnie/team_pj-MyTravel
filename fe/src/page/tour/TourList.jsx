@@ -22,7 +22,7 @@ function TourList() {
         signal: controller.signal,
       })
       .then((res) => {
-        setTourList(res.data);
+        setTourList(res.data.tourList);
       })
       .catch((err) => {
         console.error(err);
