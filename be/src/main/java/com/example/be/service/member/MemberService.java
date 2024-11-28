@@ -3,6 +3,8 @@ package com.example.be.service.member;
 import com.example.be.dto.member.Member;
 import com.example.be.dto.member.MemberEdit;
 import com.example.be.mapper.member.MemberMapper;
+import com.example.be.mapper.tour.TourMapper;
+import com.example.be.service.tour.TourService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -19,6 +21,8 @@ import java.util.List;
 public class MemberService {
   final MemberMapper mapper;
   final JwtEncoder jwtEncoder;
+  private final TourService tourService;
+  private final TourMapper tourMapper;
 
   public boolean add(Member member) {
     int cnt = mapper.insert(member);
@@ -41,10 +45,13 @@ public class MemberService {
     int cnt = 0;
 
     Member db = mapper.selectByEmail(member.getEmail());
-    if (db != null) {
-      if (db.getPassword().equals(member.getPassword())) {
-        cnt = mapper.deleteByEmail(member.getEmail());
+    if (db != null && db.getPassword().equals(member.getPassword())) {
+
+      List<Integer> tourBoards = tourMapper.selectByPartner(db.getNickname());
+      for (Integer tourId : tourBoards) {
+        tourService.delete(tourId);
       }
+      cnt = mapper.deleteByEmail(member.getEmail());
     }
     return cnt == 1;
   }

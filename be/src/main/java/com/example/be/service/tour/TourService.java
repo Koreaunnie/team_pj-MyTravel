@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
@@ -96,6 +97,20 @@ public class TourService {
   }
 
   public boolean delete(int id) {
+    //첨부파일 삭제
+    List<String> fileName = mapper.selectFilesByTourId(id);
+    for (String file : fileName) {
+      String key = "teamPrj1126/" + id + "/" + file;
+      DeleteObjectRequest dor = DeleteObjectRequest.builder()
+              .bucket(bucketName)
+              .key(key)
+              .build();
+      s3.deleteObject(dor);
+    }
+
+    //DB테이블에서 삭제
+    mapper.deleteFileByTourId(id);
+
     int cnt = mapper.deleteById(id);
     return cnt == 1;
   }

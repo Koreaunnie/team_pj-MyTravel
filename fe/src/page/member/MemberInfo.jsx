@@ -108,7 +108,14 @@ function MemberInfo(props) {
                 <DialogActionTrigger>
                   <Button variant={"outline"}>취소</Button>
                 </DialogActionTrigger>
-                <Button onClick={handleDeleteClick}>탈퇴</Button>
+                <Button
+                  onClick={handleDeleteClick}
+                  // onClick={() => {
+                  //   localStorage.removeItem("token");
+                  // }}
+                >
+                  탈퇴
+                </Button>
               </DialogFooter>
             </DialogContent>
           </DialogRoot>

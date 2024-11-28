@@ -8,6 +8,14 @@ import java.util.List;
 @Mapper
 public interface TourMapper {
 
+  @Select("""
+          SELECT id
+          FROM tour
+          WHERE partner=#{email}
+          """)
+  List<Integer> selectByPartner(String email);
+
+
   @Insert("""
           INSERT INTO tour
           (title, product, price, location, content, partner)
@@ -85,4 +93,9 @@ public interface TourMapper {
           WHERE tour_id=#{id}    
           """)
   List<String> selectFilesByTourId(int id);
+
+  @Delete("""
+          DELETE FROM tour_img
+          WHERE tour_id=#{id}""")
+  int deleteFileByTourId(int id);
 }
