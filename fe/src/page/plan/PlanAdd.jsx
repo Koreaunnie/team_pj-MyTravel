@@ -248,9 +248,13 @@ function PlanAdd(props) {
         <div className={"modal"}>
           <div className={"modal-content"}>
             <div className={"modal-header"}>
-              <a href="#" className={"close"} onClick={closeModal}>
+              <button
+                className="close"
+                onClick={closeModal}
+                aria-label="모달 닫기"
+              >
                 &times;
-              </a>
+              </button>
             </div>
 
             <div className={"modal-body"}>
@@ -278,9 +282,13 @@ function PlanAdd(props) {
         <div className={"modal"}>
           <div className={"modal-content"}>
             <div className={"modal-header"}>
-              <a href="#" className={"close"} onClick={closeModal}>
+              <button
+                className="close"
+                onClick={closeModal}
+                aria-label="모달 닫기"
+              >
                 &times;
-              </a>
+              </button>
             </div>
 
             <div className={"modal-body"}>
