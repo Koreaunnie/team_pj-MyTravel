@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Button } from "../../components/ui/button.jsx";
 import axios from "axios";
 import "./Plan.css";
 import { useNavigate } from "react-router-dom";
@@ -100,7 +99,7 @@ function PlanAdd(props) {
 
   return (
     <div className={"body"}>
-      <button className={"btn"} onClick={() => navigate(`/plan/list`)}>
+      <button className="btn btn-dark" onClick={() => navigate(`/plan/list`)}>
         목록
       </button>
 
@@ -206,22 +205,34 @@ function PlanAdd(props) {
                 }
               />
 
-              <div className={"btn-wrap"}>
-                <Button type="button" onClick={handleAddField}>
+              <div className="btn-wrap">
+                <button
+                  className="btn btn-dark"
+                  type="button"
+                  onClick={handleAddField}
+                >
                   일정 추가
-                </Button>
-                <Button type="button" onClick={() => handleDeleteField(index)}>
+                </button>
+                <button
+                  className="btn btn-dark"
+                  type="button"
+                  onClick={() => handleDeleteField(index)}
+                >
                   일정 삭제
-                </Button>
+                </button>
               </div>
             </div>
           ))}
         </fieldset>
 
-        <div className={"btn-wrap"}>
-          <Button alignSelf="flex-start" onClick={handleSaveButton}>
+        <div className="btn-wrap">
+          <button
+            className="btn btn-dark"
+            alignSelf="flex-start"
+            onClick={handleSaveButton}
+          >
             저장
-          </Button>
+          </button>
         </div>
       </form>
     </div>

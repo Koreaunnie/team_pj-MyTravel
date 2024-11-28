@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Badge, Box, Card, HStack } from "@chakra-ui/react";
-import { Button } from "../../components/ui/button.jsx";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -16,9 +15,9 @@ function PlanList(props) {
   }, []);
 
   return (
-    <div className={"body"}>
-      <button className={"btn"} onClick={() => navigate(`/plan/add`)}>
-        추가
+    <div className="body">
+      <button className="btn btn-dark" onClick={() => navigate(`/plan/add`)}>
+        새로운 여행 등록하기
       </button>
 
       {planList.map((plan) => (
@@ -35,13 +34,14 @@ function PlanList(props) {
               </Card.Body>
 
               <Card.Footer>
-                <Button
+                <button
+                  className="btn btn-dark"
                   onClick={() => {
                     navigate(`/plan/view/${plan.id}`);
                   }}
                 >
                   여행 보기
-                </Button>
+                </button>
               </Card.Footer>
             </Box>
           </Card.Root>
