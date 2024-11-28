@@ -105,4 +105,10 @@ public class PlanService {
     public void delete(int id) {
         mapper.deleteById(id);
     }
+
+    // 메인 화면에 필요한 일부 plan 리스트 가져오기
+    public List<Plan> getMainPagePlans() {
+        // 최신 5개의 계획만
+        return mapper.getTop5ByOrderByUpdated();
+    }
 }

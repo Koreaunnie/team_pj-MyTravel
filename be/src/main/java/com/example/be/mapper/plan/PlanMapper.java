@@ -118,4 +118,13 @@ public interface PlanMapper {
             WHERE id = #{id}
             """)
     int deleteById(int id);
+
+    // 메인 화면에 필요한 일부 plan 리스트 가져오기
+    @Select("""
+            SELECT *
+            FROM plan
+            ORDER BY updated DESC
+            LIMIT 5
+            """)
+    List<Plan> getTop5ByOrderByUpdated();
 }
