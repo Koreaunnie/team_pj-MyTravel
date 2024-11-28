@@ -61,6 +61,7 @@ function PlanAdd(props) {
       .then((res) => res.data)
       .then((data) => {
         const message = data.message;
+        console.log(message);
         toaster.create({
           description: message.text,
           type: message.type,
@@ -73,6 +74,10 @@ function PlanAdd(props) {
           description: message.text,
           type: message.type,
         });
+
+        if (title.trim().length === 0) {
+          setSaveModalOpen(false);
+        }
       })
       .finally(() => {
         // 요청 완료 후 처리
@@ -92,11 +97,6 @@ function PlanAdd(props) {
       });
   }
 
-  // 제목이 비어있으면 버튼 비활성화
-  const disabled = () => {
-    return title.trim().length === 0;
-  };
-
   const closeModal = () => {
     setBackToListModalOpen(false);
     setSaveModalOpen(false);
@@ -112,11 +112,7 @@ function PlanAdd(props) {
           목록
         </button>
 
-        <button
-          className="btn btn-dark"
-          disabled={disabled()}
-          onClick={() => setSaveModalOpen(true)}
-        >
+        <button className="btn btn-dark" onClick={() => setSaveModalOpen(true)}>
           저장
         </button>
       </div>

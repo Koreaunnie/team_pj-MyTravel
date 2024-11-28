@@ -45,11 +45,9 @@ public class PlanService {
         return cnt == 1;
     }
 
-    // 여행 작성 시 제목 공백 불가
+    // 여행 제목이 공백이 아니고 길이가 1자 이상인 경우에만 true
     public boolean validate(Plan plan) {
-        boolean title = plan.getTitle().trim().length() > 0;
-
-        return title;
+        return plan.getTitle() != null && !plan.getTitle().trim().isEmpty();
     }
 
     // 내 여행 목록 조회
