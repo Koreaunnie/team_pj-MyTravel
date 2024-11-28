@@ -8,7 +8,9 @@ function PlanView(props) {
   const { id } = useParams();
   const [plan, setPlan] = useState(null);
   const [planFields, setPlanFields] = useState([]);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [addModalOpen, setAddModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,7 +28,9 @@ function PlanView(props) {
 
   // modal 팝업
   const closeModal = () => {
-    setModalOpen(false);
+    setAddModalOpen(false);
+    setEditModalOpen(false);
+    setDeleteModalOpen(false);
   };
 
   const handleDeleteButton = () => {
@@ -50,54 +54,18 @@ function PlanView(props) {
           목록
         </button>
 
-        <button
-          className={"btn btn-dark"}
-          onClick={() => navigate(`/plan/add`)}
-        >
-          새 일정 작성
+        <button className={"btn btn-dark"} onClick={setAddModalOpen}>
+          새 여행 작성
         </button>
 
-        <button
-          className={"btn btn-dark"}
-          onClick={() => navigate(`/plan/edit/${id}`)}
-        >
+        <button className={"btn btn-dark"} onClick={setEditModalOpen}>
           수정
         </button>
 
-        <button className={"btn btn-warning"} onClick={setModalOpen}>
+        <button className={"btn btn-warning"} onClick={setDeleteModalOpen}>
           삭제
         </button>
       </div>
-
-      {/* modal */}
-      {modalOpen && (
-        <div className={"modal"}>
-          <div className={"modal-content"}>
-            <div className={"modal-header"}>
-              <a href="#" className={"close"} onClick={closeModal}>
-                &times;
-              </a>
-            </div>
-
-            <div className={"modal-body"}>
-              <p>정말로 이 여행을 삭제하시겠습니까?</p>
-            </div>
-
-            <div className={"modal-footer btn-wrap"}>
-              <button className={"btn btn-dark-outline"} onClick={closeModal}>
-                닫기
-              </button>
-
-              <button
-                className={"btn btn-warning"}
-                onClick={handleDeleteButton}
-              >
-                삭제
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       <h1>{plan.title}</h1>
       <p>{plan.description}</p>
@@ -127,6 +95,96 @@ function PlanView(props) {
           ))}
         </tbody>
       </table>
+
+      {/* 새 여행 modal */}
+      {addModalOpen && (
+        <div className={"modal"}>
+          <div className={"modal-content"}>
+            <div className={"modal-header"}>
+              <a href="#" className={"close"} onClick={closeModal}>
+                &times;
+              </a>
+            </div>
+
+            <div className={"modal-body"}>
+              <p>새로운 여행을 작성하시겠습니까?</p>
+            </div>
+
+            <div className={"modal-footer btn-wrap"}>
+              <button className={"btn btn-dark-outline"} onClick={closeModal}>
+                닫기
+              </button>
+
+              <button
+                className={"btn btn-dark"}
+                onClick={() => navigate(`/plan/add`)}
+              >
+                작성
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 수정 modal */}
+      {editModalOpen && (
+        <div className={"modal"}>
+          <div className={"modal-content"}>
+            <div className={"modal-header"}>
+              <a href="#" className={"close"} onClick={closeModal}>
+                &times;
+              </a>
+            </div>
+
+            <div className={"modal-body"}>
+              <p>이 여행을 수정하시겠습니까?</p>
+            </div>
+
+            <div className={"modal-footer btn-wrap"}>
+              <button className={"btn btn-dark-outline"} onClick={closeModal}>
+                닫기
+              </button>
+
+              <button
+                className={"btn btn-dark"}
+                onClick={() => navigate(`/plan/edit/${id}`)}
+              >
+                수정
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 삭제 modal */}
+      {deleteModalOpen && (
+        <div className={"modal"}>
+          <div className={"modal-content"}>
+            <div className={"modal-header"}>
+              <a href="#" className={"close"} onClick={closeModal}>
+                &times;
+              </a>
+            </div>
+
+            <div className={"modal-body"}>
+              <p>정말로 이 여행을 삭제하시겠습니까?</p>
+            </div>
+
+            <div className={"modal-footer btn-wrap"}>
+              <button className={"btn btn-dark-outline"} onClick={closeModal}>
+                닫기
+              </button>
+
+              <button
+                className={"btn btn-warning"}
+                onClick={handleDeleteButton}
+              >
+                삭제
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

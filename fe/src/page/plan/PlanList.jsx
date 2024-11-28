@@ -11,6 +11,7 @@ import {
 
 function PlanList(props) {
   const [planList, setPlanList] = useState([]);
+  const [addModalOpen, setAddModalOpen] = useState(false);
   const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -27,6 +28,10 @@ function PlanList(props) {
       });
   }, [searchParams]);
 
+  const closeModal = () => {
+    setAddModalOpen(false);
+  };
+
   // pagination
   // page 번호 (searchParams : URL 쿼리 파라미터 관리)
   const pageParam = searchParams.get("page") ?? "1";
@@ -42,8 +47,8 @@ function PlanList(props) {
 
   return (
     <div className="body">
-      <button className="btn btn-dark" onClick={() => navigate(`/plan/add`)}>
-        새로운 여행 등록하기
+      <button className="btn btn-dark" onClick={setAddModalOpen}>
+        새로운 여행 작성하기
       </button>
 
       {planList.map((plan) => (
@@ -75,7 +80,6 @@ function PlanList(props) {
       ))}
 
       {/* pagination */}
-
       <div className="pagination">
         <PaginationRoot
           onPageChange={handlePageChange}
@@ -91,6 +95,36 @@ function PlanList(props) {
           </HStack>
         </PaginationRoot>
       </div>
+
+      {/* 새 여행 modal */}
+      {addModalOpen && (
+        <div className={"modal"}>
+          <div className={"modal-content"}>
+            <div className={"modal-header"}>
+              <a href="#" className={"close"} onClick={closeModal}>
+                &times;
+              </a>
+            </div>
+
+            <div className={"modal-body"}>
+              <p>새로운 여행을 작성하시겠습니까?</p>
+            </div>
+
+            <div className={"modal-footer btn-wrap"}>
+              <button className={"btn btn-dark-outline"} onClick={closeModal}>
+                닫기
+              </button>
+
+              <button
+                className={"btn btn-dark"}
+                onClick={() => navigate(`/plan/add`)}
+              >
+                작성
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
