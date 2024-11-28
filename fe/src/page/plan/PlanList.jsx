@@ -34,7 +34,21 @@ function PlanList(props) {
   };
 
   // search
-  console.log("검색조건", search);
+  function handleSearchButton(e) {
+    const nextSearchParam = new URLSearchParams(searchParams);
+
+    if (search.keyword.trim().length > 0) {
+      // 검색
+      nextSearchParam.set("st", search.type);
+      nextSearchParam.set("sk", search.keyword);
+      nextSearchParam.set("page", 1);
+    } else {
+      // 검색 안함
+      nextSearchParam.delete("st");
+      nextSearchParam.delete("sk");
+    }
+    setSearchParams(nextSearchParam);
+  }
 
   // pagination
   // page 번호 (searchParams : URL 쿼리 파라미터 관리)
@@ -66,8 +80,14 @@ function PlanList(props) {
         <input
           type="search"
           placeholder={"내 여행을 검색해보세요."}
-          onChange={(e) => setSearch({ ...search, keyword: e.target.value })}
+          value={search.keyword}
+          onChange={(e) =>
+            setSearch({ ...search, keyword: e.target.value.trim() })
+          }
         />
+        <button className={"btn btn-dark"} onClick={handleSearchButton}>
+          검색
+        </button>
       </div>
 
       {planList.map((plan) => (
