@@ -32,7 +32,8 @@ function CommunityView(props) {
   };
 
   const handleEditClick = () => {
-    axios.put(`/api/community/edit/`);
+    navigate(`/community/edit/${id}`);
+    ///community/edit/18
   };
 
   return (
