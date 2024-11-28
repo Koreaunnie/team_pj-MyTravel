@@ -17,7 +17,7 @@ public class PlanController {
     // 내 여행 추가
     @PostMapping("add")
     public ResponseEntity<Map<String, Object>> add(@RequestBody Plan plan) {
-        try {
+        if (service.validate(plan)) {
             if (service.add(plan)) {
                 return ResponseEntity.ok().body(Map.of(
                         "message", Map.of("type", "success",
@@ -28,8 +28,10 @@ public class PlanController {
                         "message", Map.of("type", "warning",
                                 "text", "여행이 저장 중 문제가 발생하였습니다.")));
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } else {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", Map.of("type", "warning",
+                            "text", "여행명은 비어있을 수 없습니다.")));
         }
     }
 

@@ -45,6 +45,13 @@ public class PlanService {
         return cnt == 1;
     }
 
+    // 여행 작성 시 제목 공백 불가
+    public boolean validate(Plan plan) {
+        boolean title = plan.getTitle().trim().length() > 0;
+
+        return title;
+    }
+
     // 내 여행 목록 조회
     public Map<String, Object> list(Integer page) {
         Integer count = mapper.countAll();

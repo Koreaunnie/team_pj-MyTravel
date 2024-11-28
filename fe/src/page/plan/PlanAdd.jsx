@@ -60,21 +60,14 @@ function PlanAdd(props) {
       .then((res) => res.data)
       .then((data) => {
         const message = data.message;
-        if (data.message.type === "success") {
-          toaster.create({
-            description: message.text,
-            type: message.type,
-          });
-          navigate(`/plan/view/${data.id}`);
-        } else {
-          toaster.create({
-            description: message.text,
-            type: message.type,
-          });
-        }
+        toaster.create({
+          description: message.text,
+          type: message.type,
+        });
+        navigate(`/plan/view/${data.id}`);
       })
       .catch((e) => {
-        const message = data.message;
+        const message = e.response.data.message;
         toaster.create({
           description: message.text,
           type: message.type,
@@ -98,6 +91,11 @@ function PlanAdd(props) {
       });
   }
 
+  // 제목이 비어있으면 버튼 비활성화
+  const disabled = () => {
+    return title.trim().length === 0;
+  };
+
   const closeModal = () => {
     setSaveModalOpen(false);
   };
@@ -112,7 +110,11 @@ function PlanAdd(props) {
           목록
         </button>
 
-        <button className="btn btn-dark" onClick={setSaveModalOpen}>
+        <button
+          className="btn btn-dark"
+          disabled={disabled()}
+          onClick={setSaveModalOpen}
+        >
           저장
         </button>
       </div>
