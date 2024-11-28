@@ -8,6 +8,7 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../components/ui/pagination.jsx";
+import { FaRegQuestionCircle } from "react-icons/fa";
 
 function PlanList(props) {
   const [planList, setPlanList] = useState([]);
@@ -111,33 +112,45 @@ function PlanList(props) {
         </button>
       </div>
 
-      {planList.map((plan) => (
-        <div key={plan.id}>
-          <Card.Root flexDirection="row" overflow="hidden" maxW="xl" my={5}>
-            <Box>
-              <Card.Body>
-                <Card.Title mb="5">{plan.title}</Card.Title>
-                <Card.Description>{plan.description}</Card.Description>
-                <HStack mt="5">
-                  <Badge>{plan.destination}</Badge>
-                  <Badge>{plan.due}</Badge>
-                </HStack>
-              </Card.Body>
-
-              <Card.Footer>
-                <button
-                  className="btn btn-dark"
-                  onClick={() => {
-                    navigate(`/plan/view/${plan.id}`);
-                  }}
-                >
-                  여행 보기
-                </button>
-              </Card.Footer>
-            </Box>
-          </Card.Root>
+      {planList.length === 0 ? (
+        <div className={"empty-container"}>
+          <p>
+            <FaRegQuestionCircle className={"empty-container-icon"} />
+          </p>
+          <p className={"empty-container-title"}>검색 결과가 없습니다.</p>
+          <p className={"empty-container-description"}>
+            다른 검색어로 검색해주세요.
+          </p>
         </div>
-      ))}
+      ) : (
+        planList.map((plan) => (
+          <div key={plan.id}>
+            <Card.Root flexDirection="row" overflow="hidden" maxW="xl" my={5}>
+              <Box>
+                <Card.Body>
+                  <Card.Title mb="5">{plan.title}</Card.Title>
+                  <Card.Description>{plan.description}</Card.Description>
+                  <HStack mt="5">
+                    <Badge>{plan.destination}</Badge>
+                    <Badge>{plan.due}</Badge>
+                  </HStack>
+                </Card.Body>
+
+                <Card.Footer>
+                  <button
+                    className="btn btn-dark"
+                    onClick={() => {
+                      navigate(`/plan/view/${plan.id}`);
+                    }}
+                  >
+                    여행 보기
+                  </button>
+                </Card.Footer>
+              </Box>
+            </Card.Root>
+          </div>
+        ))
+      )}
 
       {/* pagination */}
       <div className="pagination">

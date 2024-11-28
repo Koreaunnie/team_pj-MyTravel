@@ -14,6 +14,8 @@
     --btn-warning-hover: #bb2d3b;
     --btn-warning-hover-border: #b02a37;
 
+    --font-gray-color: #52525b;
+
     --small-font-size: 14px;
     --normal-font-size: 16px;
 }
@@ -193,4 +195,31 @@ nav {
 /*------------------- pagination position -------------------*/
 .pagination {
 
+}
+
+/*------------------- empty list -------------------*/
+.empty-container {
+    width: 100%;
+    margin: 10px;
+    text-align: center;
+}
+
+.empty-container-icon {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+}
+
+.empty-container-title {
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.empty-container-description {
+    margin-top: 5px;
+    font-size: 0.9rem;
+    color: var(--font-gray-color);
 }
