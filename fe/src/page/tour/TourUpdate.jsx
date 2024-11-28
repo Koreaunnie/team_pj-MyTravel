@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, HStack, Image, Input, Stack, Textarea } from "@chakra-ui/react";
+import { Box, Input, Stack, Textarea } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { Field } from "../../components/ui/field.jsx";
@@ -15,22 +15,7 @@ import {
   DialogTrigger,
 } from "../../components/ui/dialog.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
-import { Checkbox } from "../../components/ui/checkbox.jsx";
-
-function ImageView({ files, onRemoveCheckClick }) {
-  return (
-    <Box>
-      {files.map((file) => (
-        <HStack key={file.name}>
-          <Checkbox
-            onCheckedChange={(e) => onRemoveCheckClick(e.checked, file.name)}
-          />
-          <Image src={file.src} m={5}></Image>
-        </HStack>
-      ))}
-    </Box>
-  );
-}
+import { ImageView } from "../../Image/ImageView.jsx";
 
 function TourUpdate() {
   const { id } = useParams();

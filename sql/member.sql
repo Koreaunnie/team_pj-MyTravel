@@ -10,4 +10,11 @@ CREATE TABLE member
     inserted DATETIME DEFAULT NOW()
 );
 
-DROP TABLE member;
+# DROP TABLE member;
+
+ALTER TABLE member
+    ADD picture VARCHAR(300);
+
+SELECT picture
+FROM member
+WHERE email = 'c';

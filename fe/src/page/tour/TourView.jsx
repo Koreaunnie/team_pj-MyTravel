@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Image, Input, Stack, Textarea } from "@chakra-ui/react";
+import { Box, Input, Stack, Textarea } from "@chakra-ui/react";
 import { Field } from "../../components/ui/field.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -15,19 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../components/ui/dialog.jsx";
-import PropTypes from "prop-types";
-
-function ImageFileView({ files }) {
-  return (
-    <Box>
-      {files.map((file) => (
-        <Image key={file.name} src={file.src} />
-      ))}
-    </Box>
-  );
-}
-
-ImageFileView.propTypes = { files: PropTypes.any };
+import { ImageFileView } from "../../Image/ImageFileView.jsx";
 
 function TourView() {
   const { id } = useParams();

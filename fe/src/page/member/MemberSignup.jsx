@@ -12,6 +12,7 @@ function MemberSignup(props) {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [files, setFiles] = useState([]);
   const [emailCheck, setEmailCheck] = useState(false);
   const [nicknameCheck, setNicknameCheck] = useState(true);
   const [passwordCheck, setPasswordCheck] = useState("");
@@ -19,7 +20,14 @@ function MemberSignup(props) {
 
   function handleSignupClick() {
     axios
-      .post("/api/member/signup", { email, nickname, password, name, phone })
+      .postForm("/api/member/signup", {
+        email,
+        nickname,
+        password,
+        name,
+        phone,
+        files,
+      })
       .then((res) => {
         const message = res.data.message;
         toaster.create({
@@ -81,10 +89,24 @@ function MemberSignup(props) {
     }
   }
 
+  const filesList = [];
+  for (const file of files) {
+    filesList.push(<li>{file.name}</li>);
+  }
+
   return (
     <Box>
       <h1>회원 가입</h1>
       <Stack>
+        <Box>
+          <input
+            onChange={(e) => setFiles(e.target.files)}
+            type={"file"}
+            accept={"image/*"}
+            multiple
+          />
+          <Box>{filesList}</Box>
+        </Box>
         <Field label={"이메일"}>
           <Group attached w={"100%"}>
             <Input
