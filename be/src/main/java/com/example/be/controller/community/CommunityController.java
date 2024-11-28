@@ -33,7 +33,6 @@ public class CommunityController {
 
     @GetMapping("view/{id}")
     public Map<String, Object> view(@PathVariable Integer id) {
-        System.out.println(service.view(id));
         return service.view(id);
     }
 
