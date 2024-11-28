@@ -17,4 +17,6 @@ ALTER TABLE member
 
 SELECT picture
 FROM member
-WHERE email = 'c';
+WHERE email = 'fire';
+
+

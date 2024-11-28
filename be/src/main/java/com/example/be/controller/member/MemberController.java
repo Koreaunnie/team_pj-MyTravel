@@ -36,7 +36,7 @@ public class MemberController {
   @PutMapping("update")
   public ResponseEntity<Map<String, Object>> update(
           MemberEdit member,
-          @RequestParam(value = "uploadFiles[]", required = false) MultipartFile[] uploadFiles) {
+          @RequestParam(value = "uploadFiles", required = false) MultipartFile uploadFiles) {
     try {
       if (service.update(member, uploadFiles)) {
         return ResponseEntity.ok(Map.of("message",

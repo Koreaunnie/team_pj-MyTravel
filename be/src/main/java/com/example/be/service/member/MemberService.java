@@ -101,7 +101,6 @@ public class MemberService {
       }
 
       String profile = mapper.selectPictureByEmail(db.getEmail());
-      System.out.println(profile);
       String key = "teamPrj1126/member/" + member.getEmail() + "/" + profile;
       DeleteObjectRequest dor = DeleteObjectRequest.builder()
               .bucket(bucketName)
@@ -110,18 +109,23 @@ public class MemberService {
       s3.deleteObject(dor);
 
       cnt = mapper.deleteByEmail(member.getEmail());
-      
+
     }
 
     return cnt == 1;
   }
 
-  public boolean update(MemberEdit member, MultipartFile[] uploadFiles) {
-    if (uploadFiles != null && uploadFiles.length > 0) {
-      for (MultipartFile image : uploadFiles) {
-        mapper.updatePicture(member.getEmail(), image.getOriginalFilename());
+  public boolean update(MemberEdit member, MultipartFile uploadFiles) {
+    System.out.println(member.getProfile());
 
-        String objectKey = "teamPrj1126/member/" + member.getEmail() + "/" + image.getOriginalFilename();
+    int cnt = 0;
+    Member db = mapper.selectByEmail(member.getEmail());
+    if (db != null && db.getPassword().equals(member.getOldPassword())) {
+      if (uploadFiles != null) {
+
+        mapper.updatePicture(member.getEmail(), uploadFiles.getOriginalFilename());
+
+        String objectKey = "teamPrj1126/member/" + member.getEmail() + "/" + uploadFiles.getOriginalFilename();
         PutObjectRequest por = PutObjectRequest.builder()
                 .bucket(bucketName)
                 .key(objectKey)
@@ -129,20 +133,13 @@ public class MemberService {
                 .build();
 
         try {
-          s3.putObject(por, RequestBody.fromInputStream(image.getInputStream(), image.getSize()));
+          s3.putObject(por, RequestBody.fromInputStream(uploadFiles.getInputStream(), uploadFiles.getSize()));
         } catch (IOException e) {
           throw new RuntimeException(e);
         }
       }
-    }
 
-    int cnt = 0;
-    Member db = mapper.selectByEmail(member.getEmail());
-    if (db != null) {
-      if (db.getPassword().equals(member.getOldPassword())) {
-        cnt = mapper.update(member);
-
-      }
+      cnt = mapper.update(member);
     }
     return cnt == 1;
   }
