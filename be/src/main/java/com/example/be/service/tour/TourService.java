@@ -116,17 +116,17 @@ public class TourService {
   }
 
   public boolean update(Tour tour, List<String> removeFiles) {
-    for (String file : removeFiles) {
-      String key = "teamPrj1126/" + tour.getId() + "/" + file;
-      DeleteObjectRequest dor = DeleteObjectRequest.builder()
-              .bucket(bucketName)
-              .key(key)
-              .build();
-      s3.deleteObject(dor);
-      mapper.deleteFileByTourIdAndName(tour.getId(), file);
+    if (removeFiles != null) {
+      for (String file : removeFiles) {
+        String key = "teamPrj1126/" + tour.getId() + "/" + file;
+        DeleteObjectRequest dor = DeleteObjectRequest.builder()
+                .bucket(bucketName)
+                .key(key)
+                .build();
+        s3.deleteObject(dor);
+        mapper.deleteFileByTourIdAndName(tour.getId(), file);
+      }
     }
-
-
     int cnt = mapper.update(tour);
     return cnt == 1;
   }
