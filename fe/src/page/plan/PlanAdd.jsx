@@ -98,7 +98,7 @@ function PlanAdd(props) {
   };
 
   const closeModal = () => {
-    setBackToListModalOpen();
+    setBackToListModalOpen(false);
     setSaveModalOpen(false);
   };
 
