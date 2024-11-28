@@ -30,13 +30,22 @@ public interface PlanMapper {
     @Options(keyProperty = "id", useGeneratedKeys = true)
     int insertPlanField(PlanField field);
 
-    // 내 여행 목록
+    // 내 여행 목록 조회
+    // 1. pagination : 한 행에 10개씩 조회
     @Select("""
             SELECT * 
             FROM plan
-            ORDER BY inserted DESC;
+            ORDER BY inserted DESC
+            LIMIT #{offset}, 10;
             """)
-    List<Plan> selectPlan();
+    List<Plan> selectPlanByPageOffset(Integer offset);
+
+    // 2. pagination : 전체 plan 개수 조회
+    @Select("""
+            SELECT COUNT(*)
+            FROM plan 
+            """)
+    Integer countAll();
 
     // 내 여행 세부사항
     // 1. Plan

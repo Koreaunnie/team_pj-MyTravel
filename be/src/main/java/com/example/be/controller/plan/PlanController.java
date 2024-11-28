@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -34,10 +33,10 @@ public class PlanController {
         }
     }
 
-    // 내 여행 목록
+    // 내 여행 목록 조회
     @GetMapping("list")
-    public List<Plan> list() {
-        return service.list();
+    public Map<String, Object> list(@RequestParam(value = "page", defaultValue = "1") Integer page) {
+        return service.list(page);
     }
 
     // 내 여행 세부사항

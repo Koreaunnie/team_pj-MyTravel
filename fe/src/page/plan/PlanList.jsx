@@ -1,18 +1,44 @@
 import React, { useEffect, useState } from "react";
 import { Badge, Box, Card, HStack } from "@chakra-ui/react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import {
+  PaginationItems,
+  PaginationNextTrigger,
+  PaginationPrevTrigger,
+  PaginationRoot,
+} from "../../components/ui/pagination.jsx";
 
 function PlanList(props) {
   const [planList, setPlanList] = useState([]);
+  const [count, setCount] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
   useEffect(() => {
     axios
-      .get("/api/plan/list")
+      .get("/api/plan/list", {
+        params: searchParams,
+      })
       .then((res) => res.data)
-      .then((data) => setPlanList(data));
-  }, []);
+      .then((data) => {
+        setPlanList(data.list);
+        setCount(data.count);
+      });
+  }, [searchParams]);
+
+  // pagination
+  // page 번호 (searchParams : URL 쿼리 파라미터 관리)
+  const pageParam = searchParams.get("page") ?? "1";
+  // 문자열로 가져온 page 값을 숫자 타입으로 변환
+  const page = Number(pageParam);
+
+  // 페이지 번호 변경 시 URL의 쿼리 파라미터를 업데이트
+  function handlePageChange(e) {
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.set("page", e.page);
+    setSearchParams(nextSearchParams);
+  }
 
   return (
     <div className="body">
@@ -47,6 +73,22 @@ function PlanList(props) {
           </Card.Root>
         </div>
       ))}
+
+      {/* pagination */}
+
+      <PaginationRoot
+        onPageChange={handlePageChange}
+        count={count}
+        pageSize={10}
+        page={page}
+        variant="solid"
+      >
+        <HStack>
+          <PaginationPrevTrigger />
+          <PaginationItems />
+          <PaginationNextTrigger />
+        </HStack>
+      </PaginationRoot>
     </div>
   );
 }

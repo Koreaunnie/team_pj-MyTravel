@@ -45,9 +45,13 @@ public class PlanService {
         return cnt == 1;
     }
 
-    // 내 여행 목록
-    public List<Plan> list() {
-        return mapper.selectPlan();
+    // 내 여행 목록 조회
+    public Map<String, Object> list(Integer page) {
+        Integer count = mapper.countAll();
+        Integer offset = (page - 1) * 10;
+        List<Plan> list = mapper.selectPlanByPageOffset(offset);
+
+        return Map.of("list", list, "count", count);
     }
 
     // 내 여행 세부사항
