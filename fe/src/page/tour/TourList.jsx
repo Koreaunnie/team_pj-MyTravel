@@ -110,7 +110,9 @@ function TourList() {
               onClick={() => handleRowClick(tour.id)}
             >
               <Image key={tour.image} src={tour.src} />
-              <Text>{tour.title}</Text>
+              <Text>
+                <b>{tour.title}</b>
+              </Text>
               <Text>{tour.location}</Text>
               <Text>{tour.product}</Text>
               <Text>{tour.price}</Text>
