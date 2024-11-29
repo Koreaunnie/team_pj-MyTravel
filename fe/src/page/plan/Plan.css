@@ -38,7 +38,7 @@
     z-index: -1;
 }
 
-.list {
+.plan-list {
     margin-left: 430px;
     width: calc(100% - 250px);
     padding: 30px;

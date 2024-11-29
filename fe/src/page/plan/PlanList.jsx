@@ -136,7 +136,7 @@ function PlanList(props) {
         />
       </aside>
 
-      <div className={"list"}>
+      <div className={"plan-list"}>
         <button
           className="btn btn-dark btn-planlist"
           onClick={() => setAddModalOpen(true)}
