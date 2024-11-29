@@ -116,15 +116,26 @@ public class MemberService {
   }
 
   public boolean update(MemberEdit member, MultipartFile uploadFiles) {
-    System.out.println(member.getProfile());
-
     int cnt = 0;
+
+    //회원 조회 & 비번 대조
     Member db = mapper.selectByEmail(member.getEmail());
     if (db != null && db.getPassword().equals(member.getOldPassword())) {
       if (uploadFiles != null) {
+        //s3기존 이미지 삭제
+        String oldPicture = mapper.selectPictureByEmail(db.getEmail());
+        String key = "teamPrj1126/member/" + member.getEmail() + "/" + oldPicture;
+        DeleteObjectRequest dor = DeleteObjectRequest.builder()
+                .bucket(bucketName)
+                .key(key)
+                .build();
+        s3.deleteObject(dor);
 
+
+        //member 테이블에 이미지 정보 수정
         mapper.updatePicture(member.getEmail(), uploadFiles.getOriginalFilename());
 
+        //s3 이미지 업로드
         String objectKey = "teamPrj1126/member/" + member.getEmail() + "/" + uploadFiles.getOriginalFilename();
         PutObjectRequest por = PutObjectRequest.builder()
                 .bucket(bucketName)
