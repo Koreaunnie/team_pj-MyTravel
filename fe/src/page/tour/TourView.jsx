@@ -57,8 +57,9 @@ function TourView() {
 
   const handleAddToCartClick = () => {
     axios
-      .post(`api/tour/cart`, {
+      .post(`/api/tour/cart`, {
         id: tour.id,
+        email: tour.partnerEmail,
       })
       .then((res) => res.data)
       .then((data) => setCart(data));

@@ -19,15 +19,17 @@ public interface TourMapper {
 
   @Insert("""
           INSERT INTO tour
-          (title, product, price, location, content, partner)
-          VALUES (#{title}, #{product}, #{price}, #{location}, #{content}, #{partner})
+          (title, product, price, location, content, partner, partnerEmail)
+          VALUES (#{title}, #{product}, #{price}, #{location}, #{content}, #{partner}, #{partnerEmail})
           """)
   @Options(keyProperty = "id", useGeneratedKeys = true)
   int insert(Tour tour);
 
   @Select("""
             <script>
-                SELECT id, title, product, price, location FROM tour
+                SELECT id, title, product, price, location, ti.name
+                FROM tour t
+                LEFT JOIN tour_img ti ON t.id = ti.tour_id
                 WHERE
                   <trim prefixOverrides="OR">
                     <if test="searchType == 'all' or searchType == 'title'">
@@ -46,6 +48,7 @@ public interface TourMapper {
                         OR partner LIKE CONCAT('%', #{keyword}, '%')
                     </if>
                   </trim>
+                GROUP BY id
                 ORDER BY id DESC
             </script>
           """)

@@ -19,8 +19,14 @@ public class TourController {
   final TourService service;
 
   @PostMapping("cart")
-  public Map<String, Object> cart(@RequestBody Tour tour, Authentication authentication) {
-    return service.addCart(tour, authentication);
+  public ResponseEntity<Map<String, Object>> cart(@RequestBody Tour tour, Authentication authentication) {
+    if (service.addCart(tour, authentication)) {
+      return ResponseEntity.ok(Map.of("message",
+              Map.of("type", "success", "text", "상품 수정 완료")));
+    } else {
+      return ResponseEntity.ok(Map.of("message",
+              Map.of("type", "warning", "text", "상품 수정 실패")));
+    }
   }
 
   @PutMapping("update")

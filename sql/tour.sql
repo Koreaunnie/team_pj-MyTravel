@@ -31,3 +31,9 @@ FROM tour_img
 WHERE tour.id = 3
 GROUP BY tour.id
 ORDER BY tour.id DESC;
+
+
+ALTER TABLE tour
+    ADD partnerEmail VARCHAR(30) REFERENCES member (email);
+
+
