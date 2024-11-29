@@ -44,10 +44,11 @@ function Navbar(props) {
         </ul>
       </div>
 
-      <h1>My Travel</h1>
+      <h1 className={"logo"} onClick={() => navigate("/")}>
+        My Travel
+      </h1>
 
       <div className={"nav-container"}>
-        <NavbarItem onClick={() => navigate("/")}>HOME</NavbarItem>
         <NavbarItem onClick={() => navigate("/plan/list")}>내 여행</NavbarItem>
         <NavbarItem onClick={() => navigate("/tour/list")}>투어</NavbarItem>
         <NavbarItem onClick={() => navigate("/community/list")}>
