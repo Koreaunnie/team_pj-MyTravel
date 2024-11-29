@@ -2,7 +2,10 @@ import axios from "axios";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { RootLayout } from "./page/root/RootLayout.jsx";
 import { Index } from "./page/Index.jsx";
-import PlanAdd from "./page/plan/PlanAdd.jsx";
+import CommunityWrite from "./page/community/CommunityWrite.jsx";
+import CommunityView from "./page/community/CommunityView.jsx";
+import CommunityList from "./page/community/CommunityList.jsx";
+import CommunityEdit from "./page/community/CommunityEdit.jsx"; // import reactLogo from './assets/react.svg'
 import MemberList from "./page/member/MemberList.jsx";
 import MemberSignup from "./page/member/MemberSignup.jsx";
 import MemberInfo from "./page/member/MemberInfo.jsx";
@@ -12,6 +15,7 @@ import { TourAdd } from "./page/tour/TourAdd.jsx";
 import TourList from "./page/tour/TourList.jsx";
 import TourView from "./page/tour/TourView.jsx";
 import TourUpdate from "./page/tour/TourUpdate.jsx";
+import PlanAdd from "./page/plan/PlanAdd.jsx";
 import PlanList from "./page/plan/PlanList.jsx";
 import PlanView from "./page/plan/PlanView.jsx";
 import PlanEdit from "./page/plan/PlanEdit.jsx";
@@ -65,6 +69,22 @@ const router = createBrowserRouter([
       {
         path: "tour/add",
         element: <TourAdd />,
+      },
+      {
+        path: "community/write",
+        element: <CommunityWrite />,
+      },
+      {
+        path: "community/view/:id",
+        element: <CommunityView />,
+      },
+      {
+        path: "community/list",
+        element: <CommunityList />,
+      },
+      {
+        path: "community/edit/:id",
+        element: <CommunityEdit />,
       },
       {
         path: "tour/view/:id",
