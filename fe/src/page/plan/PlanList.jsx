@@ -109,7 +109,7 @@ function PlanList(props) {
   };
 
   return (
-    <div className={"body"}>
+    <div className={"body calendar-list"}>
       <aside className={"calendar"}>
         <Calendar
           formatDay={(locale, date) =>
@@ -121,103 +121,114 @@ function PlanList(props) {
           // 여행이 있는 날짜에 스타일 적용
           tileContent={({ date }) => {
             const formattedDate = date.toISOString().split("T")[0];
-            return planList.some(
+
+            // 선택된 날짜에 해당하는 여행의 title을 찾아서 표시
+            const matchingPlan = planList.find(
               (plan) =>
                 formattedDate >= plan.startDate &&
                 formattedDate <= plan.endDate,
-            ) ? (
-              <div className={"calendar-badge"}>여행</div>
+            );
+
+            return matchingPlan ? (
+              <div className={"calendar-badge"}>{matchingPlan.title}</div>
             ) : null;
           }}
         />
       </aside>
 
-      <button className="btn btn-dark" onClick={() => setAddModalOpen(true)}>
-        새로운 여행 작성하기
-      </button>
-
-      <div className={"search-form"}>
-        <select
-          onChange={(e) => setSearch({ ...search, type: e.target.value })}
+      <div className={"list"}>
+        <button
+          className="btn btn-dark btn-planlist"
+          onClick={() => setAddModalOpen(true)}
         >
-          <option value="all">전체</option>
-          <option value="title">여행명</option>
-          <option value="destination">여행지</option>
-        </select>
+          새로운 여행 작성하기
+        </button>
 
-        <div className={"search-form-input"}>
-          <input
-            type="search"
-            placeholder={"내 여행을 검색해보세요."}
-            value={search.keyword}
-            onChange={(e) =>
-              setSearch({ ...search, keyword: e.target.value.trim() })
-            }
-          />
-          <button
-            className={"btn-search btn-dark"}
-            onClick={handleSearchButton}
+        <div className={"search-form"}>
+          <select
+            onChange={(e) => setSearch({ ...search, type: e.target.value })}
           >
-            검색
-          </button>
-        </div>
-      </div>
+            <option value="all">전체</option>
+            <option value="title">여행명</option>
+            <option value="destination">여행지</option>
+          </select>
 
-      {filteredPlans.length === 0 ? (
-        <div className={"empty-container"}>
-          <p>
-            <FaRegQuestionCircle className={"empty-container-icon"} />
-          </p>
-          <p className={"empty-container-title"}>검색 결과가 없습니다.</p>
-          <p className={"empty-container-description"}>
-            다른 날짜를 선택해주세요.
-          </p>
-        </div>
-      ) : (
-        filteredPlans.map((plan) => (
-          <div key={plan.id}>
-            <Card.Root flexDirection="row" overflow="hidden" maxW="xl" my={5}>
-              <Box>
-                <Card.Body>
-                  <Card.Title mb="5">{plan.title}</Card.Title>
-                  <Card.Description>{plan.description}</Card.Description>
-                  <HStack mt="5">
-                    <Badge>{plan.destination}</Badge>
-                    <Badge>{plan.due}</Badge>
-                  </HStack>
-                </Card.Body>
-
-                <Card.Footer>
-                  <button
-                    className="btn btn-dark"
-                    onClick={() => {
-                      navigate(`/plan/view/${plan.id}`);
-                    }}
-                  >
-                    여행 보기
-                  </button>
-                </Card.Footer>
-              </Box>
-            </Card.Root>
+          <div className={"search-form-input"}>
+            <input
+              type="search"
+              placeholder={"내 여행을 검색해보세요."}
+              value={search.keyword}
+              onChange={(e) =>
+                setSearch({ ...search, keyword: e.target.value.trim() })
+              }
+            />
+            <button
+              className={"btn-search btn-dark"}
+              onClick={handleSearchButton}
+            >
+              검색
+            </button>
           </div>
-        ))
-      )}
+        </div>
 
-      {/* pagination */}
-      <div className="pagination">
-        <PaginationRoot
-          onPageChange={handlePageChange}
-          count={count}
-          pageSize={10}
-          page={page}
-          variant="solid"
-        >
-          <HStack>
-            <PaginationPrevTrigger />
-            <PaginationItems />
-            <PaginationNextTrigger />
-          </HStack>
-        </PaginationRoot>
+        {filteredPlans.length === 0 ? (
+          <div className={"empty-container"}>
+            <p>
+              <FaRegQuestionCircle className={"empty-container-icon"} />
+            </p>
+            <p className={"empty-container-title"}>
+              해당하는 날짜에는 일정이 없습니다.
+            </p>
+            <p className={"empty-container-description"}>
+              다른 날짜를 선택해주세요.
+            </p>
+          </div>
+        ) : (
+          filteredPlans.map((plan) => (
+            <div key={plan.id}>
+              <Card.Root flexDirection="row" overflow="hidden" maxW="xl" my={5}>
+                <Box>
+                  <Card.Body>
+                    <Card.Title mb="5">{plan.title}</Card.Title>
+                    <Card.Description>{plan.description}</Card.Description>
+                    <HStack mt="5">
+                      <Badge>{plan.destination}</Badge>
+                      <Badge>{plan.due}</Badge>
+                    </HStack>
+                  </Card.Body>
+
+                  <Card.Footer>
+                    <button
+                      className="btn btn-dark"
+                      onClick={() => {
+                        navigate(`/plan/view/${plan.id}`);
+                      }}
+                    >
+                      여행 보기
+                    </button>
+                  </Card.Footer>
+                </Box>
+              </Card.Root>
+            </div>
+          ))
+        )}
+
+        {/* pagination */}
+        <div className="pagination">
+          <PaginationRoot
+            onPageChange={handlePageChange}
+            count={count}
+            pageSize={10}
+            page={page}
+            variant="solid"
+          >
+            <HStack>
+              <PaginationPrevTrigger />
+              <PaginationItems />
+              <PaginationNextTrigger />
+            </HStack>
+          </PaginationRoot>
+        </div>
       </div>
 
       {/* 새 여행 modal */}

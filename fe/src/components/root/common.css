@@ -1,6 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
+
 :root {
     --table-header-color: #f7f7f7;
-    --table-border-color: #eaeaea;
+    --table-border-color: #e4e4e7;
     --table-hover-color: #f9f9f9;
 
     --btn-normal-dark: #212529;
@@ -26,6 +28,7 @@
 * {
     text-decoration: none;
     list-style: none;
+    font-family: 'Noto Sans', sans-serif;
 }
 
 body, a, p, ul, li {
@@ -99,13 +102,10 @@ h1 {
     margin: 20px 0;
 }
 
-nav {
-    width: 100vw;
-}
-
 .body {
-    width: 50%;
+    width: 900px;
     margin: 0 auto;
+    position: relative;
 }
 
 /*------------------- button design -------------------*/
@@ -242,7 +242,7 @@ nav {
 /*------------------- empty list -------------------*/
 .empty-container {
     width: 100%;
-    margin: 20px 0;
+    margin: 45px 0;
     text-align: center;
 }
 
@@ -264,4 +264,29 @@ nav {
     margin-top: 5px;
     font-size: 0.9rem;
     color: var(--font-gray-color);
+}
+
+
+/*------------------- 화면 크기가 768px 이하 (태블릿 화면) -------------------*/
+@media (max-width: 768px) {
+    .body {
+        width: 80%;
+        display: block; /* 화면이 좁을 때는 block 형태로 배치 */
+    }
+
+    .calendar {
+        display: none;
+    }
+
+    .list {
+        width: 100%;
+    }
+}
+
+/*------------------- 화면 크기가 480px 이하 (모바일 화면) -------------------*/
+@media (max-width: 480px) {
+    .body {
+        width: 95%
+    }
+
 }
