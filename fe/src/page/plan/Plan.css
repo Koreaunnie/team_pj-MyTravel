@@ -4,7 +4,7 @@
     padding: 20px;
 }
 
-.sub-title {
+.due {
     display: flex;
     width: 100%;
 }
@@ -16,6 +16,123 @@
 }
 
 /*-------------------- PlanList --------------------*/
-.plan-container {
+.react-calendar {
+    width: 350px;
+    max-width: 100%;
+    line-height: 1rem;
+    border-radius: 10px;
+}
+
+/* 년-월 */
+.react-calendar__navigation__label > span {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.react-calendar__navigation {
+    margin: 10px;
+}
+
+/* 년-월 이전/다음 버튼 */
+.react-calendar__navigation button {
+}
+
+.react-calendar__navigation button:disabled {
+    background-color: #f0f0f0;
+}
+
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+    background: none !important;
+}
+
+/* 요일 (월 ~ 일) */
+.react-calendar__month-view__weekdays {
+}
+
+.react-calendar__month-view__weekdays__weekday {
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
+/* 주말 */
+react-calendar__month-view__days__day--weekend {
+    color: #000;
+}
+
+/* 날짜 타일 한개 */
+.react-calendar__tile {
+    width: 50px;
+    height: 50px;
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+    background: none !important;
+    border-radius: 50px;
+    border: 1px solid var(--font-gray-color);
+    box-sizing: border-box;
+}
+
+/* 오늘 날짜 */
+.react-calendar__tile--now {
+    font-weight: bold;
+    border-radius: 50px;
+}
+
+.react-calendar__tile--now:enabled:hover,
+.react-calendar__tile--now:enabled:focus {
+    color: #000;
+    background: #fff;
+}
+
+/* 선택된 날짜의 배경색 변경 */
+.react-calendar__tile--active {
+    background-color: var(--btn-normal-dark) !important;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 50px;
+}
+
+.react-calendar__tile--hasActive {
+    background: #51F8C4;
+}
+
+.react-calendar__tile--hasActive:enabled:hover,
+.react-calendar__tile--hasActive:enabled:focus {
+    background: #a9d4ff;
+}
+
+.react-calendar__tile--active:enabled:hover, .react-calendar__tile--active:enabled:focus {
+    background: #51F8C4;
+}
+
+
+/* range 인 경우 시작 날짜, 끝 날짜 */
+.react-calendar__tile--rangeStart,
+.react-calendar__tile--rangeEnd {
 
 }
+
+/* range 선택 중 hover 때 중간 날짜 */
+.react-calendar--selectRange .react-calendar__tile--hover {
+
+}
+
+/* 일정 있는 날 표시 점 */
+.dot {
+    height: 8px;
+    width: 8px;
+    background-color: #51F8C4;
+    border-radius: 50%;
+    text-align: center;
+    margin-top: 3px;
+}
+
+/* 일정 있는 날 표시 뱃지 */
+.calendar-badge {
+    background: var(--bg-gray-color);
+    border-radius: 5px;
+    font-size: 0.75rem;
+}
+

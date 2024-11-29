@@ -19,6 +19,7 @@ import PlanAdd from "./page/plan/PlanAdd.jsx";
 import PlanList from "./page/plan/PlanList.jsx";
 import PlanView from "./page/plan/PlanView.jsx";
 import PlanEdit from "./page/plan/PlanEdit.jsx";
+import PlanCalendar from "./page/plan/PlanCalendar.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
       {
         path: "plan/edit/:id",
         element: <PlanEdit />,
+      },
+      {
+        path: "plan/calendar",
+        element: <PlanCalendar />,
       },
       // 여행 상품
       {
