@@ -84,6 +84,16 @@ public class TourService {
       return Map.of("tourList", List.of()); // 빈 리스트 반환
     }
 
+    tourList.stream()
+            .forEach(tour -> {
+              if (tour.getImage() != null) {
+                tour.setSrc(imageSrcPrefix + "/" + tour.getId() + "/" + tour.getImage());
+              }
+            });
+
+
+    //tourList의 image에 경로
+
   /*  //게시글 별 id에 따른 첫번째 사진과 그 경로
     List<TourImg> imageNames = mapper.selectFirstFilesOfTourId(searchType, keyword);
     List<TourImg> fileSrcList = imageNames.stream()

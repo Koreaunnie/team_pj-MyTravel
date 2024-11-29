@@ -27,7 +27,7 @@ public interface TourMapper {
 
   @Select("""
             <script>
-                SELECT id, title, product, price, location, ti.name
+                SELECT id, title, product, price, location, ti.name image
                 FROM tour t
                 LEFT JOIN tour_img ti ON t.id = ti.tour_id
                 WHERE
