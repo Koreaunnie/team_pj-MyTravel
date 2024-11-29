@@ -24,6 +24,8 @@ export function MemberEdit() {
   const [phone, setPhone] = useState("");
   const [nicknameCheck, setNicknameCheck] = useState(true);
   const [open, setOpen] = useState(false);
+  const [uploadFiles, setUploadFiles] = useState("");
+
   const { email } = useParams();
   const navigate = useNavigate();
 
@@ -38,12 +40,13 @@ export function MemberEdit() {
 
   function handleSaveClick() {
     axios
-      .put(`/api/member/update`, {
+      .putForm(`/api/member/update`, {
         email: member.email,
         nickname,
         password,
         oldPassword,
         phone,
+        uploadFiles,
       })
       .then((res) => {
         const message = res.data.message;
@@ -93,6 +96,13 @@ export function MemberEdit() {
     <Box>
       <h1>회원 정보 수정</h1>
       <Stack>
+        <Box>
+          <Input
+            onChange={(e) => setUploadFiles(e.target.files[0])}
+            type={"file"}
+            accept={"image/*"}
+          />
+        </Box>
         <Field label={"이메일"} readOnly>
           <Input defaultValue={member.email} />
         </Field>
@@ -126,7 +136,7 @@ export function MemberEdit() {
         <Field label={"이름"} readOnly>
           <Input defaultValue={member.name} />
         </Field>
-        <Field label={"전화번호"} readOnly>
+        <Field label={"전화번호"}>
           <Input defaultValue={member.phone} />
         </Field>
         <Box>

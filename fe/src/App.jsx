@@ -5,6 +5,7 @@ import { Index } from "./page/Index.jsx";
 import CommunityWrite from "./page/community/CommunityWrite.jsx";
 import CommunityView from "./page/community/CommunityView.jsx";
 import CommunityList from "./page/community/CommunityList.jsx";
+import CommunityEdit from "./page/community/CommunityEdit.jsx"; // import reactLogo from './assets/react.svg'
 import MemberList from "./page/member/MemberList.jsx";
 import MemberSignup from "./page/member/MemberSignup.jsx";
 import MemberInfo from "./page/member/MemberInfo.jsx";
@@ -13,6 +14,7 @@ import { MemberEdit } from "./page/member/MemberEdit.jsx";
 import { TourAdd } from "./page/tour/TourAdd.jsx";
 import TourList from "./page/tour/TourList.jsx";
 import TourView from "./page/tour/TourView.jsx";
+import TourUpdate from "./page/tour/TourUpdate.jsx";
 import PlanAdd from "./page/plan/PlanAdd.jsx";
 import PlanList from "./page/plan/PlanList.jsx";
 import PlanView from "./page/plan/PlanView.jsx";
@@ -73,6 +75,10 @@ const router = createBrowserRouter([
         path: "tour/view/:id",
         element: <TourView />,
       },
+      {
+        path: "tour/update/:id",
+        element: <TourUpdate />,
+      },
       // 커뮤니티
       {
         path: "community/write",
@@ -90,7 +96,6 @@ const router = createBrowserRouter([
         path: "community/edit/:id",
         element: <CommunityEdit />,
       },
-
       // 회원 가입
       {
         path: "member/signup",

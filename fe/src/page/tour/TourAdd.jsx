@@ -10,21 +10,22 @@ export function TourAdd() {
   const [title, setTitle] = useState("");
   const [product, setProduct] = useState("");
   const [price, setPrice] = useState("");
+  const [location, setLocation] = useState("");
   const [content, setContent] = useState("");
-  const [writer, setWriter] = useState("");
+  const [files, setFiles] = useState([]);
   const navigate = useNavigate();
 
   const handleSaveClick = () => {
     axios
-      .post(`/api/tour/add`, {
+      .postForm(`/api/tour/add`, {
         title,
         product,
         price,
+        location,
         content,
-        writer,
+        files,
       })
       .then((res) => {
-        console.log(res.data); // Inspect the response structure
         const { message, data } = res.data;
         toaster.create({
           type: message.type,
@@ -41,6 +42,12 @@ export function TourAdd() {
       });
   };
 
+  const filesList = [];
+
+  for (const file of files) {
+    filesList.push(<li>{file.name}</li>);
+  }
+
   return (
     <Box>
       <h1>Tour 상품 추가</h1>
@@ -52,7 +59,26 @@ export function TourAdd() {
           <Input value={product} onChange={(e) => setProduct(e.target.value)} />
         </Field>
         <Field label={"가격"}>
-          <Input value={price} onChange={(e) => setPrice(e.target.value)} />
+          <Input
+            value={price}
+            onChange={(e) => {
+              const value = e.target.value;
+              if (/^\d*$/.test(value)) {
+                setPrice(value);
+              } else {
+                toaster.create({
+                  type: "warning",
+                  description: "가격은 숫자만 입력 가능합니다.",
+                });
+              }
+            }}
+          />
+        </Field>
+        <Field label={"위치"}>
+          <Input
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+          />
         </Field>
         <Field label={"본문"}>
           <Textarea
@@ -60,9 +86,18 @@ export function TourAdd() {
             onChange={(e) => setContent(e.target.value)}
           />
         </Field>
-        <Field label={"작성자"}>
-          <Input value={writer} onChange={(e) => setWriter(e.target.value)} />
-        </Field>
+        <Box>
+          <Field label={"파일"}>
+            <Input
+              type={"file"}
+              accept={"image/*"}
+              multiple
+              onChange={(e) => setFiles(e.target.files)}
+            />
+          </Field>
+          <Box>{filesList}</Box>
+        </Box>
+
         <Box>
           <Button onClick={handleSaveClick}>저장</Button>
         </Box>

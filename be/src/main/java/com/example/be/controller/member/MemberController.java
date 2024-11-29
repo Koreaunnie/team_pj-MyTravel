@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -33,10 +34,11 @@ public class MemberController {
   }
 
   @PutMapping("update")
-  public ResponseEntity<Map<String, Object>> update(@RequestBody MemberEdit member) {
-
+  public ResponseEntity<Map<String, Object>> update(
+          MemberEdit member,
+          @RequestParam(value = "uploadFiles", required = false) MultipartFile uploadFiles) {
     try {
-      if (service.update(member)) {
+      if (service.update(member, uploadFiles)) {
         return ResponseEntity.ok(Map.of("message",
                 Map.of("type", "success", "text", "수정 완료")));
       } else {
@@ -101,9 +103,11 @@ public class MemberController {
   }
 
   @PostMapping("signup")
-  public ResponseEntity<Map<String, Object>> signup(@RequestBody Member member) {
+  public ResponseEntity<Map<String, Object>> signup(
+          Member member,
+          @RequestParam(value = "files[]", required = false) MultipartFile[] files) {
     try {
-      if (service.add(member)) {
+      if (service.add(member, files)) {
         return ResponseEntity.ok().body(Map.of("message",
                 Map.of("type", "success", "text", "회원 가입 완료")));
       } else {
