@@ -8,7 +8,9 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../components/ui/pagination.jsx";
+import "react-calendar/dist/Calendar.css";
 import { FaRegQuestionCircle } from "react-icons/fa";
+import "./Plan.css";
 
 function PlanList(props) {
   const [planList, setPlanList] = useState([]);
@@ -86,7 +88,7 @@ function PlanList(props) {
   };
 
   return (
-    <div className="body">
+    <div className={"body"}>
       <button className="btn btn-dark" onClick={() => setAddModalOpen(true)}>
         새로운 여행 작성하기
       </button>
@@ -138,7 +140,9 @@ function PlanList(props) {
                   <Card.Description>{plan.description}</Card.Description>
                   <HStack mt="5">
                     <Badge>{plan.destination}</Badge>
-                    <Badge>{plan.due}</Badge>
+                    <Badge>
+                      {plan.startDate} ~ {plan.endDate}
+                    </Badge>
                   </HStack>
                 </Card.Body>
 

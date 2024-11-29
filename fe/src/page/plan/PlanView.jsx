@@ -80,6 +80,9 @@ function PlanView(props) {
       <p>{plan.description}</p>
       <p>{plan.destination}</p>
       <p>{plan.due}</p>
+      <p>
+        {plan.startDate} ~ {plan.endDate}
+      </p>
 
       <table>
         <thead>
