@@ -70,6 +70,11 @@ const router = createBrowserRouter([
         element: <TourAdd />,
       },
       {
+        path: "tour/view/:id",
+        element: <TourView />,
+      },
+      // 커뮤니티
+      {
         path: "community/write",
         element: <CommunityWrite />,
       },
@@ -85,10 +90,7 @@ const router = createBrowserRouter([
         path: "community/edit/:id",
         element: <CommunityEdit />,
       },
-      {
-        path: "tour/view/:id",
-        element: <TourView />,
-      },
+
       // 회원 가입
       {
         path: "member/signup",
