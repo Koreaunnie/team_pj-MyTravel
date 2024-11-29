@@ -10,7 +10,8 @@ function PlanAdd(props) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [destination, setDestination] = useState("");
-  const [due, setDue] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [fields, setFields] = useState([
     {
       date: "",
@@ -55,7 +56,8 @@ function PlanAdd(props) {
         title,
         description,
         destination,
-        due,
+        startDate,
+        endDate,
         planFieldList: fields, // 필드 배열을 그대로 전달
       })
       .then((res) => res.data)
@@ -84,7 +86,8 @@ function PlanAdd(props) {
         setTitle("");
         setDescription("");
         setDestination("");
-        setDue("");
+        setStartDate("");
+        setEndDate("");
         setFields([
           {
             date: "",
@@ -144,9 +147,7 @@ function PlanAdd(props) {
                 onChange={(e) => setDescription(e.target.value)}
               />
             </li>
-          </ul>
 
-          <ul className={"sub-title"}>
             <li>
               <label htmlFor="destination">여행지</label>
               <input
@@ -159,16 +160,28 @@ function PlanAdd(props) {
               />
             </li>
 
-            <li>
-              <label htmlFor="due">기간</label>
-              <input
-                type="text"
-                id="due"
-                size="20"
-                value={due}
-                onChange={(e) => setDue(e.target.value)}
-              />
-            </li>
+            <ul className={"due"}>
+              <li>
+                <label htmlFor="startDate">시작일</label>
+                <input
+                  type="date"
+                  id="startDate"
+                  size="20"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                />
+              </li>
+              <li>
+                <label htmlFor="endDate">종료일</label>
+                <input
+                  type="date"
+                  id="endDate"
+                  size="20"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                />
+              </li>
+            </ul>
           </ul>
         </fieldset>
 
