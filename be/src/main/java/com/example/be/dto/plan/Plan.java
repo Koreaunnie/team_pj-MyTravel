@@ -13,7 +13,8 @@ public class Plan {
     private String title;
     private String description;
     private String destination;
-    private String due;
+    private String startDate;
+    private String endDate;
 
     // 여러 일정을 저장할 plan body fields
     private List<PlanField> planFieldList;

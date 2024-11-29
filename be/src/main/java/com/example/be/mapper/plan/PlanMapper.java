@@ -13,9 +13,9 @@ public interface PlanMapper {
     // 1. plan header 항목 추가
     @Insert("""
             INSERT INTO plan
-                (inserted, title, description, destination, due)
+                (inserted, title, description, destination, startDate, endDate)
             VALUES 
-                (NOW(), #{title}, #{description}, #{destination}, #{due})
+                (NOW(), #{title}, #{description}, #{destination}, #{startDate}, #{endDate})
             """)
     @Options(keyProperty = "id", useGeneratedKeys = true)
     int insertPlan(Plan plan);
@@ -95,7 +95,8 @@ public interface PlanMapper {
             SET title=#{title}, 
                 description=#{description}, 
                 destination=#{destination}, 
-                due=#{due},
+                startDate=#{startDate},
+                endDate=#{endDate},
                 updated=NOW()
             WHERE id = #{id};
             """)
@@ -127,4 +128,11 @@ public interface PlanMapper {
             LIMIT 4
             """)
     List<Plan> getTop4ByOrderByUpdated();
+
+    // 내 여행 달력으로 보기
+    @Select("""
+            SELECT *
+            FROM plan
+            """)
+    List<Plan> selectByDate();
 }

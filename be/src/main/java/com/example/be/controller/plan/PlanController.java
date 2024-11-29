@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -61,4 +62,9 @@ public class PlanController {
         service.delete(id);
     }
 
+    // 내 여행 달력으로 보기
+    @GetMapping("calendar")
+    public List<Plan> calendar() {
+        return service.calendar();
+    }
 }
