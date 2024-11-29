@@ -4,9 +4,11 @@ import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "../../components/ui/button.jsx";
 import { CiSearch } from "react-icons/ci";
+import { ImageFileView } from "../../Image/ImageFileView.jsx";
 
 function TourList() {
   const [tourList, setTourList] = useState([]);
+  const [fileSrcList, setFileSrcList] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState({
     type: searchParams.get("type") ?? "all",
@@ -22,13 +24,15 @@ function TourList() {
         signal: controller.signal,
       })
       .then((res) => {
+        const fileSrc = fileSrcList((file) => file.id === tour.id)?.src;
         setTourList(res.data.tourList);
+        setFileSrcList(res.data.fileSrcList);
       })
       .catch((err) => {
         console.error(err);
         setTourList([]);
+        setFileSrcList([]);
       });
-
     return () => {
       controller.abort();
     };
@@ -103,6 +107,7 @@ function TourList() {
               _hover={{ boxShadow: "1g" }}
               onClick={() => handleRowClick(tour.id)}
             >
+              <ImageFileView src={fileSrcList[index]?.src} />
               <Text>{tour.title}</Text>
               <Text>{tour.location}</Text>
               <Text>{tour.product}</Text>

@@ -16,6 +16,7 @@ import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -66,7 +67,7 @@ public class TourService {
     List<String> fileNameList = mapper.selectFilesByTourId(id);
 
     List<TourImg> fileSrcList = fileNameList.stream()
-            .map(name -> new TourImg(name, imageSrcPrefix + "/" + id + "/" + name))
+            .map(name -> new TourImg(id, name, imageSrcPrefix + "/" + id + "/" + name))
             .toList();
 
     tour.setFileList(fileSrcList);
@@ -74,11 +75,23 @@ public class TourService {
   }
 
   public Map<String, Object> list(String searchType, String keyword) {
+    //리스트 조회
     List<Tour> tourList = mapper.selectAll(searchType, keyword);
     if (tourList == null || tourList.isEmpty()) {
       return Map.of("tourList", List.of()); // 빈 리스트 반환
     }
-    return Map.of("tourList", tourList);
+
+    //게시글 별 id에 따른 첫번째 사진과 그 경로
+    List<TourImg> imageNames = mapper.selectFirstFilesOfTourId(searchType, keyword);
+    List<TourImg> fileSrcList = imageNames.stream()
+            .map(image -> new TourImg(
+                    image.getId(),
+                    image.getName(),
+                    imageSrcPrefix + "/" + image.getId() + "/" + image.getName()
+            ))
+            .toList();
+
+    return Map.of("tourList", tourList, "fileSrcList", fileSrcList);
   }
 
   public boolean validate(Tour tour) {
@@ -147,5 +160,15 @@ public class TourService {
 
     int cnt = mapper.update(tour);
     return cnt == 1;
+  }
+
+  public Map<String, Object> addCart(Tour tour, Authentication authentication) {
+    mapper.addCart(tour.getId(), authentication.getName());
+    Map<String, Object> result = new HashMap<>();
+
+    //장바구니 추가 성공 상정
+    result.put("cart", true);
+
+    return result;
   }
 }

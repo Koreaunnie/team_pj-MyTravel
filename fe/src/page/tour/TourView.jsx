@@ -20,6 +20,7 @@ import { ImageFileView } from "../../Image/ImageFileView.jsx";
 function TourView() {
   const { id } = useParams();
   const [tour, setTour] = useState(null);
+  const [cart, setCart] = useState({ cart: false, count: 0 });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -50,6 +51,15 @@ function TourView() {
       });
   };
 
+  const handleAddToCartClick = () => {
+    axios
+      .post(`api/tour/cart`, {
+        id: tour.id,
+      })
+      .then((res) => res.data)
+      .then((data) => setCart(data));
+  };
+
   return (
     <Box>
       <h1>{tour.title}</h1>
@@ -64,6 +74,9 @@ function TourView() {
         <Field label={"가격"} readOnly>
           <Input value={tour.price} />
         </Field>
+        <Box>
+          <Button onClick={handleAddToCartClick}>장바구니에 담기</Button>
+        </Box>
         <Field label={"내용"} readOnly>
           <Textarea value={tour.content} />
         </Field>

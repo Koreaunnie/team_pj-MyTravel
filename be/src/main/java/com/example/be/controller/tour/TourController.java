@@ -17,6 +17,11 @@ import java.util.Map;
 public class TourController {
   final TourService service;
 
+  @PostMapping("cart")
+  public Map<String, Object> cart(@RequestBody Tour tour, Authentication authentication) {
+    return service.addCart(tour, authentication);
+  }
+
   @PutMapping("update")
   public ResponseEntity<Map<String, Object>> update(
           Tour tour,
