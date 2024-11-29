@@ -4,8 +4,8 @@ CREATE TABLE plan
 (
     id          INT AUTO_INCREMENT PRIMARY KEY,
     inserted    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    title       VARCHAR(20) NOT NULL,
-    description VARCHAR(50),
+    title       VARCHAR(50) NOT NULL,
+    description VARCHAR(100),
     destination VARCHAR(20),
     startDate   DATE,
     endDate     DATE,
@@ -18,7 +18,10 @@ ALTER TABLE plan
     ADD COLUMN updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 
 ALTER TABLE plan
-    MODIFY title VARCHAR(20) NOT NULL;
+    MODIFY title VARCHAR(50) NOT NULL;
+
+ALTER TABLE plan
+    MODIFY description VARCHAR(100) NOT NULL;
 
 SELECT *
 FROM plan_field

@@ -20,33 +20,59 @@ public class PlanService {
     // 내 여행 추가
     // 1. 여행 저장
     public boolean add(Plan plan) {
-        // 1. Plan 의 기본 정보 저장 (ID 생성)
+        // 1. 여행 날짜가 비어 있으면 null로 처리
+        NullCheckUtils.handleNullOrEmptyDates(plan);
+
+        // 2. Plan 의 기본 정보 저장 (ID 생성)
         int cnt = mapper.insertPlan(plan);
 
-        // 2. plan body fields 데이터를 반복적으로 저장
+        // 3. plan body fields 데이터를 반복적으로 저장
         if (plan.getPlanFieldList() != null) {
             for (PlanField field : plan.getPlanFieldList()) {
-                // plan 의 id 를 PlanField 에서 참조
+                // PlanField의 날짜와 시간이 비어 있으면 null로 처리
+                NullCheckUtils.handleNullOrEmptyDate(field);
+
+                // PlanField에 plan 객체의 id를 plan_id 로 설정
                 field.setPlanId(plan.getId());
 
-                // 여행 추가 시 날짜 입력되지 않았을 때 NULL로 처리
-                if (field.getDate() == null || field.getDate().isEmpty()) {
-                    field.setDate(null);
-                }
-
-                // 여행 추가 시 시간이 입력되지 않았을 때 NULL로 처리
-                if (field.getTime() == null || field.getTime().isEmpty()) {
-                    field.setTime(null);
-                }
-
-                // PlanField 에 저장
+                // PlanField에 저장
                 mapper.insertPlanField(field);
             }
         }
         return cnt == 1;
     }
 
-    // 2. 여행 저장 시여행 제목이 공백이 아니고 길이가 1자 이상인 경우에만 true
+    // 2. 여행 저장 시 date 문자열이 null 이거나 비어있는지 확인
+    public class NullCheckUtils {
+
+        // 문자열이 null이거나 비어 있는지 확인하는 메서드
+        public static boolean isNullOrEmpty(String str) {
+            return str == null || str.trim().isEmpty();
+        }
+
+        // PlanField 객체에서 날짜가 null 또는 비어있는지 처리하는 메서드
+        public static void handleNullOrEmptyDate(PlanField field) {
+            if (isNullOrEmpty(field.getDate())) {
+                field.setDate(null);
+            }
+            if (isNullOrEmpty(field.getTime())) {
+                field.setTime(null);
+            }
+        }
+
+        // Plan 객체에서 날짜를 처리하는 메서드
+        public static void handleNullOrEmptyDates(Plan plan) {
+            if (isNullOrEmpty(plan.getStartDate())) {
+                plan.setStartDate(null);
+            }
+            if (isNullOrEmpty(plan.getEndDate())) {
+                plan.setEndDate(null);
+            }
+        }
+    }
+
+
+    // 3. 여행 저장 시 여행 제목이 공백이 아니고 길이가 1자 이상인 경우에만 true
     public boolean validate(Plan plan) {
         return plan.getTitle() != null && !plan.getTitle().trim().isEmpty();
     }
@@ -82,11 +108,13 @@ public class PlanService {
 
     // 내 여행 수정
     public Map<String, Object> update(Plan plan) {
-        System.out.println(plan);
         // Plan 객체 수정
         int cntPlan = mapper.updatePlanById(plan);
+
         // 해당 Plan 에 대한 PlanField 목록 수정
         for (PlanField field : plan.getPlanFieldList()) {
+            // PlanField 날짜와 시간을 처리
+            NullCheckUtils.handleNullOrEmptyDate(field);
             mapper.updatePlanFieldByPlanId(field);
         }
 
