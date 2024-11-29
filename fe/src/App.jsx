@@ -19,7 +19,6 @@ import PlanAdd from "./page/plan/PlanAdd.jsx";
 import PlanList from "./page/plan/PlanList.jsx";
 import PlanView from "./page/plan/PlanView.jsx";
 import PlanEdit from "./page/plan/PlanEdit.jsx";
-import CommunityEdit from "./page/community/CommunityEdit.jsx"; // import reactLogo from './assets/react.svg'
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
