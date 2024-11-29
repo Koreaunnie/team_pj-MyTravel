@@ -11,7 +11,8 @@ function PlanEdit(props) {
     title: "",
     description: "",
     destination: "",
-    due: "",
+    startDate: "",
+    endDate: "",
   });
   const [planFields, setPlanFields] = useState([
     {
@@ -69,7 +70,8 @@ function PlanEdit(props) {
         title: plan.title,
         description: plan.description,
         destination: plan.destination,
-        due: plan.due,
+        startDate: plan.startDate,
+        endDate: plan.endDate,
         planFieldList: planFields, // 필드 배열을 그대로 전달
       })
       .then((res) => navigate(`/plan/view/${id}`))
@@ -111,7 +113,7 @@ function PlanEdit(props) {
               <input
                 type="text"
                 id="name"
-                size="20"
+                size="50"
                 value={plan.title}
                 onChange={(e) => setPlan({ ...plan, title: e.target.value })}
               />
@@ -122,16 +124,14 @@ function PlanEdit(props) {
               <input
                 type="text"
                 id="description"
-                size="50"
+                size="100"
                 value={plan.description}
                 onChange={(e) =>
                   setPlan({ ...plan, description: e.target.value })
                 }
               />
             </li>
-          </ul>
 
-          <ul className={"sub-title"}>
             <li>
               <label htmlFor="destination">여행지</label>
               <input
@@ -145,13 +145,29 @@ function PlanEdit(props) {
                 }
               />
             </li>
+          </ul>
 
+          <ul className={"period"}>
             <li>
-              <label htmlFor="due">기간</label>
+              <label htmlFor="startDate">시작일</label>
               <input
-                id="due"
-                value={plan.due}
-                onChange={(e) => setPlan({ ...plan, due: e.target.value })}
+                type="date"
+                id="startDate"
+                value={plan.startDate}
+                onChange={
+                  (e) => setPlan({ ...plan, startDate: e.target.value }) // plan.destination만 변경
+                }
+              />
+            </li>
+            <li>
+              <label htmlFor="endDate">종료일</label>
+              <input
+                type="date"
+                id="endDate"
+                value={plan.endDate}
+                onChange={
+                  (e) => setPlan({ ...plan, endDate: e.target.value }) // plan.destination만 변경
+                }
               />
             </li>
           </ul>

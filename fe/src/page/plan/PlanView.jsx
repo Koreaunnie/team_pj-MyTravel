@@ -46,48 +46,66 @@ function PlanView(props) {
 
   return (
     <div className={"body"}>
-      <div className={"btn-warp"}>
-        <button
-          className={"btn btn-dark-outline"}
-          onClick={() => navigate(`/plan/list`)}
-        >
-          목록
-        </button>
+      <div className={"position-fixed"}>
+        <div className={"btn-warp"}>
+          <button
+            className={"btn btn-dark-outline"}
+            onClick={() => navigate(`/plan/list`)}
+          >
+            목록
+          </button>
 
-        <button
-          className={"btn btn-dark"}
-          onClick={() => setAddModalOpen(true)}
-        >
-          새 여행 작성
-        </button>
+          <button
+            className={"btn btn-dark"}
+            onClick={() => setAddModalOpen(true)}
+          >
+            새 여행 작성
+          </button>
 
-        <button
-          className={"btn btn-dark"}
-          onClick={() => setEditModalOpen(true)}
-        >
-          수정
-        </button>
+          <button
+            className={"btn btn-dark"}
+            onClick={() => setEditModalOpen(true)}
+          >
+            수정
+          </button>
 
-        <button
-          className={"btn btn-warning"}
-          onClick={() => setDeleteModalOpen(true)}
-        >
-          삭제
-        </button>
+          <button
+            className={"btn btn-warning"}
+            onClick={() => setDeleteModalOpen(true)}
+          >
+            삭제
+          </button>
+        </div>
+
+        <table className={"head-table"}>
+          <thead>
+            <tr>
+              <th colspan="2" className={"thead-title"}>
+                {plan.title}
+              </th>
+            </tr>
+            <tr className={"thead-sub-title-warp"}>
+              <th className={"thead-sub-title"}>Destination</th>
+              <th className={"thead-sub-title"}>Date</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>{plan.destination}</td>
+              <td>
+                {plan.startDate} ~ {plan.endDate}
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-      <h1>{plan.title}</h1>
-      <p>{plan.description}</p>
-      <p>{plan.destination}</p>
-      <p>{plan.due}</p>
-      <p>
-        {plan.startDate} ~ {plan.endDate}
-      </p>
+      <table className={"body-table"}>
+        <caption>{plan.description}</caption>
 
-      <table>
         <thead>
           <tr>
-            <th>날짜</th>
             <th>시간</th>
             <th>일정</th>
             <th>장소</th>
@@ -98,7 +116,7 @@ function PlanView(props) {
         <tbody>
           {planFields.map((field) => (
             <tr key={field.id}>
-              <td>{field.date}</td>
+              <th>{field.date}</th>
               <td>{field.time}</td>
               <td>{field.schedule}</td>
               <td>{field.place}</td>

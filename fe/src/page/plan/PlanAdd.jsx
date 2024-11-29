@@ -130,7 +130,7 @@ function PlanAdd(props) {
               <input
                 type="text"
                 id="name"
-                size="20"
+                size="50"
                 required
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
@@ -142,7 +142,7 @@ function PlanAdd(props) {
               <input
                 type="text"
                 id="description"
-                size="50"
+                size="100"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               />
@@ -160,13 +160,12 @@ function PlanAdd(props) {
               />
             </li>
 
-            <ul className={"due"}>
+            <ul className={"period"}>
               <li>
                 <label htmlFor="startDate">시작일</label>
                 <input
                   type="date"
                   id="startDate"
-                  size="20"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
                 />
@@ -176,7 +175,6 @@ function PlanAdd(props) {
                 <input
                   type="date"
                   id="endDate"
-                  size="20"
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
                 />

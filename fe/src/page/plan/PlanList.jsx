@@ -103,6 +103,9 @@ function PlanList(props) {
     setSearchParams(nextSearchParams);
   }
 
+  // 필터링된 일정이 없으면 전체 일정(planList) 사용
+  const plansToDisplay = filteredPlans.length > 0 ? filteredPlans : planList;
+
   // modal
   const closeModal = () => {
     setAddModalOpen(false);
@@ -137,37 +140,39 @@ function PlanList(props) {
       </aside>
 
       <div className={"plan-list"}>
-        <button
-          className="btn btn-dark btn-planlist"
-          onClick={() => setAddModalOpen(true)}
-        >
-          새로운 여행 작성하기
-        </button>
-
-        <div className={"search-form"}>
-          <select
-            onChange={(e) => setSearch({ ...search, type: e.target.value })}
+        <div className={"fixed-search-wrap"}>
+          <button
+            className="btn btn-dark btn-planlist"
+            onClick={() => setAddModalOpen(true)}
           >
-            <option value="all">전체</option>
-            <option value="title">여행명</option>
-            <option value="destination">여행지</option>
-          </select>
+            새로운 여행 작성하기
+          </button>
 
-          <div className={"search-form-input"}>
-            <input
-              type="search"
-              placeholder={"내 여행을 검색해보세요."}
-              value={search.keyword}
-              onChange={(e) =>
-                setSearch({ ...search, keyword: e.target.value.trim() })
-              }
-            />
-            <button
-              className={"btn-search btn-dark"}
-              onClick={handleSearchButton}
+          <div className={"search-form"}>
+            <select
+              onChange={(e) => setSearch({ ...search, type: e.target.value })}
             >
-              검색
-            </button>
+              <option value="all">전체</option>
+              <option value="title">여행명</option>
+              <option value="destination">여행지</option>
+            </select>
+
+            <div className={"search-form-input"}>
+              <input
+                type="search"
+                placeholder={"내 여행을 검색해보세요."}
+                value={search.keyword}
+                onChange={(e) =>
+                  setSearch({ ...search, keyword: e.target.value.trim() })
+                }
+              />
+              <button
+                className={"btn-search btn-dark"}
+                onClick={handleSearchButton}
+              >
+                검색
+              </button>
+            </div>
           </div>
         </div>
 
