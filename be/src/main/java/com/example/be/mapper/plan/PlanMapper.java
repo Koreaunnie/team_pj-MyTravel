@@ -128,11 +128,4 @@ public interface PlanMapper {
             LIMIT 4
             """)
     List<Plan> getTop4ByOrderByUpdated();
-
-    // 내 여행 달력으로 보기
-    @Select("""
-            SELECT *
-            FROM plan
-            """)
-    List<Plan> selectByDate();
 }

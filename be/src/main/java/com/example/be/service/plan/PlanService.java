@@ -111,9 +111,4 @@ public class PlanService {
         // 최신 4개의 계획만
         return mapper.getTop4ByOrderByUpdated();
     }
-
-    // 내 여행 달력으로 보기
-    public List<Plan> calendar() {
-        return mapper.selectByDate();
-    }
 }
