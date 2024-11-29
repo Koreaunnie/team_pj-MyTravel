@@ -2,6 +2,7 @@ package com.example.be.service.tour;
 
 import com.example.be.dto.tour.Tour;
 import com.example.be.dto.tour.TourImg;
+import com.example.be.dto.tour.TourList;
 import com.example.be.mapper.tour.TourMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -77,7 +78,7 @@ public class TourService {
 
   public Map<String, Object> list(String searchType, String keyword) {
     //리스트 조회
-    List<Tour> tourList = mapper.selectAll(searchType, keyword);
+    List<TourList> tourList = mapper.selectAll(searchType, keyword);
 
     if (tourList == null || tourList.isEmpty()) {
       return Map.of("tourList", List.of()); // 빈 리스트 반환

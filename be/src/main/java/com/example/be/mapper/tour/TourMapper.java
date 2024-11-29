@@ -1,7 +1,7 @@
 package com.example.be.mapper.tour;
 
 import com.example.be.dto.tour.Tour;
-import com.example.be.dto.tour.TourImg;
+import com.example.be.dto.tour.TourList;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -41,9 +41,6 @@ public interface TourMapper {
                     <if test="searchType == 'all' or searchType == 'location'">
                         OR location LIKE CONCAT('%', #{keyword}, '%')
                     </if>
-                    <if test="searchType == 'all' or searchType == 'content'">
-                        OR content LIKE CONCAT('%', #{keyword}, '%')
-                    </if>
                     <if test="searchType == 'all' or searchType == 'partner'">
                         OR partner LIKE CONCAT('%', #{keyword}, '%')
                     </if>
@@ -52,7 +49,7 @@ public interface TourMapper {
                 ORDER BY id DESC
             </script>
           """)
-  List<Tour> selectAll(String searchType, String keyword);
+  List<TourList> selectAll(String searchType, String keyword);
 
   @Select("""
           SELECT *
@@ -109,34 +106,6 @@ public interface TourMapper {
             AND name=#{file}
           """)
   int deleteFileByTourIdAndName(Integer id, String file);
-
-  @Select("""
-          <script>
-                SELECT tour.id, MIN(name) name
-                FROM tour_img RIGHT JOIN tour ON tour_img.tour_id=tour.id
-                WHERE
-                  <trim prefixOverrides="OR">
-                    <if test="searchType == 'all' or searchType == 'title'">
-                        title LIKE CONCAT('%', #{keyword}, '%')
-                    </if>
-                    <if test="searchType == 'all' or searchType == 'product'">
-                        OR product LIKE CONCAT('%', #{keyword}, '%')
-                    </if>
-                    <if test="searchType == 'all' or searchType == 'location'">
-                        OR location LIKE CONCAT('%', #{keyword}, '%')
-                    </if>
-                    <if test="searchType == 'all' or searchType == 'content'">
-                        OR content LIKE CONCAT('%', #{keyword}, '%')
-                    </if>
-                    <if test="searchType == 'all' or searchType == 'partner'">
-                        OR partner LIKE CONCAT('%', #{keyword}, '%')
-                    </if>
-                  </trim>
-                GROUP BY tour.id
-                ORDER BY tour.id DESC
-            </script>
-          """)
-  List<TourImg> selectFirstFilesOfTourId(String searchType, String keyword);
 
   @Insert("""
           INSERT INTO tour_cart 
