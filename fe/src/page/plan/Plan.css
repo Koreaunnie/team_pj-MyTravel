@@ -50,7 +50,6 @@
     margin-left: 430px;
     width: calc(100% - 250px);
     padding-left: 30px;
-    background: #fff;
 }
 
 .btn-planlist {
@@ -66,6 +65,7 @@
     line-height: 1rem;
     border-radius: 10px;
     border: 1px solid var(--table-border-color) !important;
+    background: none !important;
 }
 
 /* 년-월 */
