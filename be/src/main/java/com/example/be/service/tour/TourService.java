@@ -138,6 +138,8 @@ public class TourService {
     //DB테이블에서 삭제
     mapper.deleteFileByTourId(id);
 
+    mapper.deleteCartByTourId(id);
+
     int cnt = mapper.deleteById(id);
     return cnt == 1;
   }

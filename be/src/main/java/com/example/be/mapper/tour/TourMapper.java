@@ -112,4 +112,9 @@ public interface TourMapper {
           VALUES (#{id}, #{name})
           """)
   int addCart(Integer id, String name);
+
+  @Delete("""
+          DELETE FROM tour_cart
+          WHERE tour_id=#{id}""")
+  int deleteCartByTourId(int id);
 }
