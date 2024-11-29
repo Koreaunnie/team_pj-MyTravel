@@ -1,0 +1,8 @@
+.section-wrap {
+    display: flex;
+}
+
+section {
+    width: 50%;
+    border: 1px solid var(--table-border-color);
+}
