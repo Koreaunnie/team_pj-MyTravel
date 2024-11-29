@@ -2,7 +2,6 @@ import axios from "axios";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { RootLayout } from "./page/root/RootLayout.jsx";
 import { Index } from "./page/Index.jsx";
-import PlanAdd from "./page/plan/PlanAdd.jsx";
 import CommunityWrite from "./page/community/CommunityWrite.jsx";
 import CommunityView from "./page/community/CommunityView.jsx";
 import CommunityList from "./page/community/CommunityList.jsx";
@@ -18,7 +17,7 @@ import PlanAdd from "./page/plan/PlanAdd.jsx";
 import PlanList from "./page/plan/PlanList.jsx";
 import PlanView from "./page/plan/PlanView.jsx";
 import PlanEdit from "./page/plan/PlanEdit.jsx";
-import CommunityEdit from "./page/community/CommunityEdit.jsx";
+import CommunityEdit from "./page/community/CommunityEdit.jsx"; // import reactLogo from './assets/react.svg'
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
