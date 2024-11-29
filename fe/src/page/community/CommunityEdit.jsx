@@ -22,6 +22,7 @@ function CommunityEdit(props) {
         id: community.id,
         title: community.title,
         content: community.content,
+        // creationDate: community.creationDate.toString().substring(0, 19),
       })
       .then(navigate(`/community/list`));
   };

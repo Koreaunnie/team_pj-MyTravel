@@ -2,12 +2,19 @@ import React, { useEffect, useState } from "react";
 import { Box, HStack, Input, Stack, Table } from "@chakra-ui/react";
 import { Button } from "../../components/ui/button.jsx";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import {
+  PaginationItems,
+  PaginationNextTrigger,
+  PaginationPrevTrigger,
+  PaginationRoot,
+} from "../../components/ui/pagination.jsx";
 
 function CommunityList(props) {
   const [community, setCommunity] = useState([]);
   // const number = useParams();
   // const [communityList, setCommunityList] = useState([]);
+  const page = useSearchParams();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,6 +29,11 @@ function CommunityList(props) {
 
   function handleViewClick(id) {
     navigate(`/community/view/${id}`);
+  }
+
+  function handlePageChangeClick() {
+    console.log(page);
+    navigate(`/community/list?page=${page}`);
   }
 
   return (
@@ -62,6 +74,18 @@ function CommunityList(props) {
             <Button onClick={handleWriteClick}>글 쓰기</Button>
           </HStack>
         </Box>
+        <PaginationRoot
+          count={20}
+          pageSize={10}
+          defaultPage={1}
+          onPageChange={handlePageChangeClick}
+        >
+          <HStack>
+            <PaginationPrevTrigger />
+            <PaginationItems />
+            <PaginationNextTrigger />
+          </HStack>
+        </PaginationRoot>
         // TODO : 페이지네이션 추가
       </Stack>
     </div>

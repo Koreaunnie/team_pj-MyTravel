@@ -16,7 +16,10 @@ public class CommunityService {
     final CommunityMapper mapper;
 
     public List<Map<String, Object>> list(Integer page) {
-        return mapper.listUp(page);
+
+        Integer pageList = (page - 1) * 10;
+
+        return mapper.listUp(pageList);
     }
 
     public void write(Community community, Authentication auth) {

@@ -13,8 +13,9 @@ public interface CommunityMapper {
             SELECT id, title, writer, inserted
             FROM community
             ORDER BY id DESC
+            LIMIT #{pageList}, 10
             """)
-    List<Map<String, Object>> listUp(Integer page);
+    List<Map<String, Object>> listUp(Integer pageList);
 
     @Insert("""
             INSERT INTO community (title, content, writer)
