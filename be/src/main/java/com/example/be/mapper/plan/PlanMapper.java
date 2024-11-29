@@ -124,7 +124,7 @@ public interface PlanMapper {
             SELECT *
             FROM plan
             ORDER BY updated DESC
-            LIMIT 5
+            LIMIT 4
             """)
-    List<Plan> getTop5ByOrderByUpdated();
+    List<Plan> getTop4ByOrderByUpdated();
 }

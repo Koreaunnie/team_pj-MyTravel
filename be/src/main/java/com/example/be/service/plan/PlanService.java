@@ -108,7 +108,7 @@ public class PlanService {
 
     // 메인 화면에 필요한 일부 plan 리스트 가져오기
     public List<Plan> getMainPagePlans() {
-        // 최신 5개의 계획만
-        return mapper.getTop5ByOrderByUpdated();
+        // 최신 4개의 계획만
+        return mapper.getTop4ByOrderByUpdated();
     }
 }
