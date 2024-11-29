@@ -171,4 +171,10 @@ public class TourService {
 
     return result;
   }
+
+  public boolean hasAccess(int id, Authentication authentication) {
+    Tour tour = mapper.selectById(id);
+
+    return tour.getPartner().equals(authentication.getName());
+  }
 }

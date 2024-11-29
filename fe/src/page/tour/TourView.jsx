@@ -20,6 +20,7 @@ import { ImageFileView } from "../../Image/ImageFileView.jsx";
 function TourView() {
   const { id } = useParams();
   const [tour, setTour] = useState(null);
+  const [open, setOpen] = useState(false);
   const [cart, setCart] = useState({ cart: false, count: 0 });
   const navigate = useNavigate();
 
@@ -45,9 +46,12 @@ function TourView() {
       .catch((e) => {
         const data = e.response.data;
         toaster.create({
-          type: data.msg.type,
-          description: data.msg.text,
+          type: data.message.type,
+          description: data.message.text,
         });
+      })
+      .finally(() => {
+        setOpen(false);
       });
   };
 
@@ -85,7 +89,7 @@ function TourView() {
         </Field>
         <Box>
           <Button onClick={() => navigate(`/tour/update/${id}`)}>수정</Button>
-          <DialogRoot>
+          <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
             <DialogTrigger>
               <Button>삭제</Button>
             </DialogTrigger>
