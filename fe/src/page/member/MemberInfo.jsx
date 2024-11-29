@@ -15,6 +15,7 @@ import {
   DialogTrigger,
 } from "../../components/ui/dialog.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
+import { ImageFileView } from "../../Image/ImageFileView.jsx";
 
 function MemberInfo(props) {
   const [member, setMember] = useState(null);
@@ -42,6 +43,7 @@ function MemberInfo(props) {
           type: message.type,
           description: message.text,
         });
+        localStorage.removeItem("token");
         navigate(`/member/signup`);
       })
       .catch((e) => {
@@ -61,6 +63,7 @@ function MemberInfo(props) {
     <Box>
       <h1>회원 정보</h1>
       <Stack>
+        <ImageFileView files={member.profile} />
         <Field label={"이메일"}>
           <Input readOnly value={member.email} />
         </Field>

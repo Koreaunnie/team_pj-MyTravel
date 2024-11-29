@@ -37,7 +37,7 @@ public interface MemberMapper {
           UPDATE member
              SET nickname = #{nickname}, 
                  password = #{password},
-                 phone = #{phone}                 
+                 phone = #{phone}      
            WHERE email=#{email}
           """)
   int update(MemberEdit member);
@@ -48,4 +48,17 @@ public interface MemberMapper {
           WHERE nickname = #{nickname}
           """)
   Member selectByNickname(String nickname);
+
+  @Select("""
+          SELECT picture
+          FROM member
+          WHERE email=#{email}""")
+  String selectPictureByEmail(String email);
+
+  @Update("""
+          UPDATE member
+          SET picture = #{filename}
+          WHERE email=#{email}
+          """)
+  int updatePicture(String email, String filename);
 }

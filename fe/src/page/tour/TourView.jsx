@@ -15,8 +15,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../components/ui/dialog.jsx";
+import { ImageFileView } from "../../Image/ImageFileView.jsx";
 
-function TourView(props) {
+function TourView() {
   const { id } = useParams();
   const [tour, setTour] = useState(null);
   const navigate = useNavigate();
@@ -51,10 +52,14 @@ function TourView(props) {
 
   return (
     <Box>
-      <h1>Title</h1>
+      <h1>{tour.title}</h1>
       <Stack>
         <Field label={"상품"} readOnly>
           <Input value={tour.product} />
+        </Field>
+        <ImageFileView files={tour.fileList} />
+        <Field label={"위치"} readOnly>
+          <Input value={tour.location} />
         </Field>
         <Field label={"가격"} readOnly>
           <Input value={tour.price} />
@@ -63,9 +68,10 @@ function TourView(props) {
           <Textarea value={tour.content} />
         </Field>
         <Field label={"제공사"} readOnly>
-          <Input value={tour.writer} />
+          <Input value={tour.partner} />
         </Field>
         <Box>
+          <Button onClick={() => navigate(`/tour/update/${id}`)}>수정</Button>
           <DialogRoot>
             <DialogTrigger>
               <Button>삭제</Button>
