@@ -17,7 +17,7 @@ export function Index() {
 
   return (
     <div className={"body"}>
-      <div className={"search-form-input"}>
+      <div className={"search-form-input section-search"}>
         <input type="text" placeholder={"어디로 떠나고 싶은가요?"} />
         <button className={"btn-search btn-dark"}>검색</button>
       </div>
@@ -31,7 +31,7 @@ export function Index() {
         </div>
 
         <div className={"section-body"}>
-          <ul className={"list"}>
+          <ul className={"section-body-list"}>
             {planList.map((plan) => (
               <li
                 key={plan.id}
@@ -39,10 +39,12 @@ export function Index() {
               >
                 <h3>{plan.title}</h3>
 
-                <ul className={"list-body"}>
+                <ul className={"list-item"}>
                   <li className={"description"}>{plan.description}</li>
                   <li className={"destination"}>{plan.destination}</li>
-                  <li className={"due"}>{plan.due}</li>
+                  <li className={"period"}>
+                    {plan.startDate} ~ {plan.endDate}
+                  </li>
                 </ul>
               </li>
             ))}
@@ -52,14 +54,14 @@ export function Index() {
 
       <section>
         <div className={"section-header"}>
-          <h2>투어 상품</h2>
+          <h2>투어 목록</h2>
           <button className={"more-btn"} onClick={() => navigate(`/tour/list`)}>
             더보기
           </button>
         </div>
 
         <div className={"section-body"}>
-          <ul className={"list"}>
+          <ul className={"section-body-list"}>
             {planList.map((plan) => (
               <li
                 key={plan.id}
@@ -67,10 +69,12 @@ export function Index() {
               >
                 <h3>{plan.title}</h3>
 
-                <ul className={"list-body"}>
+                <ul className={"list-item"}>
                   <li className={"description"}>{plan.description}</li>
                   <li className={"destination"}>{plan.destination}</li>
-                  <li className={"due"}>{plan.due}</li>
+                  <li className={"period"}>
+                    {plan.startDate} ~ {plan.endDate}
+                  </li>
                 </ul>
               </li>
             ))}
@@ -90,7 +94,7 @@ export function Index() {
         </div>
 
         <div className={"section-body"}>
-          <ul className={"list"}>
+          <ul className={"section-body-list"}>
             {planList.map((plan) => (
               <li
                 key={plan.id}
@@ -98,10 +102,12 @@ export function Index() {
               >
                 <h3>{plan.title}</h3>
 
-                <ul className={"list-body"}>
+                <ul className={"list-item"}>
                   <li className={"description"}>{plan.description}</li>
                   <li className={"destination"}>{plan.destination}</li>
-                  <li className={"due"}>{plan.due}</li>
+                  <li className={"period"}>
+                    {plan.startDate} ~ {plan.endDate}
+                  </li>
                 </ul>
               </li>
             ))}
