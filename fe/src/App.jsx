@@ -12,7 +12,6 @@ import { TourAdd } from "./page/tour/TourAdd.jsx";
 import TourList from "./page/tour/TourList.jsx";
 import TourView from "./page/tour/TourView.jsx";
 import TourUpdate from "./page/tour/TourUpdate.jsx";
-import PlanAdd from "./page/plan/PlanAdd.jsx";
 import PlanList from "./page/plan/PlanList.jsx";
 import PlanView from "./page/plan/PlanView.jsx";
 import PlanEdit from "./page/plan/PlanEdit.jsx";
@@ -71,11 +70,11 @@ const router = createBrowserRouter([
         path: "tour/view/:id",
         element: <TourView />,
       },
-      // 회원 가입
       {
         path: "tour/update/:id",
         element: <TourUpdate />,
       },
+      // 회원 가입
       {
         path: "member/signup",
         element: <MemberSignup />,
