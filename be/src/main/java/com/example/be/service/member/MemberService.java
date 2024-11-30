@@ -94,12 +94,14 @@ public class MemberService {
 
     Member db = mapper.selectByEmail(member.getEmail());
     if (db != null && db.getPassword().equals(member.getPassword())) {
-
+      //쓴 게시물 목록
       List<Integer> tourBoards = tourMapper.selectByPartner(db.getNickname());
+      //게시물 삭제
       for (Integer tourId : tourBoards) {
         tourService.delete(tourId);
       }
 
+      //프로필 사진 삭제
       String profile = mapper.selectPictureByEmail(db.getEmail());
       String key = "teamPrj1126/member/" + member.getEmail() + "/" + profile;
       DeleteObjectRequest dor = DeleteObjectRequest.builder()
@@ -108,8 +110,11 @@ public class MemberService {
               .build();
       s3.deleteObject(dor);
 
-      cnt = mapper.deleteByEmail(member.getEmail());
+      //멤버의 장바구니 삭제
+      mapper.deleteCartByMemberEmail(member.getEmail());
 
+      //member 삭제
+      cnt = mapper.deleteByEmail(member.getEmail());
     }
 
     return cnt == 1;

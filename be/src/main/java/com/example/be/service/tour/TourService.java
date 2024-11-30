@@ -138,6 +138,7 @@ public class TourService {
     //DB테이블에서 삭제
     mapper.deleteFileByTourId(id);
 
+    //장바구니 저장 내용 삭제
     mapper.deleteCartByTourId(id);
 
     int cnt = mapper.deleteById(id);
@@ -190,6 +191,6 @@ public class TourService {
   public boolean hasAccess(int id, Authentication authentication) {
     Tour tour = mapper.selectById(id);
 
-    return tour.getPartner().equals(authentication.getName());
+    return tour.getPartnerEmail().equals(authentication.getName());
   }
 }

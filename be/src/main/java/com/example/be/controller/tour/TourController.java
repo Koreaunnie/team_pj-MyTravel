@@ -54,7 +54,7 @@ public class TourController {
   @PreAuthorize("isAuthenticated()")
   public ResponseEntity<Map<String, Object>> delete(
           @PathVariable int id, Authentication authentication) {
-
+    System.out.println(authentication.getName());
     if (service.hasAccess(id, authentication)) {
       if (service.delete(id)) {
         return ResponseEntity.ok().body(Map.of("message",

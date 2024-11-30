@@ -21,12 +21,13 @@ function TourView() {
   const { id } = useParams();
   const [tour, setTour] = useState(null);
   const [open, setOpen] = useState(false);
-  const [cart, setCart] = useState({ cart: false, count: 0 });
+  const [cart, setCart] = useState({ cart: false });
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (!id) return; // id가 없으면 실행하지 않음
     axios.get(`/api/tour/view/${id}`).then((res) => setTour(res.data));
-  }, []);
+  }, [id]);
 
   if (tour === null) {
     return <p>존재하지 않는 상품 정보입니다.</p>;

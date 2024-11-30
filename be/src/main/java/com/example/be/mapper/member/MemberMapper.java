@@ -61,4 +61,10 @@ public interface MemberMapper {
           WHERE email=#{email}
           """)
   int updatePicture(String email, String filename);
+
+  @Delete("""
+          DELETE FROM tour_cart
+          WHERE member_email=#{email}
+          """)
+  int deleteCartByMemberEmail(String email);
 }
