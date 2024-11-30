@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, HStack, Input, Stack, Table } from "@chakra-ui/react";
 import { Button } from "../../components/ui/button.jsx";
 import axios from "axios";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   PaginationItems,
   PaginationNextTrigger,
@@ -14,7 +14,6 @@ function CommunityList(props) {
   const [community, setCommunity] = useState([]);
   // const number = useParams();
   // const [communityList, setCommunityList] = useState([]);
-  const page = useSearchParams();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,9 +30,9 @@ function CommunityList(props) {
     navigate(`/community/view/${id}`);
   }
 
-  function handlePageChangeClick() {
-    console.log(page);
-    navigate(`/community/list?page=${page}`);
+  function handlePageChangeClick(e) {
+    console.log(e.page);
+    navigate(`/community/list?page=${e.page}`);
   }
 
   return (
@@ -79,6 +78,7 @@ function CommunityList(props) {
           pageSize={10}
           defaultPage={1}
           onPageChange={handlePageChangeClick}
+          siblingCount={2}
         >
           <HStack>
             <PaginationPrevTrigger />

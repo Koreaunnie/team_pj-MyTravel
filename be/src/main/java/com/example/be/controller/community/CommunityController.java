@@ -20,7 +20,7 @@ public class CommunityController {
 
     @GetMapping("list")
     public List<Map<String, Object>> list(@RequestParam(value = "page", defaultValue = "1") Integer page) {
-
+        System.out.println(page);
         return service.list(page);
     }
 
