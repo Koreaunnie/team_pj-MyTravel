@@ -117,4 +117,12 @@ public interface TourMapper {
           DELETE FROM tour_cart
           WHERE tour_id=#{id}""")
   int deleteCartByTourId(int id);
+
+  @Select("""
+          SELECT COUNT(*)
+          FROM tour_cart
+          WHERE tour_id=#{id}
+            AND member_email=#{partnerEmail}
+          """)
+  boolean checkCart(Integer id, String partnerEmail);
 }

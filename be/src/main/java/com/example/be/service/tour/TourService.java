@@ -182,9 +182,12 @@ public class TourService {
   public boolean addCart(Tour tour, Authentication authentication) {
     tour.setPartnerEmail(authentication.getName());
 
-    int cnt = 0;
-    cnt = mapper.addCart(tour.getId(), tour.getPartnerEmail());
+    boolean exists = mapper.checkCart(tour.getId(), tour.getPartnerEmail());
+    if (exists) {
+      return false;
+    }
 
+    int cnt = mapper.addCart(tour.getId(), tour.getPartnerEmail());
     return cnt == 1;
   }
 

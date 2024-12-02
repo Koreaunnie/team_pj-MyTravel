@@ -63,7 +63,20 @@ function TourView() {
         email: tour.partnerEmail,
       })
       .then((res) => res.data)
-      .then((data) => setCart(data));
+      .then((data) => {
+        setCart(data);
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+      })
+      .catch((e) => {
+        const data = e.response.data;
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+      });
   };
 
   return (

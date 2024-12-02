@@ -22,10 +22,10 @@ public class TourController {
   public ResponseEntity<Map<String, Object>> cart(@RequestBody Tour tour, Authentication authentication) {
     if (service.addCart(tour, authentication)) {
       return ResponseEntity.ok(Map.of("message",
-              Map.of("type", "success", "text", "상품 수정 완료")));
+              Map.of("type", "success", "text", "장바구니에 상품 추가")));
     } else {
-      return ResponseEntity.ok(Map.of("message",
-              Map.of("type", "warning", "text", "상품 수정 실패")));
+      return ResponseEntity.status(409).body(Map.of("message",
+              Map.of("type", "warning", "text", "이미 장바구니에 담은 상품입니다.")));
     }
   }
 
@@ -40,7 +40,7 @@ public class TourController {
         return ResponseEntity.ok(Map.of("message",
                 Map.of("type", "success", "text", "상품 수정 완료")));
       } else {
-        return ResponseEntity.ok(Map.of("message",
+        return ResponseEntity.badRequest().body(Map.of("message",
                 Map.of("type", "warning", "text", "상품 수정 실패")));
       }
     } else {
@@ -109,7 +109,8 @@ public class TourController {
                 Map.of("type", "warning", "text", "상품을 등록 실패")));
       }
     } else {
-      return ResponseEntity.status(401).build();
+      return ResponseEntity.status(401).body(Map.of("message",
+              Map.of("type", "warning", "text", "상품 등록 권한이 없습니다.")));
     }
   }
 }
