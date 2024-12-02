@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Box, Input, Stack, Textarea } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -23,6 +23,7 @@ function TourUpdate() {
   const [open, setOpen] = useState(false);
   const [removeFiles, setRemoveFiles] = useState([]);
   const [uploadFiles, setUploadFiles] = useState([]);
+  const { hasAccess } = useContext(AuthenticationContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -123,27 +124,30 @@ function TourUpdate() {
             onChange={(e) => setTour({ ...tour, content: e.target.value })}
           />
         </Field>
-        <Box>
-          <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
-            <DialogTrigger>
-              <Button>저장</Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>수정 확인</DialogTitle>
-              </DialogHeader>
-              <DialogBody>
-                <p>{tour.title} 상품의 수정 내용을 저장하시겠습니까?</p>
-              </DialogBody>
-              <DialogFooter>
-                <DialogActionTrigger>
-                  <Button>취소</Button>
-                </DialogActionTrigger>
-                <Button onClick={handleSaveClick}>저장</Button>
-              </DialogFooter>
-            </DialogContent>
-          </DialogRoot>
-        </Box>
+
+        {hasAccess(tour.partnerEmail) && (
+          <Box>
+            <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
+              <DialogTrigger>
+                <Button>저장</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>수정 확인</DialogTitle>
+                </DialogHeader>
+                <DialogBody>
+                  <p>{tour.title} 상품의 수정 내용을 저장하시겠습니까?</p>
+                </DialogBody>
+                <DialogFooter>
+                  <DialogActionTrigger>
+                    <Button>취소</Button>
+                  </DialogActionTrigger>
+                  <Button onClick={handleSaveClick}>저장</Button>
+                </DialogFooter>
+              </DialogContent>
+            </DialogRoot>
+          </Box>
+        )}
       </Stack>
     </Box>
   );

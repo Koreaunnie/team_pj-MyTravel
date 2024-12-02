@@ -26,8 +26,8 @@ function AuthenticationProvider({ children }) {
     setUserToken({});
   }
 
-  function hasAccess(id) {
-    return id === userToken.sub;
+  function hasAccess(email) {
+    return email === userToken.sub;
   }
 
   const isAuthenticated = Date.now() < userToken.exp * 1000;
@@ -41,7 +41,7 @@ function AuthenticationProvider({ children }) {
   return (
     <AuthenticationContext.Provider
       value={{
-        id: userToken.sub,
+        email: userToken.sub,
         login,
         logout,
         isAuthenticated,
