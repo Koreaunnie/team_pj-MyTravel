@@ -17,8 +17,18 @@ public class WalletController {
 
     // 내 지갑 지출 / 수입 추가
     @PostMapping("add")
-    public void add(@RequestBody Wallet wallet) {
-        service.add(wallet);
+    public ResponseEntity<Map<String, Object>> add(@RequestBody Wallet wallet) {
+
+        if (service.add(wallet)) {
+            // 성공
+            return ResponseEntity.ok(Map.of("message", Map.of(
+                    "type", "success", "text", "내역이 저장되었습니다")));
+        } else {
+            // 실패
+            return ResponseEntity.badRequest().body(Map.of("message", Map.of(
+                    "type", "warning", "text", "정확한 정보를 입력해주세요")));
+        }
+
     }
 
     // 내 지갑 내역 보기

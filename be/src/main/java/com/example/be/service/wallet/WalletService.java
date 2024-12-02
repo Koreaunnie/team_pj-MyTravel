@@ -15,9 +15,9 @@ public class WalletService {
     final WalletMapper mapper;
 
     // 내 지갑 지출 / 수입 추가
-    public void add(Wallet wallet) {
-
-        mapper.insertWallet(wallet);
+    public boolean add(Wallet wallet) {
+        int cnt = mapper.insertWallet(wallet);
+        return cnt == 1;
     }
 
     // 내 지갑 내역 보기

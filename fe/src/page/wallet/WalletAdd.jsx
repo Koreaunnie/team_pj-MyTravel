@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toaster } from "../../components/ui/toaster.jsx";
 
 function WalletAdd(props) {
   const [saveModalOpen, setSaveModalOpen] = useState(false);
@@ -37,6 +38,7 @@ function WalletAdd(props) {
     // date가 null 또는 빈 값이면 경고 메시지 출력하고 저장하지 않음
     if (!date) {
       alert("날짜를 입력해주세요.");
+      setSaveModalOpen(false);
       return;
     }
 
@@ -50,8 +52,13 @@ function WalletAdd(props) {
         paymentMethod,
         memo,
       })
-      .then((response) => {
-        console.log("저장 성공:", response.data);
+      .then((response) => response.data)
+      .then((data) => {
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+        navigate(`/wallet/list`);
       })
       .catch()
       .finally();
