@@ -19,6 +19,7 @@ import PlanAdd from "./page/plan/PlanAdd.jsx";
 import PlanList from "./page/plan/PlanList.jsx";
 import PlanView from "./page/plan/PlanView.jsx";
 import PlanEdit from "./page/plan/PlanEdit.jsx";
+import CartList from "./page/tour/CartList.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
       {
         path: "tour/add",
         element: <TourAdd />,
+      },
+      {
+        path: "cart/list",
+        element: <CartList />,
       },
       {
         path: "community/write",
