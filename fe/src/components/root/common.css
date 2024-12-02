@@ -116,6 +116,10 @@ h1 {
     margin: 0 auto;
 }
 
+.pointer {
+    cursor: pointer;
+}
+
 /*------------------- button design -------------------*/
 .btn-wrap {
     display: flex;

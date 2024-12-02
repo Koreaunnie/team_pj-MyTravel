@@ -163,19 +163,17 @@ function WalletAdd(props) {
                 ></textarea>
               </td>
             </tr>
-
-            <tr>
-              <td colSpan="2">
-                <button
-                  type="submit"
-                  className={"btn btn-dark"}
-                  onClick={handleSaveButton}
-                >
-                  저장
-                </button>
-              </td>
-            </tr>
           </tbody>
+
+          <div className={"btn-wrap"}>
+            <button
+              type="submit"
+              className={"btn btn-dark"}
+              onClick={handleSaveButton}
+            >
+              저장
+            </button>
+          </div>
         </table>
       </form>
     </div>

@@ -22,6 +22,11 @@ public class WalletService {
 
     // 내 지갑 내역 보기
     public List<Wallet> list() {
-        return mapper.selectByDate();
+        return mapper.selectAllByDate();
+    }
+
+    // 내 지갑 내역 상세 보기
+    public Wallet view(int id) {
+        return mapper.selectById(id);
     }
 }

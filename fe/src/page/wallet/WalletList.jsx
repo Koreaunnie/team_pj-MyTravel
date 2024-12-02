@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Calendar from "react-calendar";
+import { useNavigate } from "react-router-dom";
 
 function WalletList(props) {
   const [walletList, setWalletList] = useState([]); // 전체 지갑 리스트
   const [selectedDate, setSelectedDate] = useState(); // 선택된 날짜
   const [filteredWallet, setFilteredWallet] = useState([]); // 필터링된 지갑 리스트
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get("/api/wallet/list").then((res) => setWalletList(res.data));
@@ -72,6 +74,14 @@ function WalletList(props) {
       </aside>
 
       <div className={"day-list"}>
+        <button className={"btn btn-dark"}>전체 보기</button>
+        <button
+          className={"btn btn-dark"}
+          onClick={() => navigate(`/wallet/add`)}
+        >
+          추가
+        </button>
+
         <table>
           <thead>
             <tr>
@@ -88,7 +98,11 @@ function WalletList(props) {
 
           <tbody>
             {filteredWallet.map((wallet) => (
-              <tr key={wallet.id}>
+              <tr
+                key={wallet.id}
+                onClick={() => navigate(`/wallet/view/${wallet.id}`)}
+                className={"pointer"}
+              >
                 <td>{wallet.date}</td>
                 <td>{wallet.category}</td>
                 <td>{wallet.title}</td>

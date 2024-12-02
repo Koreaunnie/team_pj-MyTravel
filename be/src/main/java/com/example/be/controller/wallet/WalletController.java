@@ -24,4 +24,10 @@ public class WalletController {
     public List<Wallet> list() {
         return service.list();
     }
+
+    // 내 지갑 내역 상세 보기
+    @GetMapping("view/{id}")
+    public Wallet view(@PathVariable int id) {
+        return service.view(id);
+    }
 }

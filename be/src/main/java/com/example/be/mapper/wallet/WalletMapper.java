@@ -24,7 +24,15 @@ public interface WalletMapper {
     @Select("""
             SELECT * 
             FROM wallet
-            ORDER BY date DESC
+            ORDER BY date
             """)
-    List<Wallet> selectByDate();
+    List<Wallet> selectAllByDate();
+
+    // 내 지갑 내역 상세 보기
+    @Select("""
+            select *
+            FROM wallet
+            WHERE id = #{id}
+            """)
+    Wallet selectById(int id);
 }

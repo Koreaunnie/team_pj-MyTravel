@@ -21,6 +21,7 @@ import PlanView from "./page/plan/PlanView.jsx";
 import PlanEdit from "./page/plan/PlanEdit.jsx";
 import WalletAdd from "./page/wallet/WalletAdd.jsx";
 import WalletList from "./page/wallet/WalletList.jsx";
+import WalletView from "./page/wallet/WalletView.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
       {
         path: "wallet/list",
         element: <WalletList />,
+      },
+      {
+        path: "wallet/view/:id",
+        element: <WalletView />,
       },
       // 여행 상품
       {
