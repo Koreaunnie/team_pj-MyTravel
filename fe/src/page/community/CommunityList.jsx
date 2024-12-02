@@ -1,25 +1,42 @@
 import React, { useEffect, useState } from "react";
-import { Box, HStack, Input, Stack, Table } from "@chakra-ui/react";
+import {
+  Box,
+  createListCollection,
+  HStack,
+  Input,
+  Stack,
+  Table,
+} from "@chakra-ui/react";
 import { Button } from "../../components/ui/button.jsx";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   PaginationItems,
   PaginationNextTrigger,
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../components/ui/pagination.jsx";
+import {
+  SelectContent,
+  SelectItem,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+} from "../../components/ui/select.jsx";
 
 function CommunityList(props) {
   const [community, setCommunity] = useState([]);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState({ type: "all", keyword: "" });
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  console.log("검색조건", search);
 
   useEffect(() => {
-    axios.get(`/api/community/list`).then((res) => {
+    axios.get(`/api/community/list?${searchParams.toString()}`).then((res) => {
       setCommunity(res.data);
     });
-  }, []);
+  }, [searchParams]);
 
   function handleWriteClick() {
     navigate(`/community/write`);
@@ -38,10 +55,16 @@ function CommunityList(props) {
     const pageQuery = new URLSearchParams(pageNumber);
     // const pageURL = new URL(`http://localhost:5173/community/list?${pageQuery.toString()}`);
     navigate(`/community/list?${pageQuery.toString()}`);
-    axios
-      .get(`/api/community/list?${pageQuery.toString()}`)
-      .then((res) => setCommunity(res.data));
   }
+
+  const frameworks = createListCollection({
+    items: [
+      { label: "전체", value: "all" },
+      { label: "제목", value: "title" },
+      { label: "본문", value: "content" },
+      { label: "작성자", value: "writer" },
+    ],
+  });
 
   return (
     <div>
@@ -74,11 +97,24 @@ function CommunityList(props) {
           <HStack>
             <Box>
               <HStack>
-                <Input
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  w={300}
-                />
+                <SelectRoot
+                  collection={frameworks}
+                  defaultValue={["all"]}
+                  size="sm"
+                  width="130px"
+                >
+                  <SelectTrigger>
+                    <SelectValueText />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {frameworks.items.map((movie) => (
+                      <SelectItem item={movie} key={movie.value}>
+                        {movie.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </SelectRoot>
+                <Input w={300} />
                 <Button onClick={handleSearchClick}>검색</Button>
               </HStack>
             </Box>
