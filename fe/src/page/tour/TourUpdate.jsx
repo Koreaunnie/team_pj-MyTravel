@@ -16,6 +16,7 @@ import {
 } from "../../components/ui/dialog.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { ImageView } from "../../Image/ImageView.jsx";
+import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 
 function TourUpdate() {
   const { id } = useParams();

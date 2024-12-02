@@ -20,6 +20,8 @@ import PlanList from "./page/plan/PlanList.jsx";
 import PlanView from "./page/plan/PlanView.jsx";
 import PlanEdit from "./page/plan/PlanEdit.jsx";
 import CartList from "./page/tour/CartList.jsx";
+import AuthenticationProvider from "./components/context/AuthenticationProvider.jsx";
+import React from "react";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -127,7 +129,11 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <AuthenticationProvider>
+      <RouterProvider router={router} />
+    </AuthenticationProvider>
+  );
 }
 
 export default App;
