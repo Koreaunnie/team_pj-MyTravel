@@ -313,7 +313,11 @@ function PlanAdd(props) {
                 닫기
               </button>
 
-              <button className={"btn btn-dark"} onClick={handleSaveButton}>
+              <button
+                type="submit"
+                className={"btn btn-dark"}
+                onClick={handleSaveButton}
+              >
                 저장
               </button>
             </div>
