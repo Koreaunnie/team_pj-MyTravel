@@ -1,6 +1,6 @@
 package com.example.be.controller.tour;
 
-import com.example.be.dto.tour.Tour;
+import com.example.be.dto.tour.TourList;
 import com.example.be.service.tour.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -17,7 +17,7 @@ public class CartController {
   final CartService service;
 
   @GetMapping("list")
-  public List<Tour> list(Authentication auth) {
+  public List<TourList> list(Authentication auth) {
     return service.list(auth);
   }
 }

@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { Box, Table } from "@chakra-ui/react";
+import { Box, Image, Table } from "@chakra-ui/react";
 import axios from "axios";
+import { Button } from "../../components/ui/button.jsx";
+import { useNavigate } from "react-router-dom";
 
 function CartList() {
   const [cartList, setCartList] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get("/api/cart/list").then((res) => setCartList(res.data));
   }, []);
+
+  function handleRowClick(id) {
+    navigate(`/tour/view/${id}`);
+  }
 
   return (
     <Box>
@@ -16,21 +23,15 @@ function CartList() {
         <p>장바구니가 비어 있습니다.</p>
       ) : (
         <Table.Root interactive>
-          <Table.Header>
-            <Table.Row>
-              <Table.ColumnHeader>제목</Table.ColumnHeader>
-              <Table.ColumnHeader>위치</Table.ColumnHeader>
-              <Table.ColumnHeader>상품명</Table.ColumnHeader>
-              <Table.ColumnHeader>가격</Table.ColumnHeader>
-            </Table.Row>
-          </Table.Header>
           <Table.Body>
             {cartList.map((cart) => (
-              <Table.Row key={cart.id}>
+              <Table.Row key={cart.id} onClick={() => handleRowClick(cart.id)}>
+                <Image key={cart.image} src={cart.src} w="200px" />
                 <Table.Cell>{cart.title}</Table.Cell>
                 <Table.Cell>{cart.location}</Table.Cell>
                 <Table.Cell>{cart.product}</Table.Cell>
                 <Table.Cell>{cart.price}</Table.Cell>
+                <Button>삭제</Button>
               </Table.Row>
             ))}
           </Table.Body>
