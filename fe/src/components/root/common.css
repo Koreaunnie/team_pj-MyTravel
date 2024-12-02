@@ -254,6 +254,10 @@ h1 {
     border-bottom: 1px solid var(--table-border-color);
 }
 
+.table-list thead th {
+    font-weight: bold
+}
+
 .table-list tbody {
 }
 

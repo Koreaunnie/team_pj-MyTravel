@@ -77,6 +77,29 @@ function WalletList(props) {
     }
   };
 
+  // 총 지출 계산
+  const getTotalExpense = () => {
+    return walletList.reduce((total, wallet) => total + wallet.expense, 0);
+  };
+
+  // 총 수입 계산
+  const getTotalIncome = () => {
+    return walletList.reduce((total, wallet) => total + wallet.income, 0);
+  };
+
+  // 해당 하는 날짜
+  const getFilteredDate = () => {
+    if (filteredWallet.length > 0) {
+      return filteredWallet[0].date; // 첫 번째 항목의 날짜 반환
+    }
+    return ""; // 필터링된 리스트가 없으면 빈 문자열 반환
+  };
+
+  // 해당 하는 날짜의 일별 지출 계산
+  const getOneDayExpense = () => {
+    return filteredWallet.reduce((total, wallet) => total + wallet.expense, 0);
+  };
+
   const closeModal = () => {
     setAddModalOpen(false);
   };
@@ -135,13 +158,26 @@ function WalletList(props) {
 
           <thead>
             <tr>
+              <th>총 지출</th>
+              <td colSpan={7}>{formatNumberWithCommas(getTotalExpense())}</td>
+            </tr>
+
+            <tr>
+              <th>총 수입</th>
+              <td colSpan={7}>{formatNumberWithCommas(getTotalIncome())}</td>
+            </tr>
+          </thead>
+        </table>
+
+        <table className={"table-list wallet-table"}>
+          <thead>
+            <tr>
               <th>날짜</th>
               <th>항목</th>
               <th>사용처</th>
               <th>수입</th>
               <th>지출</th>
               <th>지출 방식</th>
-              <th>잔액</th>
               <th>메모</th>
             </tr>
           </thead>
@@ -158,12 +194,18 @@ function WalletList(props) {
                 <td>{wallet.title}</td>
                 <td>{wallet.income}</td>
                 <td>{wallet.expense}</td>
-                <td>{wallet.income - wallet.expense}</td>
                 <td>{wallet.paymentMethod}</td>
                 <td>{wallet.memo}</td>
               </tr>
             ))}
           </tbody>
+
+          <tfoot>
+            <tr>
+              <th>{getFilteredDate()} 하루 총 지출</th>
+              <td colSpan={7}>{formatNumberWithCommas(getOneDayExpense())}</td>
+            </tr>
+          </tfoot>
         </table>
       </div>
 
