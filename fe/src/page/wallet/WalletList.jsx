@@ -71,35 +71,37 @@ function WalletList(props) {
         />
       </aside>
 
-      <table>
-        <thead>
-          <tr>
-            <th>date</th>
-            <th>category</th>
-            <th>title</th>
-            <th>income</th>
-            <th>expense</th>
-            <th>balance</th>
-            <th>method</th>
-            <th>memo</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {filteredWallet.map((wallet) => (
-            <tr key={wallet.id}>
-              <td>{wallet.date}</td>
-              <td>{wallet.category}</td>
-              <td>{wallet.title}</td>
-              <td>{wallet.income}</td>
-              <td>{wallet.expense}</td>
-              <td>{wallet.income - wallet.expense}</td>
-              <td>{wallet.paymentMethod}</td>
-              <td>{wallet.memo}</td>
+      <div className={"day-list"}>
+        <table>
+          <thead>
+            <tr>
+              <th>date</th>
+              <th>category</th>
+              <th>title</th>
+              <th>income</th>
+              <th>expense</th>
+              <th>balance</th>
+              <th>method</th>
+              <th>memo</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody>
+            {filteredWallet.map((wallet) => (
+              <tr key={wallet.id}>
+                <td>{wallet.date}</td>
+                <td>{wallet.category}</td>
+                <td>{wallet.title}</td>
+                <td>{wallet.income}</td>
+                <td>{wallet.expense}</td>
+                <td>{wallet.income - wallet.expense}</td>
+                <td>{wallet.paymentMethod}</td>
+                <td>{wallet.memo}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

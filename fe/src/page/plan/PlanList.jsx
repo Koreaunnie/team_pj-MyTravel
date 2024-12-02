@@ -112,7 +112,7 @@ function PlanList(props) {
   };
 
   return (
-    <div className={"body calendar-list"}>
+    <div className={"calendar-list"}>
       <aside className={"calendar"}>
         <Calendar
           formatDay={(locale, date) =>
@@ -139,7 +139,7 @@ function PlanList(props) {
         />
       </aside>
 
-      <div className={"plan-list"}>
+      <div className={"day-list"}>
         <div className={"fixed-search-wrap"}>
           <button
             className="btn btn-dark btn-planlist"
