@@ -9,6 +9,7 @@ function WalletList(props) {
   const [currentMonth, setCurrentMonth] = useState(); // 현재 월
   const [selectedDate, setSelectedDate] = useState(); // 선택된 날짜
   const [filteredWallet, setFilteredWallet] = useState([]); // 필터링된 지갑 리스트
+  const [addModalOpen, setAddModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -76,6 +77,10 @@ function WalletList(props) {
     }
   };
 
+  const closeModal = () => {
+    setAddModalOpen(false);
+  };
+
   return (
     <div className={"calendar-list"}>
       <aside className={"calendar"}>
@@ -103,7 +108,7 @@ function WalletList(props) {
         <div className={"fixed-search-wrap"}>
           <button
             className={"btn btn-dark btn-day-list"}
-            onClick={() => navigate(`/wallet/add`)}
+            onClick={() => setAddModalOpen(true)}
           >
             추가
           </button>
@@ -161,6 +166,40 @@ function WalletList(props) {
           </tbody>
         </table>
       </div>
+
+      {/* 추가 modal */}
+      {addModalOpen && (
+        <div className={"modal"}>
+          <div className={"modal-content"}>
+            <div className={"modal-header"}>
+              <button
+                className="close"
+                onClick={closeModal}
+                aria-label="모달 닫기"
+              >
+                &times;
+              </button>
+            </div>
+
+            <div className={"modal-body"}>
+              <p>새로운 내역을 추가하시겠습니까?</p>
+            </div>
+
+            <div className={"modal-footer btn-wrap"}>
+              <button className={"btn btn-dark-outline"} onClick={closeModal}>
+                닫기
+              </button>
+
+              <button
+                className={"btn btn-dark"}
+                onClick={() => navigate(`/wallet/add`)}
+              >
+                추가
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
