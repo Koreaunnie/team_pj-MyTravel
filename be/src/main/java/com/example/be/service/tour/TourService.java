@@ -196,10 +196,4 @@ public class TourService {
 
     return tour.getPartnerEmail().equals(authentication.getName());
   }
-
-
-  public boolean isPartner(Authentication auth) {
-    return auth.getAuthorities().stream().map(e -> e.toString())
-            .anyMatch(s -> s.equals("SCOPE_partner"));
-  }
 }

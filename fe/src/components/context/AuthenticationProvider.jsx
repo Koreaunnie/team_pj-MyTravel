@@ -33,6 +33,8 @@ function AuthenticationProvider({ children }) {
 
   let isAdmin = false;
 
+  let isPartner = false;
+
   if (userToken.scope) {
     isAdmin = userToken.scope.split(" ").includes("admin");
   }
@@ -45,6 +47,7 @@ function AuthenticationProvider({ children }) {
         logout,
         isAuthenticated,
         isAdmin,
+        isPartner,
         hasAccess,
       }}
     >

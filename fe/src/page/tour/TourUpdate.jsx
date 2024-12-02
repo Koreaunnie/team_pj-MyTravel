@@ -28,6 +28,17 @@ function TourUpdate() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Redirect if user does not have access
+    if (tour !== null && !(hasAccess(tour.partnerEmail) || isAdmin)) {
+      toaster.create({
+        type: "error",
+        description: "접근 권한이 없습니다.",
+      });
+      navigate("/", { replace: true }); // replace: 뒤로가기로 돌아오지 못하게 함
+    }
+  }, [tour, hasAccess, isAdmin, navigate]);
+
+  useEffect(() => {
     axios.get(`/api/tour/view/${id}`).then((res) => setTour(res.data));
   }, []);
 

@@ -4,6 +4,7 @@ import axios from "axios";
 import { Button } from "../../components/ui/button.jsx";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "../../components/ui/toaster.jsx";
+import { Checkbox } from "../../components/ui/checkbox.jsx";
 
 function CartList() {
   const [cartList, setCartList] = useState([]);
@@ -46,22 +47,27 @@ function CartList() {
         <Table.Root interactive>
           <Table.Body>
             {cartList.map((cart) => (
-              <Table.Row key={cart.id} onClick={() => handleRowClick(cart.id)}>
-                <Image key={cart.image} src={cart.src} w="200px" />
-                <Table.Cell>{cart.title}</Table.Cell>
-                <Table.Cell>{cart.location}</Table.Cell>
-                <Table.Cell>{cart.product}</Table.Cell>
-                <Table.Cell>{cart.price}</Table.Cell>
-                <Button
+              <Checkbox>
+                <Table.Row
                   key={cart.id}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDeleteClick(cart.id);
-                  }}
+                  onClick={() => handleRowClick(cart.id)}
                 >
-                  삭제
-                </Button>
-              </Table.Row>
+                  <Image key={cart.image} src={cart.src} w="200px" />
+                  <Table.Cell>{cart.title}</Table.Cell>
+                  <Table.Cell>{cart.location}</Table.Cell>
+                  <Table.Cell>{cart.product}</Table.Cell>
+                  <Table.Cell>{cart.price}</Table.Cell>
+                  <Button
+                    key={cart.id}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteClick(cart.id);
+                    }}
+                  >
+                    삭제
+                  </Button>
+                </Table.Row>
+              </Checkbox>
             ))}
           </Table.Body>
         </Table.Root>

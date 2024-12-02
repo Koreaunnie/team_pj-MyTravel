@@ -24,7 +24,7 @@ public class TourController {
   public ResponseEntity<Map<String, Object>> cart(@RequestBody Tour tour, Authentication authentication) {
     if (service.addCart(tour, authentication)) {
       return ResponseEntity.ok(Map.of("message",
-              Map.of("type", "success", "text", "장바구니에 상품 추가")));
+              Map.of("type", "success", "text", "상품을 장바구니에 담았습니다.")));
     } else {
       return ResponseEntity.status(409).body(Map.of("message",
               Map.of("type", "warning", "text", "이미 장바구니에 담은 상품입니다.")));
@@ -84,14 +84,14 @@ public class TourController {
   }
 
   @PostMapping("add")
-  @PreAuthorize("hasAuthority('SCOPE_partner')")
+  @PreAuthorize("hasAuthority('SCOPE_partner') or hasAuthority('SCOPE_admin')")
   public ResponseEntity<Map<String, Object>> add(
           Tour tour,
           @RequestParam(value = "files[]", required = false) MultipartFile[] files,
           Authentication authentication) {
 
-    if (service.isPartner(authentication)) {
-      try {
+    try {
+      if (memberService.isPartner(authentication) || memberService.isAdmin(authentication)) {
         if (!service.validate(tour)) {
           return ResponseEntity.badRequest().body(Map.of("message",
                   Map.of("type", "warning", "text", "미완성 폼입니다.")));
@@ -105,13 +105,13 @@ public class TourController {
                     Map.of("type", "warning", "text", "상품을 등록하지 못했습니다.")));
           }
         }
-      } catch (Exception e) {
-        return ResponseEntity.badRequest().body(Map.of("message",
-                Map.of("type", "warning", "text", "상품을 등록 실패")));
+      } else {
+        return ResponseEntity.status(401).body(Map.of("message",
+                Map.of("type", "warning", "text", "상품 등록 권한이 없습니다.")));
       }
-    } else {
-      return ResponseEntity.status(401).body(Map.of("message",
-              Map.of("type", "warning", "text", "상품 등록 권한이 없습니다.")));
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body(Map.of("message",
+              Map.of("type", "warning", "text", "상품 등록 실패")));
     }
   }
 }

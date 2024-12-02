@@ -194,9 +194,13 @@ public class MemberService {
     return email.equals(auth.getName());
   }
 
-
   public boolean isAdmin(Authentication auth) {
     return auth.getAuthorities().stream().map(e -> e.toString())
             .anyMatch(s -> s.equals("SCOPE_admin"));
+  }
+
+  public boolean isPartner(Authentication auth) {
+    return auth.getAuthorities().stream().map(e -> e.toString())
+            .anyMatch(s -> s.equals("SCOPE_partner"));
   }
 }
