@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function WalletAdd(props) {
+  const [saveModalOpen, setSaveModalOpen] = useState(false);
+  const [backToListModalOpen, setBackToListModalOpen] = useState(false);
   const [categoryOptions, setCategoryOptions] = useState([
     "식비",
     "교통비",
@@ -18,6 +21,8 @@ function WalletAdd(props) {
   const [paymentMethod, setPaymentMethod] = useState("");
   const [memo, setMemo] = useState("");
   const [category, setCategory] = useState(categoryOptions[0]);
+
+  const navigate = useNavigate();
 
   // 새 카테고리 추가
   const handleAddCategory = () => {
@@ -52,8 +57,32 @@ function WalletAdd(props) {
       .finally();
   };
 
+  const closeModal = () => {
+    setSaveModalOpen(false);
+    setBackToListModalOpen(false);
+  };
+
   return (
     <div className={"body"}>
+      <div className={"btn-wrap"}>
+        <button
+          className={"btn btn-dark"}
+          onClick={() => setBackToListModalOpen(true)}
+        >
+          목록
+        </button>
+
+        <button
+          type="submit"
+          className={"btn btn-dark"}
+          onClick={() => {
+            setSaveModalOpen(true);
+          }}
+        >
+          저장
+        </button>
+      </div>
+
       <form>
         <table>
           <tbody>
@@ -185,18 +214,73 @@ function WalletAdd(props) {
               </td>
             </tr>
           </tbody>
-
-          <div className={"btn-wrap"}>
-            <button
-              type="submit"
-              className={"btn btn-dark"}
-              onClick={handleSaveButton}
-            >
-              저장
-            </button>
-          </div>
         </table>
       </form>
+
+      {/* 목록 modal */}
+      {backToListModalOpen && (
+        <div className={"modal"}>
+          <div className={"modal-content"}>
+            <div className={"modal-header"}>
+              <button
+                className="close"
+                onClick={closeModal}
+                aria-label="모달 닫기"
+              >
+                &times;
+              </button>
+            </div>
+
+            <div className={"modal-body"}>
+              <p>목록으로 돌아가시겠습니까?</p>
+            </div>
+
+            <div className={"modal-footer btn-wrap"}>
+              <button className={"btn btn-dark-outline"} onClick={closeModal}>
+                닫기
+              </button>
+
+              <button
+                className={"btn btn-dark"}
+                onClick={() => navigate(`/wallet/list`)}
+              >
+                목록
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 저장 modal */}
+      {saveModalOpen && (
+        <div className={"modal"}>
+          <div className={"modal-content"}>
+            <div className={"modal-header"}>
+              <button
+                className="close"
+                onClick={closeModal}
+                aria-label="모달 닫기"
+              >
+                &times;
+              </button>
+            </div>
+
+            <div className={"modal-body"}>
+              <p>저장하시겠습니까?</p>
+            </div>
+
+            <div className={"modal-footer btn-wrap"}>
+              <button className={"btn btn-dark-outline"} onClick={closeModal}>
+                닫기
+              </button>
+
+              <button className={"btn btn-dark"} onClick={handleSaveButton}>
+                저장
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
