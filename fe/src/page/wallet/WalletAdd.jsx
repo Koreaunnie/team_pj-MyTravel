@@ -58,11 +58,14 @@ function WalletAdd(props) {
         <table>
           <tbody>
             <tr>
-              <th>날짜</th>
+              <th>
+                <label htmlFor="date">날짜</label>
+              </th>
               <td>
                 <input
                   type="date"
                   name="date"
+                  id="date"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
                 />
@@ -70,10 +73,13 @@ function WalletAdd(props) {
             </tr>
 
             <tr>
-              <th>항목</th>
+              <th>
+                <label htmlFor="category">항목</label>
+              </th>
               <td>
                 <select
                   name="category"
+                  id="category"
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                 >
@@ -101,11 +107,14 @@ function WalletAdd(props) {
             </tr>
 
             <tr>
-              <th>사용처</th>
+              <th>
+                <label htmlFor="title">사용처</label>
+              </th>
               <td>
                 <input
                   type="text"
                   name="title"
+                  id="title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                 />
@@ -113,11 +122,14 @@ function WalletAdd(props) {
             </tr>
 
             <tr>
-              <th>수입</th>
+              <th>
+                <label htmlFor="income">수입</label>
+              </th>
               <td>
                 <input
                   type="number"
                   name="income"
+                  id="income"
                   value={income}
                   onChange={(e) => setIncome(e.target.value)}
                 />
@@ -125,11 +137,14 @@ function WalletAdd(props) {
             </tr>
 
             <tr>
-              <th>지출</th>
+              <th>
+                <label htmlFor="expense">지출</label>
+              </th>
               <td>
                 <input
                   type="number"
                   name="expense"
+                  id="expense"
                   value={expense}
                   onChange={(e) => setExpense(e.target.value)}
                 />
@@ -137,10 +152,13 @@ function WalletAdd(props) {
             </tr>
 
             <tr>
-              <th>지출 방식</th>
+              <th>
+                <label htmlFor="paymentMethod">지출 방식</label>
+              </th>
               <td>
                 <select
-                  name="method"
+                  name="paymentMethod"
+                  id="paymentMethod"
                   value={paymentMethod}
                   onChange={(e) => setPaymentMethod(e.target.value)}
                 >
@@ -153,10 +171,13 @@ function WalletAdd(props) {
             </tr>
 
             <tr>
-              <th>메모</th>
+              <th>
+                <label htmlFor="memo">메모</label>
+              </th>
               <td>
                 <textarea
                   name="memo"
+                  id="memo"
                   rows="3"
                   value={memo}
                   onChange={(e) => setMemo(e.target.value)}
