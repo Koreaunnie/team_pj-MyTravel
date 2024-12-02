@@ -24,7 +24,7 @@ function TourUpdate() {
   const [open, setOpen] = useState(false);
   const [removeFiles, setRemoveFiles] = useState([]);
   const [uploadFiles, setUploadFiles] = useState([]);
-  const { hasAccess } = useContext(AuthenticationContext);
+  const { hasAccess, isAdmin } = useContext(AuthenticationContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -126,7 +126,7 @@ function TourUpdate() {
           />
         </Field>
 
-        {hasAccess(tour.partnerEmail) && (
+        {(hasAccess(tour.partnerEmail) || isAdmin) && (
           <Box>
             <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
               <DialogTrigger>

@@ -1,6 +1,7 @@
 package com.example.be.controller.tour;
 
 import com.example.be.dto.tour.Tour;
+import com.example.be.service.member.MemberService;
 import com.example.be.service.tour.TourService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.util.Map;
 @RequestMapping("api/tour")
 public class TourController {
   final TourService service;
+  final MemberService memberService;
 
   @PostMapping("cart")
   public ResponseEntity<Map<String, Object>> cart(@RequestBody Tour tour, Authentication authentication) {
@@ -35,7 +37,7 @@ public class TourController {
           Tour tour, Authentication authentication,
           @RequestParam(value = "removeFiles[]", required = false) List<String> removeFiles,
           @RequestParam(value = "uploadFiles[]", required = false) MultipartFile[] uploadFiles) {
-    if (service.hasAccess(tour.getId(), authentication)) {
+    if (service.hasAccess(tour.getId(), authentication) || memberService.isAdmin(authentication)) {
       if (service.update(tour, removeFiles, uploadFiles)) {
         return ResponseEntity.ok(Map.of("message",
                 Map.of("type", "success", "text", "상품 수정 완료")));
@@ -54,7 +56,7 @@ public class TourController {
   @PreAuthorize("isAuthenticated()")
   public ResponseEntity<Map<String, Object>> delete(
           @PathVariable int id, Authentication authentication) {
-    if (service.hasAccess(id, authentication)) {
+    if (service.hasAccess(id, authentication) || memberService.isAdmin(authentication)) {
       if (service.delete(id)) {
         return ResponseEntity.ok().body(Map.of("message",
                 Map.of("type", "success", "text", "상품 삭제")));

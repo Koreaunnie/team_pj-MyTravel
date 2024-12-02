@@ -23,7 +23,9 @@ function TourView() {
   const [tour, setTour] = useState(null);
   const [open, setOpen] = useState(false);
   const [cart, setCart] = useState({ cart: false });
-  const { hasAccess, isAuthenticated } = useContext(AuthenticationContext);
+  const { hasAccess, isAuthenticated, isAdmin } = useContext(
+    AuthenticationContext,
+  );
 
   const navigate = useNavigate();
 
@@ -114,7 +116,7 @@ function TourView() {
           <Input value={tour.partner} />
         </Field>
 
-        {hasAccess(tour.partnerEmail) && (
+        {(hasAccess(tour.partnerEmail) || isAdmin) && (
           <Box>
             <Button onClick={() => navigate(`/tour/update/${id}`)}>수정</Button>
             <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
