@@ -2,14 +2,20 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { Spinner } from "@chakra-ui/react";
+import { toaster } from "../../components/ui/toaster.jsx";
 
 function WalletEdit(props) {
   const { id } = useParams();
   const [wallet, setWallet] = useState(null);
 
   // categoryOptions를 서버에서 가져온 값으로 초기화
-  const [categoryOptions, setCategoryOptions] = useState([]);
-  const [category, setCategory] = useState(""); // 선택된 카테고리
+  const [categoryOptions, setCategoryOptions] = useState([
+    "식비",
+    "교통비",
+    "여가비",
+    "기타",
+  ]);
+  const [newCategory, setNewCategory] = useState("");
 
   const [date, setDate] = useState("");
   const [title, setTitle] = useState("");
@@ -17,7 +23,7 @@ function WalletEdit(props) {
   const [expense, setExpense] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("");
   const [memo, setMemo] = useState("");
-  const [newCategory, setNewCategory] = useState("");
+  const [category, setCategory] = useState(categoryOptions[0]);
 
   const [backToListModalOpen, setBackToListModalOpen] = useState(false);
   const [saveModalOpen, setSaveModalOpen] = useState(false);
@@ -26,14 +32,17 @@ function WalletEdit(props) {
 
   useEffect(() => {
     // wallet 정보 및 categoryOptions 가져오기
-    axios
-      .get(`/api/wallet/view/${id}`)
-      .then((res) => {
-        setWallet(res.data);
-        setCategoryOptions(res.data.categoryOptions || []);
-        setCategory(res.data.category || ""); // wallet에서 가져온 category로 설정
-      })
-      .catch((err) => console.log(err));
+    axios.get(`/api/wallet/view/${id}`).then((res) => {
+      setWallet(res.data);
+      setCategoryOptions(res.data.categoryOptions || []); // 카테고리 옵션 설정
+      setCategory(res.data.category);
+      setDate(res.data.date);
+      setTitle(res.data.title);
+      setIncome(res.data.income);
+      setExpense(res.data.expense);
+      setPaymentMethod(res.data.paymentMethod);
+      setMemo(res.data.memo);
+    });
   }, [id]);
 
   if (wallet === null) {
@@ -59,11 +68,23 @@ function WalletEdit(props) {
         paymentMethod: paymentMethod,
         memo: memo,
       })
-      .then(() => {
+      .then((res) => res.data)
+      .then((data) => {
         setSaveModalOpen(true);
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
         navigate(`/wallet/list`);
       })
-      .catch((err) => console.log(err));
+      .catch((e) => {
+        const message = e.response.data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+      })
+      .finally();
   }
 
   function handleDeleteButton() {}

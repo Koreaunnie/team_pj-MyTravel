@@ -3,9 +3,11 @@ package com.example.be.controller.wallet;
 import com.example.be.dto.wallet.Wallet;
 import com.example.be.service.wallet.WalletService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,7 +35,18 @@ public class WalletController {
 
     // 내 지갑 내역 상세 보기 화면에서 수정
     @PutMapping("update/{id}")
-    public Wallet edit(@PathVariable int id, @RequestBody Wallet wallet) {
-        return service.update(id, wallet);
+    public ResponseEntity<Map<String, Object>> update(@PathVariable int id, @RequestBody Wallet wallet) {
+        boolean isUpdated = service.update(id, wallet);
+
+        if (isUpdated) {
+            // 성공
+            return ResponseEntity.ok(Map.of("message", Map.of(
+                    "type", "success", "text", "수정되었습니다")));
+        } else {
+            // 실패
+            return ResponseEntity.badRequest().body(Map.of("message", Map.of(
+                    "type", "warning", "text", "정확한 정보를 입력해주세요")));
+        }
+
     }
 }

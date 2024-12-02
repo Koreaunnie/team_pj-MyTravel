@@ -31,10 +31,10 @@ public class WalletService {
     }
 
     // 내 지갑 내역 상세 보기 화면에서 수정
-    public Wallet update(int id, Wallet wallet) {
+    public boolean update(int id, Wallet wallet) {
         wallet.setId(id);
 
-        // 수입, 지출이 null 일 경우 0
+        // 수입 / 지출이 null 일 경우 0
         if (wallet.getIncome() == null) {
             wallet.setIncome(0);
         }
@@ -43,9 +43,6 @@ public class WalletService {
         }
 
         int cnt = mapper.update(wallet);
-        if (cnt != 1) {
-            throw new RuntimeException("Failed to update wallet with id: " + id);
-        }
-        return wallet;
+        return cnt == 1;
     }
 }
