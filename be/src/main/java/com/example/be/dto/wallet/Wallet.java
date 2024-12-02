@@ -10,8 +10,8 @@ public class Wallet {
     private LocalDate date;
     private String category;
     private String title;
-    private String income;
-    private String expense;
+    private Integer income;
+    private Integer expense;
     private String paymentMethod;
     private String memo;
 }

@@ -12,3 +12,5 @@ CREATE TABLE wallet
     memo           VARCHAR(100),
     inserted       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+DROP TABLE wallet;
