@@ -39,8 +39,8 @@ function TourView() {
       .then((res) => res.data)
       .then((data) => {
         toaster.create({
-          type: data.msg.type,
-          description: data.msg.text,
+          type: data.message.type,
+          description: data.message.text,
         });
         navigate("/tour/list");
       })
