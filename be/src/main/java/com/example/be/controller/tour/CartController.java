@@ -19,9 +19,11 @@ public class CartController {
   @DeleteMapping("delete/{id}")
   public ResponseEntity<Map<String, Object>> delete(@PathVariable int id) {
     if (service.delete(id)) {
-      return ResponseEntity.ok(Map.of("message", "success"));
+      return ResponseEntity.ok().body(Map.of("message",
+              Map.of("type", "success", "text", "장바구니에서 제외되었습니다.")));
     } else {
-      return ResponseEntity.ok(Map.of("message", "fail"));
+      return ResponseEntity.badRequest().body(Map.of("message",
+              Map.of("type", "error", "text", "오류 발생")));
     }
   }
 
