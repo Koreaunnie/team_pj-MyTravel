@@ -12,6 +12,7 @@ import {
 
 function CommunityList(props) {
   const [community, setCommunity] = useState([]);
+  const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,9 +29,17 @@ function CommunityList(props) {
     navigate(`/community/view/${id}`);
   }
 
+  function handleSearchClick() {
+    // axios.get;
+  }
+
   function handlePageChangeClick(e) {
+    const pageNumber = { page: e.page };
+    const pageQuery = new URLSearchParams(pageNumber);
+    // const pageURL = new URL(`http://localhost:5173/community/list?${pageQuery.toString()}`);
+    navigate(`/community/list?${pageQuery.toString()}`);
     axios
-      .get(`/api/community/list?page=${e.page}`)
+      .get(`/api/community/list?${pageQuery.toString()}`)
       .then((res) => setCommunity(res.data));
   }
 
@@ -65,8 +74,12 @@ function CommunityList(props) {
           <HStack>
             <Box>
               <HStack>
-                <Input w={300} />
-                <Button>검색</Button>
+                <Input
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  w={300}
+                />
+                <Button onClick={handleSearchClick}>검색</Button>
               </HStack>
             </Box>
             <Button onClick={handleWriteClick}>글 쓰기</Button>
@@ -85,7 +98,6 @@ function CommunityList(props) {
             <PaginationNextTrigger />
           </HStack>
         </PaginationRoot>
-        // TODO : 페이지네이션 추가
       </Stack>
     </div>
   );
