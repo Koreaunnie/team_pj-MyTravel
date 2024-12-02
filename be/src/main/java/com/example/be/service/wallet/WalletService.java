@@ -45,4 +45,9 @@ public class WalletService {
         int cnt = mapper.update(wallet);
         return cnt == 1;
     }
+
+    // 내 지갑 내역 삭제
+    public void delete(int id) {
+        mapper.deleteById(id);
+    }
 }

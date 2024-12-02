@@ -384,6 +384,7 @@ h1 {
 .react-calendar__navigation__label > span {
     font-size: 1.2rem;
     font-weight: bold;
+    font-weight: bold;
 }
 
 .react-calendar__navigation {
@@ -504,6 +505,9 @@ react-calendar__month-view__days__day--weekend {
     background: var(--bg-gray-color);
     border-radius: 5px;
     font-size: 0.75rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 

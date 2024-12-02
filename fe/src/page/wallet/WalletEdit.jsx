@@ -87,7 +87,12 @@ function WalletEdit(props) {
       .finally();
   }
 
-  function handleDeleteButton() {}
+  function handleDeleteButton() {
+    axios.delete(`/api/wallet/delete/${id}`).then((res) => {
+      navigate(`/wallet/list`);
+      alert("내역이 삭제되었습니다.");
+    });
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;

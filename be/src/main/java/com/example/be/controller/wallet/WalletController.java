@@ -47,6 +47,11 @@ public class WalletController {
             return ResponseEntity.badRequest().body(Map.of("message", Map.of(
                     "type", "warning", "text", "정확한 정보를 입력해주세요")));
         }
+    }
 
+    // 내 지갑 내역 삭제
+    @DeleteMapping("delete/{id}")
+    public void delete(@PathVariable int id) {
+        service.delete(id);
     }
 }

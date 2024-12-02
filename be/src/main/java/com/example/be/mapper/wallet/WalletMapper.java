@@ -47,5 +47,9 @@ public interface WalletMapper {
             """)
     int update(Wallet wallet);
 
-
+    @Delete("""
+            DELETE FROM wallet
+            WHERE id = #{id}
+            """)
+    int deleteById(int id);
 }
