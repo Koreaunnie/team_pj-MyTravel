@@ -27,6 +27,7 @@ function WalletEdit(props) {
 
   const [backToListModalOpen, setBackToListModalOpen] = useState(false);
   const [saveModalOpen, setSaveModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -126,6 +127,7 @@ function WalletEdit(props) {
   const closeModal = () => {
     setBackToListModalOpen(false);
     setSaveModalOpen(false);
+    setDeleteModalOpen(false);
   };
 
   return (
@@ -138,7 +140,10 @@ function WalletEdit(props) {
           목록
         </button>
 
-        <button className={"btn btn-warning"} onClick={handleDeleteButton}>
+        <button
+          className={"btn btn-warning"}
+          onClick={() => setDeleteModalOpen(true)}
+        >
           삭제
         </button>
       </div>
@@ -346,6 +351,40 @@ function WalletEdit(props) {
 
               <button className={"btn btn-dark"} onClick={handleSaveButton}>
                 저장
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 삭제 modal */}
+      {deleteModalOpen && (
+        <div className={"modal"}>
+          <div className={"modal-content"}>
+            <div className={"modal-header"}>
+              <button
+                className="close"
+                onClick={closeModal}
+                aria-label="모달 닫기"
+              >
+                &times;
+              </button>
+            </div>
+
+            <div className={"modal-body"}>
+              <p>내역을 삭제하시겠습니까?</p>
+            </div>
+
+            <div className={"modal-footer btn-wrap"}>
+              <button className={"btn btn-dark-outline"} onClick={closeModal}>
+                닫기
+              </button>
+
+              <button
+                className={"btn btn-warning"}
+                onClick={handleDeleteButton}
+              >
+                삭제
               </button>
             </div>
           </div>
