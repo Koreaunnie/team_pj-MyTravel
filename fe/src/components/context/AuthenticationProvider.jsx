@@ -39,6 +39,10 @@ function AuthenticationProvider({ children }) {
     isAdmin = userToken.scope.split(" ").includes("admin");
   }
 
+  if (userToken.scope) {
+    isPartner = userToken.scope.split(" ").includes("partner");
+  }
+
   return (
     <AuthenticationContext.Provider
       value={{
@@ -49,6 +53,7 @@ function AuthenticationProvider({ children }) {
         isAdmin,
         isPartner,
         hasAccess,
+        userToken,
       }}
     >
       {children}
