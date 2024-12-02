@@ -3,10 +3,9 @@ package com.example.be.controller.wallet;
 import com.example.be.dto.wallet.Wallet;
 import com.example.be.service.wallet.WalletService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,5 +17,11 @@ public class WalletController {
     @PostMapping("add")
     public void add(@RequestBody Wallet wallet) {
         service.add(wallet);
+    }
+
+    // 내 지갑 내역 보기
+    @GetMapping("list")
+    public List<Wallet> list() {
+        return service.list();
     }
 }

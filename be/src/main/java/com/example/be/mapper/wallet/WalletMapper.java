@@ -4,6 +4,9 @@ import com.example.be.dto.wallet.Wallet;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 @Mapper
 public interface WalletMapper {
@@ -16,4 +19,12 @@ public interface WalletMapper {
             """)
     @Options(keyProperty = "id", useGeneratedKeys = true)
     void insertWallet(Wallet wallet);
+
+    // 내 지갑 내역 보기
+    @Select("""
+            SELECT * 
+            FROM wallet
+            ORDER BY date DESC
+            """)
+    List<Wallet> selectByDate();
 }

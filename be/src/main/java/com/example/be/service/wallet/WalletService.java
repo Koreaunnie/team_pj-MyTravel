@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -14,7 +16,12 @@ public class WalletService {
 
     // 내 지갑 지출 / 수입 추가
     public void add(Wallet wallet) {
-        
+
         mapper.insertWallet(wallet);
+    }
+
+    // 내 지갑 내역 보기
+    public List<Wallet> list() {
+        return mapper.selectByDate();
     }
 }

@@ -50,7 +50,9 @@ function Navbar(props) {
 
       <div className={"nav-container"}>
         <NavbarItem onClick={() => navigate("/plan/list")}>내 여행</NavbarItem>
-        <NavbarItem onClick={() => navigate("/wallet/add")}>내 지갑</NavbarItem>
+        <NavbarItem onClick={() => navigate("/wallet/list")}>
+          내 지갑
+        </NavbarItem>
         <NavbarItem onClick={() => navigate("/tour/list")}>투어</NavbarItem>
         <NavbarItem onClick={() => navigate("/community/list")}>
           커뮤니티
