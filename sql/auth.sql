@@ -8,5 +8,5 @@ CREATE TABLE auth
 );
 
 INSERT INTO auth
-VALUES ('jejuair', 'partner');
+VALUES ('myTravel', 'partner');
 

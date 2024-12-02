@@ -83,31 +83,33 @@ public class TourController {
   }
 
   @PostMapping("add")
-  @PreAuthorize("isAuthenticated()")
+  @PreAuthorize("hasAuthority('SCOPE_partner')")
   public ResponseEntity<Map<String, Object>> add(
           Tour tour,
           @RequestParam(value = "files[]", required = false) MultipartFile[] files,
           Authentication authentication) {
 
-    try {
-      if (!service.validate(tour)) {
-        return ResponseEntity.badRequest().body(Map.of("message",
-                Map.of("type", "warning", "text", "미완성 폼입니다.")));
-      } else {
-        if (service.add(tour, files, authentication)) {
-          return ResponseEntity.ok().body(Map.of("message",
-                  Map.of("type", "success", "text", "상품이 등록되었습니다."),
-                  "data", tour));
-        } else {
+    if (service.isPartner(authentication)) {
+      try {
+        if (!service.validate(tour)) {
           return ResponseEntity.badRequest().body(Map.of("message",
-                  Map.of("type", "warning", "text", "상품을 등록하지 못했습니다.")));
+                  Map.of("type", "warning", "text", "미완성 폼입니다.")));
+        } else {
+          if (service.add(tour, files, authentication)) {
+            return ResponseEntity.ok().body(Map.of("message",
+                    Map.of("type", "success", "text", "상품이 등록되었습니다."),
+                    "data", tour));
+          } else {
+            return ResponseEntity.badRequest().body(Map.of("message",
+                    Map.of("type", "warning", "text", "상품을 등록하지 못했습니다.")));
+          }
         }
+      } catch (Exception e) {
+        return ResponseEntity.badRequest().body(Map.of("message",
+                Map.of("type", "warning", "text", "상품을 등록 실패")));
       }
-    } catch (Exception e) {
-      return ResponseEntity.badRequest().body(Map.of("message",
-              Map.of("type", "warning", "text", "상품을 등록 실패")));
+    } else {
+      return ResponseEntity.status(401).build();
     }
   }
-
-
 }

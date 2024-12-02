@@ -34,7 +34,10 @@ export function TourAdd() {
         navigate(`/tour/view/${data.id}`);
       })
       .catch((e) => {
-        const message = e.response.data.message;
+        const message = e.response?.data?.message || {
+          type: "error",
+          text: "상품 등록 권한이 없습니다.",
+        };
         toaster.create({
           type: message.type,
           description: message.text,
