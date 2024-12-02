@@ -38,18 +38,24 @@ public class MemberController {
   @PutMapping("update")
   public ResponseEntity<Map<String, Object>> update(
           MemberEdit member,
+          Authentication auth,
           @RequestParam(value = "uploadFiles", required = false) MultipartFile uploadFiles) {
     try {
-      if (service.update(member, uploadFiles)) {
-        return ResponseEntity.ok(Map.of("message",
-                Map.of("type", "success", "text", "수정 완료")));
+      if (service.hasAccess(member.getEmail(), auth) || service.isAdmin(auth)) {
+        if (service.update(member, uploadFiles)) {
+          return ResponseEntity.ok(Map.of("message",
+                  Map.of("type", "success", "text", "수정 완료")));
+        } else {
+          return ResponseEntity.badRequest().body(Map.of("message",
+                  Map.of("type", "warning", "text", "수정 실패")));
+        }
       } else {
         return ResponseEntity.badRequest().body(Map.of("message",
-                Map.of("type", "warning", "text", "수정 실패")));
+                Map.of("type", "warning", "text", "수정 권한이 없습니다.")));
       }
     } catch (Exception e) {
       return ResponseEntity.badRequest().body(Map.of("message",
-              Map.of("type", "warning", "text", "수정 실패")));
+              Map.of("type", "warning", "text", "오류 발생")));
     }
   }
 
@@ -65,7 +71,7 @@ public class MemberController {
   }
 
   @GetMapping("{email}")
-  @PreAuthorize("isAuthenticated() or hasAuthority('SCOPE_admin')")
+  @PreAuthorize("isAuthenticated()")
   public ResponseEntity<Member> getMember(@PathVariable String email, Authentication auth) {
     if (service.hasAccess(email, auth) || service.isAdmin(auth)) {
       return ResponseEntity.ok(service.get(email));
