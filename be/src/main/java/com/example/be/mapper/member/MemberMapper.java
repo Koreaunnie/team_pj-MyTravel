@@ -67,4 +67,11 @@ public interface MemberMapper {
           WHERE member_email=#{email}
           """)
   int deleteCartByMemberEmail(String email);
+
+  @Select("""
+          SELECT auth
+          FROM auth
+          WHERE member_email=#{email}
+          """)
+  List<String> selectAuthByMemberEmail(String email);
 }

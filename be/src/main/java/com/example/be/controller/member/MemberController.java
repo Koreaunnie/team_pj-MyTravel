@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -65,8 +66,12 @@ public class MemberController {
 
   @GetMapping("{email}")
   @PreAuthorize("isAuthenticated() or hasAuthority('SCOPE_admin')")
-  public Member getMember(@PathVariable String email) {
-    return service.get(email);
+  public ResponseEntity<Member> getMember(@PathVariable String email, Authentication auth) {
+    if (service.hasAccess(email, auth) || service.isAdmin(auth)) {
+      return ResponseEntity.ok(service.get(email));
+    } else {
+      return ResponseEntity.status(403).build();
+    }
   }
 
   @GetMapping("list")
