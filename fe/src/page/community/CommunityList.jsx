@@ -12,8 +12,6 @@ import {
 
 function CommunityList(props) {
   const [community, setCommunity] = useState([]);
-  // const number = useParams();
-  // const [communityList, setCommunityList] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,8 +29,9 @@ function CommunityList(props) {
   }
 
   function handlePageChangeClick(e) {
-    console.log(e.page);
-    navigate(`/community/list?page=${e.page}`);
+    axios
+      .get(`/api/community/list?page=${e.page}`)
+      .then((res) => setCommunity(res.data));
   }
 
   return (
