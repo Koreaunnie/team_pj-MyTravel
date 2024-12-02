@@ -142,7 +142,7 @@ function PlanList(props) {
       <div className={"day-list"}>
         <div className={"fixed-search-wrap"}>
           <button
-            className="btn btn-dark btn-planlist"
+            className="btn btn-dark btn-day-list"
             onClick={() => setAddModalOpen(true)}
           >
             새로운 여행 작성하기
