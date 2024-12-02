@@ -43,35 +43,29 @@ public class PlanService {
     }
 
     // 2. 여행 저장 시 date 문자열이 null 이거나 비어있는지 확인
-    public class NullCheckUtils {
+    public static class NullCheckUtils {
 
-        // 문자열이 null이거나 비어 있는지 확인하는 메서드
-        public static boolean isNullOrEmpty(String str) {
-            return str == null || str.trim().isEmpty();
-        }
-
-        // PlanField 객체에서 날짜가 null 또는 비어있는지 처리하는 메서드
+        // 날짜가 null이거나 비어있는지 확인하는 메서드
         public static void handleNullOrEmptyDate(PlanField field) {
-            if (isNullOrEmpty(field.getDate())) {
-                field.setDate(null);
+            if (field.getDate() == null) {
+                field.setDate(null); // LocalDate로 null 처리
             }
-            if (isNullOrEmpty(field.getTime())) {
-                field.setTime(null);
+            if (field.getTime() == null) {
+                field.setTime(null); // LocalTime으로 null 처리
             }
         }
 
         // Plan 객체에서 날짜를 처리하는 메서드
         public static void handleNullOrEmptyDates(Plan plan) {
-            if (isNullOrEmpty(plan.getStartDate())) {
-                plan.setStartDate(null);
+            if (plan.getStartDate() == null) {
+                plan.setStartDate(null); // LocalDate로 null 처리
             }
-            if (isNullOrEmpty(plan.getEndDate())) {
-                plan.setEndDate(null);
+            if (plan.getEndDate() == null) {
+                plan.setEndDate(null); // LocalDate로 null 처리
             }
         }
     }
-
-
+    
     // 3. 여행 저장 시 여행 제목이 공백이 아니고 길이가 1자 이상인 경우에만 true
     public boolean validate(Plan plan) {
         return plan.getTitle() != null && !plan.getTitle().trim().isEmpty();
