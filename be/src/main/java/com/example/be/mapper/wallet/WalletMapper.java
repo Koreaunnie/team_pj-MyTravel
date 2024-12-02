@@ -1,10 +1,7 @@
 package com.example.be.mapper.wallet;
 
 import com.example.be.dto.wallet.Wallet;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -18,7 +15,7 @@ public interface WalletMapper {
             VALUES (#{date}, #{category}, #{title}, #{income}, #{expense}, #{paymentMethod}, #{memo})
             """)
     @Options(keyProperty = "id", useGeneratedKeys = true)
-    void insertWallet(Wallet wallet);
+    int insertWallet(Wallet wallet);
 
     // 내 지갑 내역 보기
     @Select("""
@@ -35,4 +32,20 @@ public interface WalletMapper {
             WHERE id = #{id}
             """)
     Wallet selectById(int id);
+
+    // 내 지갑 내역 상세 보기 화면에서 수정
+    @Update("""
+            update wallet
+            SET date = #{date},
+                category = #{category},
+                title = #{title},
+                income = #{income},
+                expense = #{expense},
+                payment_method = #{paymentMethod},
+                memo = #{memo}
+            WHERE id = #{id}
+            """)
+    int update(Wallet wallet);
+
+
 }

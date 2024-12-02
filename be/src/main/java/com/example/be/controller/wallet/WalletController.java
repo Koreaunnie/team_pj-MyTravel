@@ -30,4 +30,10 @@ public class WalletController {
     public Wallet view(@PathVariable int id) {
         return service.view(id);
     }
+
+    // 내 지갑 내역 상세 보기 화면에서 수정
+    @PutMapping("update/{id}")
+    public Wallet edit(@PathVariable int id, @RequestBody Wallet wallet) {
+        return service.update(id, wallet);
+    }
 }
