@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Box, Input, Stack, Textarea } from "@chakra-ui/react";
 import { Field } from "../../components/ui/field.jsx";
 import { useNavigate, useParams } from "react-router-dom";
@@ -16,12 +16,15 @@ import {
   DialogTrigger,
 } from "../../components/ui/dialog.jsx";
 import { ImageFileView } from "../../Image/ImageFileView.jsx";
+import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 
 function TourView() {
   const { id } = useParams();
   const [tour, setTour] = useState(null);
   const [open, setOpen] = useState(false);
   const [cart, setCart] = useState({ cart: false });
+  const { hasAccess } = useContext(AuthenticationContext);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -102,28 +105,31 @@ function TourView() {
         <Field label={"제공사"} readOnly>
           <Input value={tour.partner} />
         </Field>
-        <Box>
-          <Button onClick={() => navigate(`/tour/update/${id}`)}>수정</Button>
-          <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
-            <DialogTrigger>
-              <Button>삭제</Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>삭제 확인</DialogTitle>
-              </DialogHeader>
-              <DialogBody>
-                <p>{tour.title} 게시물을 삭제하시겠습니까?</p>
-              </DialogBody>
-              <DialogFooter>
-                <DialogActionTrigger>
-                  <Button>취소</Button>
-                </DialogActionTrigger>
-                <Button onClick={handleDeleteClick}>삭제</Button>
-              </DialogFooter>
-            </DialogContent>
-          </DialogRoot>
-        </Box>
+
+        {hasAccess(tour.partnerEmail) && (
+          <Box>
+            <Button onClick={() => navigate(`/tour/update/${id}`)}>수정</Button>
+            <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
+              <DialogTrigger>
+                <Button>삭제</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>삭제 확인</DialogTitle>
+                </DialogHeader>
+                <DialogBody>
+                  <p>{tour.title} 게시물을 삭제하시겠습니까?</p>
+                </DialogBody>
+                <DialogFooter>
+                  <DialogActionTrigger>
+                    <Button>취소</Button>
+                  </DialogActionTrigger>
+                  <Button onClick={handleDeleteClick}>삭제</Button>
+                </DialogFooter>
+              </DialogContent>
+            </DialogRoot>
+          </Box>
+        )}
       </Stack>
     </Box>
   );
