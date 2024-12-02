@@ -62,6 +62,11 @@ const router = createBrowserRouter([
         path: "plan/edit/:id",
         element: <PlanEdit />,
       },
+      // 내 지갑
+      {
+        path: "wallet/add",
+        element: <WalletAdd />,
+      },
       // 여행 상품
       {
         path: "tour/list",
@@ -118,11 +123,6 @@ const router = createBrowserRouter([
       {
         path: "member/edit/:email",
         element: <MemberEdit />,
-      },
-      // 내 지갑
-      {
-        path: "wallet/add",
-        element: <WalletAdd />,
       },
     ],
   },
