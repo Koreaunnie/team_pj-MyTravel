@@ -19,6 +19,7 @@ import PlanAdd from "./page/plan/PlanAdd.jsx";
 import PlanList from "./page/plan/PlanList.jsx";
 import PlanView from "./page/plan/PlanView.jsx";
 import PlanEdit from "./page/plan/PlanEdit.jsx";
+import WalletAdd from "./page/wallet/WalletAdd.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -117,6 +118,11 @@ const router = createBrowserRouter([
       {
         path: "member/edit/:email",
         element: <MemberEdit />,
+      },
+      // 내 지갑
+      {
+        path: "wallet/add",
+        element: <WalletAdd />,
       },
     ],
   },

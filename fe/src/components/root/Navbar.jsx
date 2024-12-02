@@ -54,6 +54,7 @@ function Navbar(props) {
         <NavbarItem onClick={() => navigate("/community/list")}>
           커뮤니티
         </NavbarItem>
+        <NavbarItem onClick={() => navigate("/wallet/add")}>내 지갑</NavbarItem>
         <NavbarItem onClick={() => navigate("/")}>좋아요</NavbarItem>
         <NavbarItem onClick={() => navigate("/")}>장바구니</NavbarItem>
         <NavbarItem onClick={() => navigate("/")}>알림</NavbarItem>
