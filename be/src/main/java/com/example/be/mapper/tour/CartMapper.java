@@ -1,6 +1,7 @@
 package com.example.be.mapper.tour;
 
 import com.example.be.dto.tour.TourList;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -17,4 +18,10 @@ public interface CartMapper {
           WHERE tc.member_email=#{name};
           """)
   List<TourList> selectAll(String name);
+
+  @Delete("""
+          DELETE FROM tour_cart
+          WHERE tour_id = #{id}
+          """)
+  int deleteById(int id);
 }

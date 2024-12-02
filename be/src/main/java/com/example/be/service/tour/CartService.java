@@ -30,4 +30,9 @@ public class CartService {
 
     return cartList;
   }
+
+  public boolean delete(int id) {
+    int cnt = mapper.deleteById(id);
+    return cnt == 1;
+  }
 }

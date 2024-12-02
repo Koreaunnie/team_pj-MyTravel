@@ -3,6 +3,7 @@ import { Box, Image, Table } from "@chakra-ui/react";
 import axios from "axios";
 import { Button } from "../../components/ui/button.jsx";
 import { useNavigate } from "react-router-dom";
+import { toaster } from "../../components/ui/toaster.jsx";
 
 function CartList() {
   const [cartList, setCartList] = useState([]);
@@ -15,6 +16,26 @@ function CartList() {
   function handleRowClick(id) {
     navigate(`/tour/view/${id}`);
   }
+
+  const handleDeleteClick = (id) => {
+    axios
+      .delete(`/api/cart/delete/${id}`)
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+        setCartList((prevList) => prevList.filter((cart) => cart.id !== id));
+      })
+      .catch((e) => {
+        const data = e.response.data;
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+      });
+  };
 
   return (
     <Box>
@@ -31,7 +52,15 @@ function CartList() {
                 <Table.Cell>{cart.location}</Table.Cell>
                 <Table.Cell>{cart.product}</Table.Cell>
                 <Table.Cell>{cart.price}</Table.Cell>
-                <Button>삭제</Button>
+                <Button
+                  key={cart.id}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeleteClick(cart.id);
+                  }}
+                >
+                  삭제
+                </Button>
               </Table.Row>
             ))}
           </Table.Body>
