@@ -23,7 +23,7 @@ function TourView() {
   const [tour, setTour] = useState(null);
   const [open, setOpen] = useState(false);
   const [cart, setCart] = useState({ cart: false });
-  const { hasAccess } = useContext(AuthenticationContext);
+  const { hasAccess, isAuthenticated } = useContext(AuthenticationContext);
 
   const navigate = useNavigate();
 
@@ -60,6 +60,14 @@ function TourView() {
   };
 
   const handleAddToCartClick = () => {
+    if (!isAuthenticated) {
+      toaster.create({
+        type: "warning",
+        description: "로그인 후 사용 가능합니다.",
+      });
+      navigate(`/member/login`);
+      return;
+    }
     axios
       .post(`/api/tour/cart`, {
         id: tour.id,
