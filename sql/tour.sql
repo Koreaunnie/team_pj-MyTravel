@@ -36,4 +36,6 @@ ORDER BY tour.id DESC;
 ALTER TABLE tour
     ADD partnerEmail VARCHAR(30) REFERENCES member (email);
 
-
+SELECT *
+FROM tour
+WHERE id = 61;
