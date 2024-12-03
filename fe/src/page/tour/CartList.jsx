@@ -15,30 +15,6 @@ function CartList() {
     axios.get("/api/cart/list").then((res) => setCartList(res.data));
   }, []);
 
-  function handleRowClick(id) {
-    navigate(`/tour/view/${id}`);
-  }
-
-  const handleDeleteClick = (id) => {
-    axios
-      .delete(`/api/cart/delete/${id}`)
-      .then((res) => res.data)
-      .then((data) => {
-        toaster.create({
-          type: data.message.type,
-          description: data.message.text,
-        });
-        setCartList((prevList) => prevList.filter((cart) => cart.id !== id));
-      })
-      .catch((e) => {
-        const data = e.response.data;
-        toaster.create({
-          type: data.message.type,
-          description: data.message.text,
-        });
-      });
-  };
-
   if (!isAuthenticated) {
     return (
       <div>
@@ -50,6 +26,31 @@ function CartList() {
     );
   }
 
+  function handleRowClick(id) {
+    navigate(`/tour/view/${id}`);
+  }
+
+  const handleDeleteClick = (id, cart) => {
+    axios
+      .delete(`/api/cart/delete/${id}`)
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+        setCartList((prevList) => prevList.filter((c) => c.id !== id));
+        setCheckedList(checkedList.filter((r) => r.product !== cart.product));
+      })
+      .catch((e) => {
+        const data = e.response.data;
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+      });
+  };
+
   function handleCheckboxChange(cart) {
     if (checkedList.includes(cart)) {
       setCheckedList(checkedList.filter((r) => r.product !== cart.product));
@@ -60,8 +61,9 @@ function CartList() {
 
   return (
     <div>
+      <h1>장바구니 목록</h1>
+
       <div>
-        <h1>장바구니 목록</h1>
         {cartList.length === 0 ? (
           <p>장바구니가 비어 있습니다.</p>
         ) : (
@@ -94,7 +96,7 @@ function CartList() {
                       key={cart.id}
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleDeleteClick(cart.id);
+                        handleDeleteClick(cart.id, cart);
                       }}
                     >
                       삭제
