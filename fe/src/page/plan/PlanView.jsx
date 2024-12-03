@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { Spinner } from "@chakra-ui/react";
 import "/src/components/root/common.css";
+import { Modal } from "../../components/root/Modal.jsx";
 
 function PlanView(props) {
   const { id } = useParams();
@@ -181,107 +182,32 @@ function PlanView(props) {
         <input type="button" value="네이버 공유하기" onClick={share} />
       </div>
 
-      {/* 새 여행 modal */}
-      {addModalOpen && (
-        <div className={"modal"}>
-          <div className={"modal-content"}>
-            <div className={"modal-header"}>
-              <button
-                className="close"
-                onClick={closeModal}
-                aria-label="모달 닫기"
-              >
-                &times;
-              </button>
-            </div>
-
-            <div className={"modal-body"}>
-              <p>새로운 여행을 작성하시겠습니까?</p>
-            </div>
-
-            <div className={"modal-footer btn-wrap"}>
-              <button className={"btn btn-dark-outline"} onClick={closeModal}>
-                닫기
-              </button>
-
-              <button
-                className={"btn btn-dark"}
-                onClick={() => navigate(`/plan/add`)}
-              >
-                작성
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* 추가 modal */}
+      <Modal
+        isOpen={addModalOpen}
+        onClose={() => setAddModalOpen(false)}
+        onConfirm={() => navigate(`/plan/add`)}
+        message="새로운 여행을 작성하시겠습니까?"
+        buttonMessage="작성"
+      />
 
       {/* 수정 modal */}
-      {editModalOpen && (
-        <div className={"modal"}>
-          <div className={"modal-content"}>
-            <div className={"modal-header"}>
-              <button
-                className="close"
-                onClick={closeModal}
-                aria-label="모달 닫기"
-              >
-                &times;
-              </button>
-            </div>
-
-            <div className={"modal-body"}>
-              <p>이 여행을 수정하시겠습니까?</p>
-            </div>
-
-            <div className={"modal-footer btn-wrap"}>
-              <button className={"btn btn-dark-outline"} onClick={closeModal}>
-                닫기
-              </button>
-
-              <button
-                className={"btn btn-dark"}
-                onClick={() => navigate(`/plan/edit/${id}`)}
-              >
-                수정
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <Modal
+        isOpen={editModalOpen}
+        onClose={() => setEditModalOpen(false)}
+        onConfirm={() => navigate(`/plan/edit/${id}`)}
+        message="여행을 수정하시겠습니까?"
+        buttonMessage="수정"
+      />
 
       {/* 삭제 modal */}
-      {deleteModalOpen && (
-        <div className={"modal"}>
-          <div className={"modal-content"}>
-            <div className={"modal-header"}>
-              <button
-                className="close"
-                onClick={closeModal}
-                aria-label="모달 닫기"
-              >
-                &times;
-              </button>
-            </div>
-
-            <div className={"modal-body"}>
-              <p>정말로 이 여행을 삭제하시겠습니까?</p>
-            </div>
-
-            <div className={"modal-footer btn-wrap"}>
-              <button className={"btn btn-dark-outline"} onClick={closeModal}>
-                닫기
-              </button>
-
-              <button
-                className={"btn btn-warning"}
-                onClick={handleDeleteButton}
-              >
-                삭제
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <Modal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onConfirm={handleDeleteButton}
+        message="정말로 이 여행을 삭제하시겠습니까?"
+        buttonMessage="삭제"
+      />
     </div>
   );
 }

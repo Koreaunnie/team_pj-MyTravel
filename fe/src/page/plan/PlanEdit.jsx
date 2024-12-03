@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { Spinner } from "@chakra-ui/react";
+import { Modal } from "/src/components/root/Modal.jsx";
 
 function PlanEdit(props) {
   const { id } = useParams();
@@ -245,69 +246,22 @@ function PlanEdit(props) {
       </form>
 
       {/* 목록 modal */}
-      {backToListModalOpen && (
-        <div className={"modal"}>
-          <div className={"modal-content"}>
-            <div className={"modal-header"}>
-              <button
-                className="close"
-                onClick={closeModal}
-                aria-label="모달 닫기"
-              >
-                &times;
-              </button>
-            </div>
-
-            <div className={"modal-body"}>
-              <p>목록으로 돌아가시겠습니까?</p>
-            </div>
-
-            <div className={"modal-footer btn-wrap"}>
-              <button className={"btn btn-dark-outline"} onClick={closeModal}>
-                닫기
-              </button>
-
-              <button
-                className={"btn btn-dark"}
-                onClick={() => navigate(`/plan/list`)}
-              >
-                목록
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <Modal
+        isOpen={backToListModalOpen}
+        onClose={() => setBackToListModalOpen(false)}
+        onConfirm={() => navigate(`/plan/list`)}
+        message="목록으로 돌아가면 작성한 내용이 사라집니다."
+        buttonMessage="목록"
+      />
 
       {/* 저장 modal */}
-      {saveModalOpen && (
-        <div className={"modal"}>
-          <div className={"modal-content"}>
-            <div className={"modal-header"}>
-              <button
-                className="close"
-                onClick={closeModal}
-                aria-label="모달 닫기"
-              >
-                &times;
-              </button>
-            </div>
-
-            <div className={"modal-body"}>
-              <p>여행을 저장하시겠습니까?</p>
-            </div>
-
-            <div className={"modal-footer btn-wrap"}>
-              <button className={"btn btn-dark-outline"} onClick={closeModal}>
-                닫기
-              </button>
-
-              <button className={"btn btn-dark"} onClick={handleSaveButton}>
-                저장
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <Modal
+        isOpen={saveModalOpen}
+        onClose={() => setSaveModalOpen(false)}
+        onConfirm={handleSaveButton}
+        message="여행을 저장하시겠습니까?"
+        buttonMessage="저장"
+      />
     </div>
   );
 }

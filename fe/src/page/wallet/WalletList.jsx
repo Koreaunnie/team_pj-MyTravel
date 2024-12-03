@@ -3,6 +3,7 @@ import axios from "axios";
 import Calendar from "react-calendar";
 import { useNavigate } from "react-router-dom";
 import "./Wallet.css";
+import { Modal } from "../../components/root/Modal.jsx";
 
 function WalletList(props) {
   const [walletList, setWalletList] = useState([]); // 전체 지갑 리스트
@@ -221,38 +222,13 @@ function WalletList(props) {
       </div>
 
       {/* 추가 modal */}
-      {addModalOpen && (
-        <div className={"modal"}>
-          <div className={"modal-content"}>
-            <div className={"modal-header"}>
-              <button
-                className="close"
-                onClick={closeModal}
-                aria-label="모달 닫기"
-              >
-                &times;
-              </button>
-            </div>
-
-            <div className={"modal-body"}>
-              <p>새로운 내역을 추가하시겠습니까?</p>
-            </div>
-
-            <div className={"modal-footer btn-wrap"}>
-              <button className={"btn btn-dark-outline"} onClick={closeModal}>
-                닫기
-              </button>
-
-              <button
-                className={"btn btn-dark"}
-                onClick={() => navigate(`/wallet/add`)}
-              >
-                추가
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <Modal
+        isOpen={addModalOpen}
+        onClose={() => setAddModalOpen(false)}
+        onConfirm={() => navigate(`/wallet/add`)}
+        message="내역을 추가하시겠습니까?"
+        buttonMessage="추가"
+      />
     </div>
   );
 }

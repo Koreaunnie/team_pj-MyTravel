@@ -12,6 +12,7 @@ import "react-calendar/dist/Calendar.css";
 import { FaRegQuestionCircle } from "react-icons/fa";
 import "./Plan.css";
 import Calendar from "react-calendar";
+import { Modal } from "../../components/root/Modal.jsx";
 
 function PlanList(props) {
   const [filteredPlans, setFilteredPlans] = useState([]); // 필터링된 일정
@@ -242,39 +243,14 @@ function PlanList(props) {
         </div>
       </div>
 
-      {/* 새 여행 modal */}
-      {addModalOpen && (
-        <div className={"modal"}>
-          <div className={"modal-content"}>
-            <div className={"modal-header"}>
-              <button
-                className="close"
-                onClick={closeModal}
-                aria-label="모달 닫기"
-              >
-                &times;
-              </button>
-            </div>
-
-            <div className={"modal-body"}>
-              <p>새로운 여행을 작성하시겠습니까?</p>
-            </div>
-
-            <div className={"modal-footer btn-wrap"}>
-              <button className={"btn btn-dark-outline"} onClick={closeModal}>
-                닫기
-              </button>
-
-              <button
-                className={"btn btn-dark"}
-                onClick={() => navigate(`/plan/add`)}
-              >
-                작성
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* 추가 modal */}
+      <Modal
+        isOpen={addModalOpen}
+        onClose={() => setAddModalOpen(false)}
+        onConfirm={() => navigate(`/plan/add`)}
+        message="새로운 여행을 작성하시겠습니까?"
+        buttonMessage="작성"
+      />
     </div>
   );
 }
