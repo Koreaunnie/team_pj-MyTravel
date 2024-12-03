@@ -2,6 +2,7 @@ package com.example.be.service.tour;
 
 import com.example.be.dto.tour.Tour;
 import com.example.be.dto.tour.TourImg;
+import com.example.be.dto.tour.TourList;
 import com.example.be.mapper.tour.TourMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,11 +36,13 @@ public class TourService {
   public boolean add(Tour tour, MultipartFile[] files, Authentication authentication) {
     String nickname = mapper.findNickname(authentication.getName());
     tour.setPartner(nickname);
+    tour.setPartnerEmail(authentication.getName());
 
     int cnt = mapper.insert(tour);
 
+    //업로드할 파일이 있다면
     if (files != null && files.length > 0) {
-      //file upload
+      //s3 file upload
       for (MultipartFile file : files) {
         String objectKey = "teamPrj1126/" + tour.getId() + "/" + file.getOriginalFilename();
         PutObjectRequest por = PutObjectRequest.builder()
@@ -66,7 +69,7 @@ public class TourService {
     List<String> fileNameList = mapper.selectFilesByTourId(id);
 
     List<TourImg> fileSrcList = fileNameList.stream()
-            .map(name -> new TourImg(name, imageSrcPrefix + "/" + id + "/" + name))
+            .map(name -> new TourImg(id, name, imageSrcPrefix + "/" + id + "/" + name))
             .toList();
 
     tour.setFileList(fileSrcList);
@@ -74,10 +77,34 @@ public class TourService {
   }
 
   public Map<String, Object> list(String searchType, String keyword) {
-    List<Tour> tourList = mapper.selectAll(searchType, keyword);
+    //리스트 조회
+    List<TourList> tourList = mapper.selectAll(searchType, keyword);
+
     if (tourList == null || tourList.isEmpty()) {
       return Map.of("tourList", List.of()); // 빈 리스트 반환
     }
+
+    tourList.stream()
+            .forEach(tour -> {
+              if (tour.getImage() != null) {
+                tour.setSrc(imageSrcPrefix + "/" + tour.getId() + "/" + tour.getImage());
+              }
+            });
+
+
+    //tourList의 image에 경로
+
+  /*  //게시글 별 id에 따른 첫번째 사진과 그 경로
+    List<TourImg> imageNames = mapper.selectFirstFilesOfTourId(searchType, keyword);
+    List<TourImg> fileSrcList = imageNames.stream()
+            .map(image -> new TourImg(
+                    image.getId(),
+                    image.getName(),
+                    imageSrcPrefix + "/" + image.getId() + "/" + image.getName()
+            ))
+            .toList();
+*/
+
     return Map.of("tourList", tourList);
   }
 
@@ -110,6 +137,9 @@ public class TourService {
 
     //DB테이블에서 삭제
     mapper.deleteFileByTourId(id);
+
+    //장바구니 저장 내용 삭제
+    mapper.deleteCartByTourId(id);
 
     int cnt = mapper.deleteById(id);
     return cnt == 1;
@@ -147,5 +177,23 @@ public class TourService {
 
     int cnt = mapper.update(tour);
     return cnt == 1;
+  }
+
+  public boolean addCart(Tour tour, Authentication authentication) {
+    tour.setPartnerEmail(authentication.getName());
+
+    boolean exists = mapper.checkCart(tour.getId(), tour.getPartnerEmail());
+    if (exists) {
+      return false;
+    }
+
+    int cnt = mapper.addCart(tour.getId(), tour.getPartnerEmail());
+    return cnt == 1;
+  }
+
+  public boolean hasAccess(int id, Authentication authentication) {
+    Tour tour = mapper.selectById(id);
+
+    return tour.getPartnerEmail().equals(authentication.getName());
   }
 }

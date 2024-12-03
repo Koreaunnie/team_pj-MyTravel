@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Box, Center, HStack, Input, SimpleGrid, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  HStack,
+  Image,
+  Input,
+  SimpleGrid,
+  Text,
+} from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "../../components/ui/button.jsx";
@@ -25,10 +33,8 @@ function TourList() {
         setTourList(res.data.tourList);
       })
       .catch((err) => {
-        console.error(err);
         setTourList([]);
       });
-
     return () => {
       controller.abort();
     };
@@ -103,7 +109,10 @@ function TourList() {
               _hover={{ boxShadow: "1g" }}
               onClick={() => handleRowClick(tour.id)}
             >
-              <Text>{tour.title}</Text>
+              <Image key={tour.image} src={tour.src} />
+              <Text>
+                <b>{tour.title}</b>
+              </Text>
               <Text>{tour.location}</Text>
               <Text>{tour.product}</Text>
               <Text>{tour.price}</Text>

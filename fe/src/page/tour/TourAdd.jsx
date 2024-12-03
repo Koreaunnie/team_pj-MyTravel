@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Box, Input, Stack, Textarea } from "@chakra-ui/react";
 import { Button } from "../../components/ui/button.jsx";
 import axios from "axios";
 import { Field } from "../../components/ui/field.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
+import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { useNavigate } from "react-router-dom";
 
 export function TourAdd() {
@@ -13,6 +14,7 @@ export function TourAdd() {
   const [location, setLocation] = useState("");
   const [content, setContent] = useState("");
   const [files, setFiles] = useState([]);
+  const { userToken, isPartner, isAdmin } = useContext(AuthenticationContext);
   const navigate = useNavigate();
 
   const handleSaveClick = () => {
@@ -34,7 +36,10 @@ export function TourAdd() {
         navigate(`/tour/view/${data.id}`);
       })
       .catch((e) => {
-        const message = e.response.data.message;
+        const message = e.response?.data?.message || {
+          type: "error",
+          text: "상품을 등록할 수 없습니다.",
+        };
         toaster.create({
           type: message.type,
           description: message.text,
@@ -46,6 +51,14 @@ export function TourAdd() {
 
   for (const file of files) {
     filesList.push(<li>{file.name}</li>);
+  }
+
+  if (!userToken || (!isPartner && !isAdmin)) {
+    return (
+      <div>
+        접근 권한이 없습니다. <a href="/member/signup">로그인 페이지로</a>
+      </div>
+    );
   }
 
   return (

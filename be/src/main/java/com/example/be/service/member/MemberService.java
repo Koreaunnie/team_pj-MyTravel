@@ -8,6 +8,7 @@ import com.example.be.mapper.tour.TourMapper;
 import com.example.be.service.tour.TourService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
@@ -24,6 +25,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -94,12 +96,14 @@ public class MemberService {
 
     Member db = mapper.selectByEmail(member.getEmail());
     if (db != null && db.getPassword().equals(member.getPassword())) {
-
+      //쓴 게시물 목록
       List<Integer> tourBoards = tourMapper.selectByPartner(db.getNickname());
+      //게시물 삭제
       for (Integer tourId : tourBoards) {
         tourService.delete(tourId);
       }
 
+      //프로필 사진 삭제
       String profile = mapper.selectPictureByEmail(db.getEmail());
       String key = "teamPrj1126/member/" + member.getEmail() + "/" + profile;
       DeleteObjectRequest dor = DeleteObjectRequest.builder()
@@ -108,8 +112,11 @@ public class MemberService {
               .build();
       s3.deleteObject(dor);
 
-      cnt = mapper.deleteByEmail(member.getEmail());
+      //멤버의 장바구니 삭제
+      mapper.deleteCartByMemberEmail(member.getEmail());
 
+      //member 삭제
+      cnt = mapper.deleteByEmail(member.getEmail());
     }
 
     return cnt == 1;
@@ -157,6 +164,10 @@ public class MemberService {
 
   public String token(Member member) {
     Member db = mapper.selectByEmail(member.getEmail());
+    List<String> auths = mapper.selectAuthByMemberEmail(member.getEmail());
+    String authsString = auths.stream()
+            .collect(Collectors.joining(" "));
+
     if (db != null) {
       if (db.getPassword().equals(member.getPassword())) {
         //token 생성
@@ -165,6 +176,7 @@ public class MemberService {
                 .subject(member.getEmail())
                 .issuedAt(Instant.now())
                 .expiresAt(Instant.now().plusSeconds(60 * 60 * 24 * 7))
+                .claim("scope", authsString)
                 .build();
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
       }
@@ -176,5 +188,19 @@ public class MemberService {
 
   public boolean checkNickname(String nickname) {
     return mapper.selectByNickname(nickname) != null;
+  }
+
+  public boolean hasAccess(String email, Authentication auth) {
+    return email.equals(auth.getName());
+  }
+
+  public boolean isAdmin(Authentication auth) {
+    return auth.getAuthorities().stream().map(e -> e.toString())
+            .anyMatch(s -> s.equals("SCOPE_admin"));
+  }
+
+  public boolean isPartner(Authentication auth) {
+    return auth.getAuthorities().stream().map(e -> e.toString())
+            .anyMatch(s -> s.equals("SCOPE_partner"));
   }
 }
