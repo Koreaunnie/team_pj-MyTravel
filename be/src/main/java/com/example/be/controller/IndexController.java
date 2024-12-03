@@ -1,13 +1,14 @@
 package com.example.be.controller;
 
-import com.example.be.dto.plan.Plan;
 import com.example.be.service.plan.PlanService;
+import com.example.be.service.tour.TourService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -15,12 +16,16 @@ import java.util.List;
 public class IndexController {
 
     private final PlanService planService;
+    private final TourService tourService;
 
-    // 메인 화면에 필요한 일부 plan list 를 가져오기
+    // 메인 화면에 필요한 일부 list 를 가져오기
     @GetMapping
-    public List<Plan> index() {
-        return planService.getMainPagePlans();
-    }
+    public Map<String, Object> getIndex() {
+        Map<String, Object> result = new HashMap<>();
 
-    // 메인 화면에 필요한 일부 tour list 를 가져오기
+        result.put("plans", planService.getMainPagePlans());
+        result.put("tours", tourService.getMainPageTours());
+
+        return result;
+    }
 }

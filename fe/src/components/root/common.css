@@ -107,7 +107,7 @@ h1 {
 }
 
 .body {
-    width: 900px;
+    width: 1000px;
     margin: 0 auto;
     position: relative;
 }
@@ -280,6 +280,16 @@ h1 {
 
 .table-list tbody tr td {
     padding: 5px 10px;
+}
+
+.table-list tfoot tr {
+    height: 50px;
+    background: var(--table-header-color);
+    border-bottom: 1px solid #000;
+}
+
+.table-list tfoot th {
+    font-weight: bold
 }
 
 
