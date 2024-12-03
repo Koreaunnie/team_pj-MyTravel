@@ -1,12 +1,14 @@
 import Navbar from "../../components/root/Navbar.jsx";
-import { Stack } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
+import { Stack } from "@chakra-ui/react";
 
 export function RootLayout() {
   return (
     <Stack>
       <Navbar />
-      <Outlet />
+      <Stack marginTop="180px">
+        <Outlet />
+      </Stack>
     </Stack>
   );
 }
