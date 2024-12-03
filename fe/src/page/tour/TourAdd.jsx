@@ -14,25 +14,8 @@ export function TourAdd() {
   const [location, setLocation] = useState("");
   const [content, setContent] = useState("");
   const [files, setFiles] = useState([]);
-  const { hasAccess, userToken, isPartner, isAdmin } = useContext(
-    AuthenticationContext,
-  );
+  const { userToken, isPartner, isAdmin } = useContext(AuthenticationContext);
   const navigate = useNavigate();
-
-  // console.log(isAdmin);
-  // console.log(isPartner);
-  // console.log(userToken);
-  //
-  // useEffect(() => {
-  //   // userToken이 없거나 isPartner와 isAdmin이 모두 false일 경우 리다이렉트
-  //   if (!userToken || (!isPartner && !isAdmin)) {
-  //     toaster.create({
-  //       type: "error",
-  //       description: "이 페이지에 접근할 권한이 없습니다.",
-  //     });
-  //     navigate("/");
-  //   }
-  // }, [isPartner, isAdmin, userToken, navigate]);
 
   const handleSaveClick = () => {
     axios
@@ -68,6 +51,14 @@ export function TourAdd() {
 
   for (const file of files) {
     filesList.push(<li>{file.name}</li>);
+  }
+
+  if (!userToken || (!isPartner && !isAdmin)) {
+    return (
+      <div>
+        접근 권한이 없습니다. <a href="/member/signup">로그인 페이지로</a>
+      </div>
+    );
   }
 
   return (

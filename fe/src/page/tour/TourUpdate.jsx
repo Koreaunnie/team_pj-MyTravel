@@ -29,10 +29,6 @@ function TourUpdate() {
   );
   const navigate = useNavigate();
 
-  // console.log(isAdmin);
-  // console.log(isPartner);
-  // console.log(userToken);
-
   useEffect(() => {
     if (tour !== null && !(hasAccess(tour.partnerEmail) || isAdmin)) {
       toaster.create({
