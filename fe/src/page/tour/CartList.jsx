@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Image, Table } from "@chakra-ui/react";
+import { Image } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "../../components/ui/toaster.jsx";
@@ -77,51 +77,49 @@ function CartList() {
         {cartList.length === 0 ? (
           <p>장바구니가 비어 있습니다.</p>
         ) : (
-          <Table.Root interactive>
-            <table>
-              {cartList.map((cart) => (
-                <tbody>
-                  <tr
+          <table className={"table-list"}>
+            {cartList.map((cart) => (
+              <tbody>
+                <tr
+                  key={cart.id}
+                  // onClick={() => handleRowClick(cart.id)}
+                >
+                  <td>
+                    <input
+                      type={"checkbox"}
+                      checked={checkedList.some(
+                        (r) => r.product === cart.product,
+                      )}
+                      onChange={() => handleCheckboxChange(cart)}
+                    />
+                  </td>
+                  <td>
+                    <Image key={cart.image} src={cart.src} w="200px" />
+                  </td>
+                  <td>{cart.title}</td>
+                  <td>{cart.location}</td>
+                  <td>{cart.product}</td>
+                  <td>{cart.price}</td>
+                  <button
+                    className={"btn btn-warning"}
                     key={cart.id}
-                    // onClick={() => handleRowClick(cart.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteClick(cart.id, cart);
+                    }}
                   >
-                    <td>
-                      <input
-                        type={"checkbox"}
-                        checked={checkedList.some(
-                          (r) => r.product === cart.product,
-                        )}
-                        onChange={() => handleCheckboxChange(cart)}
-                      />
-                    </td>
-                    <td>
-                      <Image key={cart.image} src={cart.src} w="200px" />
-                    </td>
-                    <td>{cart.title}</td>
-                    <td>{cart.location}</td>
-                    <td>{cart.product}</td>
-                    <td>{cart.price}</td>
-                    <button
-                      className={"btn btn-warning"}
-                      key={cart.id}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeleteClick(cart.id, cart);
-                      }}
-                    >
-                      삭제
-                    </button>
-                  </tr>
-                </tbody>
-              ))}
-            </table>
-          </Table.Root>
+                    삭제
+                  </button>
+                </tr>
+              </tbody>
+            ))}
+          </table>
         )}
       </div>
       <adise>
-        <h3>선택한 제품</h3>
+        <h1>선택한 제품</h1>
         <form>
-          <table border="1">
+          <table className={"table-list"}>
             <thead>
               <tr>
                 <th>
