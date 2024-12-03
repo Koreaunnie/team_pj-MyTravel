@@ -11,6 +11,7 @@ function WalletList(props) {
   const [selectedDate, setSelectedDate] = useState(); // 선택된 날짜
   const [filteredWallet, setFilteredWallet] = useState([]); // 필터링된 지갑 리스트
   const [isAllView, setIsAllView] = useState(true); // 전체 보기 상태
+  const [activeTab, setActiveTab] = useState(null); // 카테고리 탭 활성화
   const [addModalOpen, setAddModalOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -83,6 +84,13 @@ function WalletList(props) {
     } else {
       setFilteredWallet(walletList); // 선택된 날짜가 없다면 전체 지갑 리스트 표시
     }
+  };
+
+  const categories = ["전체", "식비", "교통비", "여가비", "기타"];
+
+  // 카테고리 탭 활성화
+  const handleTabClick = (index) => {
+    setActiveTab(index);
   };
 
   // 총 지출 계산
@@ -166,11 +174,15 @@ function WalletList(props) {
 
           <div className={"category-tab"}>
             <ul>
-              <li className={"on"}>전체</li>
-              <li>식비</li>
-              <li>교통비</li>
-              <li>여가비</li>
-              <li>기타</li>
+              {categories.map((category, index) => (
+                <li
+                  key={index}
+                  className={`category-tab ${activeTab === index ? "on" : ""}`}
+                  onClick={() => handleTabClick(index)} // 탭 클릭 시 해당 인덱스를 설정
+                >
+                  {category}
+                </li>
+              ))}
             </ul>
           </div>
         </div>
