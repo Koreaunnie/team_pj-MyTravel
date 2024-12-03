@@ -26,6 +26,7 @@ import CartList from "./page/tour/CartList.jsx";
 import AuthenticationProvider from "./components/context/AuthenticationProvider.jsx";
 import React from "react";
 import Payment from "./page/tour/payment.jsx";
+import MyPage from "./page/member/MyPage.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -151,6 +152,11 @@ const router = createBrowserRouter([
       {
         path: "member/edit/:email",
         element: <MemberEdit />,
+      },
+
+      {
+        path: "mypage/:email",
+        element: <MyPage />,
       },
     ],
   },

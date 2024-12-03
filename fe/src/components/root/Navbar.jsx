@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./common.css";
 import "./Navbar.css";
 import { useNavigate } from "react-router-dom";
+import { AuthenticationContext } from "../context/AuthenticationProvider.jsx";
 
 function Navbar(props) {
   const navigate = useNavigate();
+  const { email, isAdmin, isPartner, isAuthenticated } = useContext(
+    AuthenticationContext,
+  );
 
   return (
     <nav className={"navbar"}>
@@ -20,6 +24,7 @@ function Navbar(props) {
           >
             로그아웃
           </li>
+          <li onClick={() => navigate(`/mypage/${email}`)}>마이페이지</li>
         </ul>
       </div>
 
