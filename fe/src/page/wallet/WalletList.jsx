@@ -9,6 +9,7 @@ function WalletList(props) {
   const [currentMonth, setCurrentMonth] = useState(); // 현재 월
   const [selectedDate, setSelectedDate] = useState(); // 선택된 날짜
   const [filteredWallet, setFilteredWallet] = useState([]); // 필터링된 지갑 리스트
+  const [isAllView, setIsAllView] = useState(true); // 전체 보기 상태
   const [addModalOpen, setAddModalOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -25,16 +26,22 @@ function WalletList(props) {
   // 선택된 날짜가 변경될 때 필터링
   useEffect(() => {
     if (selectedDate) {
-      const formattedDate = selectedDate.toLocaleDateString("en-CA"); // 현지 시간대에 맞는 날짜 형식 (yyyy-MM-dd)
+      const formattedDate = selectedDate.toLocaleDateString("en-CA");
       const filtered = walletList.filter(
-        (wallet) =>
-          formattedDate >= wallet.date && formattedDate <= wallet.date, // 필터링 기준을 선택된 날짜와 비교
+        (wallet) => wallet.date === formattedDate,
       );
       setFilteredWallet(filtered);
+      setIsAllView(false); // 날짜 선택 시 전체 보기 해제
     } else {
       setFilteredWallet(walletList); // 날짜 선택 안 하면 전체 내역 표시
     }
   }, [selectedDate, walletList]);
+
+  // 전체 날짜 보기
+  const handleAllView = () => {
+    setFilteredWallet(walletList);
+    setIsAllView(true);
+  };
 
   // 선택된 날짜 업데이트
   const handleDateChange = (date) => {
@@ -147,7 +154,7 @@ function WalletList(props) {
           <button
             className={"btn btn-dark btn-day-list"}
             style={{ marginLeft: "15px" }}
-            onClick={() => setFilteredWallet(walletList)}
+            onClick={handleAllView}
           >
             전체 보기
           </button>
@@ -181,7 +188,6 @@ function WalletList(props) {
               <th>메모</th>
             </tr>
           </thead>
-
           <tbody>
             {filteredWallet.map((wallet) => (
               <tr
@@ -200,12 +206,17 @@ function WalletList(props) {
             ))}
           </tbody>
 
-          <tfoot>
-            <tr>
-              <th>{getFilteredDate()} 하루 총 지출</th>
-              <td colSpan={7}>{formatNumberWithCommas(getOneDayExpense())}</td>
-            </tr>
-          </tfoot>
+          {/* 전체 보기 상태가 아닐 때만 tfoot 렌더링 */}
+          {!isAllView && (
+            <tfoot>
+              <tr>
+                <th>{getFilteredDate()} 하루 총 지출</th>
+                <td colSpan={7}>
+                  {formatNumberWithCommas(getOneDayExpense())}
+                </td>
+              </tr>
+            </tfoot>
+          )}
         </table>
       </div>
 
