@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -20,6 +21,11 @@ public class CartService {
   String imageSrcPrefix;
 
   public List<TourList> list(Authentication auth) {
+    //로그인 정보가 없을 때 처리
+    if (auth == null) {
+      return Collections.emptyList(); // 빈 리스트 반환
+    }
+
     List<TourList> cartList = mapper.selectAll(auth.getName());
 
     cartList.stream().forEach(cart -> {
@@ -29,6 +35,7 @@ public class CartService {
     });
 
     return cartList;
+
   }
 
   public boolean delete(int id) {

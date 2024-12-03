@@ -10,7 +10,7 @@ import { AuthenticationContext } from "../../components/context/AuthenticationPr
 function CartList() {
   const [cartList, setCartList] = useState([]);
   const navigate = useNavigate();
-  const { isAuthenticated, login } = useContext(AuthenticationContext);
+  const { isAuthenticated } = useContext(AuthenticationContext);
 
   useEffect(() => {
     axios.get("/api/cart/list").then((res) => setCartList(res.data));
@@ -40,16 +40,16 @@ function CartList() {
       });
   };
 
-  // if (!login) {
-  //   return (
-  //     <div>
-  //       <h1>장바구니 목록</h1>
-  //       로그인 후 사용 가능합니다.
-  //       <a href="/member/login">로그인 페이지로 > </a>
-  //       <a href="/member/signup">회원 가입 페이지로 ></a>
-  //     </div>
-  //   );
-  // }
+  if (!isAuthenticated) {
+    return (
+      <div>
+        <h1>장바구니 목록</h1>
+        로그인 후 사용 가능합니다.
+        <a href="/member/login">로그인 페이지로 > </a>
+        <a href="/member/signup">회원 가입 페이지로 ></a>
+      </div>
+    );
+  }
 
   return (
     <Box>
