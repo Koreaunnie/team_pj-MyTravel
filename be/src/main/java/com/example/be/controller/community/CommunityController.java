@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -27,7 +28,7 @@ public class CommunityController {
 
 
     @PostMapping("write")
-    public void write(@RequestBody Community community, Authentication auth) {
+    public void write(@RequestBody Community community, MultipartFile files, Authentication auth) {
 
         service.write(community, auth);
     }
