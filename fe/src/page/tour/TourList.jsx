@@ -95,7 +95,7 @@ function TourList() {
         <p>찾으시는 상품이 존재하지 않습니다.</p>
       ) : (
         <SimpleGrid
-          columns={{ base: 2, md: 4, lg: 6, xl: 7, "2xl": 8 }}
+          columns={{ base: 2, md: 4, lg: 5, xl: 6, "2xl": 7 }}
           spacing={6}
         >
           {tourList.map((tour) => (
