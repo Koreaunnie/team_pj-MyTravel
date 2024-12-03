@@ -4,7 +4,7 @@
     padding: 20px;
 }
 
-.sub-title {
+.period {
     display: flex;
     width: 100%;
 }
@@ -16,6 +16,74 @@
 }
 
 /*-------------------- PlanList --------------------*/
-.plan-container {
+
+/* pagination */
+.pagination {
+    width: 100%
+}
+
+
+/*-------------------- PlanView --------------------*/
+
+table {
+    width: 100%;
+}
+
+.head-table {
+    margin: 0 auto;
+    height: 170px;
+    background: var(--btn-normal-dark);
+    color: #fff;
+}
+
+.head-table thead .thead-title {
+    padding: 25px;
+    font-size: 35px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.head-table thead .thead-sub-title-warp {
+    padding-left: 80px;
+}
+
+.head-table thead .thead-sub-title {
+    font-weight: bold;
+}
+
+.head-table tbody td {
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+.body-table {
+    margin-top: 230px;
+    padding: 30px;
+    background: var(--bg-gray-color);
+}
+
+.body-table caption {
+    padding: 30px;
+    background: var(--bg-gray-color);
+    font-weight: bold;
+}
+
+.body-table tbody {
+    padding: 50px;
+}
+
+
+@media (max-width: 768px) {
+    .calendar {
+        display: none;
+    }
+
+    .list {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+
 
 }

@@ -1,6 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
+
 :root {
     --table-header-color: #f7f7f7;
-    --table-border-color: #eaeaea;
+    --table-border-color: #e4e4e7;
     --table-hover-color: #f9f9f9;
 
     --btn-normal-dark: #212529;
@@ -14,15 +16,23 @@
     --btn-warning-hover: #bb2d3b;
     --btn-warning-hover-border: #b02a37;
 
+    --bg-gray-color: #f9f9f9;
+
     --font-gray-color: #52525b;
+    --font-light-gray-color: #dcdcdc;
 
     --small-font-size: 14px;
     --normal-font-size: 16px;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 * {
     text-decoration: none;
     list-style: none;
+    font-family: 'Noto Sans', sans-serif;
 }
 
 body, a, p, ul, li {
@@ -96,13 +106,22 @@ h1 {
     margin: 20px 0;
 }
 
-nav {
-    width: 100vw;
+.body {
+    width: 900px;
+    margin: 0 auto;
+    position: relative;
 }
 
-.body {
-    width: 50%;
+.position-fixed {
+    position: fixed;
+    width: 900px;
+    left: 0;
+    right: 0;
     margin: 0 auto;
+}
+
+.pointer {
+    cursor: pointer;
 }
 
 /*------------------- button design -------------------*/
@@ -215,6 +234,55 @@ nav {
     margin-left: 10px;
 }
 
+/* -------------------------- table design --------------------------- */
+
+.table-list {
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.table-list caption {
+    font-weight: bold;
+    font-size: 30px;
+    margin: 20px;
+}
+
+.table-list thead tr {
+    height: 50px;
+    border-top: 1px solid #000;
+    background: var(--table-header-color);
+    border-bottom: 1px solid var(--table-border-color);
+}
+
+.table-list thead th {
+    font-weight: bold
+}
+
+.table-list tbody {
+}
+
+.table-list tbody tr {
+    cursor: pointer;
+    height: 40px;
+}
+
+.table-list tbody tr td {
+    border-bottom: 1px solid var(--table-border-color);
+}
+
+.table-list tbody tr:last-child {
+    border-bottom: none;
+}
+
+.table-list tbody tr:hover {
+    background: var(--table-hover-color);
+}
+
+.table-list tbody tr td {
+    padding: 5px 10px;
+}
+
+
 /*------------------- pagination position -------------------*/
 .pagination {
 
@@ -239,7 +307,7 @@ nav {
 /*------------------- empty list -------------------*/
 .empty-container {
     width: 100%;
-    margin: 20px 0;
+    margin: 45px 0;
     text-align: center;
 }
 
@@ -261,4 +329,223 @@ nav {
     margin-top: 5px;
     font-size: 0.9rem;
     color: var(--font-gray-color);
+}
+
+/*------------------- react-calendar -------------------*/
+.calendar-list {
+    display: flex;
+}
+
+.calendar {
+    width: 500px;
+    position: fixed;
+    top: 180px;
+    padding: 30px;
+}
+
+.calendar::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 1px;
+    background: var(--table-border-color);
+    z-index: -1;
+}
+
+.day-list {
+    position: sticky;
+    left: 500px;
+    width: calc(100% - 530px);
+    padding-left: 30px;
+}
+
+.btn-day-list {
+    margin: 0;
+}
+
+.fixed-search-wrap {
+    position: sticky;
+    top: 180px;
+    padding-top: 30px;
+    z-index: 100;
+    background: #fff;
+}
+
+/* react-calendar */
+.react-calendar {
+    width: 480px !important;
+    padding: 20px 10px;
+    max-width: 100%;
+    line-height: 1rem;
+    border-radius: 10px;
+    border: 1px solid var(--table-border-color) !important;
+    background: none !important;
+}
+
+/* 년-월 */
+.react-calendar__navigation__label > span {
+    font-size: 1.2rem;
+    font-weight: bold;
+    font-weight: bold;
+}
+
+.react-calendar__navigation {
+    margin: 10px;
+}
+
+/* 년-월 이전/다음 버튼 */
+.react-calendar__navigation button {
+}
+
+.react-calendar__navigation button:disabled {
+    background-color: #f0f0f0;
+}
+
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+    background: none !important;
+}
+
+/* 요일 (월 ~ 일) */
+.react-calendar__month-view__weekdays {
+}
+
+.react-calendar__month-view__weekdays__weekday {
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
+/* 주말 */
+react-calendar__month-view__days__day--weekend {
+    color: #000;
+}
+
+/* 날짜 타일 한개 */
+.react-calendar__tile {
+    width: 55px;
+    height: 57px;
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+    background: none !important;
+    border-radius: 50%;
+    background: var(--table-border-color) !important;
+    font-weight: bold;
+}
+
+/* 오늘 날짜 */
+.react-calendar__tile--now {
+    background: none !important;
+    font-weight: bold;
+    position: relative;
+}
+
+/*.react-calendar__tile--now::after {*/
+/*    content: '';*/
+/*    position: absolute;*/
+/*    bottom: 8px;*/
+/*    left: 50%;*/
+/*    transform: translateX(-50%);*/
+/*    width: 6px;*/
+/*    height: 6px;*/
+/*    background-color: var(--btn-normal-dark);*/
+/*    border-radius: 50%;*/
+/*}*/
+
+.react-calendar__tile--now:enabled:hover,
+.react-calendar__tile--now:enabled:focus {
+    color: #000;
+    background: #fff;
+}
+
+/* 선택된 날짜의 배경색 변경 */
+.react-calendar__tile--active {
+    background-color: var(--btn-normal-dark) !important;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 50px;
+}
+
+.react-calendar__tile--hasActive {
+    background: #51F8C4;
+}
+
+.react-calendar__tile--hasActive:enabled:hover,
+.react-calendar__tile--hasActive:enabled:focus {
+    background: #a9d4ff;
+}
+
+.react-calendar__tile--active:enabled:hover, .react-calendar__tile--active:enabled:focus {
+    background: #51F8C4;
+}
+
+
+/* range 인 경우 시작 날짜, 끝 날짜 */
+.react-calendar__tile--rangeStart,
+.react-calendar__tile--rangeEnd {
+
+}
+
+/* range 선택 중 hover 때 중간 날짜 */
+.react-calendar--selectRange .react-calendar__tile--hover {
+
+}
+
+/* 표시 점 */
+.dot {
+    height: 8px;
+    width: 8px;
+    background-color: #51F8C4;
+    border-radius: 50%;
+    text-align: center;
+    margin-top: 3px;
+}
+
+/* 표시 뱃지 */
+.calendar-badge {
+    background: var(--bg-gray-color);
+    border-radius: 5px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/*------------------- 화면 크기가 768px 이하 (태블릿 화면) -------------------*/
+@media (max-width: 768px) {
+    .body {
+        width: 80%;
+        display: block; /* 화면이 좁을 때는 block 형태로 배치 */
+    }
+
+    .calendar {
+        display: none;
+    }
+
+    .day-list {
+        margin-left: 0;
+        width: 80%;
+        padding: 0;
+        left: 50%;
+        transform: translateX(-50%);
+
+
+    }
+
+}
+
+/*------------------- 화면 크기가 480px 이하 (모바일 화면) -------------------*/
+@media (max-width: 480px) {
+    .body {
+        width: 95%
+    }
+
+    .day-list {
+        width: 95%
+    }
+
 }
