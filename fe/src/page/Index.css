@@ -47,31 +47,34 @@ section .section-body .section-body-list > li {
 
 section .section-body .section-body-list h3 {
     font-weight: bold;
-}
-
-section .section-body .section-body-list .list-item {
-    margin: 10px;
+    font-size: 1.1rem;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: initial;
 }
 
 /* 내 여행 */
 section .section-body .section-body-list .list-item .description {
     height: 88px;
     color: var(--font-gray-color);
-    margin: 15px 0;
+    margin: 15px 10px 10px 10px;
+    word-break: break-word;
     overflow: hidden;
     text-overflow: initial;
     font-size: 0.9rem;
 }
 
 section .section-body .section-body-list .list-item .location {
-    position: absolute;
     font-weight: bold;
     font-size: 0.9rem;
 }
 
-section .section-body .section-body-list .list-item .period {
+section .section-body .section-body-list .list-item .period,
+section .section-body .section-body-list .list-item .price {
     font-weight: bold;
     font-size: 0.9rem;
+
 }
 
 

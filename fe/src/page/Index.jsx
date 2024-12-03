@@ -61,7 +61,7 @@ export function Index() {
                   <h3>{plan.title}</h3>
                   <ul className={"list-item"}>
                     <li className={"description"}>{plan.description}</li>
-                    <li className={"destination"}>{plan.destination}</li>
+                    <li className={"location"}>{plan.destination}</li>
                     <li className={"period"}>
                       {plan.startDate} ~ {plan.endDate}
                     </li>
@@ -114,32 +114,38 @@ export function Index() {
       <section>
         <div className={"section-header"}>
           <h2>커뮤니티</h2>
-          <button
-            className={"more-btn"}
-            onClick={() => navigate(`/community/list`)}
-          >
+          <button className={"more-btn"} onClick={() => navigate(`/plan/list`)}>
             더보기
           </button>
         </div>
 
         <div className={"section-body"}>
-          <ul className={"section-body-list"}>
-            {planList.map((plan) => (
-              <li
-                key={plan.id}
-                onClick={() => navigate(`/plan/view/${plan.id}`)}
-              >
-                <h3>{plan.title}</h3>
-                <ul className={"list-item"}>
-                  <li className={"description"}>{plan.description}</li>
-                  <li className={"destination"}>{plan.destination}</li>
-                  <li className={"period"}>
-                    {plan.startDate} ~ {plan.endDate}
-                  </li>
-                </ul>
-              </li>
-            ))}
-          </ul>
+          {isEmpty(planList) ? (
+            <div className={"empty-container"}>
+              <p className={"empty-container-title"}>여행 계획이 없습니다.</p>
+              <p className={"empty-container-description"}>
+                새로운 계획을 추가해보세요!
+              </p>
+            </div>
+          ) : (
+            <ul className={"section-body-list"}>
+              {planList.map((plan) => (
+                <li
+                  key={plan.id}
+                  onClick={() => navigate(`/plan/view/${plan.id}`)}
+                >
+                  <h3>{plan.title}</h3>
+                  <ul className={"list-item"}>
+                    <li className={"description"}>{plan.description}</li>
+                    <li className={"location"}>{plan.destination}</li>
+                    <li className={"period"}>
+                      {plan.startDate} ~ {plan.endDate}
+                    </li>
+                  </ul>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </section>
     </div>
