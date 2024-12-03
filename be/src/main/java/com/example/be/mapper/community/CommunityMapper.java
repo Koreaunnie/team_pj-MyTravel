@@ -14,18 +14,28 @@ public interface CommunityMapper {
                         SELECT id, title, writer, inserted
                         FROM community
                         WHERE 
-                            <trim prefixOverrides='OR'>
-                                <if test="searchType == 'content' || searchType == 'all'">
-                                    content LIKE CONCAT('%',#{searchKeyword},'%')
+                                <if test="searchType == 'all'">
+                                    title LIKE CONCAT('%',#{searchKeyword},'%')
+                                 OR writer LIKE CONCAT('%',#{searchKeyword},'%')
+                                 OR content LIKE CONCAT('%',#{searchKeyword},'%')
                                 </if>
-                                <if test="searchType == 'writer' || searchType == 'all'">
-            
-                                   OR writer LIKE CONCAT('%',#{searchKeyword},'%')
-                                </if>
-                                <if test="searchType == 'title' || searchType == 'all'">
-                                   OR title LIKE CONCAT('%',#{searchKeyword},'%')
-                                </if>
-                            </trim>
+                                <if test="searchType != 'all'">
+                                     <choose>
+                                         <when test="searchType == 'title'">
+                                             title LIKE CONCAT('%', #{searchKeyword}, '%')
+                                         </when>
+                                         <when test="searchType == 'writer'">
+                                             writer LIKE CONCAT('%', #{searchKeyword}, '%')
+                                         </when>
+                                         <when test="searchType == 'content'">
+                                             content LIKE CONCAT('%', #{searchKeyword}, '%')
+                                         </when>
+                                         <otherwise>
+                                             1 = 0 
+            <!-- 허용되지 않은 searchType이면 빈 결과 반환 -->
+                                         </otherwise>
+                                     </choose>
+                                 </if>
                         ORDER BY id DESC
                         LIMIT #{pageList}, 10
                         </script>
