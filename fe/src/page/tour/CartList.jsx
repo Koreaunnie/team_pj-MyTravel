@@ -1,14 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Box, Image, Table } from "@chakra-ui/react";
+import { Image, Table } from "@chakra-ui/react";
 import axios from "axios";
-import { Button } from "../../components/ui/button.jsx";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "../../components/ui/toaster.jsx";
-import { Checkbox } from "../../components/ui/checkbox.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 
 function CartList() {
   const [cartList, setCartList] = useState([]);
+  const [checkedList, setCheckedList] = useState([]);
   const navigate = useNavigate();
   const { isAuthenticated } = useContext(AuthenticationContext);
 
@@ -51,41 +50,93 @@ function CartList() {
     );
   }
 
+  function handleCheckboxChange(cart) {
+    if (checkedList.includes(cart)) {
+      setCheckedList(checkedList.filter((r) => r.product !== cart.product));
+    } else {
+      setCheckedList([...checkedList, cart]);
+    }
+  }
+
   return (
-    <Box>
-      <h1>장바구니 목록</h1>
-      {cartList.length === 0 ? (
-        <p>장바구니가 비어 있습니다.</p>
-      ) : (
-        <Table.Root interactive>
-          <Table.Body>
-            {cartList.map((cart) => (
-              <Checkbox>
-                <Table.Row
-                  key={cart.id}
-                  onClick={() => handleRowClick(cart.id)}
-                >
-                  <Image key={cart.image} src={cart.src} w="200px" />
-                  <Table.Cell>{cart.title}</Table.Cell>
-                  <Table.Cell>{cart.location}</Table.Cell>
-                  <Table.Cell>{cart.product}</Table.Cell>
-                  <Table.Cell>{cart.price}</Table.Cell>
-                  <Button
+    <div>
+      <div>
+        <h1>장바구니 목록</h1>
+        {cartList.length === 0 ? (
+          <p>장바구니가 비어 있습니다.</p>
+        ) : (
+          <Table.Root interactive>
+            <table>
+              {cartList.map((cart) => (
+                <tbody>
+                  <tr
                     key={cart.id}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDeleteClick(cart.id);
-                    }}
+                    // onClick={() => handleRowClick(cart.id)}
                   >
-                    삭제
-                  </Button>
-                </Table.Row>
-              </Checkbox>
-            ))}
-          </Table.Body>
-        </Table.Root>
-      )}
-    </Box>
+                    <td>
+                      <input
+                        type={"checkbox"}
+                        checked={checkedList.some(
+                          (r) => r.product === cart.product,
+                        )}
+                        onChange={() => handleCheckboxChange(cart)}
+                      />
+                    </td>
+                    <td>
+                      <Image key={cart.image} src={cart.src} w="200px" />
+                    </td>
+                    <td>{cart.title}</td>
+                    <td>{cart.location}</td>
+                    <td>{cart.product}</td>
+                    <td>{cart.price}</td>
+                    <button
+                      className={"btn btn-warning"}
+                      key={cart.id}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteClick(cart.id);
+                      }}
+                    >
+                      삭제
+                    </button>
+                  </tr>
+                </tbody>
+              ))}
+            </table>
+          </Table.Root>
+        )}
+      </div>
+      <adise>
+        <h3>선택한 제품</h3>
+        <form>
+          <table border="1">
+            <thead>
+              <tr>
+                <th>
+                  <label htmlFor="product">상품</label>
+                </th>
+                <th>
+                  <label htmlFor="price">가격</label>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {checkedList.map((cart) => (
+                <tr>
+                  <td>
+                    <input value={cart.product} />
+                  </td>
+                  <td>
+                    <input value={cart.price} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </form>
+        <button className={"btn btn-dark-outline"}>선택한 상품 결제</button>
+      </adise>
+    </div>
   );
 }
 
