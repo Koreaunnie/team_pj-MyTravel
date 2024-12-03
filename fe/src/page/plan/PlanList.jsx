@@ -8,10 +8,11 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../components/ui/pagination.jsx";
-import "react-calendar/dist/Calendar.css";
+// import "react-calendar/dist/Calendar.css";
 import { FaRegQuestionCircle } from "react-icons/fa";
 import "./Plan.css";
-import Calendar from "react-calendar";
+
+// import Calendar from "react-calendar";
 
 function PlanList(props) {
   const [filteredPlans, setFilteredPlans] = useState([]); // 필터링된 일정

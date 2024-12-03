@@ -46,7 +46,7 @@ function CommunityList(props) {
     navigate(`/community/view/${id}`);
   }
 
-  function handleSearchClick() {
+  function handleSearchClick(e) {
     // axios.get;
   }
 
@@ -57,7 +57,7 @@ function CommunityList(props) {
     navigate(`/community/list?${pageQuery.toString()}`);
   }
 
-  const frameworks = createListCollection({
+  const optionList = createListCollection({
     items: [
       { label: "전체", value: "all" },
       { label: "제목", value: "title" },
@@ -98,8 +98,11 @@ function CommunityList(props) {
             <Box>
               <HStack>
                 <SelectRoot
-                  collection={frameworks}
+                  collection={optionList}
                   defaultValue={["all"]}
+                  onChange={(oc) =>
+                    setSearch({ ...search, type: oc.target.value })
+                  }
                   size="sm"
                   width="130px"
                 >
@@ -107,33 +110,39 @@ function CommunityList(props) {
                     <SelectValueText />
                   </SelectTrigger>
                   <SelectContent>
-                    {frameworks.items.map((movie) => (
-                      <SelectItem item={movie} key={movie.value}>
-                        {movie.label}
+                    {optionList.items.map((option) => (
+                      <SelectItem item={option} key={option.value}>
+                        {option.label}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </SelectRoot>
-                <Input w={300} />
+                <Input
+                  w={300}
+                  value={search.keyword}
+                  onChange={(e) => setSearch(e.target.value.keyword)}
+                />
                 <Button onClick={handleSearchClick}>검색</Button>
               </HStack>
             </Box>
             <Button onClick={handleWriteClick}>글 쓰기</Button>
           </HStack>
         </Box>
-        <PaginationRoot
-          count={20}
-          pageSize={10}
-          defaultPage={1}
-          onPageChange={handlePageChangeClick}
-          siblingCount={2}
-        >
-          <HStack>
-            <PaginationPrevTrigger />
-            <PaginationItems />
-            <PaginationNextTrigger />
-          </HStack>
-        </PaginationRoot>
+        <Box>
+          <PaginationRoot
+            count={20}
+            pageSize={10}
+            defaultPage={1}
+            onPageChange={handlePageChangeClick}
+            siblingCount={2}
+          >
+            <HStack>
+              <PaginationPrevTrigger />
+              <PaginationItems />
+              <PaginationNextTrigger />
+            </HStack>
+          </PaginationRoot>
+        </Box>
       </Stack>
     </div>
   );
