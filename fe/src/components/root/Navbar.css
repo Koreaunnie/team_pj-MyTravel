@@ -1,35 +1,37 @@
-nav {
+.navbar {
+    background: var(--btn-normal-dark);
     position: fixed;
-    width: 100vw;
+    width: 100%;
     height: 180px;
     z-index: 100;
+    color: #fff;
+}
+
+.navbar ul {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.navbar ul li {
+    cursor: pointer;
+    margin: 10px 15px;
+}
+
+.navbar li:hover {
+    font-weight: bold;
 }
 
 /*------------------------- user -------------------------*/
-.user-container ul {
-    display: flex;
+
+.navbar .user-container ul {
     justify-content: flex-end;
-}
-
-.user-container ul li {
-    margin: 10px 15px;
-    cursor: pointer;
-}
-
-.user-container ul li:hover {
-    font-weight: bold;
 }
 
 /*------------------------- navbar -------------------------*/
 
-.logo {
+.navbar .logo {
     cursor: pointer;
     height: 50px;
     vertical-align: middle;
-}
-
-.nav-container {
-    display: flex;
-    justify-content: space-evenly;
-    border-bottom: 1px solid var(--table-border-color);
 }
