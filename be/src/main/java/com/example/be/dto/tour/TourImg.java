@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class TourImg {
-  private String Name;
-  private String Src;
+  private Integer id;
+  private String name;
+  private String src;
 }

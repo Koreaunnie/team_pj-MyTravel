@@ -1,6 +1,7 @@
 package com.example.be.mapper.tour;
 
 import com.example.be.dto.tour.Tour;
+import com.example.be.dto.tour.TourList;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -18,15 +19,17 @@ public interface TourMapper {
 
   @Insert("""
           INSERT INTO tour
-          (title, product, price, location, content, partner)
-          VALUES (#{title}, #{product}, #{price}, #{location}, #{content}, #{partner})
+          (title, product, price, location, content, partner, partnerEmail)
+          VALUES (#{title}, #{product}, #{price}, #{location}, #{content}, #{partner}, #{partnerEmail})
           """)
   @Options(keyProperty = "id", useGeneratedKeys = true)
   int insert(Tour tour);
 
   @Select("""
             <script>
-                SELECT id, title, product, price, location FROM tour
+                SELECT id, title, product, price, location, ti.name image
+                FROM tour t
+                LEFT JOIN tour_img ti ON t.id = ti.tour_id
                 WHERE
                   <trim prefixOverrides="OR">
                     <if test="searchType == 'all' or searchType == 'title'">
@@ -38,17 +41,15 @@ public interface TourMapper {
                     <if test="searchType == 'all' or searchType == 'location'">
                         OR location LIKE CONCAT('%', #{keyword}, '%')
                     </if>
-                    <if test="searchType == 'all' or searchType == 'content'">
-                        OR content LIKE CONCAT('%', #{keyword}, '%')
-                    </if>
                     <if test="searchType == 'all' or searchType == 'partner'">
                         OR partner LIKE CONCAT('%', #{keyword}, '%')
                     </if>
                   </trim>
+                GROUP BY id
                 ORDER BY id DESC
             </script>
           """)
-  List<Tour> selectAll(String searchType, String keyword);
+  List<TourList> selectAll(String searchType, String keyword);
 
   @Select("""
           SELECT *
@@ -105,4 +106,23 @@ public interface TourMapper {
             AND name=#{file}
           """)
   int deleteFileByTourIdAndName(Integer id, String file);
+
+  @Insert("""
+          INSERT INTO tour_cart 
+          VALUES (#{id}, #{name})
+          """)
+  int addCart(Integer id, String name);
+
+  @Delete("""
+          DELETE FROM tour_cart
+          WHERE tour_id=#{id}""")
+  int deleteCartByTourId(int id);
+
+  @Select("""
+          SELECT COUNT(*)
+          FROM tour_cart
+          WHERE tour_id=#{id}
+            AND member_email=#{partnerEmail}
+          """)
+  boolean checkCart(Integer id, String partnerEmail);
 }
