@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Box, Image, Table } from "@chakra-ui/react";
 import axios from "axios";
 import { Button } from "../../components/ui/button.jsx";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { Checkbox } from "../../components/ui/checkbox.jsx";
+import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 
 function CartList() {
   const [cartList, setCartList] = useState([]);
   const navigate = useNavigate();
+  const { isAuthenticated, login } = useContext(AuthenticationContext);
 
   useEffect(() => {
     axios.get("/api/cart/list").then((res) => setCartList(res.data));
@@ -37,6 +39,17 @@ function CartList() {
         });
       });
   };
+
+  // if (!login) {
+  //   return (
+  //     <div>
+  //       <h1>장바구니 목록</h1>
+  //       로그인 후 사용 가능합니다.
+  //       <a href="/member/login">로그인 페이지로 > </a>
+  //       <a href="/member/signup">회원 가입 페이지로 ></a>
+  //     </div>
+  //   );
+  // }
 
   return (
     <Box>
