@@ -197,8 +197,14 @@ function PlanList(props) {
                     <Card.Title mb="5">{plan.title}</Card.Title>
                     <Card.Description>{plan.description}</Card.Description>
                     <HStack mt="5">
-                      <Badge>{plan.destination}</Badge>
-                      <Badge>{plan.due}</Badge>
+                      {planList.destination ? (
+                        <Badge>{plan.destination}</Badge>
+                      ) : null}
+                      {plan.startDate && plan.endDate ? (
+                        <Badge>
+                          {plan.startDate} ~ {plan.endDate}
+                        </Badge>
+                      ) : null}
                     </HStack>
                   </Card.Body>
 
