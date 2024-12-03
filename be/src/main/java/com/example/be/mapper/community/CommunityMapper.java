@@ -10,12 +10,18 @@ import java.util.Map;
 public interface CommunityMapper {
 
     @Select("""
-            SELECT id, title, writer, inserted
-            FROM community
-            ORDER BY id DESC
-            LIMIT #{pageList}, 10
+                        <script>
+                        SELECT id, title, writer, inserted
+                        FROM community
+                        WHERE 
+                <if test="searchKeyword != null">
+                CONCAT(#{searchType}) LIKE ('%',#{searchKeyword},'%')
+                </if>
+                        ORDER BY id DESC
+                        LIMIT #{pageList}, 10
+                        </script>
             """)
-    List<Map<String, Object>> listUp(Integer pageList);
+    List<Map<String, Object>> listUp(Integer pageList, String searchType, String searchKeyword);
 
     @Insert("""
             INSERT INTO community (title, content, writer)

@@ -20,10 +20,9 @@ public class CommunityController {
 
     @GetMapping("list")
     public List<Map<String, Object>> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                                          @RequestParam(value = "writer", defaultValue = "") String writer,
-                                          @RequestParam(value = "content", defaultValue = "") String content,
-                                          @RequestParam(value = "title", defaultValue = "") String title) {
-        return service.list(page);
+                                          @RequestParam(value = "type", defaultValue = "all") String searchType,
+                                          @RequestParam(value = "keyword", defaultValue = "") String searchKeyword) {
+        return service.list(page, searchType, searchKeyword);
     }
 
 

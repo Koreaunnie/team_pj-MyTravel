@@ -46,8 +46,10 @@ function CommunityList(props) {
     navigate(`/community/view/${id}`);
   }
 
-  function handleSearchClick(e) {
-    // axios.get;
+  function handleSearchClick() {
+    const searchInfo = { type: search.type, keyword: search.keyword };
+    const searchQuery = new URLSearchParams(searchInfo);
+    navigate(`/community/list?${searchQuery.toString()}`);
   }
 
   function handlePageChangeClick(e) {
@@ -120,7 +122,9 @@ function CommunityList(props) {
                 <Input
                   w={300}
                   value={search.keyword}
-                  onChange={(e) => setSearch(e.target.value.keyword)}
+                  onChange={(e) =>
+                    setSearch({ ...search, keyword: e.target.value })
+                  }
                 />
                 <Button onClick={handleSearchClick}>검색</Button>
               </HStack>

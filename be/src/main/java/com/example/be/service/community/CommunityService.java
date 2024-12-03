@@ -15,11 +15,13 @@ public class CommunityService {
 
     final CommunityMapper mapper;
 
-    public List<Map<String, Object>> list(Integer page) {
+    public List<Map<String, Object>> list(Integer page, String searchType, String searchKeyword) {
 
         Integer pageList = (page - 1) * 10;
-
-        return mapper.listUp(pageList);
+        if (searchType.equals("all")) {
+            searchType = "title, writer, content";
+        }
+        return mapper.listUp(pageList, searchType, searchKeyword);
     }
 
     public void write(Community community, Authentication auth) {

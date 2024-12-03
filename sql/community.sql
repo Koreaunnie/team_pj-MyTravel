@@ -21,5 +21,5 @@ ORDER BY id DESC;
 
 SELECT id, title, writer, inserted
 FROM community
-ORDER BY id DESC
-LIMIT 10, 10;
+WHERE CONCAT(title) LIKE '%뿌%'
+ORDER BY id DESC;
