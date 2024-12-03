@@ -18,9 +18,7 @@ public class CommunityService {
     public List<Map<String, Object>> list(Integer page, String searchType, String searchKeyword) {
 
         Integer pageList = (page - 1) * 10;
-        if (searchType.equals("all")) {
-            searchType = "title, writer, content";
-        }
+
         return mapper.listUp(pageList, searchType, searchKeyword);
     }
 

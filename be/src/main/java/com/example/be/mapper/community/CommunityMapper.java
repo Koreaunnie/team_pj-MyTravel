@@ -14,9 +14,18 @@ public interface CommunityMapper {
                         SELECT id, title, writer, inserted
                         FROM community
                         WHERE 
-                <if test="searchKeyword != null">
-                CONCAT(#{searchType}) LIKE ('%',#{searchKeyword},'%')
-                </if>
+                            <trim prefixOverrides='OR'>
+                                <if test="searchType == 'content' || searchType == 'all'">
+                                    content LIKE CONCAT('%',#{searchKeyword},'%')
+                                </if>
+                                <if test="searchType == 'writer' || searchType == 'all'">
+            
+                                   OR writer LIKE CONCAT('%',#{searchKeyword},'%')
+                                </if>
+                                <if test="searchType == 'title' || searchType == 'all'">
+                                   OR title LIKE CONCAT('%',#{searchKeyword},'%')
+                                </if>
+                            </trim>
                         ORDER BY id DESC
                         LIMIT #{pageList}, 10
                         </script>

@@ -19,7 +19,22 @@ SELECT id, title, writer, inserted
 FROM community
 ORDER BY id DESC;
 
-SELECT id, title, writer, inserted
+SELECT *
 FROM community
-WHERE CONCAT(title) LIKE '%뿌%'
-ORDER BY id DESC;
+WHERE title LIKE '%뿌%';
+
+SELECT *
+FROM community
+WHERE writer LIKE '%뿌%';
+
+SELECT *
+FROM community
+WHERE content LIKE '%뿌%';
+
+SELECT *
+FROM community
+WHERE content LIKE '%뿌%'
+   OR writer LIKE '%뿌%'
+   OR title LIKE '%뿌%';
+
+#  title writer content all
