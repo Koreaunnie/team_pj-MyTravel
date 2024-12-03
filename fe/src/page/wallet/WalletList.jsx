@@ -136,34 +136,46 @@ function WalletList(props) {
       </aside>
 
       <div className={"day-list"}>
-        <div className={"fixed-search-wrap"}>
-          <button
-            className={"btn btn-dark btn-day-list"}
-            onClick={() => setAddModalOpen(true)}
-          >
-            추가
-          </button>
+        <div className={"fixed-list-head-wrap"}>
+          <div className={"btn-wrap"}>
+            <button
+              className={"btn btn-dark"}
+              onClick={() => setAddModalOpen(true)}
+            >
+              추가
+            </button>
 
-          <button
-            className={"btn btn-dark btn-day-list"}
-            style={{ marginLeft: "15px" }}
-            onClick={handleMonthView}
-          >
-            월별 보기
-          </button>
+            <button
+              className={"btn btn-dark-outline"}
+              style={{ marginLeft: "15px" }}
+              onClick={handleAllView}
+            >
+              전체 보기
+            </button>
 
-          <button
-            className={"btn btn-dark btn-day-list"}
-            style={{ marginLeft: "15px" }}
-            onClick={handleAllView}
-          >
-            전체 보기
-          </button>
+            <button
+              className={"btn btn-dark-outline"}
+              style={{ marginLeft: "15px" }}
+              onClick={handleMonthView}
+            >
+              월별 보기
+            </button>
+          </div>
+
+          <h1>{currentMonth}</h1>
+
+          <div className={"category-tab"}>
+            <ul>
+              <li className={"on"}>전체</li>
+              <li>식비</li>
+              <li>교통비</li>
+              <li>여가비</li>
+              <li>기타</li>
+            </ul>
+          </div>
         </div>
 
         <table className={"table-list wallet-table"}>
-          <caption>{currentMonth}</caption>
-
           <thead>
             <tr>
               <th>총 지출</th>

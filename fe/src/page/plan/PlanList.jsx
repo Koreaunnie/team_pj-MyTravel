@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Badge, Box, Card, HStack } from "@chakra-ui/react";
+import { HStack } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
@@ -13,6 +13,7 @@ import { FaRegQuestionCircle } from "react-icons/fa";
 import "./Plan.css";
 import Calendar from "react-calendar";
 import { Modal } from "../../components/root/Modal.jsx";
+import { FaHeart } from "react-icons/fa6";
 
 function PlanList(props) {
   const [filteredPlans, setFilteredPlans] = useState([]); // 필터링된 일정
@@ -141,13 +142,30 @@ function PlanList(props) {
       </aside>
 
       <div className={"day-list"}>
-        <div className={"fixed-search-wrap"}>
-          <button
-            className="btn btn-dark btn-day-list"
-            onClick={() => setAddModalOpen(true)}
-          >
-            새로운 여행 작성하기
-          </button>
+        <div className={"fixed-list-head-wrap"}>
+          <div className={"btn-wrap"}>
+            <button
+              className="btn btn-dark"
+              onClick={() => setAddModalOpen(true)}
+            >
+              새로운 여행 작성하기
+            </button>
+
+            <button
+              className="btn btn-dark-outline"
+              onClick={() => setFilteredPlans(planList)}
+            >
+              전체보기
+            </button>
+
+            <button
+              className="btn btn-dark-outline display-flex"
+              onClick={() => setFilteredPlans(planList)}
+            >
+              <FaHeart style={{ marginTop: "4px", marginRight: "7px" }} /> 찜한
+              여행
+            </button>
+          </div>
 
           <div className={"search-form"}>
             <select
@@ -177,69 +195,67 @@ function PlanList(props) {
           </div>
         </div>
 
-        {filteredPlans.length === 0 ? (
-          <div className={"empty-container"}>
-            <p>
-              <FaRegQuestionCircle className={"empty-container-icon"} />
-            </p>
-            <p className={"empty-container-title"}>
-              해당하는 날짜에는 일정이 없습니다.
-            </p>
-            <p className={"empty-container-description"}>
-              다른 날짜를 선택해주세요.
-            </p>
-          </div>
-        ) : (
-          filteredPlans.map((plan) => (
-            <div key={plan.id}>
-              <Card.Root flexDirection="row" overflow="hidden" maxW="xl" my={5}>
-                <Box>
-                  <Card.Body>
-                    <Card.Title mb="5">{plan.title}</Card.Title>
-                    <Card.Description>{plan.description}</Card.Description>
-                    <HStack mt="5">
-                      {planList.destination ? (
-                        <Badge>{plan.destination}</Badge>
-                      ) : null}
-                      {plan.startDate && plan.endDate ? (
-                        <Badge>
-                          {plan.startDate} ~ {plan.endDate}
-                        </Badge>
-                      ) : null}
-                    </HStack>
-                  </Card.Body>
-
-                  <Card.Footer>
-                    <button
-                      className="btn btn-dark"
-                      onClick={() => {
-                        navigate(`/plan/view/${plan.id}`);
-                      }}
-                    >
-                      여행 보기
-                    </button>
-                  </Card.Footer>
-                </Box>
-              </Card.Root>
+        <div className={"plan-list-wrap"}>
+          {filteredPlans.length === 0 ? (
+            <div className={"empty-container"}>
+              <p>
+                <FaRegQuestionCircle className={"empty-container-icon"} />
+              </p>
+              <p className={"empty-container-title"}>
+                해당하는 날짜에는 일정이 없습니다.
+              </p>
+              <p className={"empty-container-description"}>
+                다른 날짜를 선택해주세요.
+              </p>
             </div>
-          ))
-        )}
+          ) : (
+            filteredPlans.map((plan) => (
+              <div
+                className={"card-wrap"}
+                key={plan.id}
+                onClick={() => {
+                  navigate(`/plan/view/${plan.id}`);
+                }}
+              >
+                <div className={"card-header"}>
+                  <p>{plan.title}</p>
+                </div>
 
-        {/* pagination */}
-        <div className="pagination">
-          <PaginationRoot
-            onPageChange={handlePageChange}
-            count={count}
-            pageSize={10}
-            page={page}
-            variant="solid"
-          >
-            <HStack>
-              <PaginationPrevTrigger />
-              <PaginationItems />
-              <PaginationNextTrigger />
-            </HStack>
-          </PaginationRoot>
+                <div className={"card-body"}>
+                  <p>{plan.description}</p>
+                </div>
+
+                <div className={"card-footer"}>
+                  <ul>
+                    {planList.destination ? <li>{plan.destination}</li> : null}
+
+                    {plan.startDate && plan.endDate ? (
+                      <li>
+                        {plan.startDate} ~ {plan.endDate}
+                      </li>
+                    ) : null}
+                  </ul>
+                </div>
+              </div>
+            ))
+          )}
+
+          {/* pagination */}
+          <div className="pagination">
+            <PaginationRoot
+              onPageChange={handlePageChange}
+              count={count}
+              pageSize={10}
+              page={page}
+              variant="solid"
+            >
+              <HStack>
+                <PaginationPrevTrigger />
+                <PaginationItems />
+                <PaginationNextTrigger />
+              </HStack>
+            </PaginationRoot>
+          </div>
         </div>
       </div>
 
