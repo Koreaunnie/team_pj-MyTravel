@@ -1,8 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import "./Plan.css";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "../../components/ui/toaster.jsx";
+import {
+  APIProvider,
+  Map,
+  useAdvancedMarkerRef,
+  useMapsLibrary,
+} from "@vis.gl/react-google-maps";
+import { Modal } from "/src/components/root/Modal.jsx";
+
+const MyComponent = () => {
+  // useMapsLibrary loads the geocoding library, it might initially return `null`
+  // if the library hasn't been loaded. Once loaded, it will return the library
+  // object as it would be returned by `await google.maps.importLibrary()`
+  const geocodingLib = useMapsLibrary("geocoding");
+  const geocoder = useMemo(
+    () => geocodingLib && new geocodingLib.Geocoder(),
+    [geocodingLib],
+  );
+
+  useEffect(() => {
+    if (!geocoder) return;
+
+    // now you can use `geocoder.geocode(...)` here
+  }, [geocoder]);
+
+  return <></>;
+};
 
 function PlanAdd(props) {
   const [backToListModalOpen, setBackToListModalOpen] = useState(false);
@@ -21,7 +47,11 @@ function PlanAdd(props) {
       memo: "",
     },
   ]);
+  const [selectedPlace, setSelectedPlace] = useState(null);
+  const [markerRef, marker] = useAdvancedMarkerRef();
   const navigate = useNavigate();
+
+  const position = { lat: 37, lng: 128 };
 
   // div 입력값을 상태로 업데이트하는 함수
   const handleFieldChange = (index, field, value) => {
@@ -80,25 +110,11 @@ function PlanAdd(props) {
         if (title.trim().length === 0) {
           setSaveModalOpen(false);
         }
-      })
-      .finally(() => {
-        // 요청 완료 후 처리
-        setTitle("");
-        setDescription("");
-        setDestination("");
-        setStartDate("");
-        setEndDate("");
-        setFields([
-          {
-            date: "",
-            time: "",
-            schedule: "",
-            place: "",
-            memo: "",
-          },
-        ]);
       });
   }
+
+  // google personal api key
+  const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
 
   const closeModal = () => {
     setBackToListModalOpen(false);
@@ -216,15 +232,55 @@ function PlanAdd(props) {
                 }
               />
 
-              <label htmlFor="location">장소</label>
+              <label htmlFor="place">장소</label>
               <input
                 type="text"
-                name="location"
+                id="place"
+                placeholder="장소를 입력하세요"
                 value={field.place}
                 onChange={(e) =>
                   handleFieldChange(index, "place", e.target.value)
                 }
               />
+              <button type="button">검색</button>
+
+              <APIProvider apiKey={apiKey}>
+                <Map
+                  onLoad={(mapInstance) => setMap(mapInstance)}
+                  style={{ width: "500px", height: "250px" }}
+                  initialCenter={{ lat: 37, lng: 128 }}
+                ></Map>
+
+                <gmp-map
+                  center="40.749933,-73.98633"
+                  zoom="13"
+                  map-id="DEMO_MAP_ID"
+                >
+                  <div
+                    slot="control-block-start-inline-start"
+                    className="place-picker-container"
+                  >
+                    <gmpx-place-picker
+                      placeholder="장소를 입력하세요."
+                      value={field.place}
+                      onPlaceChanged={() => {
+                        const place = document
+                          .querySelector("gmpx-place-picker")
+                          .getPlace();
+                        if (place && place.formatted_address) {
+                          handleFieldChange(
+                            index,
+                            "place",
+                            place.formatted_address,
+                          );
+                        }
+                      }}
+                    ></gmpx-place-picker>
+                  </div>
+
+                  <gmp-advanced-marker></gmp-advanced-marker>
+                </gmp-map>
+              </APIProvider>
 
               <label htmlFor="memo">메모</label>
               <textarea
@@ -257,73 +313,22 @@ function PlanAdd(props) {
       </form>
 
       {/* 목록 modal */}
-      {backToListModalOpen && (
-        <div className={"modal"}>
-          <div className={"modal-content"}>
-            <div className={"modal-header"}>
-              <button
-                className="close"
-                onClick={closeModal}
-                aria-label="모달 닫기"
-              >
-                &times;
-              </button>
-            </div>
-
-            <div className={"modal-body"}>
-              <p>목록으로 돌아가시겠습니까?</p>
-            </div>
-
-            <div className={"modal-footer btn-wrap"}>
-              <button className={"btn btn-dark-outline"} onClick={closeModal}>
-                닫기
-              </button>
-
-              <button
-                className={"btn btn-dark"}
-                onClick={() => navigate(`/plan/list`)}
-              >
-                목록
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <Modal
+        isOpen={backToListModalOpen}
+        onClose={() => setBackToListModalOpen(false)}
+        onConfirm={() => navigate(`/plan/list`)}
+        message="목록으로 돌아가면 작성한 내용이 사라집니다."
+        buttonMessage="목록"
+      />
 
       {/* 저장 modal */}
-      {saveModalOpen && (
-        <div className={"modal"}>
-          <div className={"modal-content"}>
-            <div className={"modal-header"}>
-              <button
-                className="close"
-                onClick={closeModal}
-                aria-label="모달 닫기"
-              >
-                &times;
-              </button>
-            </div>
-
-            <div className={"modal-body"}>
-              <p>여행을 저장하시겠습니까?</p>
-            </div>
-
-            <div className={"modal-footer btn-wrap"}>
-              <button className={"btn btn-dark-outline"} onClick={closeModal}>
-                닫기
-              </button>
-
-              <button
-                type="submit"
-                className={"btn btn-dark"}
-                onClick={handleSaveButton}
-              >
-                저장
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <Modal
+        isOpen={saveModalOpen}
+        onClose={() => setSaveModalOpen(false)}
+        onConfirm={handleSaveButton}
+        message="여행을 저장하시겠습니까?"
+        buttonMessage="저장"
+      />
     </div>
   );
 }
