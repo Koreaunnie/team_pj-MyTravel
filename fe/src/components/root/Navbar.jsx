@@ -33,7 +33,7 @@ function Navbar(props) {
           <li onClick={() => navigate("/wallet/list")}>내 지갑</li>
           <li onClick={() => navigate("/tour/list")}>투어</li>
           <li onClick={() => navigate("/community/list")}>커뮤니티</li>
-          <li onClick={() => navigate("/cart/list")}>장바구니</li>
+          <li onClick={() => navigate("/cart")}>장바구니</li>
           <li onClick={() => navigate("/")}>좋아요</li>
           <li onClick={() => navigate("/")}>알림</li>
           <li onClick={() => navigate("/")}>팔로우</li>

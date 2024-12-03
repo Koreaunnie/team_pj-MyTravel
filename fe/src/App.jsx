@@ -25,6 +25,7 @@ import WalletEdit from "./page/wallet/WalletEdit.jsx";
 import CartList from "./page/tour/CartList.jsx";
 import AuthenticationProvider from "./components/context/AuthenticationProvider.jsx";
 import React from "react";
+import Payment from "./page/tour/payment.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -101,9 +102,15 @@ const router = createBrowserRouter([
         path: "tour/update/:id",
         element: <TourUpdate />,
       },
+      //장바구니
       {
-        path: "cart/list",
+        path: "cart",
         element: <CartList />,
+      },
+      //결제창
+      {
+        path: "payment",
+        element: <Payment />,
       },
       // 커뮤니티
       {
