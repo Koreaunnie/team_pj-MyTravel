@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Input, Stack } from "@chakra-ui/react";
+import { Box, Image, Input, Stack } from "@chakra-ui/react";
 import { Field } from "../../components/ui/field.jsx";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
@@ -15,7 +15,6 @@ import {
   DialogTrigger,
 } from "../../components/ui/dialog.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
-import { ImageFileView } from "../../Image/ImageFileView.jsx";
 
 function MemberInfo(props) {
   const [member, setMember] = useState(null);
@@ -63,7 +62,13 @@ function MemberInfo(props) {
     <Box>
       <h1>회원 정보</h1>
       <Stack>
-        <ImageFileView files={member.profile} />
+        <Image
+          src={member.profile[0].src} // 프로필 이미지는 배열로 가정
+          alt="프로필 이미지"
+          borderRadius="50%" // 원형으로 표시
+          boxSize="150px" // 이미지 크기 제한
+          objectFit="cover" // 이미지 비율 유지
+        />
         <Field label={"이메일"}>
           <Input readOnly value={member.email} />
         </Field>
