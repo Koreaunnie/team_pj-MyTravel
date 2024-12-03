@@ -1,0 +1,35 @@
+nav {
+    position: fixed;
+    width: 100vw;
+    height: 180px;
+    z-index: 100;
+}
+
+/*------------------------- user -------------------------*/
+.user-container ul {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.user-container ul li {
+    margin: 10px 15px;
+    cursor: pointer;
+}
+
+.user-container ul li:hover {
+    font-weight: bold;
+}
+
+/*------------------------- navbar -------------------------*/
+
+.logo {
+    cursor: pointer;
+    height: 50px;
+    vertical-align: middle;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-evenly;
+    border-bottom: 1px solid var(--table-border-color);
+}

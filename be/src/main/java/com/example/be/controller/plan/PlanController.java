@@ -60,5 +60,4 @@ public class PlanController {
     public void delete(@PathVariable int id) {
         service.delete(id);
     }
-
 }

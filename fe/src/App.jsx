@@ -19,6 +19,9 @@ import PlanAdd from "./page/plan/PlanAdd.jsx";
 import PlanList from "./page/plan/PlanList.jsx";
 import PlanView from "./page/plan/PlanView.jsx";
 import PlanEdit from "./page/plan/PlanEdit.jsx";
+import WalletAdd from "./page/wallet/WalletAdd.jsx";
+import WalletList from "./page/wallet/WalletList.jsx";
+import WalletEdit from "./page/wallet/WalletEdit.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -61,6 +64,23 @@ const router = createBrowserRouter([
         path: "plan/edit/:id",
         element: <PlanEdit />,
       },
+      // 내 지갑
+      {
+        path: "wallet/add",
+        element: <WalletAdd />,
+      },
+      {
+        path: "wallet/list",
+        element: <WalletList />,
+      },
+      {
+        path: "wallet/view/:id",
+        element: <WalletEdit />,
+      },
+      {
+        path: "wallet/update",
+        element: <WalletEdit />,
+      },
       // 여행 상품
       {
         path: "tour/list",
@@ -70,6 +90,15 @@ const router = createBrowserRouter([
         path: "tour/add",
         element: <TourAdd />,
       },
+      {
+        path: "tour/view/:id",
+        element: <TourView />,
+      },
+      {
+        path: "tour/update/:id",
+        element: <TourUpdate />,
+      },
+      // 커뮤니티
       {
         path: "community/write",
         element: <CommunityWrite />,
@@ -85,14 +114,6 @@ const router = createBrowserRouter([
       {
         path: "community/edit/:id",
         element: <CommunityEdit />,
-      },
-      {
-        path: "tour/view/:id",
-        element: <TourView />,
-      },
-      {
-        path: "tour/update/:id",
-        element: <TourUpdate />,
       },
       // 회원 가입
       {

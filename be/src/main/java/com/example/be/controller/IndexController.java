@@ -21,4 +21,6 @@ public class IndexController {
     public List<Plan> index() {
         return planService.getMainPagePlans();
     }
+
+    // 메인 화면에 필요한 일부 tour list 를 가져오기
 }
