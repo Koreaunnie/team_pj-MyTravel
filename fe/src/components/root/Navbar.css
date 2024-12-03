@@ -1,4 +1,4 @@
-nav {
+.navbar {
     background: var(--btn-normal-dark);
     position: fixed;
     width: 100%;
@@ -7,30 +7,30 @@ nav {
     color: #fff;
 }
 
-nav ul {
+.navbar ul {
     width: 100%;
     display: flex;
     justify-content: space-evenly;
 }
 
-nav ul li {
+.navbar ul li {
     cursor: pointer;
     margin: 10px 15px;
 }
 
-nav li:hover {
+.navbar li:hover {
     font-weight: bold;
 }
 
 /*------------------------- user -------------------------*/
 
-.user-container ul {
+.navbar .user-container ul {
     justify-content: flex-end;
 }
 
 /*------------------------- navbar -------------------------*/
 
-.logo {
+.navbar .logo {
     cursor: pointer;
     height: 50px;
     vertical-align: middle;

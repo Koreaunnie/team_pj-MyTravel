@@ -7,7 +7,7 @@ function Navbar(props) {
   const navigate = useNavigate();
 
   return (
-    <nav>
+    <nav className={"navbar"}>
       <div className={"user-container"}>
         <ul>
           <li onClick={() => navigate("/member/signup")}>회원가입</li>
