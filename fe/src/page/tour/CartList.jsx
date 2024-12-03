@@ -60,8 +60,9 @@ function CartList() {
   }
 
   function handlePayButton() {
-    // 결제 처리 로직 추가
-    alert(`총 ${calculateTotalPrice()}원 결제 처리`);
+    //선택한 항목이 있다면 결제창으로
+    //checkList 정보도 결제창으로 넘겨야 함
+    //선택한 항목이 없다면 안내멘트
   }
 
   // checkedList의 price 합산 함수
@@ -146,7 +147,12 @@ function CartList() {
         </form>
         <button
           className={"btn btn-dark-outline"}
-          onClick={() => handlePayButton}
+          onClick={() => {
+            handlePayButton;
+            if (calculateTotalPrice() != 0) {
+              navigate(`/payment`);
+            }
+          }}
         >
           총 {calculateTotalPrice()}원 결제
         </button>
