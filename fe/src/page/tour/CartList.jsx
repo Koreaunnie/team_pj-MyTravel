@@ -59,6 +59,16 @@ function CartList() {
     }
   }
 
+  function handlePayButton() {
+    // 결제 처리 로직 추가
+    alert(`총 ${calculateTotalPrice()}원 결제 처리`);
+  }
+
+  // checkedList의 price 합산 함수
+  const calculateTotalPrice = () => {
+    return checkedList.reduce((sum, cart) => sum + cart.price, 0);
+  };
+
   return (
     <div>
       <h1>장바구니 목록</h1>
@@ -136,7 +146,12 @@ function CartList() {
             </tbody>
           </table>
         </form>
-        <button className={"btn btn-dark-outline"}>선택한 상품 결제</button>
+        <button
+          className={"btn btn-dark-outline"}
+          onClick={() => handlePayButton}
+        >
+          총 {calculateTotalPrice()}원 결제
+        </button>
       </adise>
     </div>
   );
