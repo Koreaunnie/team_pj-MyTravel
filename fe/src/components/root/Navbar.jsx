@@ -6,7 +6,7 @@ import { AuthenticationContext } from "../context/AuthenticationProvider.jsx";
 
 function Navbar(props) {
   const navigate = useNavigate();
-  const { email, isAdmin, isPartner, isAuthenticated } = useContext(
+  const { email, isAdmin, isPartner, isAuthenticated, logout } = useContext(
     AuthenticationContext,
   );
 
@@ -14,17 +14,26 @@ function Navbar(props) {
     <nav className={"navbar"}>
       <div className={"user-container"}>
         <ul>
-          <li onClick={() => navigate("/member/signup")}>회원가입</li>
-          <li onClick={() => navigate("/member/login")}>로그인</li>
-          <li
-            onClick={() => {
-              localStorage.removeItem("token");
-              navigate("/member/login");
-            }}
-          >
-            로그아웃
-          </li>
-          <li onClick={() => navigate(`/mypage/${email}`)}>마이페이지</li>
+          {isAuthenticated || (
+            <li onClick={() => navigate("/member/signup")}>회원가입</li>
+          )}
+          {isAuthenticated || (
+            <li onClick={() => navigate("/member/login")}>로그인</li>
+          )}
+          {isAuthenticated && (
+            <li
+              onClick={() => {
+                localStorage.removeItem("token");
+                logout();
+                navigate("/member/login");
+              }}
+            >
+              로그아웃
+            </li>
+          )}
+          {isAuthenticated && (
+            <li onClick={() => navigate(`/mypage/${email}`)}>마이페이지</li>
+          )}
         </ul>
       </div>
 
