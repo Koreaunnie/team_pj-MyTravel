@@ -61,6 +61,7 @@ function TourUpdate() {
         title: tour.title,
         product: tour.product,
         location: tour.location,
+        price: tour.price,
         content: tour.content,
         removeFiles,
         uploadFiles,
