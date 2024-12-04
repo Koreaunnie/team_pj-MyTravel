@@ -46,6 +46,30 @@ function WalletAdd(props) {
     }
   };
 
+  // 기존 카테고리 삭제
+  const handleDeleteCategory = () => {
+    if (categoryOptions.includes(category)) {
+      // 선택된 카테고리를 제외한 새로운 배열 생성
+      const updatedCategories = categoryOptions.filter(
+        (opt) => opt !== category,
+      );
+      setCategoryOptions(updatedCategories);
+
+      // 삭제 후 첫 번째 항목으로 기본 선택
+      setCategory(updatedCategories[0] || ""); // 빈 배열이면 빈 문자열 설정
+
+      toaster.create({
+        type: "success",
+        description: `"${category}" 항목이 삭제되었습니다.`,
+      });
+    } else {
+      toaster.create({
+        type: "warning",
+        description: "삭제하려는 항목이 존재하지 않습니다.",
+      });
+    }
+  };
+
   // 저장 버튼 핸들러
   const handleSaveButton = (event) => {
     // 필드 검증
@@ -147,6 +171,14 @@ function WalletAdd(props) {
                   }
                 >
                   {handleAddCategoryOpen ? "닫기" : "항목 추가"}
+                </button>
+
+                <button
+                  type="button"
+                  className={"btn btn-warning"}
+                  onClick={handleDeleteCategory}
+                >
+                  항목 삭제
                 </button>
 
                 {handleAddCategoryOpen && (
