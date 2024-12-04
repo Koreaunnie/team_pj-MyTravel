@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
 
 :root {
+    --main-golden-yellow: #f4a261;
+
     --table-header-color: #f7f7f7;
     --table-border-color: #eee;
     --table-hover-color: #f9f9f9;
@@ -83,6 +85,14 @@ input[type=search] {
     border-radius: 5px;
     height: 40px;
     padding: 0 10px;
+}
+
+input[type=checkbox] {
+    width: 18px;
+    height: 18px;
+    margin-top: 7px;
+    cursor: pointer;
+    accent-color: var(--btn-normal-dark);
 }
 
 textarea {
@@ -354,6 +364,7 @@ h1 {
 /*------------------- pagination -------------------*/
 .pagination {
     margin: 30px;
+    bottom: 0;
 }
 
 /*------------------- search form -------------------*/

@@ -24,10 +24,45 @@ section {
     border: 1px solid var(--table-border-color);
     border-radius: 10px;
     box-shadow: var(--box-shadow);
+    padding: 0 30px;
 }
 
-.category-table {
+.middle-section .category-table {
+    width: 100%;
+    border-bottom: 1px solid var(--table-border-color);
+    magin: 0 auto;
+    padding: 40px 30px;
+}
 
+.middle-section .category-table table {
+    width: 100%;
+}
+
+.middle-section .category-table table caption {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+.middle-section .category-table caption .highlight {
+    font-size: 1.2rem;
+    margin-bottom: 2px;
+    background: var(--main-golden-yellow);
+    display: inline;
+    padding: 0 5px;
+}
+
+.middle-section .category-table table tr {
+    height: 28px;
+}
+
+.middle-section .category-table table tr th {
+    font-weight: bold;
+    text-align: left;
+}
+
+.middle-section .category-table table tr td {
+    text-align: right;
 }
 
 .right-section {
@@ -87,6 +122,10 @@ section {
 .right-section table {
     width: 900px;
     margin: 0 auto 30px auto;
+}
+
+.right-section table .checked-row {
+    background: var(--table-hover-color);
 }
 
 .right-section .table-total-wrap {

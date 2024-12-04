@@ -138,11 +138,18 @@ function WalletList(props) {
     }
   };
 
-  // 카테고리별 합계 계산
-  const calculateCategoryTotal = (category) => {
-    return filteredWallet
-      .filter((wallet) => wallet.category === category)
-      .reduce((total, wallet) => total + wallet.expense, 0);
+  // 카테고리별 지출 합계 계산
+  const calculateCategoryTotalExpense = (category) => {
+    if (category === "전체") {
+      return filteredWallet.reduce(
+        (total, wallet) => total + wallet.expense,
+        0,
+      );
+    } else {
+      return filteredWallet
+        .filter((wallet) => wallet.category === category)
+        .reduce((total, wallet) => total + wallet.expense, 0);
+    }
   };
 
   const isCategoryFiltered = activeTab !== 0; // "전체"가 아닌 카테고리가 선택되었을 때만 tfoot 표시
@@ -164,7 +171,11 @@ function WalletList(props) {
   // 해당 하는 날짜
   const getFilteredDate = () => {
     if (filteredWallet.length > 0) {
-      return filteredWallet[0].date; // 첫 번째 항목의 날짜 반환
+      const date = new Date(filteredWallet[0].date); // 첫 번째 항목의 날짜를 Date 객체로 변환
+      const year = date.getFullYear(); // 연도
+      const month = date.getMonth() + 1; // 월 (0부터 시작하므로 1을 더함)
+      const day = date.getDate(); // 일
+      return `${year}년 ${month}월 ${day}일`; // 원하는 형식으로 반환
     }
     return ""; // 필터링된 리스트가 없으면 빈 문자열 반환
   };
@@ -201,7 +212,45 @@ function WalletList(props) {
       </aside>
 
       <div className={"middle-section"}>
-        <div className={"category-table"}></div>
+        <div className={"category-table"}>
+          <table>
+            <caption>
+              <p className={"highlight"}>{currentMonth}</p>
+              <br />
+              지출 항목별 합계
+            </caption>
+
+            {categories.map((category) => (
+              <tr>
+                <th>{category}</th>
+                <td>
+                  {formatNumberWithCommas(
+                    calculateCategoryTotalExpense(category),
+                  )}
+                </td>
+                <td>원</td>
+              </tr>
+            ))}
+          </table>
+        </div>
+
+        {filteredWallet.length !== walletList.length && (
+          <div className={"category-table"}>
+            <table>
+              <caption>
+                <p className={"highlight"}>{getFilteredDate()}</p>
+                <br />
+                하루 지출
+              </caption>
+
+              <tr>
+                <th>합계</th>
+                <td>{formatNumberWithCommas(getOneDayExpense())}</td>
+                <td>원</td>
+              </tr>
+            </table>
+          </div>
+        )}
       </div>
 
       <div className={"right-section"}>
@@ -292,6 +341,7 @@ function WalletList(props) {
                 key={wallet.id}
                 onClick={() => navigate(`/wallet/view/${wallet.id}`)}
                 className={"pointer"}
+                className={checkedItems.has(wallet.id) ? "checked-row" : ""}
               >
                 <td>
                   <input
@@ -299,6 +349,7 @@ function WalletList(props) {
                     checked={checkedItems.has(wallet.id)}
                     onChange={() => handleCheckboxChange(wallet.id)}
                     onClick={(e) => e.stopPropagation()}
+                    className={checkedItems.has(wallet.id)}
                   />
                 </td>
                 <td>{wallet.date}</td>
@@ -316,7 +367,7 @@ function WalletList(props) {
           {filteredWallet.length !== walletList.length && (
             <tfoot>
               <tr>
-                <th colSpan={4}>{getFilteredDate()} 하루 총 지출</th>
+                <th colSpan={4}>{getFilteredDate()}의 지출</th>
                 <td colSpan={4}>
                   {formatNumberWithCommas(getOneDayExpense())}
                 </td>
@@ -331,7 +382,7 @@ function WalletList(props) {
                 <th colSpan={4}>{categories[activeTab]} 합계</th>
                 <td colSpan={4}>
                   {formatNumberWithCommas(
-                    calculateCategoryTotal(categories[activeTab]),
+                    calculateCategoryTotalExpense(categories[activeTab]),
                   )}
                 </td>
               </tr>
