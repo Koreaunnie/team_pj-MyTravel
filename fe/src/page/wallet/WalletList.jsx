@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import Calendar from "react-calendar";
 import { useNavigate } from "react-router-dom";
@@ -9,10 +9,10 @@ function WalletList(props) {
   const [walletList, setWalletList] = useState([]); // 전체 지갑 리스트
   const [currentMonth, setCurrentMonth] = useState(); // 현재 월
   const [selectedDate, setSelectedDate] = useState(); // 선택된 날짜
-  const [filteredWallet, setFilteredWallet] = useState([]); // 필터링된 지갑 리스트
-  const [isAllView, setIsAllView] = useState(true); // 전체 보기 상태
+  const [filteredWallet, setFilteredWallet] = useState(walletList); // 필터링된 지갑 리스트
   const [activeTab, setActiveTab] = useState(0); // 카테고리 탭 활성화
   const [addModalOpen, setAddModalOpen] = useState(false);
+  const [checkedItems, setCheckedItems] = useState(new Set()); // 체크된 항목 ID 저장
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,7 +33,6 @@ function WalletList(props) {
         (wallet) => wallet.date === formattedDate,
       );
       setFilteredWallet(filtered);
-      setIsAllView(false); // 날짜 선택 시 전체 보기 해제
     } else {
       setFilteredWallet(walletList); // 날짜 선택 안 하면 전체 내역 표시
     }
@@ -42,12 +41,23 @@ function WalletList(props) {
   // 전체 날짜 보기
   const handleAllView = () => {
     setFilteredWallet(walletList);
-    setIsAllView(true);
   };
 
   // 선택된 날짜 업데이트
   const handleDateChange = (date) => {
     setSelectedDate(date);
+  };
+
+  const handleCheckboxChange = (id) => {
+    setCheckedItems((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(id)) {
+        newSet.delete(id);
+      } else {
+        newSet.add(id);
+      }
+      return newSet;
+    });
   };
 
   // 선택된 날짜에 해당하는 소비 금액 합산
@@ -62,6 +72,23 @@ function WalletList(props) {
     );
     return totalExpense;
   };
+
+  // 전체 선택/해제
+  const handleSelectAll = () => {
+    if (checkedItems.size === filteredWallet.length) {
+      setCheckedItems(new Set()); // 전체 해제
+    } else {
+      setCheckedItems(new Set(filteredWallet.map((wallet) => wallet.id))); // 전체 선택
+    }
+  };
+
+  // 선택된 항목의 소비액 합계
+  const getTotalSelectedExpense = useMemo(() => {
+    return [...checkedItems].reduce((total, id) => {
+      const wallet = walletList.find((item) => item.id === id);
+      return total + (wallet ? wallet.expense : 0);
+    }, 0);
+  }, [checkedItems, walletList]);
 
   // 3자리마다 쉼표 추가
   const formatNumberWithCommas = (number) => {
@@ -85,6 +112,15 @@ function WalletList(props) {
       setFilteredWallet(walletList); // 선택된 날짜가 없다면 전체 지갑 리스트 표시
     }
   };
+
+  // tileContent 데이터 캐싱
+  const tileContentData = useMemo(() => {
+    const expenseByDate = walletList.reduce((acc, wallet) => {
+      acc[wallet.date] = (acc[wallet.date] || 0) + wallet.expense;
+      return acc;
+    }, {});
+    return expenseByDate;
+  }, [walletList]);
 
   const categories = ["전체", "식비", "교통비", "여가비", "기타"];
 
@@ -150,14 +186,14 @@ function WalletList(props) {
             date.toLocaleString("en", { day: "numeric" })
           }
           showNeighboringMonth={false}
-          onChange={handleDateChange} // 날짜 선택 이벤트 핸들러
-          value={selectedDate} // 선택된 날짜 상태와 동기화
-          // 선택된 날짜에 해당하는 소비 금액을 표시
+          onChange={handleDateChange}
+          value={selectedDate}
           tileContent={({ date }) => {
-            const totalExpense = getTotalExpenseForDate(date);
+            const formattedDate = date.toLocaleDateString("en-CA");
+            const totalExpense = tileContentData[formattedDate] || 0;
             return totalExpense > 0 ? (
               <div className={"calendar-badge"}>
-                {formatNumberWithCommas(totalExpense)}
+                {totalExpense.toLocaleString()}
               </div>
             ) : null;
           }}
@@ -192,6 +228,13 @@ function WalletList(props) {
           >
             월별 보기
           </button>
+
+          {checkedItems.size > 0 && (
+            <div className={"total-expense-wrap"}>
+              <p className={"font-bold"}>선택한 지출 합계</p>
+              <p>{getTotalSelectedExpense.toLocaleString()}</p>
+            </div>
+          )}
         </div>
 
         <h1>{currentMonth}</h1>
@@ -227,6 +270,13 @@ function WalletList(props) {
         <table className={"table-list"}>
           <thead>
             <tr>
+              <th>
+                <input
+                  type="checkbox"
+                  checked={checkedItems.size === filteredWallet.length}
+                  onChange={handleSelectAll}
+                />
+              </th>
               <th>날짜</th>
               <th>항목</th>
               <th>사용처</th>
@@ -243,6 +293,14 @@ function WalletList(props) {
                 onClick={() => navigate(`/wallet/view/${wallet.id}`)}
                 className={"pointer"}
               >
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={checkedItems.has(wallet.id)}
+                    onChange={() => handleCheckboxChange(wallet.id)}
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                </td>
                 <td>{wallet.date}</td>
                 <td>{wallet.category}</td>
                 <td>{wallet.title}</td>
@@ -255,10 +313,10 @@ function WalletList(props) {
           </tbody>
 
           {/* 전체 보기 상태가 아닐 때만 tfoot 렌더링 */}
-          {!isAllView && (
+          {filteredWallet.length !== walletList.length && (
             <tfoot>
               <tr>
-                <th colSpan={3}>{getFilteredDate()} 하루 총 지출</th>
+                <th colSpan={4}>{getFilteredDate()} 하루 총 지출</th>
                 <td colSpan={4}>
                   {formatNumberWithCommas(getOneDayExpense())}
                 </td>
@@ -270,8 +328,8 @@ function WalletList(props) {
           {isCategoryFiltered && (
             <tfoot className={"table-total-wrap"}>
               <tr>
-                <th colSpan={2}>{categories[activeTab]} 합계</th>
-                <td colSpan={5}>
+                <th colSpan={4}>{categories[activeTab]} 합계</th>
+                <td colSpan={4}>
                   {formatNumberWithCommas(
                     calculateCategoryTotal(categories[activeTab]),
                   )}
