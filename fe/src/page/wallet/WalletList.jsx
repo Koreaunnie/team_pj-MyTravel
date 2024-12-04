@@ -246,8 +246,8 @@ function WalletList(props) {
                 <td>{wallet.date}</td>
                 <td>{wallet.category}</td>
                 <td>{wallet.title}</td>
-                <td>{wallet.income}</td>
-                <td>{wallet.expense}</td>
+                <td>{formatNumberWithCommas(wallet.income)}</td>
+                <td>{formatNumberWithCommas(wallet.expense)}</td>
                 <td>{wallet.paymentMethod}</td>
                 <td>{wallet.memo}</td>
               </tr>
