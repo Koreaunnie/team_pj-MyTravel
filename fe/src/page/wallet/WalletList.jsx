@@ -187,12 +187,12 @@ function WalletList(props) {
           </div>
         </div>
 
-        <table className={"table-list wallet-table"}>
+        <table className={"table-list"}>
           <thead>
-            <tr>
+            <td>
               <th>총 지출</th>
               <td colSpan={7}>{formatNumberWithCommas(getTotalExpense())}</td>
-            </tr>
+            </td>
 
             <tr>
               <th>총 수입</th>
@@ -201,7 +201,7 @@ function WalletList(props) {
           </thead>
         </table>
 
-        <table className={"table-list wallet-table"}>
+        <table className={"table-list"}>
           <thead>
             <tr>
               <th>날짜</th>
