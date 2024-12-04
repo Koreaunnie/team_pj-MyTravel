@@ -25,7 +25,7 @@ import WalletEdit from "./page/wallet/WalletEdit.jsx";
 import CartList from "./page/tour/CartList.jsx";
 import AuthenticationProvider from "./components/context/AuthenticationProvider.jsx";
 import React from "react";
-import Payment from "./page/tour/payment.jsx";
+import Payment from "./page/tour/Payment.jsx";
 import MyPage from "./page/member/MyPage.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
