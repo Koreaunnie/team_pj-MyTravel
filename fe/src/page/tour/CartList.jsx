@@ -95,9 +95,9 @@ function CartList() {
                   <td>
                     <Image key={cart.image} src={cart.src} w="200px" />
                   </td>
+                  <td>{cart.product}</td>
                   <td>{cart.title}</td>
                   <td>{cart.location}</td>
-                  <td>{cart.product}</td>
                   <td>{cart.price}</td>
                   <td>
                     {cart.startDate} ~ {cart.endDate}
