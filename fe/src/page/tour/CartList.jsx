@@ -101,6 +101,9 @@ function CartList() {
                   <td>{cart.location}</td>
                   <td>{cart.product}</td>
                   <td>{cart.price}</td>
+                  <td>
+                    {cart.startDate} ~ {cart.endDate}
+                  </td>
                   <button
                     className={"btn btn-warning"}
                     key={cart.id}
