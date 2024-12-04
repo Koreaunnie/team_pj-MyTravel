@@ -1,9 +1,6 @@
 import React, { useState } from "react";
-import { Box, Group, Input, Stack } from "@chakra-ui/react";
-import { Button } from "../../components/ui/button.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
 import axios from "axios";
-import { Field } from "../../components/ui/field.jsx";
 import { useNavigate } from "react-router-dom";
 
 function MemberSignup(props) {
@@ -95,76 +92,129 @@ function MemberSignup(props) {
   }
 
   return (
-    <Box>
+    <div>
       <h1>회원 가입</h1>
-      <Stack>
-        <Box>
-          <input
-            onChange={(e) => setFiles(e.target.files)}
-            type={"file"}
-            accept={"image/*"}
-            multiple
-          />
-          <Box>{filesList}</Box>
-        </Box>
-        <Field label={"이메일"}>
-          <Group attached w={"100%"}>
-            <Input
-              value={email}
-              onChange={(e) => {
-                setEmailCheck(false);
-                setEmail(e.target.value);
-              }}
-            />
-            <Button onClick={handleEmailCheckClick} variant={"outline"}>
-              중복 확인
-            </Button>
-          </Group>
-        </Field>
-        <Field label={"닉네임"}>
-          <Group attached w={"100%"}>
-            <Input
-              value={nickname}
-              onChange={(e) => {
-                setNicknameCheck(false);
-                setNickname(e.target.value);
-              }}
-            />
-            <Button
-              onClick={handleNicknameCheckClick}
-              disabled={nicknameCheckButtonDisabled}
-              variant={"outline"}
-            >
-              중복 확인
-            </Button>
-          </Group>
-        </Field>
-        <Field label={"비밀번호"}>
-          <Input
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </Field>
-        <Field label={"비밀번호 확인"}>
-          <Input
-            value={passwordCheck}
-            onChange={(e) => setPasswordCheck(e.target.value)}
-          />
-        </Field>
-        <Field label={"이름"}>
-          <Input value={name} onChange={(e) => setName(e.target.value)} />
-        </Field>
-        <Field label={"전화번호"}>
-          <Input value={phone} onChange={(e) => setPhone(e.target.value)} />
-        </Field>
 
-        <Box>
-          <Button onClick={handleSignupClick} disabled={disabled}>
-            가입
-          </Button>
-        </Box>
-      </Stack>
-    </Box>
+      <form>
+        <fieldset>
+          <ul>
+            <li>
+              <label htmlFor="">프로필 사진</label>
+              <input
+                onChange={(e) => setFiles(e.target.files)}
+                type={"file"}
+                accept={"image/*"}
+                multiple
+              />
+              {filesList}
+            </li>
+            <li>
+              <label htmlFor="email">이메일</label>
+              <input
+                placeholder={"30자 이내"}
+                id={"email"}
+                type="search"
+                maxlength="30"
+                required
+                value={email}
+                onChange={(e) => {
+                  setEmailCheck(false);
+                  setEmail(e.target.value);
+                }}
+              />
+              <button
+                className={"btn-search btn-dark"}
+                onClick={handleEmailCheckClick}
+              >
+                중복 확인
+              </button>
+            </li>
+            <li>
+              <label htmlFor="nickanem">
+                <input
+                  placeholder={"20자 이내"}
+                  className={"nickname"}
+                  type="search"
+                  maxlength="20"
+                  required
+                  value={nickname}
+                  onChange={(e) => {
+                    setNicknameCheck(false);
+                    setNickname(e.target.value);
+                  }}
+                />
+                <button
+                  className={"btn-search btn-dark"}
+                  onClick={handleNicknameCheckClick}
+                  disabled={nicknameCheckButtonDisabled}
+                  variant={"outline"}
+                >
+                  중복 확인
+                </button>
+              </label>
+            </li>
+            <li>
+              <label htmlFor="password">비밀번호</label>
+              <input
+                placeholder={"30자 이내"}
+                maxlength="30"
+                id={"password"}
+                type="text"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </li>
+            <li>
+              <label htmlFor="password-check">비밀번호</label>
+              <input
+                placeholder={"비밀번호를 다시 한 번 입력해주세요."}
+                maxlength="30"
+                id={"password-check"}
+                type="text"
+                required
+                value={passwordCheck}
+                onChange={(e) => setPasswordCheck(e.target.value)}
+              />
+            </li>
+            <li>
+              <label htmlFor="name">이름</label>
+              <input
+                placeholder={"20자 이내"}
+                maxlength="20"
+                id={"name"}
+                type="text"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </li>
+            <li>
+              <label htmlFor="phone">전화번호</label>
+              <input
+                placeholder={"숫자만 입력해주세요."}
+                maxlength="20"
+                id={"phone"}
+                type="text"
+                required
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
+            </li>
+          </ul>
+        </fieldset>
+      </form>
+
+      <div className={"btn-wrap"}>
+        <button
+          className={"btn btn-dark"}
+          onClick={handleSignupClick}
+          disabled={disabled}
+        >
+          가입
+        </button>
+      </div>
+    </div>
   );
 }
 
