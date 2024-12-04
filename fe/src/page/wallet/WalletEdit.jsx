@@ -133,9 +133,9 @@ function WalletEdit(props) {
 
   return (
     <div className={"body"}>
-      <div>
+      <div className={"btn-wrap"}>
         <button
-          className={"btn btn-dark"}
+          className={"btn btn-dark-outline"}
           onClick={() => setBackToListModalOpen(true)}
         >
           목록
@@ -147,10 +147,18 @@ function WalletEdit(props) {
         >
           삭제
         </button>
+
+        <button
+          className={"btn btn-dark"}
+          type="button"
+          onClick={() => setSaveModalOpen(true)}
+        >
+          저장
+        </button>
       </div>
 
       <form>
-        <table>
+        <table className={"form-table"}>
           <tbody>
             <tr>
               <th>
@@ -280,16 +288,6 @@ function WalletEdit(props) {
               </td>
             </tr>
           </tbody>
-
-          <div className={"btn-wrap"}>
-            <button
-              className={"btn btn-dark"}
-              type="button"
-              onClick={() => setSaveModalOpen(true)}
-            >
-              저장
-            </button>
-          </div>
         </table>
       </form>
 

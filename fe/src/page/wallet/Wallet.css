@@ -1,3 +1,8 @@
+/*-------------------- WalletAdd, WalletEdit --------------------*/
+.form-table {
+    width: 80%;
+}
+
 /*-------------------- WalletList --------------------*/
 section {
     margin: 0
@@ -91,13 +96,18 @@ section {
 }
 
 @media (max-width: 768px) {
+
+    /*-------------------- WalletAdd, WalletEdit --------------------*/
+    .form-table {
+        width: 100%;
+    }
+
+    /*-------------------- WalletList --------------------*/
     .category-table {
         display: none;
     }
-
 }
 
 @media (max-width: 480px) {
-
 
 }

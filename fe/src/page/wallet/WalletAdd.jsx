@@ -14,15 +14,16 @@ function WalletAdd(props) {
     "기타",
   ]);
   const [newCategory, setNewCategory] = useState("");
+  const [handleAddCategoryOpen, setHandleAddCategoryOpen] = useState(false);
 
   // 폼 상태 관리
   const [date, setDate] = useState("");
+  const [category, setCategory] = useState(categoryOptions[0]);
   const [title, setTitle] = useState("");
   const [income, setIncome] = useState(0);
   const [expense, setExpense] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState("");
   const [memo, setMemo] = useState("");
-  const [category, setCategory] = useState(categoryOptions[0]);
 
   const navigate = useNavigate();
 
@@ -36,7 +37,7 @@ function WalletAdd(props) {
 
   // 저장 버튼 핸들러
   const handleSaveButton = (event) => {
-    // date가 null 또는 빈 값이면 경고 메시지 출력하고 저장하지 않음
+    // 필드 검증
     if (!date) {
       alert("날짜를 입력해주세요.");
       setSaveModalOpen(false);
@@ -74,7 +75,7 @@ function WalletAdd(props) {
     <div className={"body"}>
       <div className={"btn-wrap"}>
         <button
-          className={"btn btn-dark"}
+          className={"btn btn-dark-outline"}
           onClick={() => setBackToListModalOpen(true)}
         >
           목록
@@ -92,7 +93,7 @@ function WalletAdd(props) {
       </div>
 
       <form>
-        <table>
+        <table className={"form-table"}>
           <tbody>
             <tr>
               <th>
@@ -126,20 +127,34 @@ function WalletAdd(props) {
                     </option>
                   ))}
                 </select>
-                <br />
-                <input
-                  type="text"
-                  placeholder="새로운 항목을 추가하고 싶으면 입력해주세요."
-                  value={newCategory}
-                  onChange={(e) => setNewCategory(e.target.value)}
-                />
+
                 <button
                   type="button"
-                  className={"btn"}
-                  onClick={handleAddCategory}
+                  className={"btn btn-dark"}
+                  onClick={() =>
+                    setHandleAddCategoryOpen(!handleAddCategoryOpen)
+                  }
                 >
-                  항목 추가
+                  {handleAddCategoryOpen ? "닫기" : "항목 추가"}
                 </button>
+
+                {handleAddCategoryOpen && (
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="새로운 항목을 입력해주세요."
+                      value={newCategory}
+                      onChange={(e) => setNewCategory(e.target.value)}
+                    />
+                    <button
+                      type="button"
+                      className={"btn btn-dark"}
+                      onClick={handleAddCategory}
+                    >
+                      추가
+                    </button>
+                  </div>
+                )}
               </td>
             </tr>
 
