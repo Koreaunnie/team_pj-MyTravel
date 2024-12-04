@@ -9,7 +9,8 @@ CREATE TABLE plan
     destination VARCHAR(20),
     startDate   DATE,
     endDate     DATE,
-    updated     TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    pinned      BOOLEAN   DEFAULT FALSE
 );
 
 DROP TABLE plan;
@@ -23,7 +24,6 @@ ALTER TABLE plan
 ALTER TABLE plan
     MODIFY description VARCHAR(100) NOT NULL;
 
-SELECT *
-FROM plan_field
+ALTER TABLE plan
+    ADD COLUMN pinned BOOLEAN DEFAULT FALSE;
 
-WHERE id = 2;

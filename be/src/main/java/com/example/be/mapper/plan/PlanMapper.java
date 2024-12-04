@@ -71,6 +71,14 @@ public interface PlanMapper {
             """)
     Integer countAll(String searchType, String searchKeyword);
 
+    // 3. pinned : 상단 고정
+    @Update("""
+            UPDATE plan 
+            SET pinned = NOT pinned 
+            WHERE id = #{id}
+            """)
+    int tooglePinned(int id);
+
     // 내 여행 세부사항
     // 1. Plan
     @Select("""

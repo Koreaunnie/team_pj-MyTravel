@@ -21,7 +21,7 @@ public interface WalletMapper {
     @Select("""
             SELECT * 
             FROM wallet
-            ORDER BY date
+            ORDER BY date DESC 
             """)
     List<Wallet> selectAllByDate();
 

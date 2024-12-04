@@ -13,7 +13,7 @@ import { FaRegQuestionCircle } from "react-icons/fa";
 import "./Plan.css";
 import Calendar from "react-calendar";
 import { Modal } from "../../components/root/Modal.jsx";
-import { FaHeart } from "react-icons/fa6";
+import { GoHeart, GoHeartFill } from "react-icons/go";
 
 function PlanList(props) {
   const [filteredPlans, setFilteredPlans] = useState([]); // 필터링된 일정
@@ -72,6 +72,27 @@ function PlanList(props) {
 
     setSearch(nextSearch);
   }, [searchParams]);
+
+  const handlePinnedClick = (planId) => {
+    axios.put(`/api/plan/pinned/${planId}`).then((res) => {
+      // pinned 상태 업데이트
+      const updatedPlanList = planList.map((plan) =>
+        plan.id === planId ? { ...plan, pinned: !plan.pinned } : plan,
+      );
+
+      // pinned 상태가 변경된 후 updated, pinned 기준으로 정렬
+      const sortedPlans = updatedPlanList.sort((a, b) => {
+        // 먼저 pinned 상태가 true인 것이 우선
+        if (b.pinned === a.pinned) {
+          // pinned 상태가 같으면 updated 시간 기준으로 정렬
+          return new Date(b.updated) - new Date(a.updated);
+        }
+        return b.pinned - a.pinned; // pinned 상태가 true인 것이 우선
+      });
+
+      setPlanList(sortedPlans);
+    });
+  };
 
   // search
   function handleSearchButton(e) {
@@ -157,14 +178,6 @@ function PlanList(props) {
             >
               전체보기
             </button>
-
-            <button
-              className="btn btn-dark-outline display-flex"
-              onClick={() => setFilteredPlans(planList)}
-            >
-              <FaHeart style={{ marginTop: "4px", marginRight: "7px" }} /> 찜한
-              여행
-            </button>
           </div>
 
           <div className={"search-form"}>
@@ -222,6 +235,19 @@ function PlanList(props) {
               >
                 <div className={"card-header"}>
                   <p>{plan.title}</p>
+                  <p
+                    className={"pinned"}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handlePinnedClick(plan.id);
+                    }}
+                  >
+                    {plan.pinned ? (
+                      <GoHeartFill style={{ color: "red" }} />
+                    ) : (
+                      <GoHeart />
+                    )}
+                  </p>
                 </div>
 
                 <div className={"card-body"}>

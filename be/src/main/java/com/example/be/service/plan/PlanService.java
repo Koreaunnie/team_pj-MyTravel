@@ -65,7 +65,7 @@ public class PlanService {
             }
         }
     }
-    
+
     // 3. 여행 저장 시 여행 제목이 공백이 아니고 길이가 1자 이상인 경우에만 true
     public boolean validate(Plan plan) {
         return plan.getTitle() != null && !plan.getTitle().trim().isEmpty();
@@ -83,6 +83,11 @@ public class PlanService {
         Integer count = mapper.countAll(searchType, searchKeyword);
 
         return Map.of("list", list, "count", count);
+    }
+
+    // 내 여행 목록에서 상단 고정
+    public void pinned(int id) {
+        mapper.tooglePinned(id);
     }
 
     // 내 여행 세부사항

@@ -329,6 +329,7 @@ h1 {
     border-radius: 10px;
     cursor: pointer;
     box-shadow: var(--box-shadow);
+    position: relative;
 }
 
 .card-wrap:hover {
@@ -346,6 +347,12 @@ h1 {
     padding: 13px 25px;
     background: var(--bg-gray-color);
     border-radius: 10px 10px 0 0;
+}
+
+.card-wrap .card-header .pinned {
+    position: absolute;
+    top: 5px;
+    right: 0;
 }
 
 .card-wrap .card-body {
