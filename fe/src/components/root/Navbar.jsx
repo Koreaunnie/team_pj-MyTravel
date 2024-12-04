@@ -23,7 +23,6 @@ function Navbar(props) {
           {isAuthenticated && (
             <li
               onClick={() => {
-                localStorage.removeItem("token");
                 logout();
                 navigate("/member/login");
               }}
