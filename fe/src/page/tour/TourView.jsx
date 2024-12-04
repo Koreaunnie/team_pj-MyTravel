@@ -23,6 +23,8 @@ function TourView() {
   const [tour, setTour] = useState(null);
   const [open, setOpen] = useState(false);
   const [cart, setCart] = useState({ cart: false });
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const { hasAccess, isAuthenticated, isAdmin } = useContext(
     AuthenticationContext,
   );
@@ -74,6 +76,7 @@ function TourView() {
       .post(`/api/tour/cart`, {
         id: tour.id,
         email: tour.partnerEmail,
+        cart: { startDate, endDate },
       })
       .then((res) => res.data)
       .then((data) => {
@@ -106,6 +109,25 @@ function TourView() {
         <Field label={"가격"} readOnly>
           <Input value={tour.price} />
         </Field>
+        <ul className={"period"}>
+          날짜 선택
+          <li>
+            <label htmlFor="startDate">시작 날짜</label>
+            <input
+              type={"date"}
+              id={"startDate"}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+          </li>
+          <li>
+            <label htmlFor="endDate">종료 날짜</label>
+            <input
+              type={"date"}
+              id={"endDate"}
+              onChange={(e) => setEndDate(e.target.value)}
+            />
+          </li>
+        </ul>
         <Box>
           <button className={"btn btn-dark"} onClick={handleAddToCartClick}>
             장바구니에 담기

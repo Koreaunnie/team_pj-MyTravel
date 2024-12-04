@@ -1,5 +1,6 @@
 package com.example.be.controller.tour;
 
+import com.example.be.dto.tour.Cart;
 import com.example.be.dto.tour.Tour;
 import com.example.be.service.member.MemberService;
 import com.example.be.service.tour.TourService;
@@ -21,8 +22,12 @@ public class TourController {
   final MemberService memberService;
 
   @PostMapping("cart")
-  public ResponseEntity<Map<String, Object>> cart(@RequestBody Tour tour, Authentication authentication) {
-    if (service.addCart(tour, authentication)) {
+  public ResponseEntity<Map<String, Object>> cart(
+          @RequestBody Tour tour,
+          Authentication authentication) {
+    Cart cart = tour.getCart();
+
+    if (service.addCart(tour, cart, authentication)) {
       return ResponseEntity.ok(Map.of("message",
               Map.of("type", "success", "text", "상품을 장바구니에 담았습니다.")));
     } else {
