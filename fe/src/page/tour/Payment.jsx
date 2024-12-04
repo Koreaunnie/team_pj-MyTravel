@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import PortOne from "@portone/browser-sdk";
+
+// import PortOne from "@portone/browser-sdk";
 
 function Payment(props) {
   const [tour, setTour] = useState(null);
