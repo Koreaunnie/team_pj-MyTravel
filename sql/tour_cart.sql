@@ -13,3 +13,10 @@ FROM tour_cart tc
          LEFT JOIN tour_img ti ON tc.tour_id = ti.tour_id
 WHERE tc.member_email = 'admin';
 
+SELECT id, title, product, price, location, ti.name image
+FROM tour_cart tc
+         LEFT JOIN tour t ON t.id = tc.tour_id
+         LEFT JOIN tour_img ti ON tc.tour_id = ti.tour_id
+WHERE tc.member_email = 2
+GROUP BY id;
+

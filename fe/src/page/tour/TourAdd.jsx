@@ -56,7 +56,7 @@ export function TourAdd() {
   if (!userToken || (!isPartner && !isAdmin)) {
     return (
       <div>
-        접근 권한이 없습니다. <a href="/member/signup">로그인 페이지로</a>
+        접근 권한이 없습니다. <a href="/member/login">로그인 페이지로</a>
       </div>
     );
   }

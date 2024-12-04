@@ -1,17 +1,7 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Center,
-  HStack,
-  Image,
-  Input,
-  SimpleGrid,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Center, Image, SimpleGrid, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Button } from "../../components/ui/button.jsx";
-import { CiSearch } from "react-icons/ci";
 
 function TourList() {
   const [tourList, setTourList] = useState([]);
@@ -65,37 +55,41 @@ function TourList() {
       <h1>Tour 목록</h1>
 
       <Center>
-        <HStack>
-          <Box>
-            <select
-              value={search.type}
-              onChange={(e) => setSearch({ ...search, type: e.target.value })}
-            >
-              <option value="all">전체</option>
-              <option value="title">제목</option>
-              <option value="product">제품</option>
-              <option value="location">위치</option>
-              <option value="content">본문</option>
-              <option value="partner">파트너사</option>
-            </select>
-            <Input
+        <div className={"search-form"}>
+          <select
+            value={search.type}
+            onChange={(e) => setSearch({ ...search, type: e.target.value })}
+          >
+            <option value="all">전체</option>
+            <option value="title">제목</option>
+            <option value="product">제품</option>
+            <option value="location">위치</option>
+            <option value="content">본문</option>
+            <option value="partner">파트너사</option>
+          </select>
+          <div className={"search-form-input"}>
+            <input
+              type={"search"}
               value={search.keyword}
               onChange={(e) =>
                 setSearch({ ...search, keyword: e.target.value.trim() })
               }
             />
-            <Button onClick={handleSearchClick}>
-              <CiSearch />
-            </Button>
-          </Box>
-        </HStack>
+            <button
+              className={"btn-search btn-dark"}
+              onClick={handleSearchClick}
+            >
+              검색
+            </button>
+          </div>
+        </div>
       </Center>
 
       {tourList.length === 0 ? (
         <p>찾으시는 상품이 존재하지 않습니다.</p>
       ) : (
         <SimpleGrid
-          columns={{ base: 2, md: 4, lg: 6, xl: 7, "2xl": 8 }}
+          columns={{ base: 2, md: 4, lg: 5, xl: 6, "2xl": 7 }}
           spacing={6}
         >
           {tourList.map((tour) => (

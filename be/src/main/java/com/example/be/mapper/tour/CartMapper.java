@@ -15,7 +15,8 @@ public interface CartMapper {
           FROM tour_cart tc
           LEFT JOIN tour t ON t.id = tc.tour_id
           LEFT JOIN tour_img ti ON tc.tour_id = ti.tour_id
-          WHERE tc.member_email=#{name};
+          WHERE tc.member_email=#{name}
+          GROUP BY id;
           """)
   List<TourList> selectAll(String name);
 
