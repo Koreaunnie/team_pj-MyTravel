@@ -31,9 +31,7 @@ function WalletAdd(props) {
   useEffect(() => {
     axios
       .get(`/api/wallet/categories`)
-      .then((res) => setCategoryOptions(res.data))
-      .catch()
-      .finally();
+      .then((res) => setCategoryOptions(res.data));
   }, []);
 
   // 새 카테고리 추가

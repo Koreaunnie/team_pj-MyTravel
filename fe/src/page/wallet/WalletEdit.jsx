@@ -10,12 +10,7 @@ function WalletEdit(props) {
   const [wallet, setWallet] = useState(null);
 
   // categoryOptions를 서버에서 가져온 값으로 초기화
-  const [categoryOptions, setCategoryOptions] = useState([
-    "식비",
-    "교통비",
-    "여가비",
-    "기타",
-  ]);
+  const [categoryOptions, setCategoryOptions] = useState([]);
   const [newCategory, setNewCategory] = useState("");
   const [handleAddCategoryOpen, setHandleAddCategoryOpen] = useState(false);
 
@@ -34,28 +29,31 @@ function WalletEdit(props) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // wallet 정보 및 categoryOptions 가져오기
-    axios.get(`/api/wallet/view/${id}`).then((res) => {
-      setWallet(res.data);
-      setCategoryOptions(res.data.categoryOptions || []); // 카테고리 옵션 설정
-      setCategory(res.data.category);
-      setDate(res.data.date);
-      setTitle(res.data.title);
-      setIncome(res.data.income);
-      setExpense(res.data.expense);
-      setPaymentMethod(res.data.paymentMethod);
-      setMemo(res.data.memo);
-    });
-  }, [id]);
+    async function fetchData() {
+      try {
+        // 카테고리 목록 가져오기
+        const categoriesResponse = await axios.get(`/api/wallet/categories`);
+        setCategoryOptions(categoriesResponse.data);
 
-  // 카테고리 목록 불러오기
-  useEffect(() => {
-    axios
-      .get(`/api/wallet/categories`)
-      .then((res) => setCategoryOptions(res.data))
-      .catch()
-      .finally();
-  }, []);
+        // 상세 정보 가져오기
+        const walletResponse = await axios.get(`/api/wallet/view/${id}`);
+        const walletData = walletResponse.data;
+        setWallet(walletData);
+
+        setCategory(walletData.category || categoriesResponse.data[0]); // 기본 카테고리 설정
+        setDate(walletData.date);
+        setTitle(walletData.title);
+        setIncome(walletData.income);
+        setExpense(walletData.expense);
+        setPaymentMethod(walletData.paymentMethod);
+        setMemo(walletData.memo);
+      } catch (error) {
+        console.error("데이터를 가져오는 중 문제가 발생했습니다:", error);
+      }
+    }
+
+    fetchData();
+  }, [id]);
 
   if (wallet === null) {
     return <Spinner />;
