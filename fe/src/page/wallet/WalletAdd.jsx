@@ -32,6 +32,8 @@ function WalletAdd(props) {
     if (newCategory.trim() && !categoryOptions.includes(newCategory)) {
       setCategoryOptions([...categoryOptions, newCategory]);
       setNewCategory("");
+      setHandleAddCategoryOpen(false);
+      setCategory(newCategory);
     }
   };
 
@@ -139,7 +141,7 @@ function WalletAdd(props) {
                 </button>
 
                 {handleAddCategoryOpen && (
-                  <div>
+                  <div className={"btn-wrap"}>
                     <input
                       type="text"
                       placeholder="새로운 항목을 입력해주세요."
@@ -148,10 +150,10 @@ function WalletAdd(props) {
                     />
                     <button
                       type="button"
-                      className={"btn btn-dark"}
+                      className={"btn-search btn-dark"}
                       onClick={handleAddCategory}
                     >
-                      추가
+                      &#43;
                     </button>
                   </div>
                 )}

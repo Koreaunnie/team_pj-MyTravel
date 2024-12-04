@@ -17,6 +17,7 @@ function WalletEdit(props) {
     "기타",
   ]);
   const [newCategory, setNewCategory] = useState("");
+  const [handleAddCategoryOpen, setHandleAddCategoryOpen] = useState(false);
 
   const [date, setDate] = useState("");
   const [title, setTitle] = useState("");
@@ -56,6 +57,8 @@ function WalletEdit(props) {
     if (newCategory.trim() && !categoryOptions.includes(newCategory)) {
       setCategoryOptions([...categoryOptions, newCategory]);
       setNewCategory("");
+      setHandleAddCategoryOpen(false);
+      setCategory(newCategory);
     }
   };
 
@@ -192,20 +195,34 @@ function WalletEdit(props) {
                     </option>
                   ))}
                 </select>
-                <br />
-                <input
-                  type="text"
-                  placeholder="새로운 항목을 추가하고 싶으면 입력해주세요."
-                  value={newCategory}
-                  onChange={(e) => setNewCategory(e.target.value)}
-                />
+
                 <button
                   type="button"
-                  className={"btn"}
-                  onClick={handleAddCategory}
+                  className={"btn btn-dark"}
+                  onClick={() =>
+                    setHandleAddCategoryOpen(!handleAddCategoryOpen)
+                  }
                 >
-                  항목 추가
+                  {handleAddCategoryOpen ? "닫기" : "항목 추가"}
                 </button>
+
+                {handleAddCategoryOpen && (
+                  <div className={"btn-wrap"}>
+                    <input
+                      type="text"
+                      placeholder="새로운 항목을 입력해주세요."
+                      value={newCategory}
+                      onChange={(e) => setNewCategory(e.target.value)}
+                    />
+                    <button
+                      type="button"
+                      className={"btn-search btn-dark"}
+                      onClick={handleAddCategory}
+                    >
+                      &#43;
+                    </button>
+                  </div>
+                )}
               </td>
             </tr>
 
