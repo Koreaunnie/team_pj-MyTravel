@@ -11,7 +11,7 @@ function WalletList(props) {
   const [selectedDate, setSelectedDate] = useState(); // 선택된 날짜
   const [filteredWallet, setFilteredWallet] = useState([]); // 필터링된 지갑 리스트
   const [isAllView, setIsAllView] = useState(true); // 전체 보기 상태
-  const [activeTab, setActiveTab] = useState(null); // 카테고리 탭 활성화
+  const [activeTab, setActiveTab] = useState(0); // 카테고리 탭 활성화
   const [addModalOpen, setAddModalOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -91,16 +91,38 @@ function WalletList(props) {
   // 카테고리 탭 활성화
   const handleTabClick = (index) => {
     setActiveTab(index);
+    if (index === 0) {
+      // "전체"
+      setFilteredWallet(walletList);
+    } else {
+      const filtered = walletList.filter(
+        (wallet) => wallet.category === categories[index],
+      );
+      setFilteredWallet(filtered);
+    }
   };
+
+  // 카테고리별 합계 계산
+  const calculateCategoryTotal = (category) => {
+    return filteredWallet
+      .filter((wallet) => wallet.category === category)
+      .reduce((total, wallet) => total + wallet.expense, 0);
+  };
+
+  const isCategoryFiltered = activeTab !== 0; // "전체"가 아닌 카테고리가 선택되었을 때만 tfoot 표시
 
   // 총 지출 계산
   const getTotalExpense = () => {
-    return walletList.reduce((total, wallet) => total + wallet.expense, 0);
+    return formatNumberWithCommas(
+      walletList.reduce((total, wallet) => total + wallet.expense, 0),
+    );
   };
 
   // 총 수입 계산
   const getTotalIncome = () => {
-    return walletList.reduce((total, wallet) => total + wallet.income, 0);
+    return formatNumberWithCommas(
+      walletList.reduce((total, wallet) => total + wallet.income, 0),
+    );
   };
 
   // 해당 하는 날짜
@@ -121,7 +143,7 @@ function WalletList(props) {
   };
 
   return (
-    <div className={"calendar-list"}>
+    <div>
       <aside className={"calendar"}>
         <Calendar
           formatDay={(locale, date) =>
@@ -133,7 +155,6 @@ function WalletList(props) {
           // 선택된 날짜에 해당하는 소비 금액을 표시
           tileContent={({ date }) => {
             const totalExpense = getTotalExpenseForDate(date);
-
             return totalExpense > 0 ? (
               <div className={"calendar-badge"}>
                 {formatNumberWithCommas(totalExpense)}
@@ -143,60 +164,62 @@ function WalletList(props) {
         />
       </aside>
 
-      <div className={"day-list"}>
-        <div className={"fixed-list-head-wrap"}>
-          <div className={"btn-wrap"}>
-            <button
-              className={"btn btn-dark"}
-              onClick={() => setAddModalOpen(true)}
-            >
-              추가
-            </button>
+      <div className={"middle-section"}>
+        <div className={"category-table"}></div>
+      </div>
 
-            <button
-              className={"btn btn-dark-outline"}
-              style={{ marginLeft: "15px" }}
-              onClick={handleAllView}
-            >
-              전체 보기
-            </button>
+      <div className={"right-section"}>
+        <div className={"btn-wrap fixed-list-head-wrap"}>
+          <button
+            className={"btn btn-dark"}
+            onClick={() => setAddModalOpen(true)}
+          >
+            추가
+          </button>
 
-            <button
-              className={"btn btn-dark-outline"}
-              style={{ marginLeft: "15px" }}
-              onClick={handleMonthView}
-            >
-              월별 보기
-            </button>
-          </div>
+          <button
+            className={"btn btn-dark-outline"}
+            style={{ marginLeft: "15px" }}
+            onClick={handleAllView}
+          >
+            모든 날짜 보기
+          </button>
 
-          <h1>{currentMonth}</h1>
-
-          <div className={"category-tab"}>
-            <ul>
-              {categories.map((category, index) => (
-                <li
-                  key={index}
-                  className={`category-tab ${activeTab === index ? "on" : ""}`}
-                  onClick={() => handleTabClick(index)} // 탭 클릭 시 해당 인덱스를 설정
-                >
-                  {category}
-                </li>
-              ))}
-            </ul>
-          </div>
+          <button
+            className={"btn btn-dark-outline"}
+            style={{ marginLeft: "15px" }}
+            onClick={handleMonthView}
+          >
+            월별 보기
+          </button>
         </div>
 
-        <table className={"table-list"}>
+        <h1>{currentMonth}</h1>
+
+        <div className={"category-tab"}>
+          <ul>
+            {categories.map((category, index) => (
+              <li
+                key={index}
+                className={`category-tab ${activeTab === index ? "on" : ""}`}
+                onClick={() => handleTabClick(index)} // 탭 클릭 시 해당 인덱스를 설정
+              >
+                {category}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <table className={"table-list table-total-wrap"}>
           <thead>
-            <td>
+            <tr>
               <th>총 지출</th>
-              <td colSpan={7}>{formatNumberWithCommas(getTotalExpense())}</td>
-            </td>
+              <td>{formatNumberWithCommas(getTotalExpense())}</td>
+            </tr>
 
             <tr>
               <th>총 수입</th>
-              <td colSpan={7}>{formatNumberWithCommas(getTotalIncome())}</td>
+              <td>{formatNumberWithCommas(getTotalIncome())}</td>
             </tr>
           </thead>
         </table>
@@ -235,9 +258,23 @@ function WalletList(props) {
           {!isAllView && (
             <tfoot>
               <tr>
-                <th>{getFilteredDate()} 하루 총 지출</th>
-                <td colSpan={7}>
+                <th colSpan={3}>{getFilteredDate()} 하루 총 지출</th>
+                <td colSpan={4}>
                   {formatNumberWithCommas(getOneDayExpense())}
+                </td>
+              </tr>
+            </tfoot>
+          )}
+
+          {/* 카테고리별 합계가 필터링된 경우에만 표시 */}
+          {isCategoryFiltered && (
+            <tfoot className={"table-total-wrap"}>
+              <tr>
+                <th colSpan={2}>{categories[activeTab]} 합계</th>
+                <td colSpan={5}>
+                  {formatNumberWithCommas(
+                    calculateCategoryTotal(categories[activeTab]),
+                  )}
                 </td>
               </tr>
             </tfoot>

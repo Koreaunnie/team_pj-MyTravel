@@ -39,7 +39,7 @@ html {
     box-sizing: border-box;
 }
 
-body, a, p, ul, li {
+body, section, a, p, ul, li {
     margin: 0;
     padding: 0;
 }
