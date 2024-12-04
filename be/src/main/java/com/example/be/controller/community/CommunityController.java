@@ -28,9 +28,8 @@ public class CommunityController {
 
 
     @PostMapping("write")
-    public void write(@RequestBody Community community, MultipartFile files, Authentication auth) {
-
-        service.write(community, auth);
+    public void write(Community community, @RequestParam(value = "files[]", required = false) MultipartFile[] files, Authentication auth) {
+        service.write(community, files, auth);
     }
 
     @GetMapping("view/{id}")

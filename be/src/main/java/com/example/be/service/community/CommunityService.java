@@ -3,12 +3,17 @@ package com.example.be.service.community;
 import com.example.be.dto.community.Community;
 import com.example.be.mapper.community.CommunityMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CommunityService {
@@ -22,11 +27,33 @@ public class CommunityService {
         return mapper.listUp(pageList, searchType, searchKeyword);
     }
 
-    public void write(Community community, Authentication auth) {
+    public void write(Community community, MultipartFile[] files, Authentication auth) {
+
 
         String nickname = mapper.findNickname(auth.getName());
         community.setWriter(nickname);
         mapper.writeCommunity(community);
+        Integer id = community.getId();
+
+        if (files != null && files.length > 0) {
+
+            String directory = STR."C:/Temp/teamPrj1126/\{id}";
+            File dir = new File(directory);
+        }
+
+        System.out.println(id);
+
+        for (MultipartFile file : files) {
+            String filesName = file.getOriginalFilename();
+            try {
+                byte[] fileData = file.getBytes();
+                mapper.addFile(filesName, id);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+
     }
 
     public Map<String, Object> view(Integer id) {

@@ -46,7 +46,14 @@ public interface CommunityMapper {
             INSERT INTO community (title, content, writer)
             VALUES (#{title}, #{content}, #{writer})
             """)
+    @Options(keyProperty = "id", useGeneratedKeys = true)
     int writeCommunity(Community community);
+
+    @Insert("""
+            INSERT INTO community_file (file_name, community_id)
+            VALUES (#{filesName}, #{id})
+            """)
+    int addFile(String filesName, Integer id);
 
     @Select("""
             SELECT id, title, content, writer, inserted creationDate

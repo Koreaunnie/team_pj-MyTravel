@@ -20,7 +20,7 @@ function CommunityWrite(props) {
 
   const handleSaveClick = () => {
     axios
-      .post(`/api/community/write`, { title, content, files })
+      .postForm(`/api/community/write`, { title, content, files })
       .then(navigate(`/community/list`));
   };
 
@@ -45,8 +45,10 @@ function CommunityWrite(props) {
         </Field>
         <Field label={"파일 첨부"}>
           <FileUploadRoot
+            value={files}
             maxFiles={5}
-            onChange={(e) => setFiles(e.target.value)}
+            multiple
+            onChange={(e) => setFiles(e.target.files)}
           >
             <FileUploadTrigger asChild>
               <Button variant="outline" size="sm">
