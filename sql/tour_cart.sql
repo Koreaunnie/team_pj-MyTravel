@@ -20,3 +20,6 @@ FROM tour_cart tc
 WHERE tc.member_email = 2
 GROUP BY id;
 
+ALTER TABLE tour_cart
+    ADD COLUMN startDate DATE,
+    ADD COLUMN endDate   DATE;
