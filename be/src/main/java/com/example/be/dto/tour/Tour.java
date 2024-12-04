@@ -14,6 +14,9 @@ public class Tour {
   private String location;
   private String content;
   private String partner;
+  private String partnerEmail;
   private LocalDateTime inserted;
   private List<TourImg> fileList;
+  private Cart cart;
+
 }

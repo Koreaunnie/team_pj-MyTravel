@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import { Box, Input, Stack } from "@chakra-ui/react";
-import { Field } from "../../components/ui/field.jsx";
-import { Button } from "../../components/ui/button.jsx";
+import React, { useContext, useState } from "react";
+import { Box, Input } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "../../components/ui/toaster.jsx";
+import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 
 function MemberLogin(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { login } = useContext(AuthenticationContext);
 
   function handleLoginClick() {
     axios
@@ -22,7 +22,7 @@ function MemberLogin(props) {
           description: message.text,
         });
         navigate("/");
-        localStorage.setItem("token", data.token);
+        login(data.token);
       })
       .catch((e) => {
         const message = e.response.data.message;
@@ -35,23 +35,34 @@ function MemberLogin(props) {
   }
 
   return (
-    <Box>
+    <div className={"body"}>
       <h1>로그인</h1>
-      <Stack>
-        <Field label={"이메일"}>
-          <Input value={email} onChange={(e) => setEmail(e.target.value)} />
-        </Field>
-        <Field label={"비밀번호"}>
+      <ul className={"title"}>
+        <li>
+          <label htmlFor="email">이메일</label>
+          <input
+            type={"text"}
+            id={"email"}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </li>
+        <li>
+          <label htmlFor="password">비밀번호</label>
           <Input
+            type={"password"}
+            id={"password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-        </Field>
-        <Box>
-          <Button onClick={handleLoginClick}>로그인</Button>
-        </Box>
-      </Stack>
-    </Box>
+        </li>
+      </ul>
+      <Box>
+        <button className={"btn btn-dark"} onClick={handleLoginClick}>
+          로그인
+        </button>
+      </Box>
+    </div>
   );
 }
 

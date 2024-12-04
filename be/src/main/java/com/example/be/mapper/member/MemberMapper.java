@@ -61,4 +61,17 @@ public interface MemberMapper {
           WHERE email=#{email}
           """)
   int updatePicture(String email, String filename);
+
+  @Delete("""
+          DELETE FROM tour_cart
+          WHERE member_email=#{email}
+          """)
+  int deleteCartByMemberEmail(String email);
+
+  @Select("""
+          SELECT auth
+          FROM auth
+          WHERE member_email=#{email}
+          """)
+  List<String> selectAuthByMemberEmail(String email);
 }

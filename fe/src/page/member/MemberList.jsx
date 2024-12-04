@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Spinner, Table } from "@chakra-ui/react";
+import { Box, Table } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -16,7 +16,7 @@ function MemberList(props) {
   }
 
   if (!memberList || memberList.length === 0) {
-    return <Spinner />;
+    return <p>접근 권한이 없습니다.</p>;
   }
 
   return (

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Input, Stack } from "@chakra-ui/react";
+import { Box, Image, Input, Stack } from "@chakra-ui/react";
 import { Field } from "../../components/ui/field.jsx";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
@@ -15,7 +15,23 @@ import {
   DialogTrigger,
 } from "../../components/ui/dialog.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
-import { ImageFileView } from "../../Image/ImageFileView.jsx";
+
+function ProfileImageView({ files }) {
+  return (
+    <Box display={"flex"} justifyContent={"center"}>
+      {files.map((file) => (
+        <Image
+          key={file.name}
+          src={file.src} // 프로필 이미지는 배열로 가정
+          alt="프로필 이미지"
+          borderRadius="50%" // 원형으로 표시
+          boxSize="150px" // 이미지 크기 제한
+          objectFit="cover" //이미지 비율
+        />
+      ))}
+    </Box>
+  );
+}
 
 function MemberInfo(props) {
   const [member, setMember] = useState(null);
@@ -63,7 +79,7 @@ function MemberInfo(props) {
     <Box>
       <h1>회원 정보</h1>
       <Stack>
-        <ImageFileView files={member.profile} />
+        <ProfileImageView files={member.profile} />
         <Field label={"이메일"}>
           <Input readOnly value={member.email} />
         </Field>
@@ -83,14 +99,16 @@ function MemberInfo(props) {
           <Input type={"datetime-local"} readOnly value={member.inserted} />
         </Field>
         <Box>
-          <Button onClick={() => navigate(`/member/edit/${email}`)}>
+          <button
+            className={"btn btn-dark"}
+            onClick={() => navigate(`/member/edit/${email}`)}
+          >
             수정
-          </Button>
-        </Box>
-        <Box>
+          </button>
+
           <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
             <DialogTrigger>
-              <Button>탈퇴</Button>
+              <button className={"btn btn-warning"}>탈퇴</button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>

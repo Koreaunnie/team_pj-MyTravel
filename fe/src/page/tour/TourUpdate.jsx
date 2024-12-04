@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Box, Input, Stack, Textarea } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -16,6 +16,7 @@ import {
 } from "../../components/ui/dialog.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { ImageView } from "../../Image/ImageView.jsx";
+import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 
 function TourUpdate() {
   const { id } = useParams();
@@ -23,10 +24,25 @@ function TourUpdate() {
   const [open, setOpen] = useState(false);
   const [removeFiles, setRemoveFiles] = useState([]);
   const [uploadFiles, setUploadFiles] = useState([]);
+  const { userToken, hasAccess, isAdmin, isPartner } = useContext(
+    AuthenticationContext,
+  );
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`/api/tour/view/${id}`).then((res) => setTour(res.data));
+    if (tour !== null && !(hasAccess(tour.partnerEmail) || isAdmin)) {
+      toaster.create({
+        type: "error",
+        description: "접근 권한이 없습니다.",
+      });
+      navigate("/", { replace: true });
+    }
+  }, [tour, hasAccess, isAdmin, navigate]);
+
+  useEffect(() => {
+    axios.get(`/api/tour/view/${id}`).then((res) => {
+      setTour(res.data);
+    });
   }, []);
 
   const handleDeleteCheck = (checked, fileName) => {
@@ -45,6 +61,7 @@ function TourUpdate() {
         title: tour.title,
         product: tour.product,
         location: tour.location,
+        price: tour.price,
         content: tour.content,
         removeFiles,
         uploadFiles,
@@ -123,27 +140,30 @@ function TourUpdate() {
             onChange={(e) => setTour({ ...tour, content: e.target.value })}
           />
         </Field>
-        <Box>
-          <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
-            <DialogTrigger>
-              <Button>저장</Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>수정 확인</DialogTitle>
-              </DialogHeader>
-              <DialogBody>
-                <p>{tour.title} 상품의 수정 내용을 저장하시겠습니까?</p>
-              </DialogBody>
-              <DialogFooter>
-                <DialogActionTrigger>
-                  <Button>취소</Button>
-                </DialogActionTrigger>
-                <Button onClick={handleSaveClick}>저장</Button>
-              </DialogFooter>
-            </DialogContent>
-          </DialogRoot>
-        </Box>
+
+        {(hasAccess(tour.partnerEmail) || isAdmin) && (
+          <Box>
+            <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
+              <DialogTrigger>
+                <Button>저장</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>수정 확인</DialogTitle>
+                </DialogHeader>
+                <DialogBody>
+                  <p>{tour.title} 상품의 수정 내용을 저장하시겠습니까?</p>
+                </DialogBody>
+                <DialogFooter>
+                  <DialogActionTrigger>
+                    <Button>취소</Button>
+                  </DialogActionTrigger>
+                  <Button onClick={handleSaveClick}>저장</Button>
+                </DialogFooter>
+              </DialogContent>
+            </DialogRoot>
+          </Box>
+        )}
       </Stack>
     </Box>
   );
