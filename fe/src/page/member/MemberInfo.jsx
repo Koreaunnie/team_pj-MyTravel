@@ -16,6 +16,23 @@ import {
 } from "../../components/ui/dialog.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
 
+function ProfileImageView({ files }) {
+  return (
+    <Box display={"flex"} justifyContent={"center"}>
+      {files.map((file) => (
+        <Image
+          key={file.name}
+          src={file.src} // 프로필 이미지는 배열로 가정
+          alt="프로필 이미지"
+          borderRadius="50%" // 원형으로 표시
+          boxSize="150px" // 이미지 크기 제한
+          objectFit="cover" //이미지 비율
+        />
+      ))}
+    </Box>
+  );
+}
+
 function MemberInfo(props) {
   const [member, setMember] = useState(null);
   const [password, setPassword] = useState("");
@@ -62,13 +79,7 @@ function MemberInfo(props) {
     <Box>
       <h1>회원 정보</h1>
       <Stack>
-        <Image
-          src={member.profile[0].src} // 프로필 이미지는 배열로 가정
-          alt="프로필 이미지"
-          borderRadius="50%" // 원형으로 표시
-          boxSize="150px" // 이미지 크기 제한
-          objectFit="cover" // 이미지 비율 유지
-        />
+        <ProfileImageView files={member.profile} />
         <Field label={"이메일"}>
           <Input readOnly value={member.email} />
         </Field>
