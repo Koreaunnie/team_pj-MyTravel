@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Box, Input, Stack } from "@chakra-ui/react";
 import { Field } from "../../components/ui/field.jsx";
-import { Button } from "../../components/ui/button.jsx";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "../../components/ui/toaster.jsx";
@@ -50,7 +49,9 @@ function MemberLogin(props) {
           />
         </Field>
         <Box>
-          <Button onClick={handleLoginClick}>로그인</Button>
+          <button className={"btn btn-dark"} onClick={handleLoginClick}>
+            로그인
+          </button>
         </Box>
       </Stack>
     </Box>

@@ -88,14 +88,16 @@ function MemberInfo(props) {
           <Input type={"datetime-local"} readOnly value={member.inserted} />
         </Field>
         <Box>
-          <Button onClick={() => navigate(`/member/edit/${email}`)}>
+          <button
+            className={"btn btn-dark"}
+            onClick={() => navigate(`/member/edit/${email}`)}
+          >
             수정
-          </Button>
-        </Box>
-        <Box>
+          </button>
+
           <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
             <DialogTrigger>
-              <Button>탈퇴</Button>
+              <button className={"btn btn-warning"}>탈퇴</button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>

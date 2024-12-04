@@ -118,7 +118,7 @@ function CartList() {
         )}
       </div>
       <adise>
-        <h1>선택한 제품</h1>
+        <h2>선택한 제품</h2>
         <form>
           <table className={"table-list"}>
             <thead>

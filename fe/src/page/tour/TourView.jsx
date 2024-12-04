@@ -107,7 +107,9 @@ function TourView() {
           <Input value={tour.price} />
         </Field>
         <Box>
-          <Button onClick={handleAddToCartClick}>장바구니에 담기</Button>
+          <button className={"btn btn-dark"} onClick={handleAddToCartClick}>
+            장바구니에 담기
+          </button>
         </Box>
         <Field label={"내용"} readOnly>
           <Textarea value={tour.content} />
@@ -118,10 +120,15 @@ function TourView() {
 
         {(hasAccess(tour.partnerEmail) || isAdmin) && (
           <Box>
-            <Button onClick={() => navigate(`/tour/update/${id}`)}>수정</Button>
+            <button
+              className={"btn btn-dark"}
+              onClick={() => navigate(`/tour/update/${id}`)}
+            >
+              수정
+            </button>
             <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
               <DialogTrigger>
-                <Button>삭제</Button>
+                <button className={"btn btn-warning"}>삭제</button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
