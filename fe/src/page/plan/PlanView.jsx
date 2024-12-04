@@ -38,6 +38,19 @@ function PlanView(props) {
     return <Spinner />;
   }
 
+  const groupByDate = (fields) => {
+    return fields.reduce((acc, field) => {
+      const date = field.date; // 날짜를 기준으로 그룹화
+      if (!acc[date]) {
+        acc[date] = [];
+      }
+      acc[date].push(field);
+      return acc;
+    }, {});
+  };
+
+  const groupedPlanFields = groupByDate(planFields);
+
   // modal 팝업
   const closeModal = () => {
     setAddModalOpen(false);
@@ -65,9 +78,9 @@ function PlanView(props) {
   };
 
   return (
-    <div className={"body"}>
+    <div className={"body bg-gray"}>
       <div className={"position-fixed"}>
-        <div className={"btn-warp"}>
+        <div className={"btn-warp bg-gray"}>
           <button
             className={"btn btn-dark-outline"}
             onClick={() => navigate(`/plan/list`)}
@@ -96,55 +109,62 @@ function PlanView(props) {
             삭제
           </button>
         </div>
-
-        <table className={"head-table"}>
-          <thead>
-            <tr>
-              <th colspan="2" className={"thead-title"}>
-                {plan.title}
-              </th>
-            </tr>
-            <tr className={"thead-sub-title-warp"}>
-              <th className={"thead-sub-title"}>Destination</th>
-              <th className={"thead-sub-title"}>Date</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr>
-              <td>{plan.destination}</td>
-              <td>
-                {plan.startDate} ~ {plan.endDate}
-              </td>
-            </tr>
-          </tbody>
-        </table>
       </div>
 
-      <table className={"body-table"}>
-        <caption>{plan.description}</caption>
+      <div className={"plan-view-header"}>
+        <div>
+          <h3>{plan.title}</h3>
+          <h5>{plan.description}</h5>
+        </div>
 
-        <thead>
-          <tr>
-            <th>시간</th>
-            <th>일정</th>
-            <th>장소</th>
-            <th>메모</th>
-          </tr>
-        </thead>
+        <div className={"plan-view-header-right"}>
+          <ul>
+            <li>
+              <ul>
+                <li className={"font-bold"}>Destination</li>
+                <li>{plan.destination}</li>
+              </ul>
+            </li>
+            <li>
+              <ul>
+                <li className={"font-bold"}>Date</li>
+                <li>
+                  {plan.startDate} ~ {plan.endDate}
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
 
-        <tbody>
-          {planFields.map((field) => (
-            <tr key={field.id}>
-              <th>{field.date}</th>
-              <td>{field.time}</td>
-              <td>{field.schedule}</td>
-              <td>{field.place}</td>
-              <td>{field.memo}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className={"plan-view-table"}>
+        {Object.entries(groupedPlanFields).map(([date, fields]) => (
+          <table key={date} className="table-group">
+            <thead>
+              <tr className="table-group-date">
+                <th colSpan="4">{date}</th>
+              </tr>
+              <tr className="table-group-header">
+                <th>시간</th>
+                <th>일정</th>
+                <th>장소</th>
+                <th>메모</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {fields.map((field) => (
+                <tr key={field.id} className="data-row">
+                  <td>{field.time}</td>
+                  <td>{field.schedule}</td>
+                  <td>{field.place}</td>
+                  <td>{field.memo}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ))}
+      </div>
 
       {/* 네이버 공유하기 버튼 추가 */}
       <div>

@@ -31,54 +31,83 @@
 
 /*-------------------- PlanView --------------------*/
 
-table {
-    width: 100%;
+.plan-view-header {
+    position: sticky;
+    top: 239px;
+    z-index: 1;
+    background: var(--bg-gray-color);
+    padding: 20px 40px 10px 40px;
 }
 
-.head-table {
-    margin: 0 auto;
-    height: 170px;
+.plan-view-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.plan-view-header h3 {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.plan-view-header h5 {
+    padding-left: 5px;
+}
+
+.plan-view-header-right {
+    text-align: right;
+    margin-bottom: 20px;
+    padding: 0 10px;
+    text-align: right;
+}
+
+.plan-view-header-right > ul > li:first-child {
+    margin-bottom: 10px;
+}
+
+.plan-view-table {
+    width: 100%;
+    margin-top: 60px;
+}
+
+.plan-view-table .table-group {
+    width: 100%;
+    margin: 20px 0;
+    padding: 25px;
+    border: 1px solid var(--table-border-color);
+    overflow: hidden;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: var(--box-shadow);
+}
+
+.plan-view-table thead .table-group-date th {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
     background: var(--btn-normal-dark);
     color: #fff;
 }
 
-.head-table thead .thead-title {
-    padding: 25px;
-    font-size: 35px;
+.plan-view-table thead .table-group-header th {
+    padding: 10px;
     font-weight: bold;
+}
+
+/* 일반 데이터 행 스타일 */
+.data-row td {
+    padding: 10px;
     text-align: center;
+    border-bottom: 1px solid #eee;
 }
 
-.head-table thead .thead-sub-title-warp {
-    padding-left: 80px;
-}
-
-.head-table thead .thead-sub-title {
-    font-weight: bold;
-}
-
-.head-table tbody td {
-    text-align: center;
-    padding-bottom: 20px;
-}
-
-.body-table {
-    margin-top: 230px;
-    padding: 30px;
-    background: var(--bg-gray-color);
-}
-
-.body-table caption {
-    padding: 30px;
-    background: var(--bg-gray-color);
-    font-weight: bold;
-}
-
-.body-table tbody {
-    padding: 50px;
+.data-row:last-child td {
+    border-bottom: none; /* 마지막 데이터 행의 하단 경계선 제거 */
 }
 
 
+/*------------------- 화면 크기가 768px 이하 (태블릿 화면) -------------------*/
 @media (max-width: 768px) {
     .calendar {
         display: none;
@@ -89,6 +118,7 @@ table {
     }
 }
 
+/*------------------- 화면 크기가 480px 이하 (모바일 화면) -------------------*/
 @media (max-width: 480px) {
 
 

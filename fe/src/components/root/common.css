@@ -2,7 +2,7 @@
 
 :root {
     --table-header-color: #f7f7f7;
-    --table-border-color: #e4e4e7;
+    --table-border-color: #eee;
     --table-hover-color: #f9f9f9;
 
     --btn-normal-dark: #212529;
@@ -18,11 +18,14 @@
 
     --bg-gray-color: #f9f9f9;
 
-    --font-gray-color: #52525b;
+    --font-gray-color: #68686e;
     --font-light-gray-color: #dcdcdc;
 
     --small-font-size: 14px;
     --normal-font-size: 16px;
+
+    --box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.05);
+    --box-shadow-hover: 1px 1px 7px rgba(0, 0, 0, 0.1);
 }
 
 html {
@@ -33,6 +36,7 @@ html {
     text-decoration: none;
     list-style: none;
     font-family: 'Noto Sans', sans-serif;
+    box-sizing: border-box;
 }
 
 body, a, p, ul, li {
@@ -116,6 +120,10 @@ h1 {
     cursor: pointer;
 }
 
+.bg-gray {
+    background: var(--bg-gray-color);
+}
+
 .position-fixed {
     position: fixed;
     width: 900px;
@@ -126,6 +134,10 @@ h1 {
 
 .display-flex {
     display: flex;
+}
+
+.font-bold {
+    font-weight: bold;
 }
 
 /*------------------- button design -------------------*/
@@ -304,12 +316,12 @@ h1 {
     border: 1px solid var(--table-border-color);
     border-radius: 10px;
     cursor: pointer;
-    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--box-shadow);
 }
 
 .card-wrap:hover {
     background: var(--bg-gray-color);
-    box-shadow: 1px 1px 7px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--box-shadow-hover);
 }
 
 .card-wrap:hover .card-header p {
@@ -374,7 +386,7 @@ h1 {
 }
 
 .empty-container-title {
-    margin-top: 15px;
+    margin: 20px 0 5px 0;
     font-weight: bold;
     font-size: 1.1rem;
 }

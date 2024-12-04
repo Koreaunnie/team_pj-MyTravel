@@ -199,7 +199,10 @@ function PlanList(props) {
           {filteredPlans.length === 0 ? (
             <div className={"empty-container"}>
               <p>
-                <FaRegQuestionCircle className={"empty-container-icon"} />
+                <FaRegQuestionCircle
+                  className={"empty-container-icon"}
+                  style={{ color: "#a1a1a8" }}
+                />
               </p>
               <p className={"empty-container-title"}>
                 해당하는 날짜에는 일정이 없습니다.
