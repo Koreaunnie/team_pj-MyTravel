@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "../../components/ui/toaster.jsx";
@@ -26,6 +26,15 @@ function WalletAdd(props) {
   const [memo, setMemo] = useState("");
 
   const navigate = useNavigate();
+
+  // 카테고리 목록 불러오기
+  useEffect(() => {
+    axios
+      .get(`/api/wallet/categories`)
+      .then((res) => setCategoryOptions(res.data))
+      .catch()
+      .finally();
+  }, []);
 
   // 새 카테고리 추가
   const handleAddCategory = () => {

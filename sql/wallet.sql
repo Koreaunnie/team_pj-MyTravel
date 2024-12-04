@@ -14,3 +14,6 @@ CREATE TABLE wallet
 );
 
 DROP TABLE wallet;
+
+SELECT DISTINCT category
+FROM wallet;

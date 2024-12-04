@@ -48,6 +48,15 @@ function WalletEdit(props) {
     });
   }, [id]);
 
+  // 카테고리 목록 불러오기
+  useEffect(() => {
+    axios
+      .get(`/api/wallet/categories`)
+      .then((res) => setCategoryOptions(res.data))
+      .catch()
+      .finally();
+  }, []);
+
   if (wallet === null) {
     return <Spinner />;
   }
