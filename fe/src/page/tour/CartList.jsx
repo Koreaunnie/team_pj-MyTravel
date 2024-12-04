@@ -81,16 +81,14 @@ function CartList() {
           <table className={"table-list"}>
             {cartList.map((cart) => (
               <tbody>
-                <tr
-                  key={cart.id}
-                  // onClick={() => handleRowClick(cart.id)}
-                >
+                <tr key={cart.id} onClick={() => handleRowClick(cart.id)}>
                   <td>
                     <input
                       type={"checkbox"}
                       checked={checkedList.some(
                         (r) => r.product === cart.product,
                       )}
+                      onClick={(e) => e.stopPropagation()} // 이벤트 전파 막기
                       onChange={() => handleCheckboxChange(cart)}
                     />
                   </td>
