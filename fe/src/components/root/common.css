@@ -155,6 +155,7 @@ h1 {
     font-size: 14px;
     font-weight: bold;
     margin: 10px;
+    min-width: 70px;
 }
 
 .btn-search {
@@ -182,7 +183,7 @@ h1 {
 
 .btn-dark-outline {
     background: var(--btn-normal-light);
-    border: 1px solid var(--btn-normal-dark);
+    border: 1px solid var(--font-gray-color);
     box-sizing: border-box;
 }
 
