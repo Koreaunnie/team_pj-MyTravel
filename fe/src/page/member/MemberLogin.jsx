@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Box, Input, Stack } from "@chakra-ui/react";
-import { Field } from "../../components/ui/field.jsx";
+import { Box, Input } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "../../components/ui/toaster.jsx";
@@ -36,25 +35,34 @@ function MemberLogin(props) {
   }
 
   return (
-    <Box>
+    <div className={"body"}>
       <h1>로그인</h1>
-      <Stack>
-        <Field label={"이메일"}>
-          <Input value={email} onChange={(e) => setEmail(e.target.value)} />
-        </Field>
-        <Field label={"비밀번호"}>
+      <ul className={"title"}>
+        <li>
+          <label htmlFor="email">이메일</label>
+          <input
+            type={"text"}
+            id={"email"}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </li>
+        <li>
+          <label htmlFor="password">비밀번호</label>
           <Input
+            type={"password"}
+            id={"password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-        </Field>
-        <Box>
-          <button className={"btn btn-dark"} onClick={handleLoginClick}>
-            로그인
-          </button>
-        </Box>
-      </Stack>
-    </Box>
+        </li>
+      </ul>
+      <Box>
+        <button className={"btn btn-dark"} onClick={handleLoginClick}>
+          로그인
+        </button>
+      </Box>
+    </div>
   );
 }
 
