@@ -4,6 +4,7 @@ import com.example.be.dto.community.Community;
 import com.example.be.mapper.community.CommunityMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +20,12 @@ import java.util.Map;
 public class CommunityService {
 
     final CommunityMapper mapper;
+
+    @Value("${image.src.prefix}")
+    String imageSrcPrefix;
+
+    @Value("${bucket.name}")
+    String bucketName;
 
     public List<Map<String, Object>> list(Integer page, String searchType, String searchKeyword) {
 
@@ -39,6 +46,23 @@ public class CommunityService {
 
             String directory = STR."C:/Temp/teamPrj1126/\{id}";
             File dir = new File(directory);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            // 파일 업로드
+            // TODO: local -> aws
+
+            for (MultipartFile file : files) {
+
+
+                String filePath = STR."C:/Temp/teamPrj1126/\{community.getId()}/\{file.getOriginalFilename()}";
+                try {
+                    file.transferTo(new File(filePath));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
 
         System.out.println(id);
