@@ -70,6 +70,32 @@ function CartList() {
     return checkedList.reduce((sum, cart) => sum + cart.price, 0);
   };
 
+  function handleDeleteAll() {
+    //checkList의 모든 항목 cartList에서 삭제
+    const deletePromise = checkedList.map((cart) =>
+      axios.delete(`/api/cart/delete/${cart.id}`),
+    );
+
+    Promise.all(deletePromise)
+      .then(() => {
+        setCartList((prev) =>
+          prev.filter((cart) => !checkedList.includes(cart)),
+        );
+        setCheckedList([]);
+        toaster.create({
+          type: "success",
+          description: "선택한 항목이 삭제되었습니다.",
+        });
+      })
+      .catch((e) => {
+        const data = e.response?.data;
+        toaster.create({
+          type: "error",
+          description: "오류로 인해 삭제할 수 없습니다.",
+        });
+      });
+  }
+
   return (
     <div>
       <h1>장바구니 목록</h1>
@@ -147,7 +173,7 @@ function CartList() {
           </table>
         </form>
         <button
-          className={"btn btn-dark-outline"}
+          className={"btn btn-dark"}
           onClick={() => {
             handlePayButton;
             if (calculateTotalPrice() != 0) {
@@ -156,6 +182,9 @@ function CartList() {
           }}
         >
           총 {calculateTotalPrice()}원 결제
+        </button>
+        <button className={"btn btn-warning"} onClick={handleDeleteAll}>
+          선택한 항목 삭제
         </button>
       </adise>
     </div>
