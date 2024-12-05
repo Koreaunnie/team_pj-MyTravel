@@ -66,25 +66,22 @@ function Payment(props) {
 
     // payment/complete 엔드포인트 구현
     try {
-      const completeResponse = await fetch(
-        `http://localhost:8080/api/payment/payment`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          //paymentId와 주문정보를 서버에 전달
-          body: JSON.stringify({
-            tour: tour,
-            paymentId,
-            amount: totalPrice(),
-            payMethod,
-            currency,
-            buyer: email,
-            //주문정보
-          }),
+      const completeResponse = await fetch(`/api/payment/payment`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        //paymentId와 주문정보를 서버에 전달
+        body: JSON.stringify({
+          tourList: tour,
+          paymentId,
+          amount: totalPrice(),
+          payMethod,
+          currency,
+          buyer: email,
+          //주문정보
+        }),
+      });
 
       if (completeResponse.ok) {
         const result = await completeResponse.json();

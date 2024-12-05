@@ -6,10 +6,10 @@ import java.util.List;
 
 @Data
 public class Payment {
-  private List<TourList> tourLists;
+  private List<TourList> tourList;
   private String paymentId;
   private Integer amount;
   private String currency;
-  private String paymentMethod;
+  private String payMethod;
   private String buyer;
 }
