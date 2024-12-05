@@ -1,3 +1,15 @@
+.plan {
+    margin-top: 40px;
+}
+
+.plan .breadcrumb-wrap ol {
+    width: 800px;
+}
+
+.plan-wide .breadcrumb-wrap ol {
+    width: 1400px;
+}
+
 /*-------------------- PlanAdd --------------------*/
 .plan-container {
     background-color: #fff;
@@ -18,7 +30,7 @@
 /*-------------------- PlanList --------------------*/
 
 .plan-list-wrap {
-    margin-left: 30px;
+    margin: 70px 0 0 30px;
     width: 100%;
 }
 
@@ -26,7 +38,7 @@
 
 .plan-view-header {
     position: sticky;
-    top: 124px;
+    top: 164px;
     z-index: 1;
     background: var(--bg-gray-color);
     padding: 20px 40px 0 30px;

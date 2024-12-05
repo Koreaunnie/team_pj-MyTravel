@@ -12,7 +12,8 @@ import "react-calendar/dist/Calendar.css";
 import { FaRegQuestionCircle } from "react-icons/fa";
 import "./Plan.css";
 import Calendar from "react-calendar";
-import { Modal } from "../../components/root/Modal.jsx";
+import { Modal } from "/src/components/root/Modal.jsx";
+import { Breadcrumb } from "/src/components/root/Breadcrumb.jsx";
 import { GoHeart, GoHeartFill } from "react-icons/go";
 
 function PlanList(props) {
@@ -46,8 +47,11 @@ function PlanList(props) {
           formattedDate >= plan.startDate && formattedDate <= plan.endDate,
       );
       setFilteredPlans(filtered);
+      // setCount(filtered.length); // 필터링된 일정 수
     } else {
-      setFilteredPlans(planList); // 날짜 선택 안 하면 전체 일정 표시
+      // 날짜 선택 안 했을 때
+      setFilteredPlans(planList);
+      // setCount(planList.length); // 전체 일정 수
     }
   }, [selectedDate, planList]);
 
@@ -135,167 +139,176 @@ function PlanList(props) {
   };
 
   return (
-    <div className={"calendar-list"}>
-      <aside className={"calendar"}>
-        <Calendar
-          formatDay={(locale, date) =>
-            date.toLocaleString("en", { day: "numeric" })
-          }
-          showNeighboringMonth={false}
-          onChange={handleDateChange} // 날짜 선택 이벤트 핸들러
-          value={selectedDate} // 선택된 날짜 상태와 동기화
-          // 여행이 있는 날짜에 스타일 적용
-          tileContent={({ date }) => {
-            const formattedDate = date.toISOString().split("T")[0];
+    <div className={"plan-wide"}>
+      <Breadcrumb
+        depth1={"내 여행"}
+        navigateToDepth1={() => navigate(`/plan/list`)}
+      />
 
-            // 선택된 날짜에 해당하는 여행의 title을 찾아서 표시
-            const matchingPlan = planList.find(
-              (plan) =>
-                formattedDate >= plan.startDate &&
-                formattedDate <= plan.endDate,
-            );
+      <div className={"calendar-list"}>
+        <aside className={"calendar"}>
+          <Calendar
+            formatDay={(locale, date) =>
+              date.toLocaleString("en", { day: "numeric" })
+            }
+            showNeighboringMonth={false}
+            onChange={handleDateChange} // 날짜 선택 이벤트 핸들러
+            value={selectedDate} // 선택된 날짜 상태와 동기화
+            // 여행이 있는 날짜에 스타일 적용
+            tileContent={({ date }) => {
+              const formattedDate = date.toISOString().split("T")[0];
 
-            return matchingPlan ? (
-              <div className={"calendar-badge"}>{matchingPlan.title}</div>
-            ) : null;
-          }}
-        />
-      </aside>
+              // 선택된 날짜에 해당하는 여행의 title을 찾아서 표시
+              const matchingPlan = planList.find(
+                (plan) =>
+                  formattedDate >= plan.startDate &&
+                  formattedDate <= plan.endDate,
+              );
 
-      <div className={"day-list"}>
-        <div className={"fixed-list-head-wrap"}>
-          <div className={"btn-wrap"}>
-            <button
-              className="btn btn-dark"
-              onClick={() => setAddModalOpen(true)}
-            >
-              새로운 여행 작성하기
-            </button>
+              return matchingPlan ? (
+                <div className={"calendar-badge"}>{matchingPlan.title}</div>
+              ) : null;
+            }}
+          />
+        </aside>
 
-            <button
-              className="btn btn-dark-outline"
-              onClick={() => setFilteredPlans(planList)}
-            >
-              전체보기
-            </button>
-          </div>
-
-          <div className={"search-form"}>
-            <select
-              onChange={(e) => setSearch({ ...search, type: e.target.value })}
-            >
-              <option value="all">전체</option>
-              <option value="title">여행명</option>
-              <option value="destination">여행지</option>
-            </select>
-
-            <div className={"search-form-input"}>
-              <input
-                type="search"
-                placeholder={"내 여행을 검색해보세요."}
-                value={search.keyword}
-                onChange={(e) =>
-                  setSearch({ ...search, keyword: e.target.value.trim() })
-                }
-              />
+        <div className={"day-list"}>
+          <div className={"fixed-list-head-wrap"}>
+            <div className={"btn-wrap"}>
               <button
-                className={"btn-search btn-dark"}
-                onClick={handleSearchButton}
+                className="btn btn-dark"
+                onClick={() => setAddModalOpen(true)}
               >
-                검색
+                새로운 여행 작성하기
+              </button>
+
+              <button
+                className="btn btn-dark-outline"
+                onClick={() => setFilteredPlans(planList)}
+              >
+                전체보기
               </button>
             </div>
-          </div>
-        </div>
 
-        <div className={"plan-list-wrap"}>
-          {filteredPlans.length === 0 ? (
-            <div className={"empty-container"}>
-              <p>
-                <FaRegQuestionCircle
-                  className={"empty-container-icon"}
-                  style={{ color: "#a1a1a8" }}
-                />
-              </p>
-              <p className={"empty-container-title"}>
-                해당하는 날짜에는 일정이 없습니다.
-              </p>
-              <p className={"empty-container-description"}>
-                다른 날짜를 선택해주세요.
-              </p>
-            </div>
-          ) : (
-            filteredPlans.map((plan) => (
-              <div
-                className={"card-wrap"}
-                key={plan.id}
-                onClick={() => {
-                  navigate(`/plan/view/${plan.id}`);
-                }}
+            <div className={"search-form"}>
+              <select
+                onChange={(e) => setSearch({ ...search, type: e.target.value })}
               >
-                <div className={"card-header"}>
-                  <p>{plan.title}</p>
-                  <p
-                    className={"pinned"}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handlePinnedClick(plan.id);
-                    }}
-                  >
-                    {plan.pinned ? (
-                      <GoHeartFill style={{ color: "red" }} />
-                    ) : (
-                      <GoHeart />
-                    )}
-                  </p>
-                </div>
+                <option value="all">전체</option>
+                <option value="title">여행명</option>
+                <option value="destination">여행지</option>
+              </select>
 
-                <div className={"card-body"}>
-                  <p>{plan.description}</p>
-                </div>
-
-                <div className={"card-footer"}>
-                  <ul>
-                    {planList.destination ? <li>{plan.destination}</li> : null}
-
-                    {plan.startDate && plan.endDate ? (
-                      <li>
-                        {plan.startDate} ~ {plan.endDate}
-                      </li>
-                    ) : null}
-                  </ul>
-                </div>
+              <div className={"search-form-input"}>
+                <input
+                  type="search"
+                  placeholder={"내 여행을 검색해보세요."}
+                  value={search.keyword}
+                  onChange={(e) =>
+                    setSearch({ ...search, keyword: e.target.value.trim() })
+                  }
+                />
+                <button
+                  className={"btn-search btn-dark"}
+                  onClick={handleSearchButton}
+                >
+                  검색
+                </button>
               </div>
-            ))
-          )}
+            </div>
+          </div>
 
-          {/* pagination */}
-          <div className="pagination">
-            <PaginationRoot
-              onPageChange={handlePageChange}
-              count={count}
-              pageSize={10}
-              page={page}
-              variant="solid"
-            >
-              <HStack>
-                <PaginationPrevTrigger />
-                <PaginationItems />
-                <PaginationNextTrigger />
-              </HStack>
-            </PaginationRoot>
+          <div className={"plan-list-wrap"}>
+            {filteredPlans.length === 0 ? (
+              <div className={"empty-container"}>
+                <p>
+                  <FaRegQuestionCircle
+                    className={"empty-container-icon"}
+                    style={{ color: "#a1a1a8" }}
+                  />
+                </p>
+                <p className={"empty-container-title"}>
+                  해당하는 날짜에는 일정이 없습니다.
+                </p>
+                <p className={"empty-container-description"}>
+                  다른 날짜를 선택해주세요.
+                </p>
+              </div>
+            ) : (
+              filteredPlans.map((plan) => (
+                <div
+                  className={"card-wrap"}
+                  key={plan.id}
+                  onClick={() => {
+                    navigate(`/plan/view/${plan.id}`);
+                  }}
+                >
+                  <div className={"card-header"}>
+                    <p>{plan.title}</p>
+                    <p
+                      className={"pinned"}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handlePinnedClick(plan.id);
+                      }}
+                    >
+                      {plan.pinned ? (
+                        <GoHeartFill style={{ color: "red" }} />
+                      ) : (
+                        <GoHeart />
+                      )}
+                    </p>
+                  </div>
+
+                  <div className={"card-body"}>
+                    <p>{plan.description}</p>
+                  </div>
+
+                  <div className={"card-footer"}>
+                    <ul>
+                      {planList.destination ? (
+                        <li>{plan.destination}</li>
+                      ) : null}
+
+                      {plan.startDate && plan.endDate ? (
+                        <li>
+                          {plan.startDate} ~ {plan.endDate}
+                        </li>
+                      ) : null}
+                    </ul>
+                  </div>
+                </div>
+              ))
+            )}
+
+            {/* pagination */}
+            <div className="pagination">
+              <PaginationRoot
+                onPageChange={handlePageChange}
+                count={count}
+                pageSize={10}
+                page={page}
+                variant="solid"
+              >
+                <HStack>
+                  <PaginationPrevTrigger />
+                  <PaginationItems />
+                  <PaginationNextTrigger />
+                </HStack>
+              </PaginationRoot>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* 추가 modal */}
-      <Modal
-        isOpen={addModalOpen}
-        onClose={() => setAddModalOpen(false)}
-        onConfirm={() => navigate(`/plan/add`)}
-        message="새로운 여행을 작성하시겠습니까?"
-        buttonMessage="작성"
-      />
+        {/* 추가 modal */}
+        <Modal
+          isOpen={addModalOpen}
+          onClose={() => setAddModalOpen(false)}
+          onConfirm={() => navigate(`/plan/add`)}
+          message="새로운 여행을 작성하시겠습니까?"
+          buttonMessage="작성"
+        />
+      </div>
     </div>
   );
 }

@@ -4,6 +4,7 @@ import axios from "axios";
 import { Spinner } from "@chakra-ui/react";
 import "/src/components/root/common.css";
 import { Modal } from "../../components/root/Modal.jsx";
+import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 
 function PlanView(props) {
   const { id } = useParams();
@@ -61,120 +62,129 @@ function PlanView(props) {
   };
 
   return (
-    <div className={"body"}>
-      <div className={"position-fixed"}>
-        <div className={"btn-warp bg-gray"}>
-          <button
-            className={"btn btn-dark-outline"}
-            onClick={() => navigate(`/plan/list`)}
-          >
-            목록
-          </button>
+    <div className={"plan"}>
+      <Breadcrumb
+        depth1={"내 여행"}
+        navigateToDepth1={() => navigate(`/plan/list`)}
+        depth2={plan.title}
+        navigateToDepth2={() => navigate(`/plan/view/${id}`)}
+      />
 
-          <button
-            className={"btn btn-dark"}
-            onClick={() => setAddModalOpen(true)}
-          >
-            새 여행 작성
-          </button>
+      <div className={"body body-normal"}>
+        <div className={"position-fixed"}>
+          <div className={"btn-warp bg-gray"}>
+            <button
+              className={"btn btn-dark-outline"}
+              onClick={() => navigate(`/plan/list`)}
+            >
+              목록
+            </button>
 
-          <button
-            className={"btn btn-dark"}
-            onClick={() => setEditModalOpen(true)}
-          >
-            수정
-          </button>
+            <button
+              className={"btn btn-dark"}
+              onClick={() => setAddModalOpen(true)}
+            >
+              새 여행 작성
+            </button>
 
-          <button
-            className={"btn btn-warning"}
-            onClick={() => setDeleteModalOpen(true)}
-          >
-            삭제
-          </button>
+            <button
+              className={"btn btn-dark"}
+              onClick={() => setEditModalOpen(true)}
+            >
+              수정
+            </button>
+
+            <button
+              className={"btn btn-warning"}
+              onClick={() => setDeleteModalOpen(true)}
+            >
+              삭제
+            </button>
+          </div>
         </div>
-      </div>
 
-      <div className={"plan-view-header"}>
-        <div>
-          <h3>{plan.title}</h3>
-          <h5>{plan.description}</h5>
+        <div className={"plan-view-header"}>
+          <div>
+            <h3>{plan.title}</h3>
+            <h5>{plan.description}</h5>
+          </div>
+
+          <div className={"plan-view-header-right"}>
+            <ul>
+              <li>
+                <ul>
+                  <li className={"font-bold"}>Destination</li>
+                  <li>{plan.destination}</li>
+                </ul>
+              </li>
+              <li>
+                <ul>
+                  <li className={"font-bold"}>Date</li>
+                  <li>
+                    {plan.startDate} ~ {plan.endDate}
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
         </div>
 
-        <div className={"plan-view-header-right"}>
-          <ul>
-            <li>
-              <ul>
-                <li className={"font-bold"}>Destination</li>
-                <li>{plan.destination}</li>
-              </ul>
-            </li>
-            <li>
-              <ul>
-                <li className={"font-bold"}>Date</li>
-                <li>
-                  {plan.startDate} ~ {plan.endDate}
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div className={"plan-view-table"}>
-        {Object.entries(groupedPlanFields).map(([date, fields]) => (
-          <table key={date} className="table-group">
-            <thead>
-              <tr className="table-group-date">
-                <th colSpan="4">{date}</th>
-              </tr>
-              <tr className="table-group-header">
-                <th>시간</th>
-                <th>일정</th>
-                <th>장소</th>
-                <th>메모</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {fields.map((field) => (
-                <tr key={field.id} className="data-row">
-                  <td>{field.time}</td>
-                  <td>{field.schedule}</td>
-                  <td>{field.place}</td>
-                  <td>{field.memo}</td>
+        <div className={"plan-view-table"}>
+          {Object.entries(groupedPlanFields).map(([date, fields]) => (
+            <table key={date} className="table-group">
+              <thead>
+                <tr className="table-group-date">
+                  <th colSpan="4">{date}</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        ))}
+                <tr className="table-group-header">
+                  <th>시간</th>
+                  <th>일정</th>
+                  <th>장소</th>
+                  <th>메모</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {fields.map((field) => (
+                  <tr key={field.id} className="data-row">
+                    <td>{field.time}</td>
+                    <td>{field.schedule}</td>
+                    <td>{field.place}</td>
+                    <td>{field.memo}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ))}
+        </div>
+
+        {/* 추가 modal */}
+        <Modal
+          isOpen={addModalOpen}
+          onClose={() => setAddModalOpen(false)}
+          onConfirm={() => navigate(`/plan/add`)}
+          message="새로운 여행을 작성하시겠습니까?"
+          buttonMessage="작성"
+        />
+
+        {/* 수정 modal */}
+        <Modal
+          isOpen={editModalOpen}
+          onClose={() => setEditModalOpen(false)}
+          onConfirm={() => navigate(`/plan/edit/${id}`)}
+          message="여행을 수정하시겠습니까?"
+          buttonMessage="수정"
+        />
+
+        {/* 삭제 modal */}
+        <Modal
+          isOpen={deleteModalOpen}
+          onClose={() => setDeleteModalOpen(false)}
+          onConfirm={handleDeleteButton}
+          message="정말로 이 여행을 삭제하시겠습니까?"
+          buttonMessage="삭제"
+        />
       </div>
-
-      {/* 추가 modal */}
-      <Modal
-        isOpen={addModalOpen}
-        onClose={() => setAddModalOpen(false)}
-        onConfirm={() => navigate(`/plan/add`)}
-        message="새로운 여행을 작성하시겠습니까?"
-        buttonMessage="작성"
-      />
-
-      {/* 수정 modal */}
-      <Modal
-        isOpen={editModalOpen}
-        onClose={() => setEditModalOpen(false)}
-        onConfirm={() => navigate(`/plan/edit/${id}`)}
-        message="여행을 수정하시겠습니까?"
-        buttonMessage="수정"
-      />
-
-      {/* 삭제 modal */}
-      <Modal
-        isOpen={deleteModalOpen}
-        onClose={() => setDeleteModalOpen(false)}
-        onConfirm={handleDeleteButton}
-        message="정말로 이 여행을 삭제하시겠습니까?"
-        buttonMessage="삭제"
-      />
     </div>
   );
 }
