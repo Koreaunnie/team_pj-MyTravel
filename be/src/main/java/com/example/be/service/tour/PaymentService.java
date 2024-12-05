@@ -1,6 +1,6 @@
 package com.example.be.service.tour;
 
-import com.example.be.dto.tour.Tour;
+import com.example.be.dto.tour.Payment;
 import com.example.be.mapper.tour.PaymentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class PaymentService {
   final PaymentMapper mapper;
 
-  public void add(Tour tour) {
-    mapper.insert(tour);
+  public void add(Payment payment) {
+    mapper.insert(payment);
   }
 
 

@@ -42,11 +42,12 @@ function Payment(props) {
       channelKey: "channel-key-b42ef11e-6046-4851-8610-45af77d2ff86",
       paymentId,
       orderName: tour[0].product + " 그 외",
-      totalAmount: 1,
+      totalAmount: totalPrice(),
       currency: "CURRENCY_KRW",
       payMethod: "EASY_PAY",
-      m_redirect_url: `http://localhost:5173/payment/complete`,
+      redirect_url: `http://localhost:5173/payment/complete`,
     });
+
     if (payment.code != null) {
       //실패 내용
       setWaitingPayment(false);
@@ -56,19 +57,26 @@ function Payment(props) {
       });
       return;
     }
+
     // payment/complete 엔드포인트 구현
-    const completeResponse = await fetch(`/api/payment/complete`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const completeResponse = await fetch(
+      `http://localhost:5173/payment/complete`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        //paymentId와 주문정보를 서버에 전달
+        body: JSON.stringify({
+          ...tour,
+          paymentId,
+          //주문정보
+        }),
       },
-      //paymentId와 주문정보를 서버에 전달
-      body: JSON.stringify({
-        paymentId: payment.paymentId,
-        //주문정보
-      }),
-    });
+    );
+
     setWaitingPayment(false);
+
     if (completeResponse.ok) {
       const paymentComplete = await completeResponse.json();
       setPaymentStatus({

@@ -1,6 +1,6 @@
 package com.example.be.controller.tour;
 
-import com.example.be.dto.tour.Tour;
+import com.example.be.dto.tour.Payment;
 import com.example.be.service.tour.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,8 +15,8 @@ public class PaymentController {
   final PaymentService service;
 
   @PostMapping("payment")
-  public void payment(@RequestBody Tour tour) {
-    service.add(tour);
+  public void payment(@RequestBody Payment payment) {
+    service.add(payment);
   }
 
 //  public List<> paymentHistory(){}
