@@ -74,6 +74,7 @@
     background: #fff;
     color: #000;
     border: 1px solid var(--table-border-color);
+    z-index: 1000;
 }
 
 .navbar .dropdown-toggle-container li {
