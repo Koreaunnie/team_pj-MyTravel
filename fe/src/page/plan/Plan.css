@@ -23,11 +23,13 @@
 }
 
 /*-------------------- PlanView --------------------*/
+
 .plan-view-header {
     position: sticky;
+    top: 124px;
     z-index: 1;
     background: var(--bg-gray-color);
-    padding: 20px 40px 10px 40px;
+    padding: 20px 40px 0 30px;
 }
 
 .plan-view-header {
@@ -57,13 +59,13 @@
 }
 
 .plan-view-table {
+    top: 125px;
     width: 100%;
-    margin-top: 60px;
 }
 
 .plan-view-table .table-group {
     width: 100%;
-    margin: 20px 0;
+    margin: 60px 0;
     padding: 25px;
     border: 1px solid var(--table-border-color);
     overflow: hidden;

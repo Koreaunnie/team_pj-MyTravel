@@ -61,7 +61,7 @@ function PlanView(props) {
   };
 
   return (
-    <div className={"body bg-gray"}>
+    <div className={"body"}>
       <div className={"position-fixed"}>
         <div className={"btn-warp bg-gray"}>
           <button
