@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Index.css";
+import { IoSearch } from "react-icons/io5";
 
 export function Index() {
   const [planList, setPlanList] = useState([]); // Plan 리스트 상태
@@ -27,11 +28,13 @@ export function Index() {
   };
 
   return (
-    <div className={"body"}>
+    <div className={"body-wide"}>
       {/* 검색 영역 */}
-      <div className={"search-form-input section-search"}>
-        <input type="text" placeholder={"어디로 떠나고 싶은가요?"} />
-        <button className={"btn-search btn-dark"}>검색</button>
+      <div className={"main-search-wrap"}>
+        <input type="search" placeholder={"어디로 떠나고 싶은가요?"} />
+        <button className={"main-search-wrap-btn"}>
+          <IoSearch />
+        </button>
       </div>
 
       {/* 내 여행 섹션 */}

@@ -1,5 +1,30 @@
-.section-search {
-    margin: 30px 0;
+.main-search-wrap {
+    width: 500px;
+    margin: 50px auto;
+    display: flex;
+    border: 1px solid #dee2e6;
+    box-sizing: border-box;
+    border-radius: 50px;
+    height: 60px;
+    padding: 0 20px;
+}
+
+.main-search-wrap input[type=search] {
+    width: 100%;
+    border: none;
+    box-sizing: border-box;
+    border-radius: 0;
+    height: 60px;
+    padding: 0 10px;
+    background: none;
+}
+
+.main-search-wrap input[type=search]:focus {
+    outline: none;
+}
+
+.main-search-wrap-button {
+    cursor: pointer;
 }
 
 section {
