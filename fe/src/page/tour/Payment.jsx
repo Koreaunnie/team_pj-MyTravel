@@ -81,6 +81,7 @@ function Payment(props) {
 
   return (
     <div>
+      <h1>결제</h1>
       <main>
         <form onSubmit={handleSubmit}>
           <table className={"table-list"}>
@@ -108,8 +109,11 @@ function Payment(props) {
             ))}
             {/*총 합*/}
             <tfoot>
-              <th colSpan={3}>결제 금액</th>
-              <td>{totalPrice()}</td>
+              <tr>
+                <td colSpan={2}></td>
+                <th>결제 금액</th>
+                <td>{totalPrice()}</td>
+              </tr>
             </tfoot>
           </table>
 
@@ -119,9 +123,6 @@ function Payment(props) {
         </form>
       </main>
 
-      {/*<h1>결제</h1>*/}
-      {/*<div>예약 내역: list</div>*/}
-      {/*<div>결제 내용: price list + sum</div>*/}
       {/*<div>예약자: personal info 불러오기 (수정 가능)</div>*/}
       {/*<div>여행자 정보: input text</div>*/}
       {/*<div>추가 예약 정보: textarea</div>*/}
