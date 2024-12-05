@@ -27,6 +27,7 @@ import AuthenticationProvider from "./components/context/AuthenticationProvider.
 import React from "react";
 import Payment from "./page/tour/payment.jsx";
 import MyPage from "./page/member/MyPage.jsx";
+import InquiryAdd from "./page/cs/inquiry/InquiryAdd.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -129,6 +130,11 @@ const router = createBrowserRouter([
       {
         path: "community/edit/:id",
         element: <CommunityEdit />,
+      },
+      // 고객센터
+      {
+        path: "cs/inquiry/add",
+        element: <InquiryAdd />,
       },
       // 회원 가입
       {

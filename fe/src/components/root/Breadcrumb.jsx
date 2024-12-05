@@ -7,6 +7,8 @@ export function Breadcrumb({
   navigateToDepth1,
   depth2,
   navigateToDepth2,
+  depth3,
+  navigateToDepth3,
 }) {
   const navigate = useNavigate();
 
@@ -27,10 +29,19 @@ export function Breadcrumb({
         {navigateToDepth2 && <p>&gt;</p>}
         {navigateToDepth2 && (
           <li
-            className={navigateToDepth2 ? "on" : ""}
+            className={navigateToDepth2 && !navigateToDepth3 ? "on" : ""}
             onClick={navigateToDepth2}
           >
             {depth2}
+          </li>
+        )}
+        {navigateToDepth3 && <p>&gt;</p>}
+        {navigateToDepth3 && (
+          <li
+            className={navigateToDepth3 ? "on" : ""}
+            onClick={navigateToDepth3}
+          >
+            {depth3}
           </li>
         )}
       </ol>

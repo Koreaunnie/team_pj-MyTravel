@@ -65,6 +65,12 @@ function Navbar(props) {
           >
             커뮤니티
           </li>
+          <li
+            className={isActive("/cs") ? "active" : ""}
+            onClick={() => navigate("/cs/inquiry/add")}
+          >
+            고객센터
+          </li>
         </ul>
       </div>
 
