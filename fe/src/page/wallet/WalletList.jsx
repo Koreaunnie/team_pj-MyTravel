@@ -324,7 +324,7 @@ function WalletList(props) {
           </thead>
         </table>
 
-        <table className={"table-list"}>
+        <table className={"table-list wallet-list"}>
           <thead>
             <tr>
               <th>

@@ -144,6 +144,14 @@ section {
     margin: 0 auto 30px auto;
 }
 
+.right-section .table-list tr {
+    height: 30px;
+}
+
+.right-section .table-list td {
+    padding: 0;
+}
+
 .right-section table .checked-row {
     background: var(--table-hover-color);
 }
