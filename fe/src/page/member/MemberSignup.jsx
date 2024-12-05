@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { toaster } from "../../components/ui/toaster.jsx";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "./Member.css";
 
 function MemberSignup(props) {
   const [email, setEmail] = useState("");
@@ -92,10 +93,10 @@ function MemberSignup(props) {
   }
 
   return (
-    <div>
+    <div className={"body-narrow"}>
       <h1>회원 가입</h1>
 
-      <form>
+      <form className={"member-signup-form"}>
         <fieldset>
           <ul>
             <li>
@@ -108,13 +109,17 @@ function MemberSignup(props) {
               />
               {filesList}
             </li>
-            <li>
-              <label htmlFor="email">이메일</label>
+            <li className={"check-form"}>
+              <label htmlFor="email">
+                이메일
+                <span className={"required"}>&#42;</span>
+              </label>
+
               <input
                 placeholder={"30자 이내"}
                 id={"email"}
-                type="search"
-                maxlength="30"
+                type="email"
+                maxLength="30"
                 required
                 value={email}
                 onChange={(e) => {
@@ -129,35 +134,42 @@ function MemberSignup(props) {
                 중복 확인
               </button>
             </li>
-            <li>
-              <label htmlFor="nickanem">
-                <input
-                  placeholder={"20자 이내"}
-                  className={"nickname"}
-                  type="search"
-                  maxlength="20"
-                  required
-                  value={nickname}
-                  onChange={(e) => {
-                    setNicknameCheck(false);
-                    setNickname(e.target.value);
-                  }}
-                />
-                <button
-                  className={"btn-search btn-dark"}
-                  onClick={handleNicknameCheckClick}
-                  disabled={nicknameCheckButtonDisabled}
-                  variant={"outline"}
-                >
-                  중복 확인
-                </button>
+
+            <li className={"check-form"}>
+              <label htmlFor="nickname">
+                닉네임
+                <span className={"required"}>&#42;</span>
               </label>
+
+              <input
+                placeholder={"20자 이내"}
+                id={"nickname"}
+                type={"text"}
+                maxLength="20"
+                required
+                value={nickname}
+                onChange={(e) => {
+                  setNicknameCheck(false);
+                  setNickname(e.target.value);
+                }}
+              />
+              <button
+                className={"btn-search btn-dark"}
+                onClick={handleNicknameCheckClick}
+                disabled={nicknameCheckButtonDisabled}
+              >
+                중복 확인
+              </button>
             </li>
+
             <li>
-              <label htmlFor="password">비밀번호</label>
+              <label htmlFor="password">
+                비밀번호
+                <span className={"required"}>&#42;</span>
+              </label>
               <input
                 placeholder={"30자 이내"}
-                maxlength="30"
+                maxLength="30"
                 id={"password"}
                 type="text"
                 required
@@ -165,11 +177,15 @@ function MemberSignup(props) {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </li>
+
             <li>
-              <label htmlFor="password-check">비밀번호</label>
+              <label htmlFor="password-check">
+                비밀번호 확인
+                <span className={"required"}>&#42;</span>
+              </label>
               <input
                 placeholder={"비밀번호를 다시 한 번 입력해주세요."}
-                maxlength="30"
+                maxLength="30"
                 id={"password-check"}
                 type="text"
                 required
@@ -177,11 +193,15 @@ function MemberSignup(props) {
                 onChange={(e) => setPasswordCheck(e.target.value)}
               />
             </li>
+
             <li>
-              <label htmlFor="name">이름</label>
+              <label htmlFor="name">
+                이름
+                <span className={"required"}>&#42;</span>
+              </label>
               <input
                 placeholder={"20자 이내"}
-                maxlength="20"
+                maxLength="20"
                 id={"name"}
                 type="text"
                 required
@@ -190,12 +210,15 @@ function MemberSignup(props) {
               />
             </li>
             <li>
-              <label htmlFor="phone">전화번호</label>
+              <label htmlFor="phone">
+                전화번호
+                <span className={"required"}>&#42;</span>
+              </label>
               <input
                 placeholder={"숫자만 입력해주세요."}
-                maxlength="20"
+                maxLength="20"
                 id={"phone"}
-                type="text"
+                type="tel"
                 required
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
@@ -203,17 +226,17 @@ function MemberSignup(props) {
             </li>
           </ul>
         </fieldset>
-      </form>
 
-      <div className={"btn-wrap"}>
-        <button
-          className={"btn btn-dark"}
-          onClick={handleSignupClick}
-          disabled={disabled}
-        >
-          가입
-        </button>
-      </div>
+        <div className={"btn-wrap"}>
+          <button
+            className={"btn-wide btn-dark"}
+            onClick={handleSignupClick}
+            disabled={disabled}
+          >
+            가입
+          </button>
+        </div>
+      </form>
     </div>
   );
 }

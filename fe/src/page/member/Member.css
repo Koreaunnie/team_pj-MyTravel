@@ -1,0 +1,23 @@
+/*------------------- MemberSignup -------------------*/
+.member-signup-form {
+    margin: 20px auto 40px auto;
+}
+
+.member-signup-form ul li {
+    margin-bottom: 15px;
+}
+
+.check-form input[type=text], .check-form input[type=email] {
+    width: calc(100% - 85px);
+}
+
+/*------------------- 화면 크기가 768px 이하 (태블릿 화면) -------------------*/
+@media (max-width: 768px) {
+
+}
+
+/*------------------- 화면 크기가 480px 이하 (모바일 화면) -------------------*/
+@media (max-width: 480px) {
+
+
+}

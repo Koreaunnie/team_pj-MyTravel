@@ -22,6 +22,7 @@
 
     --font-gray-color: #68686e;
     --font-light-gray-color: #dcdcdc;
+    --font-red-color: #ef4444;
 
     --small-font-size: 14px;
     --normal-font-size: 16px;
@@ -67,10 +68,12 @@ label {
     margin: 10px 5px;
 }
 
-input[type="text"],
-input[type="date"],
-input[type="time"],
-input[type="number"] {
+input[type=text],
+input[type=date],
+input[type=time],
+input[type=number],
+input[type=tel],
+input[type=email] {
     border: 1px solid #dee2e6;
     box-sizing: border-box;
     border-radius: 5px;
@@ -127,6 +130,12 @@ h1 {
     position: relative;
 }
 
+.body-narrow {
+    width: 400px;
+    margin: 0 auto;
+    position: relative;
+}
+
 .pointer {
     cursor: pointer;
 }
@@ -151,6 +160,12 @@ h1 {
     font-weight: bold;
 }
 
+form .required {
+    color: var(--font-red-color);
+    font-size: 0.8rem;
+    margin-left: 7px;
+}
+
 /*------------------- button design -------------------*/
 .btn-wrap {
     display: flex;
@@ -168,6 +183,17 @@ h1 {
     min-width: 70px;
 }
 
+.btn-wide {
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 8px 15px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 10px;
+    width: 100%;
+}
+
 .btn-search {
     cursor: pointer;
     border-radius: 0 5px 5px 0;
@@ -177,7 +203,7 @@ h1 {
     font-weight: bold;
     margin-left: -5px;
     vertical-align: top;
-    width: 60px;
+    min-width: 60px;
 }
 
 .btn-dark {
@@ -382,7 +408,7 @@ h1 {
 }
 
 .search-form-input {
-    width: 80%;
+    width: 100%;
     margin-left: 5px;
 }
 
@@ -600,7 +626,12 @@ react-calendar__month-view__days__day--weekend {
 @media (max-width: 768px) {
     .body {
         width: 80%;
-        display: block; /* 화면이 좁을 때는 block 형태로 배치 */
+        display: block;
+    }
+
+    .body-narrow {
+        width: 80%;
+        display: block;
     }
 
     .calendar {
@@ -622,6 +653,10 @@ react-calendar__month-view__days__day--weekend {
 /*------------------- 화면 크기가 480px 이하 (모바일 화면) -------------------*/
 @media (max-width: 480px) {
     .body {
+        width: 95%
+    }
+
+    .body-narrow {
         width: 95%
     }
 
