@@ -19,12 +19,16 @@ section {
     position: fixed;
     left: 530px;
     width: 350px;
-    height: 80vh;
+    height: 86vh;
     margin: 30px 0;
     border: 1px solid var(--table-border-color);
     border-radius: 10px;
     box-shadow: var(--box-shadow);
     padding: 0 30px;
+}
+
+.middle-section h1 {
+    margin: 40px 0 0 0;
 }
 
 .middle-section .category-table {
@@ -67,13 +71,20 @@ section {
 }
 
 .right-section {
-    position: sticky;
+    position: fixed;
     margin: 30px 0;
     left: 910px;
     width: calc(100% - 940px);
+    height: 86vh;
+    overflow: hidden;
+    overflow-y: auto;
     border: 1px solid var(--table-border-color);
     border-radius: 10px;
     box-shadow: var(--box-shadow);
+}
+
+.right-section .fixed-list-head-wrap {
+    top: 0;
 }
 
 .right-section .total-expense-wrap {
@@ -84,7 +95,7 @@ section {
 }
 
 .right-section h1 {
-    margin-top: 0;
+    margin-top: 20px;
 }
 
 .right-section .category-tab {

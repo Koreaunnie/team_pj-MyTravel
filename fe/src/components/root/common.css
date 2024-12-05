@@ -186,6 +186,41 @@ form .required {
     margin-left: 7px;
 }
 
+
+/*------------------- breadcrumb design -------------------*/
+.breadcrumb-wrap {
+    width: 100%;
+    position: fixed;
+    top: 65px;
+    height: 35px;
+    line-height: 35px;
+    z-index: 100;
+    background: #fff;
+    border: 1px solid var(--table-border-color);
+}
+
+.breadcrumb-wrap ol {
+    display: flex;
+    margin: 0 auto;
+    border: 1px solid red;
+}
+
+.breadcrumb-wrap ol li {
+    margin: 0 10px;
+    text-decoration-line: underline;
+    cursor: pointer;
+    color: var(--font-gray-color);
+}
+
+.breadcrumb-wrap ol li.on {
+    font-weight: bold;
+    color: #000;
+}
+
+.breadcrumb-wrap .icon {
+    margin-top: 9px;
+}
+
 /*------------------- button design -------------------*/
 .btn-wrap {
     display: flex;
@@ -425,7 +460,7 @@ form .required {
 .search-form {
     width: 100%;
     display: flex;
-    margin: 20px 10px;
+    margin: 10px;
 }
 
 .search-form-input {
@@ -434,7 +469,7 @@ form .required {
 }
 
 .search-form-input input {
-    width: calc(100% - 130px);
+    width: calc(100% - 110px);
 }
 
 /*------------------- empty list -------------------*/
@@ -475,7 +510,7 @@ form .required {
 .calendar {
     width: 500px;
     position: fixed;
-    top: 65px;
+    top: 100px;
     padding: 30px;
     height: 100vh;
     background: var(--bg-gray-color);
@@ -494,10 +529,12 @@ form .required {
 
 .fixed-list-head-wrap {
     position: sticky;
-    margin-left: 20px;
-    padding-top: 20px;
+    top: 100px;
+    padding: 20px 20px 20px;
+    width: 100%;
     z-index: 1;
     background: #fff;
+    border-bottom: 1px solid var(--table-border-color);
 }
 
 /* react-calendar */

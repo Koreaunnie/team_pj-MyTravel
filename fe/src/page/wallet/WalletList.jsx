@@ -212,6 +212,8 @@ function WalletList(props) {
       </aside>
 
       <div className={"middle-section"}>
+        <h1>내 지갑</h1>
+
         <div className={"category-table"}>
           <table>
             <caption>
