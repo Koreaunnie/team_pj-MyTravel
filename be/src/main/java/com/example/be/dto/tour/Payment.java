@@ -2,15 +2,14 @@ package com.example.be.dto.tour;
 
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.util.List;
 
 @Data
 public class Payment {
+  private List<TourList> tourLists;
   private String paymentId;
-  private String tourId;
-  private String product;
-  private String partnerEmail;
-  private LocalDate startDate;
-  private LocalDate endDate;
-  private Integer price;
+  private Integer amount;
+  private String currency;
+  private String paymentMethod;
+  private String buyer;
 }

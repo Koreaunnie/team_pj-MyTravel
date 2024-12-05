@@ -1,14 +1,13 @@
 USE teamPrj1126;
 
-CREATE TABLE tour_payment
+CREATE TABLE payment
 (
-    id           INT AUTO_INCREMENT PRIMARY KEY,
-    tour_id      INT REFERENCES tour (id),
-    order_id     VARCHAR(30),
-    member_email VARCHAR(30) REFERENCES member (email),
-    startDate    DATE,
-    endDate      DATE,
-    paid_at      DATETIME DEFAULT NOW()
+    payment_id  VARCHAR(30) PRIMARY KEY,
+    buyer_email VARCHAR(30) REFERENCES member (email),
+    pay_method  VARCHAR(30),
+    currency    VARCHAR(30),
+    amount      INT,
+    paid_at     DATETIME DEFAULT NOW()
 );
 
-DROP TABLE tour_payment;
+DROP TABLE payment;

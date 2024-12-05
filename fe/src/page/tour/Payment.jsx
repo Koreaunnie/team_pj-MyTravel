@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import * as PortOne from "@portone/browser-sdk";
 import { useLocation } from "react-router-dom";
 import { Image } from "@chakra-ui/react";
+import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 
 function randomId() {
   return Array.from(crypto.getRandomValues(new Uint32Array(2)))
@@ -17,6 +18,7 @@ function Payment(props) {
   const [paymentStatus, setPaymentStatus] = useState({
     status: "IDLE",
   });
+  const { email } = useContext(AuthenticationContext);
 
   useEffect(() => {
     if (location.state && location.state.tour) {
@@ -39,14 +41,17 @@ function Payment(props) {
     setWaitingPayment(true);
 
     const paymentId = randomId();
+    const currency = "CURRENCY_KRW";
+    const payMethod = "EASY_PAY";
+
     const payment = await PortOne.requestPayment({
       storeId: "store-e9111bf4-6996-4a6c-ac48-58b9ee8f9c43",
       channelKey: "channel-key-b42ef11e-6046-4851-8610-45af77d2ff86",
       paymentId,
       orderName: tour[0].product + " 그 외",
       totalAmount: totalPrice(),
-      currency: "CURRENCY_KRW",
-      payMethod: "EASY_PAY",
+      currency,
+      payMethod,
     });
 
     if (payment.code != null) {
@@ -59,35 +64,41 @@ function Payment(props) {
       return;
     }
 
-    // // payment/complete 엔드포인트 구현
-    // const completeResponse = await fetch(
-    //   `http://localhost:5173/payment/complete2`,
-    //   {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     //paymentId와 주문정보를 서버에 전달
-    //     body: JSON.stringify({
-    //       ...tour,
-    //       paymentId,
-    //       //주문정보
-    //     }),
-    //   },
-    // );
+    // payment/complete 엔드포인트 구현
+    try {
+      const completeResponse = await fetch(
+        `http://localhost:8080/api/payment/payment`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          //paymentId와 주문정보를 서버에 전달
+          body: JSON.stringify({
+            tour: tour,
+            paymentId,
+            amount: totalPrice(),
+            payMethod,
+            currency,
+            buyer: email,
+            //주문정보
+          }),
+        },
+      );
 
-    setWaitingPayment(false);
-
-    if (completeResponse.ok) {
-      const paymentComplete = await completeResponse.json();
-      setPaymentStatus({
-        status: paymentComplete.status,
-      });
-    } else {
+      if (completeResponse.ok) {
+        const result = await completeResponse.json();
+        setPaymentStatus({ status: "SUCCESS" });
+      } else {
+        throw new Error(await completeResponse.text());
+      }
+    } catch (error) {
       setPaymentStatus({
         status: "FAILED",
-        message: await completeResponse.text(),
+        message: error.message,
       });
+    } finally {
+      setWaitingPayment(false);
     }
   };
 

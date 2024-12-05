@@ -13,7 +13,13 @@ public class PaymentService {
   final PaymentMapper mapper;
 
   public void add(Payment payment) {
-    mapper.insert(payment);
+
+
+    mapper.insertPayment(payment);
+
+    //넘어온 tour를 하나씩 payment_detail에 추가
+    System.out.println(payment.getTourLists());
+//    mapper.insertDetails(payment.getPaymentId(), payment.getTourLists());
   }
 
 
