@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import PortOne from "@portone/browser-sdk";
+import * as PortOne from "@portone/browser-sdk";
 import { useLocation } from "react-router-dom";
 import { Image } from "@chakra-ui/react";
 
@@ -32,6 +32,8 @@ function Payment(props) {
     );
   }
 
+  console.log(PortOne);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setWaitingPayment(true);
@@ -45,7 +47,6 @@ function Payment(props) {
       totalAmount: totalPrice(),
       currency: "CURRENCY_KRW",
       payMethod: "EASY_PAY",
-      redirect_url: `http://localhost:5173/payment/complete`,
     });
 
     if (payment.code != null) {
@@ -58,22 +59,22 @@ function Payment(props) {
       return;
     }
 
-    // payment/complete 엔드포인트 구현
-    const completeResponse = await fetch(
-      `http://localhost:5173/payment/complete`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        //paymentId와 주문정보를 서버에 전달
-        body: JSON.stringify({
-          ...tour,
-          paymentId,
-          //주문정보
-        }),
-      },
-    );
+    // // payment/complete 엔드포인트 구현
+    // const completeResponse = await fetch(
+    //   `http://localhost:5173/payment/complete2`,
+    //   {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     //paymentId와 주문정보를 서버에 전달
+    //     body: JSON.stringify({
+    //       ...tour,
+    //       paymentId,
+    //       //주문정보
+    //     }),
+    //   },
+    // );
 
     setWaitingPayment(false);
 
@@ -136,7 +137,12 @@ function Payment(props) {
             </tfoot>
           </table>
 
-          <button className={"btn btn-dark-outline"} type={"submit"}>
+          <button
+            className={"btn btn-dark-outline"}
+            type={"submit"}
+            aria-busy={waitingPayment}
+            disabled={waitingPayment}
+          >
             결제
           </button>
         </form>
@@ -161,13 +167,13 @@ function Payment(props) {
           <h1>결제 성공</h1>
         </header>
         <p>결제에 성공했씁니다.</p>
-        <buttn
+        <button
           type={"button"}
           className={"btn btn-dark-outline"}
           onClick={handleClose}
         >
           닫기
-        </buttn>
+        </button>
       </dialog>
       <dialog open={paymentStatus.status === "VIRTUAL_ACCOUNT_ISSUED"}>
         <header>
@@ -175,13 +181,13 @@ function Payment(props) {
         </header>
         <p>가상 계좌가 발급되었습니다.</p>
 
-        <buttn
+        <button
           type={"button"}
           className={"btn btn-dark-outline"}
           onClick={handleClose}
         >
           닫기
-        </buttn>
+        </button>
       </dialog>
 
       {/*<div>예약자: personal info 불러오기 (수정 가능)</div>*/}
