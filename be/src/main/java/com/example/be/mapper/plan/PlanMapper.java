@@ -77,7 +77,7 @@ public interface PlanMapper {
             SET pinned = NOT pinned 
             WHERE id = #{id}
             """)
-    int tooglePinned(int id);
+    int togglePinned(int id);
 
     // 내 여행 세부사항
     // 1. Plan

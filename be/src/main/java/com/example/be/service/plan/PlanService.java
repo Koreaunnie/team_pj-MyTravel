@@ -87,7 +87,7 @@ public class PlanService {
 
     // 내 여행 목록에서 상단 고정
     public void pinned(int id) {
-        mapper.tooglePinned(id);
+        mapper.togglePinned(id);
     }
 
     // 내 여행 세부사항
