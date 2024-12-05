@@ -236,6 +236,13 @@ function MemberSignup(props) {
             가입
           </button>
         </div>
+
+        <div className={"move-to-button"}>
+          <p>이미 가입을 하셨나요?</p>
+          <p className={"link"} onClick={() => navigate(`/member/login`)}>
+            로그인
+          </p>
+        </div>
       </form>
     </div>
   );

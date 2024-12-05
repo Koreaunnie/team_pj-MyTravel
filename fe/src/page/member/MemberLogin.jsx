@@ -59,9 +59,11 @@ function MemberLogin(props) {
           </li>
         </ul>
 
-        <button className={"btn-wide btn-dark"} onClick={handleLoginClick}>
-          로그인
-        </button>
+        <div className={"btn-wrap"}>
+          <button className={"btn-wide btn-dark"} onClick={handleLoginClick}>
+            로그인
+          </button>
+        </div>
 
         <div className={"move-to-button"}>
           <p>가입하고 더 많은 여행을 함께 하시겠어요?</p>
