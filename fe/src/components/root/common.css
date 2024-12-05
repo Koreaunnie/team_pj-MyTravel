@@ -1,6 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Oswald:wght@200..700&family=Platypi:ital,wght@0,300..800;1,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Playwrite+HR+Lijeva:wght@100..400&display=swap');
+
+/*
+font-family: "Noto Sans", sans-serif;
+font-family: "Playwrite HR Lijeva", cursive;
+font-family: "Playfair Display", serif;
+font-family: "Platypi", serif;
+font-family: "Oswald", serif;
+font-family: "Josefin Sans", serif;
+font-family: "Inter", serif;
+*/
 
 :root {
+    --main-blue-green-gradient: linear-gradient(90deg, #185a9d, #43cea2);
+    --main-purple-blue-gradient: linear-gradient(90deg, #6a11cb, #2575fc);
+    --main-blue-purple-gradient: linear-gradient(90deg, #0072ff, #a044ff);
+    --main-deep-blue-gradient: linear-gradient(90deg, #1e3c72, #2a5298);
+    --main-purple-skyblue-gradient: linear-gradient(90deg, #7f7fd5, #86a8e7, #91eae4);
+    --main-skyblue-blue-gradient: linear-gradient(90deg, #56ccf2, #2f80ed);
+    --main-blue-skyblue-gradient: linear-gradient(90deg, #5b86e5, #36d1dc);
     --main-golden-yellow: #f4a261;
 
     --table-header-color: #f7f7f7;
@@ -73,7 +90,8 @@ input[type=date],
 input[type=time],
 input[type=number],
 input[type=tel],
-input[type=email] {
+input[type=email],
+input[type=password] {
     border: 1px solid #dee2e6;
     box-sizing: border-box;
     border-radius: 5px;
