@@ -11,14 +11,15 @@ font-family: "Inter", serif;
 */
 
 :root {
-    --main-blue-green-gradient: linear-gradient(90deg, #185a9d, #43cea2);
-    --main-purple-blue-gradient: linear-gradient(90deg, #6a11cb, #2575fc);
-    --main-blue-purple-gradient: linear-gradient(90deg, #0072ff, #a044ff);
-    --main-deep-blue-gradient: linear-gradient(90deg, #1e3c72, #2a5298);
-    --main-purple-skyblue-gradient: linear-gradient(90deg, #7f7fd5, #86a8e7, #91eae4);
-    --main-skyblue-blue-gradient: linear-gradient(90deg, #56ccf2, #2f80ed);
-    --main-blue-skyblue-gradient: linear-gradient(90deg, #5b86e5, #36d1dc);
-    --main-golden-yellow: #f4a261;
+    --main-bg-gradient: linear-gradient(90deg, #0072ff, #a044ff);
+    --main-purple: #a044ff;
+    --main-blue: #0072ff;
+    --blue-purple-gradient: linear-gradient(90deg, #0072ff, #a044ff);
+    --deep-blue-gradient: linear-gradient(90deg, #1e3c72, #2a5298);
+    --purple-skyblue-gradient: linear-gradient(90deg, #7f7fd5, #86a8e7, #91eae4);
+    --skyblue-blue-gradient: linear-gradient(90deg, #56ccf2, #2f80ed);
+    --blue-skyblue-gradient: linear-gradient(90deg, #5b86e5, #36d1dc);
+    --golden-yellow: #f4a261;
 
     --table-header-color: #f7f7f7;
     --table-border-color: #eee;

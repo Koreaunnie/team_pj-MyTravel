@@ -1,5 +1,5 @@
 .navbar {
-    background: var(--main-blue-purple-gradient);
+    background: var(--main-bg-gradient);
     position: fixed;
     width: 100%;
     height: 65px;
@@ -57,7 +57,7 @@
     right: 15px;
     cursor: pointer;
     background: #fff;
-    color: #a044ff;
+    color: var(--main-purple);
     width: 130px;
     height: 45px;
     border-radius: 50px;

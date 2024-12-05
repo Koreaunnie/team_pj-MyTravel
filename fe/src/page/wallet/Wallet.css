@@ -47,9 +47,10 @@ section {
 .middle-section .category-table caption .highlight {
     font-size: 1.2rem;
     margin-bottom: 2px;
-    background: var(--main-golden-yellow);
+    background: var(--main-purple);
     display: inline;
     padding: 0 5px;
+    color: #fff;
 }
 
 .middle-section .category-table table tr {
