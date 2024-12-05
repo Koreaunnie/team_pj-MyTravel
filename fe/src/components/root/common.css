@@ -146,19 +146,20 @@ h1 {
 
 .body-wide {
     width: 1000px;
-    margin: 0 auto;
+    margin: 40px auto;
     position: relative;
 }
 
 .body-normal {
     width: 800px;
-    margin: 0 auto;
+    margin: 40px auto;
+    border: 1px solid red;
     position: relative;
 }
 
 .body-narrow {
     width: 400px;
-    margin: 0 auto;
+    margin: 40px auto;
     position: relative;
 }
 
