@@ -37,7 +37,8 @@ function MemberLogin(props) {
   return (
     <div className={"body-narrow"}>
       <h1>로그인</h1>
-      <form className={"member-form"}>
+
+      <div className={"member-form"}>
         <ul className={"title"}>
           <li>
             <label htmlFor="email">이메일</label>
@@ -59,11 +60,9 @@ function MemberLogin(props) {
           </li>
         </ul>
 
-        <div className={"btn-wrap"}>
-          <button className={"btn-wide btn-dark"} onClick={handleLoginClick}>
-            로그인
-          </button>
-        </div>
+        <button className={"btn-wide btn-dark"} onClick={handleLoginClick}>
+          로그인
+        </button>
 
         <div className={"move-to-button"}>
           <p>가입하고 더 많은 여행을 함께 하시겠어요?</p>
@@ -71,7 +70,7 @@ function MemberLogin(props) {
             회원가입
           </p>
         </div>
-      </form>
+      </div>
     </div>
   );
 }
