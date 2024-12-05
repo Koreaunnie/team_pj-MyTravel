@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 
 import * as PortOne from "@portone/browser-sdk";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Image } from "@chakra-ui/react";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 
@@ -19,6 +19,7 @@ function Payment(props) {
     status: "IDLE",
   });
   const { email } = useContext(AuthenticationContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (location.state && location.state.tour) {
@@ -33,8 +34,6 @@ function Payment(props) {
       </dialog>
     );
   }
-
-  console.log(PortOne);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -66,7 +65,7 @@ function Payment(props) {
 
     // payment/complete 엔드포인트 구현
     try {
-      const completeResponse = await fetch(`/api/payment/payment`, {
+      const response = await fetch(`/api/payment/payment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -83,11 +82,21 @@ function Payment(props) {
         }),
       });
 
-      if (completeResponse.ok) {
-        const result = await completeResponse.json();
-        setPaymentStatus({ status: "SUCCESS" });
+      if (response.ok) {
+        const paymentComplete = await response.json();
+        setPaymentStatus({ status: paymentComplete.status });
+        if (paymentComplete.status === "SUCCESS") {
+          navigate(`/payment/complete`);
+        }
+        // console.log("Response Status:", response.status);
+        // console.log("Response Headers:", response.headers);
+        // const responseText = await response.text();
+        // console.log("Response Text:", responseText);
       } else {
-        throw new Error(await completeResponse.text());
+        setPaymentStatus({
+          status: "FAILED",
+          message: await response.text(),
+        });
       }
     } catch (error) {
       setPaymentStatus({
@@ -189,6 +198,11 @@ function Payment(props) {
         </header>
         <p>가상 계좌가 발급되었습니다.</p>
 
+        {/*<div>예약자: personal info 불러오기 (수정 가능)</div>*/}
+        {/*<div>여행자 정보: input text</div>*/}
+        {/*<div>추가 예약 정보: textarea</div>*/}
+        {/*<div>결제 방법: card, 무통장 입금</div>*/}
+        {/*<div>약관 안내: text</div>*/}
         <button
           type={"button"}
           className={"btn btn-dark-outline"}
@@ -197,12 +211,6 @@ function Payment(props) {
           닫기
         </button>
       </dialog>
-
-      {/*<div>예약자: personal info 불러오기 (수정 가능)</div>*/}
-      {/*<div>여행자 정보: input text</div>*/}
-      {/*<div>추가 예약 정보: textarea</div>*/}
-      {/*<div>결제 방법: card, 무통장 입금</div>*/}
-      {/*<div>약관 안내: text</div>*/}
     </div>
   );
 }
