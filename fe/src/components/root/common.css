@@ -134,6 +134,7 @@ select {
     padding: 0 10px;
     margin-right: 5px;
     outline: none;
+    width: 140px;
 }
 
 h1 {
@@ -429,11 +430,11 @@ form .required {
 
 .search-form-input {
     width: 100%;
-    margin-left: 5px;
+    margin-left: 10px;
 }
 
 .search-form-input input {
-    width: calc(100% - 55px);
+    width: calc(100% - 130px);
 }
 
 /*------------------- empty list -------------------*/
