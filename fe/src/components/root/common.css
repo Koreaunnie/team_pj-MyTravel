@@ -414,6 +414,7 @@ form .required {
 
 /*------------------- pagination -------------------*/
 .pagination {
+    width: 100%;
     margin: 30px;
     bottom: 0;
 }
@@ -472,7 +473,7 @@ form .required {
 .calendar {
     width: 500px;
     position: fixed;
-    top: 180px;
+    top: 65px;
     padding: 30px;
     height: 100vh;
     background: var(--bg-gray-color);
@@ -491,7 +492,6 @@ form .required {
 
 .fixed-list-head-wrap {
     position: sticky;
-    top: 180px;
     margin-left: 20px;
     padding-top: 20px;
     z-index: 1;

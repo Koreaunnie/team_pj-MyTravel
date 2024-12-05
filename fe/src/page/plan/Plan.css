@@ -22,18 +22,9 @@
     width: 100%;
 }
 
-.plan-list-wrap
-    /* pagination */
-.pagination {
-    width: 100%
-}
-
-
 /*-------------------- PlanView --------------------*/
-
 .plan-view-header {
     position: sticky;
-    top: 239px;
     z-index: 1;
     background: var(--bg-gray-color);
     padding: 20px 40px 10px 40px;
