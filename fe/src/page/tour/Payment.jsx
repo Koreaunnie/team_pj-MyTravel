@@ -4,6 +4,12 @@ import PortOne from "@portone/browser-sdk";
 import { useLocation } from "react-router-dom";
 import { Image } from "@chakra-ui/react";
 
+function randomId() {
+  return Array.from(crypto.getRandomValues(new Uint32Array(2)))
+    .map((word) => word.toString(16).padStart(8, "0"))
+    .join("");
+}
+
 function Payment(props) {
   const location = useLocation();
   const [tour, setTour] = useState(null);
@@ -30,15 +36,16 @@ function Payment(props) {
     e.preventDefault();
     setWaitingPayment(true);
 
-    const paymentId = "세팅해줘야함";
+    const paymentId = randomId();
     const payment = await PortOne.requestPayment({
       storeId: "store-e9111bf4-6996-4a6c-ac48-58b9ee8f9c43",
       channelKey: "channel-key-b42ef11e-6046-4851-8610-45af77d2ff86",
       paymentId,
-      orderName: "주문내용",
-      totalAmount: 10000,
+      orderName: tour[0].product + " 그 외",
+      totalAmount: 1,
       currency: "CURRENCY_KRW",
       payMethod: "EASY_PAY",
+      m_redirect_url: `http://localhost:5173/payment/complete`,
     });
     if (payment.code != null) {
       //실패 내용
@@ -77,6 +84,10 @@ function Payment(props) {
 
   const totalPrice = () => {
     return tour.reduce((sum, tour) => sum + tour.price, 0);
+  };
+
+  const handleClose = () => {
+    setPaymentStatus({ status: "IDLE" });
   };
 
   return (
@@ -118,10 +129,52 @@ function Payment(props) {
           </table>
 
           <button className={"btn btn-dark-outline"} type={"submit"}>
-            n원 결제
+            결제
           </button>
         </form>
       </main>
+      {paymentStatus.status === "FAILED" && (
+        <dialog open>
+          <header>
+            <h1>결제 실패</h1>
+          </header>
+          <p>{paymentStatus.message}</p>
+          <button
+            type={"button"}
+            className={"btn btn-dark-outline"}
+            onClick={handleClose}
+          >
+            닫기
+          </button>
+        </dialog>
+      )}
+      <dialog>
+        <header>
+          <h1>결제 성공</h1>
+        </header>
+        <p>결제에 성공했씁니다.</p>
+        <buttn
+          type={"button"}
+          className={"btn btn-dark-outline"}
+          onClick={handleClose}
+        >
+          닫기
+        </buttn>
+      </dialog>
+      <dialog open={paymentStatus.status === "VIRTUAL_ACCOUNT_ISSUED"}>
+        <header>
+          <h1>가장 계좌 발급 완료</h1>
+        </header>
+        <p>가상 계좌가 발급되었습니다.</p>
+
+        <buttn
+          type={"button"}
+          className={"btn btn-dark-outline"}
+          onClick={handleClose}
+        >
+          닫기
+        </buttn>
+      </dialog>
 
       {/*<div>예약자: personal info 불러오기 (수정 가능)</div>*/}
       {/*<div>여행자 정보: input text</div>*/}

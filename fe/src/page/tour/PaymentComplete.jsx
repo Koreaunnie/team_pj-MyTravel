@@ -1,6 +1,6 @@
 import React from "react";
 
-function PaymentSuccess(props) {
+function PaymentComplete(props) {
   return (
     <div>
       {/*TODO: 결제완료창 설계*/}
@@ -12,4 +12,4 @@ function PaymentSuccess(props) {
   );
 }
 
-export default PaymentSuccess;
+export default PaymentComplete;

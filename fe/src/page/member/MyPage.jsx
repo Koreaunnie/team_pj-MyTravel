@@ -32,7 +32,7 @@ function MyPage(props) {
       <Box flex="1" padding="20px">
         {selectedMenu === "profile" && <MemberInfo />}
         {selectedMenu === "cart" && <CartList />}
-        <p>결제 내역</p>
+        <p>결제 내역 Payment History</p>
         <p>내 가 쓴 글 게시판</p>
       </Box>
     </div>
