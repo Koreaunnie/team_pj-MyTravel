@@ -38,3 +38,8 @@ WHERE content LIKE '%뿌%'
    OR title LIKE '%뿌%';
 
 #  title writer content all
+
+SELECT c.id, c.title, c.content, f.file_name, c.writer, c.inserted creationDate
+FROM community c
+         LEFT JOIN community_file f ON c.id = f.community_id
+WHERE c.id = 40;

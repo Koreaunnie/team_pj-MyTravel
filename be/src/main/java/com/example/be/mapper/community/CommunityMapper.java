@@ -43,11 +43,19 @@ public interface CommunityMapper {
     List<Map<String, Object>> listUp(Integer pageList, String searchType, String searchKeyword);
 
     @Select("""
-            SELECT c.id, c.title, c.content, f.file_name, c.writer, c.inserted creationDate
-            FROM community c LEFT JOIN community_file f ON c.id = f.community_id
-            WHERE c.id = #{id}
+            SELECT id, title, content, writer, inserted creationDate
+            FROM community
+            WHERE id = #{id}
             """)
     Map<String, Object> viewCommunity(Integer id);
+
+    @Select("""
+            SELECT file_name
+            FROM community_file
+            WHERE community_id = #{id}
+            ORDER BY id ASC
+            """)
+    List<String> callCommunityFile(Integer id);
 
     @Select("""
             SELECT nickname

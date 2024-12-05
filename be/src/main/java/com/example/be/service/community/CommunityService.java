@@ -74,16 +74,32 @@ public class CommunityService {
         Community community = new Community();
         community.setId(id);
         Map<String, Object> viewer = mapper.viewCommunity(id);
+        System.out.println(mapper.viewCommunity(id));
+        // Map
+        List<String> fileList = mapper.callCommunityFile(id);
+        System.out.println(mapper.callCommunityFile(id));
+        // List
 
-        if (viewer.containsKey("file_name")) {
-            String fileName = viewer.get("file_name").toString();
-            String filePath = STR."C:/Temp/teamPrj1126/\{viewer.get("id").toString()}/\{fileName}";
-            viewer.put("file_path", filePath);
-            System.out.println(viewer);
-            return viewer;
-        } else {
-            return viewer;
+        System.out.println(fileList.size());
+        if (fileList.size() != 0) {
+            for (String fileName : fileList) {
+                String filePath = STR."C:/Temp/teamPrj1126/\{viewer.get("id").toString()}/\{fileName}";
+                viewer.put("file_path", filePath);
+                return viewer;
+
+            }
         }
+
+        return null;
+//        if (viewer.containsKey("file_name")) {
+//            String fileName = viewer.get("file_name").toString();
+//            String filePath = STR."C:/Temp/teamPrj1126/\{viewer.get("id").toString()}/\{fileName}";
+//            viewer.put("file_path", filePath);
+//            System.out.println(viewer);
+//            return viewer;
+//        } else {
+//            return viewer;
+//        }
     }
 
     public void edit(Community community) {
