@@ -130,10 +130,27 @@ public interface PlanMapper {
 
     // 메인 화면에 필요한 일부 plan 리스트 가져오기
     @Select("""
-            SELECT *
-            FROM plan
-            ORDER BY updated DESC
-            LIMIT 4
+            <script>
+                SELECT *
+                FROM plan p JOIN plan_field pf
+                    ON p.id = pf.plan_id
+                WHERE
+                    <trim prefixOverrides="OR">
+                        p.title LIKE CONCAT('%', #{keyword}, '%')
+                        OR p.description LIKE CONCAT('%', #{keyword}, '%')
+                        OR p.destination LIKE CONCAT('%', #{keyword}, '%')
+                        OR p.startDate LIKE CONCAT('%', #{keyword}, '%')
+                        OR p.endDate LIKE CONCAT('%', #{keyword}, '%')
+                        OR pf.date LIKE CONCAT('%', #{keyword}, '%')
+                        OR pf.time LIKE CONCAT('%', #{keyword}, '%')
+                        OR pf.schedule LIKE CONCAT('%', #{keyword}, '%')
+                        OR pf.place LIKE CONCAT('%', #{keyword}, '%')
+                        OR pf.memo LIKE CONCAT('%', #{keyword}, '%')  
+                    </trim>
+                GROUP BY p.id
+                ORDER BY updated DESC
+                LIMIT 4
+            </script>
             """)
-    List<Plan> getTop4ByOrderByUpdated();
+    List<Plan> getTop4ByOrderByUpdated(String keyword);
 }

@@ -25,40 +25,41 @@
 
 .main-search-wrap .main-search-wrap-btn {
     cursor: pointer;
+    margin: 20px;
 }
 
-section {
+.main-section-wrap {
     width: 100%;
     height: 310px;
     margin: 50px 0;
     box-sizing: border-box;
 }
 
-section .section-header {
+.main-section-wrap .section-header {
     display: flex;
     height: 70px;
 }
 
-section .section-header h2 {
+.main-section-wrap .section-header h2 {
     margin: 20px auto;
     font-weight: bold;
     font-size: 25px;
 }
 
-section .section-header .more-btn {
+.main-section-wrap .section-header .more-btn {
     cursor: pointer;
     font-weight: bold;
     font-size: 0.9rem;
     color: var(--font-gray-color);
 }
 
-section .section-body .section-body-list {
+.main-section-wrap .section-body .section-body-list {
     width: 100%;
     display: flex;
     justify-content: space-between;
 }
 
-section .section-body .section-body-list > li {
+.main-section-wrap .section-body .section-body-list > li {
     height: 230px;
     margin: 10px;
     padding: 23px;
@@ -70,7 +71,7 @@ section .section-body .section-body-list > li {
     flex: auto;
 }
 
-section .section-body .section-body-list h3 {
+.main-section-wrap .section-body .section-body-list h3 {
     font-weight: bold;
     font-size: 1.1rem;
     width: 100%;
@@ -80,7 +81,7 @@ section .section-body .section-body-list h3 {
 }
 
 /* 내 여행 */
-section .section-body .section-body-list .list-item .description {
+.main-section-wrap .section-body .section-body-list .list-item .description {
     height: 88px;
     color: var(--font-gray-color);
     margin: 15px 10px 10px 10px;
@@ -90,13 +91,13 @@ section .section-body .section-body-list .list-item .description {
     font-size: 0.9rem;
 }
 
-section .section-body .section-body-list .list-item .location {
+.main-section-wrap .section-body .section-body-list .list-item .location {
     font-weight: bold;
     font-size: 0.9rem;
 }
 
-section .section-body .section-body-list .list-item .period,
-section .section-body .section-body-list .list-item .price {
+.main-section-wrap .section-body .section-body-list .list-item .period,
+.main-section-wrap .section-body .section-body-list .list-item .price {
     font-weight: bold;
     font-size: 0.9rem;
 
@@ -105,18 +106,18 @@ section .section-body .section-body-list .list-item .price {
 
 /*------------------- 화면 크기가 768px 이하 (태블릿 화면) -------------------*/
 @media (max-width: 768px) {
-    section {
+    .main-section-wrap {
         height: auto
     }
 
-    section .section-body .section-body-list {
+    .main-section-wrap .section-body .section-body-list {
         width: 100%;
         display: flex;
         justify-content: space-between;
         flex-wrap: wrap;
     }
 
-    section .section-body .section-body-list li {
+    .main-section-wrap .section-body .section-body-list li {
         width: 100%;
     }
 }
