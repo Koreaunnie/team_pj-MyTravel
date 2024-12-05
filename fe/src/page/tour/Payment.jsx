@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import PortOne from "@portone/browser-sdk";
 import { useLocation } from "react-router-dom";
+import { Image } from "@chakra-ui/react";
 
 function Payment(props) {
   const location = useLocation();
@@ -37,7 +38,7 @@ function Payment(props) {
       orderName: "주문내용",
       totalAmount: 10000,
       currency: "CURRENCY_KRW",
-      payMethod: "CARD",
+      payMethod: "EASY_PAY",
     });
     if (payment.code != null) {
       //실패 내용
@@ -74,30 +75,44 @@ function Payment(props) {
     }
   };
 
+  const totalPrice = () => {
+    return tour.reduce((sum, tour) => sum + tour.price, 0);
+  };
+
   return (
     <div>
       <main>
         <form onSubmit={handleSubmit}>
-          {tour.map((product) => (
-            <article>
-              {/*결제할 상품 나열*/}
-              <div>
-                <div>
-                  <p>이미지</p>
-                  <image src={``} />
-                </div>
-                <div>
-                  <p>상품명</p>
-                  <p>상품 가격</p>
-                </div>
-              </div>
-              {/*총 합*/}
-              <div>
-                <label>총 구입 가격</label>
-                ~원
-              </div>
-            </article>
-          ))}
+          <table className={"table-list"}>
+            <thead>
+              <tr>
+                <th colSpan={2}>상품</th>
+                <th>일정</th>
+                <th>가격</th>
+              </tr>
+            </thead>
+            {/*결제할 상품 나열*/}
+            {tour.map((product) => (
+              <tbody>
+                <tr>
+                  <td>
+                    <Image key={product.image} src={product.src} w={"100px"} />
+                  </td>
+                  <td>{product.product}</td>
+                  <td>
+                    {product.startDate} ~ {product.endDate}
+                  </td>
+                  <td>{product.price}</td>
+                </tr>
+              </tbody>
+            ))}
+            {/*총 합*/}
+            <tfoot>
+              <th colSpan={3}>결제 금액</th>
+              <td>{totalPrice()}</td>
+            </tfoot>
+          </table>
+
           <button className={"btn btn-dark-outline"} type={"submit"}>
             n원 결제
           </button>
