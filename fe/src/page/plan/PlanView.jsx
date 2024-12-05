@@ -14,16 +14,7 @@ function PlanView(props) {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const navigate = useNavigate();
 
-  // 네이버 공유하기
-  const [url, setUrl] = useState(
-    "https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&oquery=%EB%84%A4%EC%9D%B4%EB%B2%84+%EA%B0%9C%EB%B0%9C%EC%9E%90%EC%84%BC%ED%84%B0&ie=utf8&query=%EB%84%A4%EC%9D%B4%EB%B2%84+%EA%B0%9C%EB%B0%9C%EC%9E%90%EC%84%BC%ED%84%B0",
-  );
-  const [title, setTitle] = useState("");
-
   useEffect(() => {
-    // 네이버 공유하기 (현재 페이지의 URL을 url 상태로 설정)
-    setUrl(window.location.href);
-
     axios.get(`/api/plan/view/${id}`).then((res) => {
       // plan 객체
       setPlan(res.data.plan);
@@ -67,14 +58,6 @@ function PlanView(props) {
       })
       .catch()
       .finally();
-  };
-
-  // 네이버 공유하기
-  const share = () => {
-    const encodedUrl = encodeURIComponent(url);
-    const encodedTitle = encodeURIComponent(title);
-    const shareURL = `https://share.naver.com/web/shareView?url=${encodedUrl}&title=${encodedTitle}`;
-    window.location = shareURL; // Naver 공유 URL로 이동
   };
 
   return (
@@ -164,42 +147,6 @@ function PlanView(props) {
             </tbody>
           </table>
         ))}
-      </div>
-
-      {/* 네이버 공유하기 버튼 추가 */}
-      <div>
-        <span>
-          <script
-            type="text/javascript"
-            src="https://ssl.pstatic.net/share/js/naver_sharebutton.js"
-          ></script>
-          <script
-            type="text/javascript"
-            dangerouslySetInnerHTML={{
-              __html: `new ShareNaver.makeButton({"type": "b"});`,
-            }}
-          ></script>
-        </span>
-      </div>
-
-      <div>
-        <form id="myform">
-          URL입력:
-          <input
-            type="text"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-          />
-          <br />
-          Title입력:
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <br />
-        </form>
-        <input type="button" value="네이버 공유하기" onClick={share} />
       </div>
 
       {/* 추가 modal */}
