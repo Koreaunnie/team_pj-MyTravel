@@ -27,6 +27,7 @@ import AuthenticationProvider from "./components/context/AuthenticationProvider.
 import React from "react";
 import Payment from "./page/tour/Payment.jsx";
 import MyPage from "./page/member/MyPage.jsx";
+import PaymentSuccess from "./page/tour/PaymentSuccess.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -112,6 +113,10 @@ const router = createBrowserRouter([
       {
         path: "payment",
         element: <Payment />,
+      },
+      {
+        path: "payment/success",
+        element: <PaymentSuccess />,
       },
       // 커뮤니티
       {

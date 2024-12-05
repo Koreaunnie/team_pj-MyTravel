@@ -25,12 +25,14 @@ function MyPage(props) {
             내 프로필
           </button>
           <button onClick={() => handleMenuClick("cart")}>내 장바구니</button>
-          <button onClick={() => handleMenuClick("posts")}>내가 쓴 글</button>
+          <button onClick={() => handleMenuClick("")}>결제 내역</button>
+          <button onClick={() => handleMenuClick("")}>내가 쓴 글</button>
         </VStack>
       </Box>
       <Box flex="1" padding="20px">
         {selectedMenu === "profile" && <MemberInfo />}
         {selectedMenu === "cart" && <CartList />}
+        <p>결제 내역</p>
         <p>내 가 쓴 글 게시판</p>
       </Box>
     </div>
