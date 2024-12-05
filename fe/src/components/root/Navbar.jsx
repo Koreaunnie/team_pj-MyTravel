@@ -13,7 +13,7 @@ function Navbar(props) {
     AuthenticationContext,
   );
 
-  const isActive = (path) => location.pathname === path;
+  const isActive = (path) => location.pathname.startsWith(path);
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -42,25 +42,25 @@ function Navbar(props) {
       <div className={"nav-container"}>
         <ul>
           <li
-            className={isActive("/plan/list") ? "active" : ""}
+            className={isActive("/plan") ? "active" : ""}
             onClick={() => navigate("/plan/list")}
           >
             내 여행
           </li>
           <li
-            className={isActive("/wallet/list") ? "active" : ""}
+            className={isActive("/wallet") ? "active" : ""}
             onClick={() => navigate("/wallet/list")}
           >
             내 지갑
           </li>
           <li
-            className={isActive("/tour/list") ? "active" : ""}
+            className={isActive("/tour") ? "active" : ""}
             onClick={() => navigate("/tour/list")}
           >
             투어
           </li>
           <li
-            className={isActive("/community/list") ? "active" : ""}
+            className={isActive("/community") ? "active" : ""}
             onClick={() => navigate("/community/list")}
           >
             커뮤니티
