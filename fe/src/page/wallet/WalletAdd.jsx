@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { Modal } from "../../components/root/Modal.jsx";
+import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 
 function WalletAdd(props) {
   const [saveModalOpen, setSaveModalOpen] = useState(false);
@@ -105,199 +106,208 @@ function WalletAdd(props) {
   };
 
   return (
-    <div className={"body"}>
-      <div className={"btn-wrap"}>
-        <button
-          className={"btn btn-dark-outline"}
-          onClick={() => setBackToListModalOpen(true)}
-        >
-          목록
-        </button>
+    <div className={"wallet"}>
+      <Breadcrumb
+        depth1={"내 지갑"}
+        navigateToDepth1={() => navigate(`/wallet/list`)}
+        depth2={"추가"}
+        navigateToDepth2={() => navigate(`/wallet/add`)}
+      />
 
-        <button
-          type="submit"
-          className={"btn btn-dark"}
-          onClick={() => {
-            setSaveModalOpen(true);
-          }}
-        >
-          저장
-        </button>
+      <div className={"body-normal"}>
+        <div className={"btn-wrap"}>
+          <button
+            className={"btn btn-dark-outline"}
+            onClick={() => setBackToListModalOpen(true)}
+          >
+            목록
+          </button>
+
+          <button
+            type="submit"
+            className={"btn btn-dark"}
+            onClick={() => {
+              setSaveModalOpen(true);
+            }}
+          >
+            저장
+          </button>
+        </div>
+
+        <form>
+          <table className={"form-table"}>
+            <tbody>
+              <tr>
+                <th>
+                  <label htmlFor="date">날짜</label>
+                </th>
+                <td>
+                  <input
+                    type="date"
+                    name="date"
+                    id="date"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                  />
+                </td>
+              </tr>
+
+              <tr>
+                <th>
+                  <label htmlFor="category">항목</label>
+                </th>
+                <td>
+                  <select
+                    name="category"
+                    id="category"
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                  >
+                    {categoryOptions.map((option, index) => (
+                      <option key={index} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+
+                  <button
+                    type="button"
+                    className={"btn btn-dark"}
+                    onClick={() =>
+                      setHandleAddCategoryOpen(!handleAddCategoryOpen)
+                    }
+                  >
+                    {handleAddCategoryOpen ? "닫기" : "항목 추가"}
+                  </button>
+
+                  <button
+                    type="button"
+                    className={"btn btn-warning"}
+                    onClick={handleDeleteCategory}
+                  >
+                    항목 삭제
+                  </button>
+
+                  {handleAddCategoryOpen && (
+                    <div className={"btn-wrap"}>
+                      <input
+                        type="text"
+                        placeholder="새로운 항목을 입력해주세요."
+                        value={newCategory}
+                        onChange={(e) => setNewCategory(e.target.value)}
+                      />
+                      <button
+                        type="button"
+                        className={"btn-search btn-dark"}
+                        onClick={handleAddCategory}
+                      >
+                        &#43;
+                      </button>
+                    </div>
+                  )}
+                </td>
+              </tr>
+
+              <tr>
+                <th>
+                  <label htmlFor="title">사용처</label>
+                </th>
+                <td>
+                  <input
+                    type="text"
+                    name="title"
+                    id="title"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                  />
+                </td>
+              </tr>
+
+              <tr>
+                <th>
+                  <label htmlFor="income">수입</label>
+                </th>
+                <td>
+                  <input
+                    type="number"
+                    name="income"
+                    id="income"
+                    value={income}
+                    onChange={(e) => setIncome(e.target.value)}
+                  />
+                </td>
+              </tr>
+
+              <tr>
+                <th>
+                  <label htmlFor="expense">지출</label>
+                </th>
+                <td>
+                  <input
+                    type="number"
+                    name="expense"
+                    id="expense"
+                    value={expense}
+                    onChange={(e) => setExpense(e.target.value)}
+                  />
+                </td>
+              </tr>
+
+              <tr>
+                <th>
+                  <label htmlFor="paymentMethod">지출 방식</label>
+                </th>
+                <td>
+                  <select
+                    name="paymentMethod"
+                    id="paymentMethod"
+                    value={paymentMethod}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                  >
+                    <option value="cash">현금</option>
+                    <option value="card">카드</option>
+                    <option value="bankTransfer">계좌이체</option>
+                    <option value="other">기타</option>
+                  </select>
+                </td>
+              </tr>
+
+              <tr>
+                <th>
+                  <label htmlFor="memo">메모</label>
+                </th>
+                <td>
+                  <textarea
+                    name="memo"
+                    id="memo"
+                    rows="3"
+                    value={memo}
+                    onChange={(e) => setMemo(e.target.value)}
+                  ></textarea>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+
+        {/* 목록 modal */}
+        <Modal
+          isOpen={backToListModalOpen}
+          onClose={() => setBackToListModalOpen(false)}
+          onConfirm={() => navigate(`/wallet/list`)}
+          message="목록으로 돌아가면 작성한 내용이 사라집니다."
+          buttonMessage="목록"
+        />
+
+        {/* 저장 modal */}
+        <Modal
+          isOpen={saveModalOpen}
+          onClose={() => setSaveModalOpen(false)}
+          onConfirm={handleSaveButton}
+          message="저장하시겠습니까?"
+          buttonMessage="저장"
+        />
       </div>
-
-      <form>
-        <table className={"form-table"}>
-          <tbody>
-            <tr>
-              <th>
-                <label htmlFor="date">날짜</label>
-              </th>
-              <td>
-                <input
-                  type="date"
-                  name="date"
-                  id="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                />
-              </td>
-            </tr>
-
-            <tr>
-              <th>
-                <label htmlFor="category">항목</label>
-              </th>
-              <td>
-                <select
-                  name="category"
-                  id="category"
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                >
-                  {categoryOptions.map((option, index) => (
-                    <option key={index} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-
-                <button
-                  type="button"
-                  className={"btn btn-dark"}
-                  onClick={() =>
-                    setHandleAddCategoryOpen(!handleAddCategoryOpen)
-                  }
-                >
-                  {handleAddCategoryOpen ? "닫기" : "항목 추가"}
-                </button>
-
-                <button
-                  type="button"
-                  className={"btn btn-warning"}
-                  onClick={handleDeleteCategory}
-                >
-                  항목 삭제
-                </button>
-
-                {handleAddCategoryOpen && (
-                  <div className={"btn-wrap"}>
-                    <input
-                      type="text"
-                      placeholder="새로운 항목을 입력해주세요."
-                      value={newCategory}
-                      onChange={(e) => setNewCategory(e.target.value)}
-                    />
-                    <button
-                      type="button"
-                      className={"btn-search btn-dark"}
-                      onClick={handleAddCategory}
-                    >
-                      &#43;
-                    </button>
-                  </div>
-                )}
-              </td>
-            </tr>
-
-            <tr>
-              <th>
-                <label htmlFor="title">사용처</label>
-              </th>
-              <td>
-                <input
-                  type="text"
-                  name="title"
-                  id="title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-              </td>
-            </tr>
-
-            <tr>
-              <th>
-                <label htmlFor="income">수입</label>
-              </th>
-              <td>
-                <input
-                  type="number"
-                  name="income"
-                  id="income"
-                  value={income}
-                  onChange={(e) => setIncome(e.target.value)}
-                />
-              </td>
-            </tr>
-
-            <tr>
-              <th>
-                <label htmlFor="expense">지출</label>
-              </th>
-              <td>
-                <input
-                  type="number"
-                  name="expense"
-                  id="expense"
-                  value={expense}
-                  onChange={(e) => setExpense(e.target.value)}
-                />
-              </td>
-            </tr>
-
-            <tr>
-              <th>
-                <label htmlFor="paymentMethod">지출 방식</label>
-              </th>
-              <td>
-                <select
-                  name="paymentMethod"
-                  id="paymentMethod"
-                  value={paymentMethod}
-                  onChange={(e) => setPaymentMethod(e.target.value)}
-                >
-                  <option value="cash">현금</option>
-                  <option value="card">카드</option>
-                  <option value="bankTransfer">계좌이체</option>
-                  <option value="other">기타</option>
-                </select>
-              </td>
-            </tr>
-
-            <tr>
-              <th>
-                <label htmlFor="memo">메모</label>
-              </th>
-              <td>
-                <textarea
-                  name="memo"
-                  id="memo"
-                  rows="3"
-                  value={memo}
-                  onChange={(e) => setMemo(e.target.value)}
-                ></textarea>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </form>
-
-      {/* 목록 modal */}
-      <Modal
-        isOpen={backToListModalOpen}
-        onClose={() => setBackToListModalOpen(false)}
-        onConfirm={() => navigate(`/wallet/list`)}
-        message="목록으로 돌아가면 작성한 내용이 사라집니다."
-        buttonMessage="목록"
-      />
-
-      {/* 저장 modal */}
-      <Modal
-        isOpen={saveModalOpen}
-        onClose={() => setSaveModalOpen(false)}
-        onConfirm={handleSaveButton}
-        message="저장하시겠습니까?"
-        buttonMessage="저장"
-      />
     </div>
   );
 }

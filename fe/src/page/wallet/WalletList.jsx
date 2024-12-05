@@ -4,6 +4,7 @@ import Calendar from "react-calendar";
 import { useNavigate } from "react-router-dom";
 import "./Wallet.css";
 import { Modal } from "../../components/root/Modal.jsx";
+import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 
 function WalletList(props) {
   const [walletList, setWalletList] = useState([]); // 전체 지갑 리스트
@@ -191,6 +192,11 @@ function WalletList(props) {
 
   return (
     <div>
+      <Breadcrumb
+        depth1={"내 지갑"}
+        navigateToDepth1={() => navigate(`/wallet/list`)}
+      />
+
       <aside className={"calendar"}>
         <Calendar
           formatDay={(locale, date) =>

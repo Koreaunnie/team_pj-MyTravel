@@ -1,3 +1,11 @@
+.wallet {
+    margin-top: 40px;
+}
+
+.wallet .breadcrumb-wrap ol {
+    width: 800px;
+}
+
 /*-------------------- WalletAdd, WalletEdit --------------------*/
 .form-table {
     width: 80%;
@@ -19,8 +27,8 @@ section {
     position: fixed;
     left: 530px;
     width: 350px;
-    height: 86vh;
-    margin: 30px 0;
+    height: 83vh;
+    margin-top: 65px;
     border: 1px solid var(--table-border-color);
     border-radius: 10px;
     box-shadow: var(--box-shadow);
@@ -72,10 +80,10 @@ section {
 
 .right-section {
     position: fixed;
-    margin: 30px 0;
+    margin: 65px 0;
     left: 910px;
     width: calc(100% - 940px);
-    height: 86vh;
+    height: 83vh;
     overflow: hidden;
     overflow-y: auto;
     border: 1px solid var(--table-border-color);
