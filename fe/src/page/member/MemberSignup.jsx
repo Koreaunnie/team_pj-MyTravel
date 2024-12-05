@@ -116,7 +116,7 @@ function MemberSignup(props) {
               </label>
 
               <input
-                placeholder={"30자 이내"}
+                placeholder={"중복 확인을 해주세요."}
                 id={"email"}
                 type="email"
                 maxLength="30"
@@ -142,7 +142,7 @@ function MemberSignup(props) {
               </label>
 
               <input
-                placeholder={"20자 이내"}
+                placeholder={"중복 확인을 해주세요."}
                 id={"nickname"}
                 type={"text"}
                 maxLength="20"
@@ -171,7 +171,7 @@ function MemberSignup(props) {
                 placeholder={"30자 이내"}
                 maxLength="30"
                 id={"password"}
-                type="text"
+                type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -187,7 +187,7 @@ function MemberSignup(props) {
                 placeholder={"비밀번호를 다시 한 번 입력해주세요."}
                 maxLength="30"
                 id={"password-check"}
-                type="text"
+                type="password"
                 required
                 value={passwordCheck}
                 onChange={(e) => setPasswordCheck(e.target.value)}
