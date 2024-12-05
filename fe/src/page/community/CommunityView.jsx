@@ -47,6 +47,9 @@ function CommunityView(props) {
           <Field label={"본문"} readOnly>
             <Textarea value={community.content} />
           </Field>
+          <Field label={"파일"} readOnly>
+            <Input value={community.file_path} />
+          </Field>
           <Field label={"작성자"} readOnly>
             <Input value={community.writer} />
           </Field>

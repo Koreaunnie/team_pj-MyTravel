@@ -55,25 +55,14 @@ public class CommunityService {
 
             for (MultipartFile file : files) {
 
-
-                String filePath = STR."C:/Temp/teamPrj1126/\{community.getId()}/\{file.getOriginalFilename()}";
+                String fileName = file.getOriginalFilename();
+                String filePath = STR."C:/Temp/teamPrj1126/\{community.getId()}/\{fileName}";
                 try {
                     file.transferTo(new File(filePath));
+                    mapper.addFile(fileName, id);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-            }
-        }
-
-        System.out.println(id);
-
-        for (MultipartFile file : files) {
-            String filesName = file.getOriginalFilename();
-            try {
-                byte[] fileData = file.getBytes();
-                mapper.addFile(filesName, id);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
             }
         }
 
@@ -81,7 +70,20 @@ public class CommunityService {
     }
 
     public Map<String, Object> view(Integer id) {
-        return mapper.viewCommunity(id);
+
+        Community community = new Community();
+        community.setId(id);
+        Map<String, Object> viewer = mapper.viewCommunity(id);
+
+        if (viewer.containsKey("file_name")) {
+            String fileName = viewer.get("file_name").toString();
+            String filePath = STR."C:/Temp/teamPrj1126/\{viewer.get("id").toString()}/\{fileName}";
+            viewer.put("file_path", filePath);
+            System.out.println(viewer);
+            return viewer;
+        } else {
+            return viewer;
+        }
     }
 
     public void edit(Community community) {

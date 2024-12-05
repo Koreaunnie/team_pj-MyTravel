@@ -42,6 +42,20 @@ public interface CommunityMapper {
             """)
     List<Map<String, Object>> listUp(Integer pageList, String searchType, String searchKeyword);
 
+    @Select("""
+            SELECT c.id, c.title, c.content, f.file_name, c.writer, c.inserted creationDate
+            FROM community c LEFT JOIN community_file f ON c.id = f.community_id
+            WHERE c.id = #{id}
+            """)
+    Map<String, Object> viewCommunity(Integer id);
+
+    @Select("""
+            SELECT nickname
+            FROM member
+            WHERE email = #{email}
+            """)
+    String findNickname(String email);
+
     @Insert("""
             INSERT INTO community (title, content, writer)
             VALUES (#{title}, #{content}, #{writer})
@@ -55,12 +69,6 @@ public interface CommunityMapper {
             """)
     int addFile(String filesName, Integer id);
 
-    @Select("""
-            SELECT id, title, content, writer, inserted creationDate
-            FROM community
-            WHERE id = #{id}
-            """)
-    Map<String, Object> viewCommunity(Integer id);
 
     @Update("""
             UPDATE community
@@ -75,11 +83,5 @@ public interface CommunityMapper {
             """)
     int deleteCommunity(Integer id);
 
-    @Select("""
-            SELECT nickname
-            FROM member
-            WHERE email = #{email}
-            """)
-    String findNickname(String email);
 
 }
