@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Box, Input } from "@chakra-ui/react";
+import { Input } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "../../components/ui/toaster.jsx";
@@ -35,33 +35,41 @@ function MemberLogin(props) {
   }
 
   return (
-    <div className={"body"}>
+    <div className={"body-narrow"}>
       <h1>로그인</h1>
-      <ul className={"title"}>
-        <li>
-          <label htmlFor="email">이메일</label>
-          <input
-            type={"text"}
-            id={"email"}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </li>
-        <li>
-          <label htmlFor="password">비밀번호</label>
-          <Input
-            type={"password"}
-            id={"password"}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </li>
-      </ul>
-      <Box>
-        <button className={"btn btn-dark"} onClick={handleLoginClick}>
+      <form className={"member-form"}>
+        <ul className={"title"}>
+          <li>
+            <label htmlFor="email">이메일</label>
+            <input
+              type={"text"}
+              id={"email"}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </li>
+          <li>
+            <label htmlFor="password">비밀번호</label>
+            <Input
+              type={"password"}
+              id={"password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </li>
+        </ul>
+
+        <button className={"btn-wide btn-dark"} onClick={handleLoginClick}>
           로그인
         </button>
-      </Box>
+
+        <div className={"move-to-button"}>
+          <p>가입하고 더 많은 여행을 함께 하시겠어요?</p>
+          <p className={"link"} onClick={() => navigate(`/member/signup`)}>
+            회원가입
+          </p>
+        </div>
+      </form>
     </div>
   );
 }

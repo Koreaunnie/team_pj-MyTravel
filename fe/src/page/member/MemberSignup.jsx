@@ -96,7 +96,7 @@ function MemberSignup(props) {
     <div className={"body-narrow"}>
       <h1>회원 가입</h1>
 
-      <form className={"member-signup-form"}>
+      <form className={"member-form"}>
         <fieldset>
           <ul>
             <li>
