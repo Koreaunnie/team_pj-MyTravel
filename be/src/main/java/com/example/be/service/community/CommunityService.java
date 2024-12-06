@@ -8,9 +8,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.services.s3.S3Client;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +21,8 @@ import java.util.Map;
 public class CommunityService {
 
     final CommunityMapper mapper;
+    final S3Client s3;
+
 
     @Value("${image.src.prefix}")
     String imageSrcPrefix;
@@ -39,34 +40,29 @@ public class CommunityService {
     public void write(Community community, MultipartFile[] files, Authentication auth) {
 
 
-        String nickname = mapper.findNickname(auth.getName());
-        community.setWriter(nickname);
-        mapper.writeCommunity(community);
-        Integer id = community.getId();
-
-        if (files != null && files.length > 0) {
-
-            String directory = STR."C:/Temp/teamPrj1126/\{id}";
-            File dir = new File(directory);
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-
-            // 파일 업로드
-            // TODO: local -> aws
-
-            for (MultipartFile file : files) {
-
-                String fileName = file.getOriginalFilename();
-                String filePath = STR."C:/Temp/teamPrj1126/\{community.getId()}/\{fileName}";
-                try {
-                    file.transferTo(new File(filePath));
-                    mapper.addFile(fileName, id);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
+//        String nickname = mapper.findNickname(auth.getName());
+//        community.setWriter(nickname);
+//        mapper.writeCommunity(community);
+//
+//        if (files != null && files.length > 0) {
+//
+//            for (MultipartFile file : files) {
+//
+//                String objectKey = "teamPrj1126/" + "community/" + community.getId() + "/" + file.getOriginalFilename();
+//                PutObjectRequest por = PutObjectRequest.builder()
+//                        .bucket(bucketName)
+//                        .key(objectKey)
+//                        .acl(ObjectCannedACL.PUBLIC_READ)
+//                        .build();
+//
+//                try {
+//                    s3.putObject(por, RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
+//                } catch (IOException e) {
+//                    throw new RuntimeException(e);
+//                }
+//                mapper.addFile(file.getOriginalFilename(), community.getId());
+//            }
+//        }
 
 
     }
@@ -79,7 +75,7 @@ public class CommunityService {
             List<Object> files = new ArrayList();
             for (String fileName : fileList) {
                 Map<String, Object> file = new HashMap<>();
-                String filePath = STR."C:/Temp/teamPrj1126/\{viewer.get("id").toString()}/\{fileName}";
+                String filePath = STR."\{imageSrcPrefix}/\{viewer.get("id").toString()}/\{fileName}";
                 file.put("fileName", fileName);
                 file.put("filePath", filePath);
                 files.add(file);
