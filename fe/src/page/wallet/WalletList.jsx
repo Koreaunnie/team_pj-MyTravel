@@ -344,7 +344,6 @@ function WalletList(props) {
               <tr
                 key={wallet.id}
                 onClick={() => navigate(`/wallet/view/${wallet.id}`)}
-                className={"pointer"}
                 className={checkedItems.has(wallet.id) ? "checked-row" : ""}
               >
                 <td>
