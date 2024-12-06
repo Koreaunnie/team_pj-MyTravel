@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import * as PortOne from "@portone/browser-sdk";
+// import * as PortOne from "@portone/browser-sdk";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Image } from "@chakra-ui/react";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
