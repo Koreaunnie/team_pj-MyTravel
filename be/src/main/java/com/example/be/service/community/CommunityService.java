@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -74,32 +75,18 @@ public class CommunityService {
         Community community = new Community();
         community.setId(id);
         Map<String, Object> viewer = mapper.viewCommunity(id);
-        System.out.println(mapper.viewCommunity(id));
-        // Map
         List<String> fileList = mapper.callCommunityFile(id);
-        System.out.println(mapper.callCommunityFile(id));
-        // List
-
-        System.out.println(fileList.size());
         if (fileList.size() != 0) {
+            List<String> filePathList = new ArrayList<>();
             for (String fileName : fileList) {
                 String filePath = STR."C:/Temp/teamPrj1126/\{viewer.get("id").toString()}/\{fileName}";
-                viewer.put("file_path", filePath);
-                return viewer;
-
+                filePathList.add(filePath);
             }
+            viewer.put("file_path", filePathList);
+            return viewer;
+        } else {
+            return viewer;
         }
-
-        return null;
-//        if (viewer.containsKey("file_name")) {
-//            String fileName = viewer.get("file_name").toString();
-//            String filePath = STR."C:/Temp/teamPrj1126/\{viewer.get("id").toString()}/\{fileName}";
-//            viewer.put("file_path", filePath);
-//            System.out.println(viewer);
-//            return viewer;
-//        } else {
-//            return viewer;
-//        }
     }
 
     public void edit(Community community) {
