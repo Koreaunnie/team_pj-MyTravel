@@ -139,8 +139,8 @@ public interface TourMapper {
   @Select("""
           SELECT *
           FROM tour
-          WHERE partnerEmail=#{partner}
+          WHERE partnerEmail=#{email}
           ORDER BY id DESC;    
           """)
-  List<Tour> myList(String partner, String partnerEmail);
+  List<Tour> myList(String email);
 }

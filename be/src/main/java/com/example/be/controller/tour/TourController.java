@@ -22,8 +22,12 @@ public class TourController {
   final MemberService memberService;
 
   @GetMapping("list/{email}")
-  public List<Tour> myList(@PathVariable String email, Authentication authentication) {
-    return service.myList(email, authentication);
+  public List<Tour> myList(@PathVariable String email, Authentication auth) {
+    if (memberService.hasAccess(email, auth)) {
+      return service.myList(email);
+    } else {
+      return null;
+    }
   }
 
   @PostMapping("cart")
