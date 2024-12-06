@@ -40,4 +40,10 @@ public interface CsMapper {
             WHERE id = #{id}
             """)
     int updateById(Inquiry inquiry);
+
+    @Delete("""
+            DELETE FROM inquiry
+            WHERE id = #{id}
+            """)
+    int deleteById(int id);
 }

@@ -151,7 +151,6 @@ const router = createBrowserRouter([
         path: "cs/inquiry/edit/:id",
         element: <InquiryEdit />,
       },
-
       // 회원 가입
       {
         path: "member/signup",

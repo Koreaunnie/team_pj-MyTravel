@@ -32,4 +32,9 @@ public class CsController {
     public void edit(@RequestBody Inquiry inquiry) {
         service.update(inquiry);
     }
+
+    @DeleteMapping("inquiry/delete/{id}")
+    public void delete(@PathVariable int id) {
+        service.delete(id);
+    }
 }

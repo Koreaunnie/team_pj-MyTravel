@@ -19,6 +19,13 @@ function InquiryView(props) {
     return <Spinner />;
   }
 
+  const handleDeleteButton = () => {
+    axios.delete(`/api/cs/inquiry/delete/${id}`).then((res) => {
+      navigate("/cs/inquiry/list");
+      alert("문의 글이 삭제되었습니다.");
+    });
+  };
+
   return (
     <div className={"inquiry"}>
       <Breadcrumb
@@ -44,7 +51,11 @@ function InquiryView(props) {
             수정
           </button>
 
-          <button type={"button"} className={"btn btn-warning"}>
+          <button
+            type={"button"}
+            className={"btn btn-warning"}
+            onClick={handleDeleteButton}
+          >
             삭제
           </button>
         </div>

@@ -30,4 +30,8 @@ public class CsService {
     public void update(Inquiry inquiry) {
         mapper.updateById(inquiry);
     }
+
+    public void delete(int id) {
+        mapper.deleteById(id);
+    }
 }
