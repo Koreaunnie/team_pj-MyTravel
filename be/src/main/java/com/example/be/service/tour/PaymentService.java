@@ -17,24 +17,22 @@ import java.util.stream.Collectors;
 public class PaymentService {
   final PaymentMapper mapper;
 
-  public void add(Payment payment) {
-    mapper.insertPayment(payment);
+  public boolean add(Payment payment) {
+    int cnt;
+    cnt = mapper.insertPayment(payment);
 
     //넘어온 tour를 하나씩 payment_detail에 추가
-    System.out.println(payment.getTourList());
-
     Map<Integer, List<TourList>> groupedTours = payment.getTourList().stream()
             .collect(Collectors.groupingBy(TourList::getId));
 
     groupedTours.forEach((id, tours) -> {
-      System.out.println(id);
       for (TourList tour : tours) {
         mapper.insertDetails(payment.getPaymentId(), tour);
       }
 
     });
 
-
+    return cnt == 1;
   }
 
 

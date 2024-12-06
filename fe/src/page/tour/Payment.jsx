@@ -55,6 +55,7 @@ function Payment(props) {
 
     if (payment.code != null) {
       //실패 내용
+      console.log("결제 실패", payment.message);
       setWaitingPayment(false);
       setPaymentStatus({
         status: "FAILED",
@@ -64,47 +65,47 @@ function Payment(props) {
     }
 
     // payment/complete 엔드포인트 구현
-    try {
-      const response = await fetch(`/api/payment/payment`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        //paymentId와 주문정보를 서버에 전달
-        body: JSON.stringify({
-          tourList: tour,
-          paymentId,
-          amount: totalPrice(),
-          payMethod,
-          currency,
-          buyer: email,
-          //주문정보
-        }),
-      });
+    const response = await fetch(`/api/payment/payment`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      //paymentId와 주문정보를 서버에 전달
+      body: JSON.stringify({
+        tourList: tour,
+        paymentId,
+        amount: totalPrice(),
+        payMethod,
+        currency,
+        buyer: email,
+      }),
+    });
 
-      if (response.ok) {
-        const paymentComplete = await response.json();
-        setPaymentStatus({ status: paymentComplete.status });
-        if (paymentComplete.status === "SUCCESS") {
-          navigate(`/payment/complete`);
-        }
-        // console.log("Response Status:", response.status);
-        // console.log("Response Headers:", response.headers);
-        // const responseText = await response.text();
-        // console.log("Response Text:", responseText);
+    if (response.ok) {
+      let paymentComplete;
+      try {
+        paymentComplete = await response.json();
+      } catch (error) {
+        //안 되면 빈 객체 처리
+        console.warn("JSON 파싱 실패. 기본 처리 중: ", error.message);
+        paymentComplete = {};
+      }
+
+      console.log(paymentComplete.status);
+      if (paymentComplete.status === "SUCCESS") {
+        setPaymentStatus({ status: "SUCCESS" });
+        navigate(`/payment/complete`);
       } else {
         setPaymentStatus({
           status: "FAILED",
-          message: await response.text(),
+          message: "1 결제 실패" + paymentComplete.message,
         });
       }
-    } catch (error) {
+    } else {
       setPaymentStatus({
         status: "FAILED",
-        message: error.message,
+        message: (await response.text()) || "2 결제 처리 오류",
       });
-    } finally {
-      setWaitingPayment(false);
     }
   };
 
