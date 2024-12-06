@@ -22,4 +22,9 @@ public class CsController {
     public List<Inquiry> list() {
         return service.list();
     }
+
+    @GetMapping("inquiry/view/{id}")
+    public Inquiry list(@PathVariable int id) {
+        return service.get(id);
+    }
 }

@@ -21,4 +21,8 @@ public class CsService {
     public List<Inquiry> list() {
         return mapper.selectAll();
     }
+
+    public Inquiry get(int id) {
+        return mapper.selectById(id);
+    }
 }

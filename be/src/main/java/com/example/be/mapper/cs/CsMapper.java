@@ -25,4 +25,11 @@ public interface CsMapper {
             ORDER BY updated DESC
             """)
     List<Inquiry> selectAll();
+
+    @Select("""
+            SELECT *
+            FROM inquiry
+            WHERE id = #{id}
+            """)
+    Inquiry selectById(int id);
 }

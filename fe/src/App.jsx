@@ -143,9 +143,10 @@ const router = createBrowserRouter([
         element: <InquiryList />,
       },
       {
-        path: "cs/inquiry/view",
+        path: "cs/inquiry/view/:id",
         element: <InquiryView />,
       },
+
       // 회원 가입
       {
         path: "member/signup",

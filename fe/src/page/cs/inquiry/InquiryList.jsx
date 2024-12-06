@@ -40,7 +40,7 @@ function InquiryList(props) {
             {inquiryList.map((inquiry) => (
               <tr
                 key={inquiry.id}
-                onClick={() => navigate(`/inquiry/view/${id}`)}
+                onClick={() => navigate(`/cs/inquiry/view/${inquiry.id}`)}
               >
                 <th>{inquiry.id}</th>
                 <td>{inquiry.title}</td>
