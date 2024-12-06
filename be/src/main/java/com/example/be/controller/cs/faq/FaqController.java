@@ -3,10 +3,9 @@ package com.example.be.controller.cs.faq;
 import com.example.be.dto.cs.faq.Faq;
 import com.example.be.service.cs.faq.FaqService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,5 +16,10 @@ public class FaqController {
     @PostMapping("add")
     public void add(@RequestBody Faq faq) {
         service.add(faq);
+    }
+
+    @GetMapping("list")
+    public List<Faq> list() {
+        return service.list();
     }
 }

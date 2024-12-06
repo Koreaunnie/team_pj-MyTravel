@@ -32,7 +32,7 @@ function FaqAdd(props) {
         navigateToDepth1={() => navigate(`/cs/index`)}
         depth2={"자주 묻는 질문"}
         navigateToDepth2={() => navigate(`/cs/faq/list`)}
-        depth3={"문의글 작성"}
+        depth3={"작성"}
         navigateToDepth3={() => navigate(`/cs/faq/add`)}
       />
 

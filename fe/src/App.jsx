@@ -33,6 +33,7 @@ import InquiryView from "./page/cs/inquiry/InquiryView.jsx";
 import InquiryEdit from "./page/cs/inquiry/InquiryEdit.jsx";
 import CsIndex from "./page/cs/CsIndex.jsx";
 import FaqAdd from "./page/cs/faq/FaqAdd.jsx";
+import FaqList from "./page/cs/faq/FaqList.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -145,6 +146,10 @@ const router = createBrowserRouter([
       {
         path: "cs/faq/add",
         element: <FaqAdd />,
+      },
+      {
+        path: "cs/faq/list",
+        element: <FaqList />,
       },
       // 고객센터 > 문의 게시판
       {
