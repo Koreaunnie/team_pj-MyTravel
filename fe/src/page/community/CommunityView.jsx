@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import { Box, HStack, Input, Stack, Textarea } from "@chakra-ui/react";
+import { Box, HStack, Image, Input, Stack, Textarea } from "@chakra-ui/react";
 import { Field } from "../../components/ui/field.jsx";
 import { Button } from "../../components/ui/button.jsx";
 import {
@@ -13,6 +13,21 @@ import {
   DialogRoot,
   DialogTrigger,
 } from "../../components/ui/dialog.jsx";
+
+function ImageFileView({ files }) {
+  return (
+    <Box>
+      {files?.map((file) => (
+        <Image
+          key={file.fileName}
+          src={file.filePath}
+          border={"1px solid black"}
+          m={3}
+        />
+      ))}
+    </Box>
+  );
+}
 
 function CommunityView(props) {
   const { id } = useParams();
@@ -48,7 +63,7 @@ function CommunityView(props) {
             <Textarea value={community.content} />
           </Field>
           <Field label={"파일"} readOnly>
-            <Input value={community.file_path} />
+            <ImageFileView files={community.files} />
           </Field>
           <Field label={"작성자"} readOnly>
             <Input value={community.writer} />

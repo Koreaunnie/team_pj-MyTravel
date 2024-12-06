@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -72,17 +73,18 @@ public class CommunityService {
 
     public Map<String, Object> view(Integer id) {
 
-        Community community = new Community();
-        community.setId(id);
-        Map<String, Object> viewer = mapper.viewCommunity(id);
-        List<String> fileList = mapper.callCommunityFile(id);
+        Map<String, Object> viewer = mapper.viewCommunity(id); // 게시물 받아옴
+        List<String> fileList = mapper.callCommunityFile(id); // 게시물 사진파일 받아옴
         if (fileList.size() != 0) {
-            List<String> filePathList = new ArrayList<>();
+            Map<String, Object> file = new HashMap<>();
+            List<Object> files = new ArrayList();
             for (String fileName : fileList) {
                 String filePath = STR."C:/Temp/teamPrj1126/\{viewer.get("id").toString()}/\{fileName}";
-                filePathList.add(filePath);
+                file.put("fileName", fileName);
+                file.put("filePath", filePath);
+                files.add(file);
             }
-            viewer.put("file_path", filePathList);
+            viewer.put("files", files);
             return viewer;
         } else {
             return viewer;
