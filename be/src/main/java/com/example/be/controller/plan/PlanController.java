@@ -43,6 +43,12 @@ public class PlanController {
         return service.list(page, searchType, searchKeyword);
     }
 
+    // 내 여행 목록에서 상단 고정
+    @PutMapping("pinned/{id}")
+    public void pinned(@PathVariable int id) {
+        service.pinned(id);
+    }
+
     // 내 여행 세부사항
     @GetMapping("view/{id}")
     public Map<String, Object> view(@PathVariable int id) {

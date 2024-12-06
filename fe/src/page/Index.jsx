@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import "./Index.css";
+import { IoSearch } from "react-icons/io5";
 
 export function Index() {
+  const [search, setSearch] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
   const [planList, setPlanList] = useState([]); // Plan 리스트 상태
   const [tourList, setTourList] = useState([]); // Tour 리스트 상태
   const navigate = useNavigate();
 
   useEffect(() => {
-    // API 호출
     axios
       .get("/api/index")
       .then((res) => {
-        // API 결과를 각각의 상태로 설정
         setPlanList(res.data.plans);
         setTourList(res.data.tours);
       })
@@ -22,20 +23,56 @@ export function Index() {
       });
   }, []);
 
+  useEffect(() => {
+    const nextSearch = { ...search };
+
+    if (searchParams.get("keyword")) {
+      nextSearch.keyword = searchParams.get("keyword");
+    } else {
+      nextSearch.keyword = "";
+    }
+    setSearch(nextSearch);
+  }, [searchParams]);
+
   const isEmpty = (list) => {
     return list.length === 0;
   };
 
+  function handleSearchButton() {
+    const nextSearchParam = new URLSearchParams(searchParams);
+
+    if (search.keyword.trim().length > 0) {
+      // 검색
+      nextSearchParam.set("keyword", search.keyword);
+
+      setSearchParams(nextSearchParam);
+    } else {
+      // 검색 안 함
+      nextSearchParam.delete("keyword");
+
+      setSearchParams(nextSearchParam);
+    }
+  }
+
   return (
-    <div className={"body"}>
+    <div className={"body-wide"}>
       {/* 검색 영역 */}
-      <div className={"search-form-input section-search"}>
-        <input type="text" placeholder={"어디로 떠나고 싶은가요?"} />
-        <button className={"btn-search btn-dark"}>검색</button>
-      </div>
+      <section className={"main-search-wrap"}>
+        <input
+          type="search"
+          placeholder={"어디로 떠나고 싶은가요?"}
+          value={search.keyword}
+          onChange={(e) =>
+            setSearch({ ...search, keyword: e.target.value.trim() })
+          }
+        />
+        <button className={"main-search-wrap-btn"} onClick={handleSearchButton}>
+          <IoSearch />
+        </button>
+      </section>
 
       {/* 내 여행 섹션 */}
-      <section>
+      <section className={"main-section-wrap"}>
         <div className={"section-header"}>
           <h2>내 여행</h2>
           <button className={"more-btn"} onClick={() => navigate(`/plan/list`)}>
@@ -61,7 +98,7 @@ export function Index() {
                   <h3>{plan.title}</h3>
                   <ul className={"list-item"}>
                     <li className={"description"}>{plan.description}</li>
-                    <li className={"destination"}>{plan.destination}</li>
+                    <li className={"location"}>{plan.destination}</li>
                     <li className={"period"}>
                       {plan.startDate} ~ {plan.endDate}
                     </li>
@@ -74,7 +111,7 @@ export function Index() {
       </section>
 
       {/* 투어 섹션 */}
-      <section>
+      <section className={"main-section-wrap"}>
         <div className={"section-header"}>
           <h2>투어 목록</h2>
           <button className={"more-btn"} onClick={() => navigate(`/tour/list`)}>
@@ -111,35 +148,41 @@ export function Index() {
       </section>
 
       {/* 커뮤니티 섹션 */}
-      <section>
+      <section className={"main-section-wrap"}>
         <div className={"section-header"}>
           <h2>커뮤니티</h2>
-          <button
-            className={"more-btn"}
-            onClick={() => navigate(`/community/list`)}
-          >
+          <button className={"more-btn"} onClick={() => navigate(`/plan/list`)}>
             더보기
           </button>
         </div>
 
         <div className={"section-body"}>
-          <ul className={"section-body-list"}>
-            {planList.map((plan) => (
-              <li
-                key={plan.id}
-                onClick={() => navigate(`/plan/view/${plan.id}`)}
-              >
-                <h3>{plan.title}</h3>
-                <ul className={"list-item"}>
-                  <li className={"description"}>{plan.description}</li>
-                  <li className={"destination"}>{plan.destination}</li>
-                  <li className={"period"}>
-                    {plan.startDate} ~ {plan.endDate}
-                  </li>
-                </ul>
-              </li>
-            ))}
-          </ul>
+          {isEmpty(planList) ? (
+            <div className={"empty-container"}>
+              <p className={"empty-container-title"}>여행 계획이 없습니다.</p>
+              <p className={"empty-container-description"}>
+                새로운 계획을 추가해보세요!
+              </p>
+            </div>
+          ) : (
+            <ul className={"section-body-list"}>
+              {planList.map((plan) => (
+                <li
+                  key={plan.id}
+                  onClick={() => navigate(`/plan/view/${plan.id}`)}
+                >
+                  <h3>{plan.title}</h3>
+                  <ul className={"list-item"}>
+                    <li className={"description"}>{plan.description}</li>
+                    <li className={"location"}>{plan.destination}</li>
+                    <li className={"period"}>
+                      {plan.startDate} ~ {plan.endDate}
+                    </li>
+                  </ul>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </section>
     </div>

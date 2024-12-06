@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { Spinner } from "@chakra-ui/react";
+import { Modal } from "/src/components/root/Modal.jsx";
+import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 
 function PlanEdit(props) {
   const { id } = useParams();
@@ -80,234 +82,191 @@ function PlanEdit(props) {
       .finally();
   }
 
-  const closeModal = () => {
-    setBackToListModalOpen(false);
-    setSaveModalOpen(false);
-  };
-
   return (
-    <div className={"body"}>
-      <div className={"btn-wrap"}>
-        <button
-          className={"btn btn-dark-outline"}
-          onClick={() => setBackToListModalOpen(true)}
-        >
-          목록
-        </button>
+    <div className={"plan"}>
+      <Breadcrumb
+        depth1={"내 여행"}
+        navigateToDepth1={() => navigate(`/plan/list`)}
+        depth2={"수정"}
+        navigateToDepth2={() => navigate(`/plan/edit/${id}`)}
+      />
 
-        <button
-          className={"btn btn-dark"}
-          onClick={() => setSaveModalOpen(true)}
-        >
-          저장
-        </button>
-      </div>
+      <div className={"body-normal"}>
+        <div className={"btn-wrap"}>
+          <button
+            className={"btn btn-dark-outline"}
+            onClick={() => setBackToListModalOpen(true)}
+          >
+            목록
+          </button>
 
-      <h1>일정 수정</h1>
+          <button
+            className={"btn btn-dark"}
+            onClick={() => setSaveModalOpen(true)}
+          >
+            저장
+          </button>
+        </div>
 
-      <form className={"plan-container"}>
-        <fieldset className={"plan-header"}>
-          <ul className={"title"}>
-            <li>
-              <label htmlFor="title">여행명</label>
-              <input
-                type="text"
-                id="name"
-                size="50"
-                value={plan.title}
-                onChange={(e) => setPlan({ ...plan, title: e.target.value })}
-              />
-            </li>
+        <h1>일정 수정</h1>
 
-            <li>
-              <label htmlFor="description">설명</label>
-              <input
-                type="text"
-                id="description"
-                size="100"
-                value={plan.description}
-                onChange={(e) =>
-                  setPlan({ ...plan, description: e.target.value })
-                }
-              />
-            </li>
+        <form className={"plan-container"}>
+          <fieldset className={"plan-header"}>
+            <ul className={"title"}>
+              <li>
+                <label htmlFor="title">여행명</label>
+                <input
+                  type="text"
+                  id="name"
+                  size="50"
+                  value={plan.title}
+                  onChange={(e) => setPlan({ ...plan, title: e.target.value })}
+                />
+              </li>
 
-            <li>
-              <label htmlFor="destination">여행지</label>
-              <input
-                type="text"
-                id="destination"
-                size="20"
-                placeholder="어디로 떠나시나요?"
-                value={plan.destination}
-                onChange={
-                  (e) => setPlan({ ...plan, destination: e.target.value }) // plan.destination만 변경
-                }
-              />
-            </li>
-          </ul>
+              <li>
+                <label htmlFor="description">설명</label>
+                <input
+                  type="text"
+                  id="description"
+                  size="100"
+                  value={plan.description}
+                  onChange={(e) =>
+                    setPlan({ ...plan, description: e.target.value })
+                  }
+                />
+              </li>
 
-          <ul className={"period"}>
-            <li>
-              <label htmlFor="startDate">시작일</label>
-              <input
-                type="date"
-                id="startDate"
-                value={plan.startDate}
-                onChange={
-                  (e) => setPlan({ ...plan, startDate: e.target.value }) // plan.destination만 변경
-                }
-              />
-            </li>
-            <li>
-              <label htmlFor="endDate">종료일</label>
-              <input
-                type="date"
-                id="endDate"
-                value={plan.endDate}
-                onChange={
-                  (e) => setPlan({ ...plan, endDate: e.target.value }) // plan.destination만 변경
-                }
-              />
-            </li>
-          </ul>
-        </fieldset>
+              <li>
+                <label htmlFor="destination">여행지</label>
+                <input
+                  type="text"
+                  id="destination"
+                  size="20"
+                  placeholder="어디로 떠나시나요?"
+                  value={plan.destination}
+                  onChange={
+                    (e) => setPlan({ ...plan, destination: e.target.value }) // plan.destination만 변경
+                  }
+                />
+              </li>
+            </ul>
 
-        <fieldset className={"plan-body"}>
-          {planFields.map((field, index) => (
-            <div key={index}>
-              <label htmlFor="date">날짜</label>
-              <input
-                name="date"
-                type="date"
-                value={field.date}
-                onChange={(e) =>
-                  handleFieldChange(index, "date", e.target.value)
-                }
-              />
+            <ul className={"period"}>
+              <li>
+                <label htmlFor="startDate">시작일</label>
+                <input
+                  type="date"
+                  id="startDate"
+                  value={plan.startDate}
+                  onChange={
+                    (e) => setPlan({ ...plan, startDate: e.target.value }) // plan.destination만 변경
+                  }
+                />
+              </li>
+              <li>
+                <label htmlFor="endDate">종료일</label>
+                <input
+                  type="date"
+                  id="endDate"
+                  value={plan.endDate}
+                  onChange={
+                    (e) => setPlan({ ...plan, endDate: e.target.value }) // plan.destination만 변경
+                  }
+                />
+              </li>
+            </ul>
+          </fieldset>
 
-              <label htmlFor="time">시간</label>
-              <input
-                name="time"
-                type="time"
-                value={field.time}
-                onChange={(e) =>
-                  handleFieldChange(index, "time", e.target.value)
-                }
-              />
+          <fieldset className={"plan-body"}>
+            {planFields.map((field, index) => (
+              <div key={index}>
+                <label htmlFor="date">날짜</label>
+                <input
+                  name="date"
+                  type="date"
+                  value={field.date}
+                  onChange={(e) =>
+                    handleFieldChange(index, "date", e.target.value)
+                  }
+                />
 
-              <label htmlFor="schedule">일정명</label>
-              <input
-                name="schedule"
-                value={field.schedule}
-                onChange={(e) =>
-                  handleFieldChange(index, "schedule", e.target.value)
-                }
-              />
+                <label htmlFor="time">시간</label>
+                <input
+                  name="time"
+                  type="time"
+                  value={field.time}
+                  onChange={(e) =>
+                    handleFieldChange(index, "time", e.target.value)
+                  }
+                />
 
-              <label htmlFor="location">장소</label>
-              <input
-                name="location"
-                value={field.place}
-                onChange={(e) =>
-                  handleFieldChange(index, "place", e.target.value)
-                }
-              />
+                <label htmlFor="schedule">일정명</label>
+                <input
+                  name="schedule"
+                  value={field.schedule}
+                  onChange={(e) =>
+                    handleFieldChange(index, "schedule", e.target.value)
+                  }
+                />
 
-              <label htmlFor="memo">메모</label>
-              <textarea
-                name="memo"
-                value={field.memo}
-                onChange={(e) =>
-                  handleFieldChange(index, "memo", e.target.value)
-                }
-              />
+                <label htmlFor="location">장소</label>
+                <input
+                  name="location"
+                  value={field.place}
+                  onChange={(e) =>
+                    handleFieldChange(index, "place", e.target.value)
+                  }
+                />
 
-              <div className={"btn-wrap"}>
-                <button
-                  className={"btn btn-dark"}
-                  type="button"
-                  onClick={handleAddField}
-                >
-                  +
-                </button>
-                <button
-                  className={"btn btn-dark"}
-                  type="button"
-                  onClick={() => handleDeleteField(index)}
-                >
-                  -
-                </button>
+                <label htmlFor="memo">메모</label>
+                <textarea
+                  name="memo"
+                  value={field.memo}
+                  onChange={(e) =>
+                    handleFieldChange(index, "memo", e.target.value)
+                  }
+                />
+
+                <div className={"btn-wrap"}>
+                  <button
+                    className={"btn btn-dark"}
+                    type="button"
+                    onClick={handleAddField}
+                  >
+                    +
+                  </button>
+                  <button
+                    className={"btn btn-dark"}
+                    type="button"
+                    onClick={() => handleDeleteField(index)}
+                  >
+                    -
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
-        </fieldset>
-      </form>
+            ))}
+          </fieldset>
+        </form>
 
-      {/* 목록 modal */}
-      {backToListModalOpen && (
-        <div className={"modal"}>
-          <div className={"modal-content"}>
-            <div className={"modal-header"}>
-              <button
-                className="close"
-                onClick={closeModal}
-                aria-label="모달 닫기"
-              >
-                &times;
-              </button>
-            </div>
+        {/* 목록 modal */}
+        <Modal
+          isOpen={backToListModalOpen}
+          onClose={() => setBackToListModalOpen(false)}
+          onConfirm={() => navigate(`/plan/list`)}
+          message="목록으로 돌아가면 작성한 내용이 사라집니다."
+          buttonMessage="목록"
+        />
 
-            <div className={"modal-body"}>
-              <p>목록으로 돌아가시겠습니까?</p>
-            </div>
-
-            <div className={"modal-footer btn-wrap"}>
-              <button className={"btn btn-dark-outline"} onClick={closeModal}>
-                닫기
-              </button>
-
-              <button
-                className={"btn btn-dark"}
-                onClick={() => navigate(`/plan/list`)}
-              >
-                목록
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* 저장 modal */}
-      {saveModalOpen && (
-        <div className={"modal"}>
-          <div className={"modal-content"}>
-            <div className={"modal-header"}>
-              <button
-                className="close"
-                onClick={closeModal}
-                aria-label="모달 닫기"
-              >
-                &times;
-              </button>
-            </div>
-
-            <div className={"modal-body"}>
-              <p>여행을 저장하시겠습니까?</p>
-            </div>
-
-            <div className={"modal-footer btn-wrap"}>
-              <button className={"btn btn-dark-outline"} onClick={closeModal}>
-                닫기
-              </button>
-
-              <button className={"btn btn-dark"} onClick={handleSaveButton}>
-                저장
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+        {/* 저장 modal */}
+        <Modal
+          isOpen={saveModalOpen}
+          onClose={() => setSaveModalOpen(false)}
+          onConfirm={handleSaveButton}
+          message="여행을 저장하시겠습니까?"
+          buttonMessage="저장"
+        />
+      </div>
     </div>
   );
 }

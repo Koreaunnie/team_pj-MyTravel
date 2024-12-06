@@ -1,0 +1,40 @@
+/*------------------- MemberSignup, MemberLogin -------------------*/
+.member-form {
+    margin: 20px auto 40px auto;
+}
+
+.member-form ul li {
+    margin-bottom: 15px;
+}
+
+.move-to-button {
+    display: flex;
+    justify-content: center;
+    color: var(--font-gray-color);
+    margin: 15px auto;
+}
+
+.move-to-button .link {
+    color: #000;
+    font-weight: bold;
+    margin-left: 10px;
+    text-decoration-line: underline;
+    cursor: pointer;
+}
+
+/*------------------- MemberSignup -------------------*/
+
+.check-form input[type=text], .check-form input[type=email] {
+    width: calc(100% - 85px);
+}
+
+/*------------------- 화면 크기가 768px 이하 (태블릿 화면) -------------------*/
+@media (max-width: 768px) {
+
+}
+
+/*------------------- 화면 크기가 480px 이하 (모바일 화면) -------------------*/
+@media (max-width: 480px) {
+
+
+}

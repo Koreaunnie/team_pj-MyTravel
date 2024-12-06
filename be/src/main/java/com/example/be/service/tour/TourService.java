@@ -198,10 +198,10 @@ public class TourService {
     return tour.getPartnerEmail().equals(authentication.getName());
   }
 
-  // 메인 화면에 필요한 일부 tour 리스트 가져오기
-  public List<Tour> getMainPageTours() {
-    return mapper.getTop4ByOrderByInserted();
-  }
+    // 메인 화면에 필요한 일부 tour 리스트 가져오기
+    public List<Tour> getMainPageTours(String keyword) {
+        return mapper.getTop4ByOrderByInserted();
+    }
 
   public List<Tour> myList(String email) {
     return mapper.myList(email);

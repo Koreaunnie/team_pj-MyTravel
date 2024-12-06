@@ -6,7 +6,7 @@ export function RootLayout() {
   return (
     <Stack>
       <Navbar />
-      <Stack marginTop="180px">
+      <Stack marginTop="65px">
         <Outlet />
       </Stack>
     </Stack>

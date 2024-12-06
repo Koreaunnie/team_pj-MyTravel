@@ -27,6 +27,15 @@ import AuthenticationProvider from "./components/context/AuthenticationProvider.
 import React from "react";
 import Payment from "./page/tour/Payment.jsx";
 import MyPage from "./page/member/MyPage.jsx";
+import InquiryAdd from "./page/cs/inquiry/InquiryAdd.jsx";
+import InquiryList from "./page/cs/inquiry/InquiryList.jsx";
+import InquiryView from "./page/cs/inquiry/InquiryView.jsx";
+import InquiryEdit from "./page/cs/inquiry/InquiryEdit.jsx";
+import CsIndex from "./page/cs/CsIndex.jsx";
+import FaqAdd from "./page/cs/faq/FaqAdd.jsx";
+import FaqList from "./page/cs/faq/FaqList.jsx";
+import FaqEdit from "./page/cs/faq/FaqEdit.jsx";
+import FaqView from "./page/cs/faq/FaqView.jsx";
 import PaymentComplete from "./page/tour/PaymentComplete.jsx";
 import TourMyList from "./page/tour/TourMyList.jsx";
 import PaymentHistory from "./page/tour/PaymentHistory.jsx";
@@ -144,6 +153,45 @@ const router = createBrowserRouter([
       {
         path: "community/edit/:id",
         element: <CommunityEdit />,
+      },
+      // 고객센터
+      {
+        path: "cs/index",
+        element: <CsIndex />,
+      },
+      // 고객센터 > 자주 묻는 질문
+      {
+        path: "cs/faq/add",
+        element: <FaqAdd />,
+      },
+      {
+        path: "cs/faq/list",
+        element: <FaqList />,
+      },
+      {
+        path: "cs/faq/view/:id",
+        element: <FaqView />,
+      },
+      {
+        path: "cs/faq/edit/:id",
+        element: <FaqEdit />,
+      },
+      // 고객센터 > 문의 게시판
+      {
+        path: "cs/inquiry/add",
+        element: <InquiryAdd />,
+      },
+      {
+        path: "cs/inquiry/list",
+        element: <InquiryList />,
+      },
+      {
+        path: "cs/inquiry/view/:id",
+        element: <InquiryView />,
+      },
+      {
+        path: "cs/inquiry/edit/:id",
+        element: <InquiryEdit />,
       },
       // 회원 가입
       {

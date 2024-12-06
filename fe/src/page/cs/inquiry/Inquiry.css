@@ -1,0 +1,30 @@
+/*------------------- InquiryView -------------------*/
+.inquiry .table-view .thead-sub-title {
+    height: 30px;
+}
+
+.inquiry .table-view .thead-sub-title th {
+    font-weight: normal;
+}
+
+.inquiry .table-view .thead-sub-title th:first-child {
+    text-align: left;
+    padding: 0 30px;
+}
+
+.inquiry .table-view .thead-sub-title th:last-child {
+    text-align: right;
+    padding: 0 30px;
+}
+
+/*------------------- 화면 크기가 768px 이하 (태블릿 화면) -------------------*/
+@media (max-width: 768px) {
+
+}
+
+/*------------------- 화면 크기가 480px 이하 (모바일 화면) -------------------*/
+@media (max-width: 480px) {
+
+}
+
+

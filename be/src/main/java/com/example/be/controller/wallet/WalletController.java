@@ -64,4 +64,11 @@ public class WalletController {
     public void delete(@PathVariable int id) {
         service.delete(id);
     }
+
+    // 내 지갑 내용 추가 / 수정 시 카테고리 목록 반환
+    @GetMapping("categories")
+    public ResponseEntity<List<String>> getCategories() {
+        List<String> categories = service.getCategories();
+        return ResponseEntity.ok(categories);
+    }
 }
