@@ -25,7 +25,7 @@ import WalletEdit from "./page/wallet/WalletEdit.jsx";
 import CartList from "./page/tour/CartList.jsx";
 import AuthenticationProvider from "./components/context/AuthenticationProvider.jsx";
 import React from "react";
-import Payment from "./page/tour/payment.jsx";
+import Payment from "./page/tour/Payment.jsx";
 import MyPage from "./page/member/MyPage.jsx";
 import InquiryAdd from "./page/cs/inquiry/InquiryAdd.jsx";
 import InquiryList from "./page/cs/inquiry/InquiryList.jsx";
@@ -36,6 +36,9 @@ import FaqAdd from "./page/cs/faq/FaqAdd.jsx";
 import FaqList from "./page/cs/faq/FaqList.jsx";
 import FaqEdit from "./page/cs/faq/FaqEdit.jsx";
 import FaqView from "./page/cs/faq/FaqView.jsx";
+import PaymentComplete from "./page/tour/PaymentComplete.jsx";
+import TourMyList from "./page/tour/TourMyList.jsx";
+import PaymentHistory from "./page/tour/PaymentHistory.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -101,6 +104,10 @@ const router = createBrowserRouter([
         element: <TourList />,
       },
       {
+        path: "tour/list/:email",
+        element: <TourMyList />,
+      },
+      {
         path: "tour/add",
         element: <TourAdd />,
       },
@@ -121,6 +128,14 @@ const router = createBrowserRouter([
       {
         path: "payment",
         element: <Payment />,
+      },
+      {
+        path: "payment/complete",
+        element: <PaymentComplete />,
+      },
+      {
+        path: "payment/history/:email",
+        element: <PaymentHistory />,
       },
       // 커뮤니티
       {

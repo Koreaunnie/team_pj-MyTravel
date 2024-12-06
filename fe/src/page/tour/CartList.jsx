@@ -60,9 +60,15 @@ function CartList() {
   }
 
   function handlePayButton() {
-    //선택한 항목이 있다면 결제창으로
-    //checkList 정보도 결제창으로 넘겨야 함
-    //선택한 항목이 없다면 안내멘트
+    if (checkedList.length === 0) {
+      toaster.create({
+        type: "error",
+        description: "결제할 항목을 선택해 주세요.",
+      });
+      return;
+    }
+    //창 이동 + 정보 전달
+    navigate(`/payment`, { state: { tour: checkedList } });
   }
 
   // checkedList의 price 합산 함수
@@ -105,8 +111,8 @@ function CartList() {
           <p>장바구니가 비어 있습니다.</p>
         ) : (
           <table className={"table-list"}>
-            {cartList.map((cart) => (
-              <tbody>
+            <tbody>
+              {cartList.map((cart) => (
                 <tr key={cart.id} onClick={() => handleRowClick(cart.id)}>
                   <td>
                     <input
@@ -139,8 +145,8 @@ function CartList() {
                     삭제
                   </button>
                 </tr>
-              </tbody>
-            ))}
+              ))}
+            </tbody>
           </table>
         )}
       </div>
@@ -172,15 +178,7 @@ function CartList() {
             </tbody>
           </table>
         </form>
-        <button
-          className={"btn btn-dark"}
-          onClick={() => {
-            handlePayButton;
-            if (calculateTotalPrice() != 0) {
-              navigate(`/payment`);
-            }
-          }}
-        >
+        <button className={"btn btn-dark"} onClick={handlePayButton}>
           총 {calculateTotalPrice()}원 결제
         </button>
         <button className={"btn btn-warning"} onClick={handleDeleteAll}>
