@@ -55,10 +55,10 @@ function InquiryList(props) {
                 key={inquiry.id}
                 onClick={() => navigate(`/cs/inquiry/view/${inquiry.id}`)}
               >
-                <th>{inquiry.id}</th>
+                <td>{inquiry.id}</td>
                 <td>{inquiry.title}</td>
                 <td>{inquiry.writer}</td>
-                <td>{inquiry.inserted}</td>
+                <td>{inquiry.updated}</td>
               </tr>
             ))}
           </tbody>
