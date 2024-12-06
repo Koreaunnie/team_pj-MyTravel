@@ -1,9 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import { Breadcrumb } from "/src/components/root/Breadcrumb.jsx";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function InquiryAdd(props) {
+  const [category, setCategory] = useState("plan");
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [files, setFiles] = useState(null);
+  const [secret, setSecret] = useState(false);
+
   const navigate = useNavigate();
+
+  const handleSaveButton = () => {
+    axios
+      .postForm("/api/cs/inquiry/add", {
+        category,
+        title,
+        content,
+        secret,
+      })
+      .then((res) => {
+        res.data;
+        console.log(title);
+      })
+      .catch()
+      .finally();
+  };
 
   return (
     <div className={"cs"}>
@@ -17,12 +40,12 @@ function InquiryAdd(props) {
       />
 
       <div className={"body-normal"}>
-        <form action="">
+        <div>
           <fieldset>
             <ul>
               <li>
                 <label htmlFor="category">문의 유형</label>
-                <select name="" id="category">
+                <select id="category" value={category}>
                   <option value="plan">내 여행 문의</option>
                   <option value="wallet">내 지갑 문의</option>
                   <option value="tour">투어 문의</option>
@@ -32,28 +55,49 @@ function InquiryAdd(props) {
 
               <li>
                 <label htmlFor="title">제목</label>
-                <input type="text" id={"title"} required maxLength={"100"} />
+                <input
+                  type="text"
+                  id={"title"}
+                  required
+                  maxLength={100}
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
               </li>
 
               <li>
                 <label htmlFor="content">문의 사항</label>
-                <textarea id={"content"} />
+                <textarea
+                  id={"content"}
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                />
               </li>
 
               <li>
                 <label htmlFor="file">첨부파일</label>
-                <input type="file" />
+                <input
+                  type="file"
+                  onChange={(e) => setFile(e.target.files[0])}
+                />
               </li>
 
               <li>
-                <input type="checkbox" id={"secret"} />
+                <input
+                  type="checkbox"
+                  id={"secret"}
+                  value={secret}
+                  onChange={(e) => setSecret(e.target.checked)}
+                />
                 <label htmlFor="secret">비밀글 설정</label>
               </li>
             </ul>
           </fieldset>
 
-          <button className={"btn btn-dark"}>저장</button>
-        </form>
+          <button className={"btn btn-dark"} onClick={handleSaveButton}>
+            저장
+          </button>
+        </div>
       </div>
     </div>
   );
