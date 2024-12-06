@@ -1,20 +1,42 @@
 import React, { useEffect, useState } from "react";
-import { Box, HStack, Input, Stack, Table } from "@chakra-ui/react";
+import {
+  Box,
+  createListCollection,
+  HStack,
+  Input,
+  Stack,
+  Table,
+} from "@chakra-ui/react";
 import { Button } from "../../components/ui/button.jsx";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import {
+  PaginationItems,
+  PaginationNextTrigger,
+  PaginationPrevTrigger,
+  PaginationRoot,
+} from "../../components/ui/pagination.jsx";
+import {
+  SelectContent,
+  SelectItem,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+} from "../../components/ui/select.jsx";
 
 function CommunityList(props) {
   const [community, setCommunity] = useState([]);
-  // const number = useParams();
-  // const [communityList, setCommunityList] = useState([]);
+  const [search, setSearch] = useState({ type: "all", keyword: "" });
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  console.log("검색조건", search);
 
   useEffect(() => {
-    axios.get(`/api/community/list`).then((res) => {
+    axios.get(`/api/community/list?${searchParams.toString()}`).then((res) => {
       setCommunity(res.data);
     });
-  }, []);
+  }, [searchParams]);
 
   function handleWriteClick() {
     navigate(`/community/write`);
@@ -23,6 +45,28 @@ function CommunityList(props) {
   function handleViewClick(id) {
     navigate(`/community/view/${id}`);
   }
+
+  function handleSearchClick() {
+    const searchInfo = { type: search.type, keyword: search.keyword };
+    const searchQuery = new URLSearchParams(searchInfo);
+    navigate(`/community/list?${searchQuery.toString()}`);
+  }
+
+  function handlePageChangeClick(e) {
+    const pageNumber = { page: e.page };
+    const pageQuery = new URLSearchParams(pageNumber);
+    // const pageURL = new URL(`http://localhost:5173/community/list?${pageQuery.toString()}`);
+    navigate(`/community/list?${pageQuery.toString()}`);
+  }
+
+  const optionList = createListCollection({
+    items: [
+      { label: "전체", value: "all" },
+      { label: "제목", value: "title" },
+      { label: "본문", value: "content" },
+      { label: "작성자", value: "writer" },
+    ],
+  });
 
   return (
     <div>
@@ -55,14 +99,54 @@ function CommunityList(props) {
           <HStack>
             <Box>
               <HStack>
-                <Input w={300} />
-                <Button>검색</Button>
+                <SelectRoot
+                  collection={optionList}
+                  defaultValue={["all"]}
+                  onChange={(oc) =>
+                    setSearch({ ...search, type: oc.target.value })
+                  }
+                  size="sm"
+                  width="130px"
+                >
+                  <SelectTrigger>
+                    <SelectValueText />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {optionList.items.map((option) => (
+                      <SelectItem item={option} key={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </SelectRoot>
+                <Input
+                  w={300}
+                  value={search.keyword}
+                  onChange={(e) =>
+                    setSearch({ ...search, keyword: e.target.value })
+                  }
+                />
+                <Button onClick={handleSearchClick}>검색</Button>
               </HStack>
             </Box>
             <Button onClick={handleWriteClick}>글 쓰기</Button>
           </HStack>
         </Box>
-        // TODO : 페이지네이션 추가
+        <Box>
+          <PaginationRoot
+            count={20}
+            pageSize={10}
+            defaultPage={1}
+            onPageChange={handlePageChangeClick}
+            siblingCount={2}
+          >
+            <HStack>
+              <PaginationPrevTrigger />
+              <PaginationItems />
+              <PaginationNextTrigger />
+            </HStack>
+          </PaginationRoot>
+        </Box>
       </Stack>
     </div>
   );
