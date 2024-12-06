@@ -67,6 +67,7 @@ function CartList() {
       });
       return;
     }
+    //창 이동 + 정보 전달
     navigate(`/payment`, { state: { tour: checkedList } });
   }
 

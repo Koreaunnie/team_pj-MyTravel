@@ -42,13 +42,14 @@ function Payment(props) {
     const paymentId = randomId();
     const currency = "CURRENCY_KRW";
     const payMethod = "EASY_PAY";
+    const totalAmount = totalPrice();
 
     const payment = await PortOne.requestPayment({
       storeId: "store-e9111bf4-6996-4a6c-ac48-58b9ee8f9c43",
       channelKey: "channel-key-b42ef11e-6046-4851-8610-45af77d2ff86",
       paymentId,
       orderName: tour[0].product + " 그 외",
-      totalAmount: totalPrice(),
+      totalAmount,
       currency,
       payMethod,
     });
@@ -74,7 +75,7 @@ function Payment(props) {
       body: JSON.stringify({
         tourList: tour,
         paymentId,
-        amount: totalPrice(),
+        amount: totalAmount,
         payMethod,
         currency,
         buyer: email,
@@ -82,19 +83,17 @@ function Payment(props) {
     });
 
     if (response.ok) {
-      let paymentComplete;
-      try {
-        paymentComplete = await response.json();
-      } catch (error) {
-        //안 되면 빈 객체 처리
-        console.warn("JSON 파싱 실패. 기본 처리 중: ", error.message);
-        paymentComplete = {};
-      }
+      const paymentComplete = await response.json();
 
-      console.log(paymentComplete.status);
       if (paymentComplete.status === "SUCCESS") {
         setPaymentStatus({ status: "SUCCESS" });
-        navigate(`/payment/complete`);
+        navigate(`/payment/complete`, {
+          state: {
+            paidList: tour,
+            paymentId,
+            totalAmount,
+          },
+        });
       } else {
         setPaymentStatus({
           status: "FAILED",
