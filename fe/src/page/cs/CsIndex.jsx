@@ -1,10 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import { useNavigate } from "react-router-dom";
 import "./CsIndex.css";
+import { Spinner } from "@chakra-ui/react";
+import axios from "axios";
 
 function CsIndex(props) {
+  const [inquiryList, setInquiryList] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    axios.get("/api/cs/index").then((res) => setInquiryList(res.data));
+  }, []);
+
+  if (!inquiryList || inquiryList.length === 0) {
+    return <Spinner />;
+  }
 
   return (
     <div className={"cs"}>
@@ -61,6 +72,18 @@ function CsIndex(props) {
               >
                 더 보기
               </button>
+
+              <ul>
+                {inquiryList.map((inquiry) => (
+                  <li
+                    key={inquiry.id}
+                    onClick={() => navigate(`/cs/inquiry/view/${inquiry.id}`)}
+                  >
+                    {inquiry.title}
+                    <span>{inquiry.date}</span>
+                  </li>
+                ))}
+              </ul>
             </section>
 
             <section className={"tel-container"}>

@@ -1,21 +1,20 @@
-package com.example.be.service.cs;
+package com.example.be.service.cs.inquiry;
 
 import com.example.be.dto.cs.inquiry.Inquiry;
-import com.example.be.mapper.cs.CsMapper;
+import com.example.be.mapper.cs.inquiry.InquiryMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class CsService {
-    final CsMapper mapper;
+public class InquiryService {
+    final InquiryMapper mapper;
 
-    public Map<String, Object> getInquiry() {
+    public List<Inquiry> getInquiry() {
         return mapper.selectInquiryForIndex();
     }
 
@@ -30,8 +29,7 @@ public class CsService {
     public Inquiry get(int id) {
         return mapper.selectById(id);
     }
-
-
+    
     public void update(Inquiry inquiry) {
         mapper.updateById(inquiry);
     }
@@ -39,6 +37,4 @@ public class CsService {
     public void delete(int id) {
         mapper.deleteById(id);
     }
-
-
 }

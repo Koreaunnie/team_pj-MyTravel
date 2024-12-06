@@ -1,13 +1,12 @@
-package com.example.be.mapper.cs;
+package com.example.be.mapper.cs.inquiry;
 
 import com.example.be.dto.cs.inquiry.Inquiry;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
-import java.util.Map;
 
 @Mapper
-public interface CsMapper {
+public interface InquiryMapper {
 
     @Insert("""
             INSERT INTO inquiry
@@ -49,9 +48,10 @@ public interface CsMapper {
     int deleteById(int id);
 
     @Select("""
-            SELECT *
+            SELECT id, title, writer, updated
             FROM inquiry
-            ORDER BY updated DESC 
+            ORDER BY updated DESC
+            LIMIT 5
             """)
-    Map<String, Object> selectInquiryForIndex();
+    List<Inquiry> selectInquiryForIndex();
 }
