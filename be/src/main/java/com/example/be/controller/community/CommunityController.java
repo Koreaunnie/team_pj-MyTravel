@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -19,16 +20,17 @@ public class CommunityController {
     final CommunityService service;
 
     @GetMapping("list")
-    public List<Map<String, Object>> list(@RequestParam(value = "page", defaultValue = "1") Integer page) {
-
-        return service.list(page);
+    public List<Map<String, Object>> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                                          @RequestParam(value = "type", defaultValue = "all") String searchType,
+                                          @RequestParam(value = "keyword", defaultValue = "") String searchKeyword) {
+        return service.list(page, searchType, searchKeyword);
     }
 
 
     @PostMapping("write")
-    public void write(@RequestBody Community community, Authentication auth) {
+    public void write(Community community, @RequestParam(value = "files[]", required = false) MultipartFile[] files, Authentication auth) {
 
-        service.write(community, auth);
+        service.write(community, files, auth);
     }
 
     @GetMapping("view/{id}")
