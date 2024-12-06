@@ -1,8 +1,14 @@
-import React, { useState } from "react";
-import { Image } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 function TourMyList(props) {
   const [tourList, setTourList] = useState([]);
+  const { email } = useParams();
+
+  useEffect(() => {
+    axios.get(`/api/tour/list/${email}`).then((res) => setTourList(res.data));
+  }, []);
 
   return (
     <div>
@@ -13,7 +19,6 @@ function TourMyList(props) {
         <table className={"table-list"}>
           <thead>
             <tr>
-              <th>상품 이미지</th>
               <th>제목</th>
               <th>상품</th>
               <th>위치</th>
@@ -23,7 +28,6 @@ function TourMyList(props) {
           <tbody>
             {tourList.map((tour) => (
               <tr>
-                <Image key={tour.image} src={tour.src} />
                 <td>{tour.title}</td>
                 <td>{tour.product}</td>
                 <td>{tour.location}</td>
