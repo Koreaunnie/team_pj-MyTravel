@@ -26,8 +26,8 @@ function InquiryView(props) {
         navigateToDepth1={() => navigate(`/cs`)}
         depth2={"문의하기"}
         navigateToDepth2={() => navigate(`/cs/inquiry/list`)}
-        depth2={"문의글 보기"}
-        navigateToDepth2={() => navigate(`/cs/inquiry/view/${id}`)}
+        depth3={"문의글 보기"}
+        navigateToDepth3={() => navigate(`/cs/inquiry/view/${id}`)}
       />
 
       <div className={"body-normal"}>
