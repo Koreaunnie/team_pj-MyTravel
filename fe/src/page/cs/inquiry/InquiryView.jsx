@@ -31,6 +31,24 @@ function InquiryView(props) {
       />
 
       <div className={"body-normal"}>
+        <div>
+          <button type={"button"} className={"btn btn-dark-outline"}>
+            목록
+          </button>
+
+          <button
+            type={"button"}
+            className={"btn btn-dark"}
+            onClick={() => navigate(`/cs/inquiry/edit/${id}`)}
+          >
+            수정
+          </button>
+
+          <button type={"button"} className={"btn btn-warning"}>
+            삭제
+          </button>
+        </div>
+
         <table>
           <thead>
             <tr>

@@ -27,4 +27,9 @@ public class CsController {
     public Inquiry list(@PathVariable int id) {
         return service.get(id);
     }
+
+    @PutMapping("inquiry/update")
+    public void edit(@RequestBody Inquiry inquiry) {
+        service.update(inquiry);
+    }
 }

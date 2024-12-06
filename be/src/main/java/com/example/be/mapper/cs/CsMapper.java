@@ -1,10 +1,7 @@
 package com.example.be.mapper.cs;
 
 import com.example.be.dto.cs.inquiry.Inquiry;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -32,4 +29,15 @@ public interface CsMapper {
             WHERE id = #{id}
             """)
     Inquiry selectById(int id);
+
+    @Update("""
+            update inquiry
+            SET category = #{category},
+                title = #{title},
+                content = #{content},
+                secret = #{secret},
+                updated = NOW()
+            WHERE id = #{id}
+            """)
+    int updateById(Inquiry inquiry);
 }

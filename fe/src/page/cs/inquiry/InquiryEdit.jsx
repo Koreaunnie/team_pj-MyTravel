@@ -1,44 +1,57 @@
-import React, { useState } from "react";
-import { Breadcrumb } from "/src/components/root/Breadcrumb.jsx";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Breadcrumb } from "../../../components/root/Breadcrumb.jsx";
 import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
+import { Spinner } from "@chakra-ui/react";
 
-function InquiryAdd(props) {
-  const [category, setCategory] = useState("plan");
-  const [writer, setWriter] = useState("");
+function InquiryEdit(props) {
+  const { id } = useParams();
+  const [inquiry, setInquiry] = useState(null);
+  const [category, setCategory] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  // const [files, setFiles] = useState(null);
+  // const [files, setFiles] = useState([]);
   const [secret, setSecret] = useState(false);
-
   const navigate = useNavigate();
+
+  useEffect(() => {
+    axios.get(`/api/cs/inquiry/view/${id}`).then((res) => {
+      setInquiry(res.data);
+      setCategory(res.data.category);
+      setTitle(res.data.title);
+      setContent(res.data.content);
+      setSecret(res.data.secret);
+    });
+  }, [id]);
 
   const handleSaveButton = () => {
     axios
-      .post("/api/cs/inquiry/add", {
+      .put("/api/cs/inquiry/update", {
+        id,
         category,
-        writer,
         title,
         content,
         secret,
       })
-      .then((res) => {
-        res.data;
-        console.log(title);
-      })
-      .catch()
-      .finally();
+      .then((response) => {
+        console.log("성공적으로 저장됨:", response);
+        navigate("/cs/inquiry/list");
+      });
   };
 
+  if (inquiry == null) {
+    return <Spinner />;
+  }
+
   return (
-    <div className={"cs"}>
+    <div className={"inquiry"}>
       <Breadcrumb
         depth1={"고객센터"}
         navigateToDepth1={() => navigate(`/cs`)}
         depth2={"문의하기"}
         navigateToDepth2={() => navigate(`/cs/inquiry/list`)}
-        depth3={"문의글 작성"}
-        navigateToDepth3={() => navigate(`/cs/inquiry/add`)}
+        depth3={"문의글 수정"}
+        navigateToDepth3={() => navigate(`/cs/inquiry/edit/${id}`)}
       />
 
       <div className={"body-normal"}>
@@ -53,18 +66,6 @@ function InquiryAdd(props) {
                   <option value="tour">투어 문의</option>
                   <option value="community">커뮤니티 문의</option>
                 </select>
-              </li>
-
-              <li>
-                <label htmlFor="writer">작성자</label>
-                <input
-                  type="text"
-                  id={"writer"}
-                  required
-                  maxLength={20}
-                  value={writer}
-                  onChange={(e) => setWriter(e.target.value)}
-                />
               </li>
 
               <li>
@@ -117,4 +118,4 @@ function InquiryAdd(props) {
   );
 }
 
-export default InquiryAdd;
+export default InquiryEdit;

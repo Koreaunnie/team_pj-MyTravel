@@ -25,4 +25,9 @@ public class CsService {
     public Inquiry get(int id) {
         return mapper.selectById(id);
     }
+
+
+    public void update(Inquiry inquiry) {
+        mapper.updateById(inquiry);
+    }
 }
