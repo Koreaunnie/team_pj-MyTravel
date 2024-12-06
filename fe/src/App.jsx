@@ -28,6 +28,8 @@ import React from "react";
 import Payment from "./page/tour/payment.jsx";
 import MyPage from "./page/member/MyPage.jsx";
 import InquiryAdd from "./page/cs/inquiry/InquiryAdd.jsx";
+import InquiryList from "./page/cs/inquiry/InquiryList.jsx";
+import InquiryView from "./page/cs/inquiry/InquiryView.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -135,6 +137,14 @@ const router = createBrowserRouter([
       {
         path: "cs/inquiry/add",
         element: <InquiryAdd />,
+      },
+      {
+        path: "cs/inquiry/list",
+        element: <InquiryList />,
+      },
+      {
+        path: "cs/inquiry/view",
+        element: <InquiryView />,
       },
       // 회원 가입
       {

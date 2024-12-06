@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -14,5 +16,9 @@ public class CsService {
 
     public void add(Inquiry inquiry) {
         mapper.insertInquiry(inquiry);
+    }
+
+    public List<Inquiry> list() {
+        return mapper.selectAll();
     }
 }

@@ -3,10 +3,9 @@ package com.example.be.controller.cs;
 import com.example.be.dto.cs.inquiry.Inquiry;
 import com.example.be.service.cs.CsService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,5 +16,10 @@ public class CsController {
     @PostMapping("inquiry/add")
     public void add(@RequestBody Inquiry inquiry) {
         service.add(inquiry);
+    }
+
+    @GetMapping("inquiry/list")
+    public List<Inquiry> list() {
+        return service.list();
     }
 }

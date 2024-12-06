@@ -36,7 +36,7 @@ function InquiryAdd(props) {
         depth1={"고객센터"}
         navigateToDepth1={() => navigate(`/cs`)}
         depth2={"문의하기"}
-        navigateToDepth2={() => navigate(`/cs/inquiry`)}
+        navigateToDepth2={() => navigate(`/cs/inquiry/list`)}
         depth3={"문의글 작성"}
         navigateToDepth3={() => navigate(`/cs/inquiry/add`)}
       />
