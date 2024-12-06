@@ -135,4 +135,12 @@ public interface TourMapper {
           LIMIT 4
           """)
   List<Tour> getTop4ByOrderByInserted();
+
+  @Select("""
+          SELECT *
+          FROM tour
+          WHERE partnerEmail=#{email}
+          ORDER BY id DESC;    
+          """)
+  List<Tour> myList(String email);
 }

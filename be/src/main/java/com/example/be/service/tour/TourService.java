@@ -202,4 +202,8 @@ public class TourService {
   public List<Tour> getMainPageTours() {
     return mapper.getTop4ByOrderByInserted();
   }
+
+  public List<Tour> myList(String email) {
+    return mapper.myList(email);
+  }
 }
