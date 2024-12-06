@@ -5,17 +5,19 @@ import axios from "axios";
 
 function InquiryAdd(props) {
   const [category, setCategory] = useState("plan");
+  const [writer, setWriter] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [files, setFiles] = useState(null);
+  // const [files, setFiles] = useState(null);
   const [secret, setSecret] = useState(false);
 
   const navigate = useNavigate();
 
   const handleSaveButton = () => {
     axios
-      .postForm("/api/cs/inquiry/add", {
+      .post("/api/cs/inquiry/add", {
         category,
+        writer,
         title,
         content,
         secret,
@@ -54,6 +56,18 @@ function InquiryAdd(props) {
               </li>
 
               <li>
+                <label htmlFor="writer">작성자</label>
+                <input
+                  type="text"
+                  id={"writer"}
+                  required
+                  maxLength={20}
+                  value={writer}
+                  onChange={(e) => setWriter(e.target.value)}
+                />
+              </li>
+
+              <li>
                 <label htmlFor="title">제목</label>
                 <input
                   type="text"
@@ -74,13 +88,13 @@ function InquiryAdd(props) {
                 />
               </li>
 
-              <li>
-                <label htmlFor="file">첨부파일</label>
-                <input
-                  type="file"
-                  onChange={(e) => setFile(e.target.files[0])}
-                />
-              </li>
+              {/*<li>*/}
+              {/*  <label htmlFor="file">첨부파일</label>*/}
+              {/*  <input*/}
+              {/*    type="file"*/}
+              {/*    onChange={(e) => setFile(e.target.files[0])}*/}
+              {/*  />*/}
+              {/*</li>*/}
 
               <li>
                 <input
