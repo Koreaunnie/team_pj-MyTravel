@@ -73,12 +73,12 @@ public class CommunityService {
 
     public Map<String, Object> view(Integer id) {
 
-        Map<String, Object> viewer = mapper.viewCommunity(id); // 게시물 받아옴
-        List<String> fileList = mapper.callCommunityFile(id); // 게시물 사진파일 받아옴
+        Map<String, Object> viewer = mapper.viewCommunity(id);
+        List<String> fileList = mapper.callCommunityFile(id);
         if (fileList.size() != 0) {
-            Map<String, Object> file = new HashMap<>();
             List<Object> files = new ArrayList();
             for (String fileName : fileList) {
+                Map<String, Object> file = new HashMap<>();
                 String filePath = STR."C:/Temp/teamPrj1126/\{viewer.get("id").toString()}/\{fileName}";
                 file.put("fileName", fileName);
                 file.put("filePath", filePath);
