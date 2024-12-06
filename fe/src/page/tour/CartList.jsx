@@ -20,8 +20,8 @@ function CartList() {
       <div>
         <h1>장바구니 목록</h1>
         로그인 후 사용 가능합니다.
-        <a href="/member/login">로그인 페이지로 > </a>
-        <a href="/member/signup">회원 가입 페이지로 ></a>
+        <a href="/member/login">로그인 페이지로 </a>
+        <a href="/member/signup">회원 가입 페이지로</a>
       </div>
     );
   }
