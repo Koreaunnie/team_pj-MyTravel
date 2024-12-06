@@ -95,7 +95,7 @@ function FaqAdd(props) {
         isOpen={saveModalOpen}
         onClose={() => setSaveModalOpen(false)}
         onConfirm={handleSaveButton}
-        message="문의 글을 등록하시겠습니까?"
+        message="FAQ를 등록하시겠습니까?"
         buttonMessage="등록"
       />
     </div>

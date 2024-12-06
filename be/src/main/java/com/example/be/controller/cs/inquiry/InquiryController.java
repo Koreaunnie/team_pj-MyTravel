@@ -29,7 +29,7 @@ public class InquiryController {
     }
 
     @PutMapping("update")
-    public void edit(@RequestBody Inquiry inquiry) {
+    public void update(@RequestBody Inquiry inquiry) {
         service.update(inquiry);
     }
 

@@ -1,10 +1,7 @@
 package com.example.be.mapper.cs.faq;
 
 import com.example.be.dto.cs.faq.Faq;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -25,4 +22,20 @@ public interface FaqMapper {
             ORDER BY updated DESC
             """)
     List<Faq> selectAll();
+
+    @Select("""
+            SELECT *
+            FROM faq
+            WHERE id = #{id}
+            """)
+    Faq selectById(int id);
+
+    @Update("""
+            UPDATE faq 
+            SET question = #{question}, 
+                answer = #{answer},
+                updated = NOW()
+            WHERE id = #{id}
+            """)
+    int updateById(Faq faq);
 }

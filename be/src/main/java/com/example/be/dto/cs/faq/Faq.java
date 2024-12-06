@@ -9,6 +9,7 @@ public class Faq {
     private Integer id;
     private String question;
     private String answer;
+    private String writer;
     private LocalDateTime inserted;
     private LocalDateTime updated;
 }

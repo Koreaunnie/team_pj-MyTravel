@@ -21,4 +21,12 @@ public class FaqService {
     public List<Faq> list() {
         return mapper.selectAll();
     }
+
+    public Faq view(int id) {
+        return mapper.selectById(id);
+    }
+
+    public void update(Faq faq) {
+        mapper.updateById(faq);
+    }
 }

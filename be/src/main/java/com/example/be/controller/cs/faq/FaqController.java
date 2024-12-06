@@ -22,4 +22,14 @@ public class FaqController {
     public List<Faq> list() {
         return service.list();
     }
+
+    @GetMapping("view/{id}")
+    public Faq view(@PathVariable int id) {
+        return service.view(id);
+    }
+
+    @PutMapping("update")
+    public void update(@RequestBody Faq faq) {
+        service.update(faq);
+    }
 }
