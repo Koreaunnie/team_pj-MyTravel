@@ -3,9 +3,11 @@ import { Breadcrumb } from "../../../components/root/Breadcrumb.jsx";
 import axios from "axios";
 import { Spinner } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { Modal } from "../../../components/root/Modal.jsx";
 
 function InquiryList(props) {
   const [inquiryList, setInquiryList] = useState([]);
+  const [addModalOpen, setAddModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,13 +22,24 @@ function InquiryList(props) {
     <div className={"inquiry"}>
       <Breadcrumb
         depth1={"고객센터"}
-        navigateToDepth1={() => navigate(`/cs`)}
-        depth2={"문의하기"}
+        navigateToDepth1={() => navigate(`/cs/index`)}
+        depth2={"문의 게시판"}
         navigateToDepth2={() => navigate(`/cs/inquiry/list`)}
       />
 
       <div className={"body-normal"}>
-        <table>
+        <div className={"btn-wrap"}>
+          <button
+            className={"btn btn-dark"}
+            onClick={() => setAddModalOpen(true)}
+          >
+            작성
+          </button>
+        </div>
+
+        <h1>문의하기</h1>
+
+        <table className={"table-list"}>
           <thead>
             <tr>
               <th>#</th>
@@ -51,6 +64,15 @@ function InquiryList(props) {
           </tbody>
         </table>
       </div>
+
+      {/* 추가 modal */}
+      <Modal
+        isOpen={addModalOpen}
+        onClose={() => setAddModalOpen(false)}
+        onConfirm={() => navigate(`/cs/inquiry/add`)}
+        message="문의 글을 작성하시겠습니까?"
+        buttonMessage="작성"
+      />
     </div>
   );
 }

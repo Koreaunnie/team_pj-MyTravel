@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Breadcrumb } from "/src/components/root/Breadcrumb.jsx";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Modal } from "../../../components/root/Modal.jsx";
 
 function InquiryAdd(props) {
   const [category, setCategory] = useState("plan");
@@ -10,6 +11,9 @@ function InquiryAdd(props) {
   const [content, setContent] = useState("");
   // const [files, setFiles] = useState(null);
   const [secret, setSecret] = useState(false);
+
+  const [backToListModalOpen, setBackToListModalOpen] = useState(false);
+  const [saveModalOpen, setSaveModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -24,7 +28,7 @@ function InquiryAdd(props) {
       })
       .then((res) => {
         res.data;
-        console.log(title);
+        navigate("/cs/inquiry/list");
       })
       .catch()
       .finally();
@@ -34,8 +38,8 @@ function InquiryAdd(props) {
     <div className={"cs"}>
       <Breadcrumb
         depth1={"고객센터"}
-        navigateToDepth1={() => navigate(`/cs`)}
-        depth2={"문의하기"}
+        navigateToDepth1={() => navigate(`/cs/index`)}
+        depth2={"문의 게시판"}
         navigateToDepth2={() => navigate(`/cs/inquiry/list`)}
         depth3={"문의글 작성"}
         navigateToDepth3={() => navigate(`/cs/inquiry/add`)}
@@ -108,11 +112,41 @@ function InquiryAdd(props) {
             </ul>
           </fieldset>
 
-          <button className={"btn btn-dark"} onClick={handleSaveButton}>
-            저장
-          </button>
+          <div className={"btn-wrap"}>
+            <button
+              className={"btn btn-dark-outline"}
+              onClick={() => setBackToListModalOpen(true)}
+            >
+              목록
+            </button>
+
+            <button
+              className={"btn btn-dark"}
+              onClick={() => setSaveModalOpen(true)}
+            >
+              등록
+            </button>
+          </div>
         </div>
       </div>
+
+      {/* 목록 modal */}
+      <Modal
+        isOpen={backToListModalOpen}
+        onClose={() => setBackToListModalOpen(false)}
+        onConfirm={() => navigate(`/cs/inquiry/list`)}
+        message="목록으로 돌아가면 작성한 내용이 사라집니다."
+        buttonMessage="목록"
+      />
+
+      {/* 저장 modal */}
+      <Modal
+        isOpen={saveModalOpen}
+        onClose={() => setSaveModalOpen(false)}
+        onConfirm={handleSaveButton}
+        message="문의 글을 등록하시겠습니까?"
+        buttonMessage="등록"
+      />
     </div>
   );
 }

@@ -3,10 +3,15 @@ import { Breadcrumb } from "../../../components/root/Breadcrumb.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { Spinner } from "@chakra-ui/react";
+import "./Inquiry.css";
+import { Modal } from "../../../components/root/Modal.jsx";
 
 function InquiryView(props) {
   const { id } = useParams();
   const [inquiry, setInquiry] = useState(null);
+  const [backToListModalOpen, setBackToListModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,8 +35,8 @@ function InquiryView(props) {
     <div className={"inquiry"}>
       <Breadcrumb
         depth1={"고객센터"}
-        navigateToDepth1={() => navigate(`/cs`)}
-        depth2={"문의하기"}
+        navigateToDepth1={() => navigate(`/cs/index`)}
+        depth2={"문의 게시판"}
         navigateToDepth2={() => navigate(`/cs/inquiry/list`)}
         depth3={"문의글 보기"}
         navigateToDepth3={() => navigate(`/cs/inquiry/view/${id}`)}
@@ -39,14 +44,18 @@ function InquiryView(props) {
 
       <div className={"body-normal"}>
         <div>
-          <button type={"button"} className={"btn btn-dark-outline"}>
+          <button
+            type={"button"}
+            className={"btn btn-dark-outline"}
+            onClick={() => setBackToListModalOpen(true)}
+          >
             목록
           </button>
 
           <button
             type={"button"}
             className={"btn btn-dark"}
-            onClick={() => navigate(`/cs/inquiry/edit/${id}`)}
+            onClick={() => setEditModalOpen(true)}
           >
             수정
           </button>
@@ -54,25 +63,25 @@ function InquiryView(props) {
           <button
             type={"button"}
             className={"btn btn-warning"}
-            onClick={handleDeleteButton}
+            onClick={() => setDeleteModalOpen(true)}
           >
             삭제
           </button>
         </div>
 
-        <table>
+        <table className={"table-view"}>
           <thead>
-            <tr>
+            <tr className={"thead-title"}>
               <th colSpan={2}>{inquiry.title}</th>
             </tr>
-            <tr>
+            <tr className={"thead-sub-title"}>
               <th>{inquiry.writer}</th>
               <th>{inquiry.inserted}</th>
             </tr>
           </thead>
 
           <tbody>
-            <tr>
+            <tr className={"tbody-content"}>
               <td colSpan={2}>{inquiry.content}</td>
             </tr>
             <tr>
@@ -81,6 +90,33 @@ function InquiryView(props) {
           </tbody>
         </table>
       </div>
+
+      {/* 목록 modal */}
+      <Modal
+        isOpen={backToListModalOpen}
+        onClose={() => setBackToListModalOpen(false)}
+        onConfirm={() => navigate(`/cs/inquiry/add`)}
+        message="목록으로 돌아가면 작성한 내용이 사라집니다."
+        buttonMessage="목록"
+      />
+
+      {/* 수정 modal */}
+      <Modal
+        isOpen={editModalOpen}
+        onClose={() => setEditModalOpen(false)}
+        onConfirm={() => navigate(`/cs/inquiry/edit/${id}`)}
+        message="문의 글을 수정하시겠습니까?"
+        buttonMessage="수정"
+      />
+
+      {/* 삭제 modal */}
+      <Modal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onConfirm={handleDeleteButton}
+        message="문의 글을 삭제하시겠습니까?"
+        buttonMessage="삭제"
+      />
     </div>
   );
 }

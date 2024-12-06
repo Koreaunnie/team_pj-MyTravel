@@ -7,12 +7,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class CsService {
     final CsMapper mapper;
+
+    public Map<String, Object> getInquiry() {
+        return mapper.selectInquiryForIndex();
+    }
 
     public void add(Inquiry inquiry) {
         mapper.insertInquiry(inquiry);
@@ -34,4 +39,6 @@ public class CsService {
     public void delete(int id) {
         mapper.deleteById(id);
     }
+
+
 }

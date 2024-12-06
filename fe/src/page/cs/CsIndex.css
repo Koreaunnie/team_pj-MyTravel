@@ -1,0 +1,70 @@
+.cs {
+    margin-top: 40px;
+}
+
+.cs .breadcrumb-wrap ol {
+    width: 1000px;
+}
+
+.cs .body-normal {
+    width: 1000px;
+    margin: 0 auto;
+}
+
+.cs section {
+    margin: 50px 0;
+    position: relative;
+    width: 100%;
+    padding: 50px 0;
+}
+
+.cs section h3 {
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.cs section .more-btn {
+    position: absolute;
+    top: 50px;
+    right: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.cs .faq-container {
+    margin: 30px auto;
+}
+
+.cs .faq-container ul {
+    margin: 20px 0;
+}
+
+.cs .faq-container ul li {
+    font-size: 1.2rem;
+    height: 60px;
+    line-height: 60px;
+    border-bottom: 1px solid var(--table-border-color);
+}
+
+.cs .faq-container ul li:last-child {
+    border-bottom: none;
+}
+
+.cs .cs-wrap {
+    background: var(--bg-gray-color);
+    text-align: center;
+}
+
+.cs .cs-wrap .body-normal {
+    display: flex;
+    width: 1000px;
+    height: 500px;
+}
+
+.cs .cs-wrap .inquiry-container {
+    background: #fff;
+    box-shadow: var(--box-shadow);
+    border-radius: 20px;
+}
+

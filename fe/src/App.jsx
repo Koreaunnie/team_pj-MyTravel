@@ -31,6 +31,7 @@ import InquiryAdd from "./page/cs/inquiry/InquiryAdd.jsx";
 import InquiryList from "./page/cs/inquiry/InquiryList.jsx";
 import InquiryView from "./page/cs/inquiry/InquiryView.jsx";
 import InquiryEdit from "./page/cs/inquiry/InquiryEdit.jsx";
+import CsIndex from "./page/cs/CsIndex.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -135,6 +136,10 @@ const router = createBrowserRouter([
         element: <CommunityEdit />,
       },
       // 고객센터
+      {
+        path: "cs/index",
+        element: <CsIndex />,
+      },
       {
         path: "cs/inquiry/add",
         element: <InquiryAdd />,

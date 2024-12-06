@@ -3,6 +3,7 @@ import { Breadcrumb } from "../../../components/root/Breadcrumb.jsx";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { Spinner } from "@chakra-ui/react";
+import { Modal } from "../../../components/root/Modal.jsx";
 
 function InquiryEdit(props) {
   const { id } = useParams();
@@ -12,6 +13,7 @@ function InquiryEdit(props) {
   const [content, setContent] = useState("");
   // const [files, setFiles] = useState([]);
   const [secret, setSecret] = useState(false);
+  const [saveModalOpen, setSaveModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -47,8 +49,8 @@ function InquiryEdit(props) {
     <div className={"inquiry"}>
       <Breadcrumb
         depth1={"고객센터"}
-        navigateToDepth1={() => navigate(`/cs`)}
-        depth2={"문의하기"}
+        navigateToDepth1={() => navigate(`/cs/index`)}
+        depth2={"문의 게시판"}
         navigateToDepth2={() => navigate(`/cs/inquiry/list`)}
         depth3={"문의글 수정"}
         navigateToDepth3={() => navigate(`/cs/inquiry/edit/${id}`)}
@@ -109,11 +111,23 @@ function InquiryEdit(props) {
             </ul>
           </fieldset>
 
-          <button className={"btn btn-dark"} onClick={handleSaveButton}>
+          <button
+            className={"btn btn-dark"}
+            onClick={() => setSaveModalOpen(true)}
+          >
             저장
           </button>
         </div>
       </div>
+
+      {/* 저장 modal */}
+      <Modal
+        isOpen={saveModalOpen}
+        onClose={() => setSaveModalOpen(false)}
+        onConfirm={handleSaveButton}
+        message="문의 글을 등록하시겠습니까?"
+        buttonMessage="등록"
+      />
     </div>
   );
 }

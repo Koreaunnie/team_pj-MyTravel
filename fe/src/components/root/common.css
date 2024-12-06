@@ -186,6 +186,7 @@ h1 {
     font-weight: bold;
 }
 
+
 form .required {
     color: var(--font-red-color);
     font-size: 0.8rem;
@@ -356,6 +357,7 @@ form .required {
 .table-list {
     border-collapse: collapse;
     text-align: center;
+    width: 100%;
 }
 
 .table-list caption {
@@ -406,6 +408,45 @@ form .required {
     font-weight: bold
 }
 
+.table-view {
+    border-collapse: collapse;
+    text-align: center;
+    width: 100%;
+}
+
+.table-view caption {
+    font-weight: bold;
+    font-size: 30px;
+    margin: 20px;
+}
+
+.table-view thead tr {
+    height: 50px;
+    border-top: 1px solid #000;
+    background: var(--table-header-color);
+    border-bottom: 1px solid var(--table-border-color);
+}
+
+.table-view thead th {
+    font-weight: bold;
+}
+
+.table-view tbody tr td {
+    border-bottom: 1px solid var(--table-border-color);
+}
+
+.table-view tbody tr:last-child {
+    border-bottom: none;
+}
+
+.table-view tbody tr td {
+    padding: 5px 10px;
+}
+
+.table-view tbody .tbody-content {
+    padding: 30px;
+    height: 400px;
+}
 
 /* -------------------------- card design --------------------------- */
 .card-wrap {

@@ -4,6 +4,7 @@ import com.example.be.dto.cs.inquiry.Inquiry;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface CsMapper {
@@ -46,4 +47,11 @@ public interface CsMapper {
             WHERE id = #{id}
             """)
     int deleteById(int id);
+
+    @Select("""
+            SELECT *
+            FROM inquiry
+            ORDER BY updated DESC 
+            """)
+    Map<String, Object> selectInquiryForIndex();
 }
