@@ -2,6 +2,7 @@ package com.example.be.mapper.tour;
 
 import com.example.be.dto.tour.Payment;
 import com.example.be.dto.tour.TourList;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -22,4 +23,11 @@ public interface PaymentMapper {
           VALUES (#{paymentId}, #{tour.id}, #{tour.startDate}, #{tour.endDate}, #{tour.price})   
           """)
   int insertDetails(@Param("paymentId") String paymentId, @Param("tour") TourList tour);
+
+  @Delete("""
+          DELETE FROM tour_cart
+          WHERE tour_id = #{id}
+            AND member_email = #{buyer};    
+          """)
+  int deleteFromCart(Integer id, String buyer);
 }

@@ -28,8 +28,10 @@ public class PaymentService {
     groupedTours.forEach((id, tours) -> {
       for (TourList tour : tours) {
         mapper.insertDetails(payment.getPaymentId(), tour);
-      }
 
+        //하나씩 cart에서 삭제
+        mapper.deleteFromCart(tour.getId(), payment.getBuyer());
+      }
     });
 
     return cnt == 1;

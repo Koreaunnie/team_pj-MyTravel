@@ -14,7 +14,7 @@ function PaymentComplete(props) {
     <div>
       <h1>결제 완료</h1>
       <main>
-        <p>결제 번호: {paymentId}</p>
+        <h2>결제 번호: {paymentId}</h2>
         <table className={"table-list"}>
           <thead>
             <tr>
