@@ -83,13 +83,16 @@ function Navbar(props) {
             <div className={"dropdown-toggle-container"}>
               <ul>
                 {isAuthenticated || (
-                  <li onClick={() => navigate("/member/login")}>로그인</li>
+                  <li onClick={() => navigate("/member/signup")}>회원가입</li>
                 )}
                 {isAuthenticated || (
-                  <li onClick={() => navigate("/member/signup")}>회원가입</li>
+                  <li onClick={() => navigate("/member/login")}>로그인</li>
                 )}
                 {isAuthenticated && (
                   <li onClick={() => navigate(`/mypage/${email}`)}>회원정보</li>
+                )}
+                {isAuthenticated && (
+                  <li onClick={() => navigate("/cart")}>장바구니</li>
                 )}
                 {isAuthenticated && (
                   <li
@@ -101,7 +104,6 @@ function Navbar(props) {
                     로그아웃
                   </li>
                 )}
-                <li onClick={() => navigate("/cart")}>장바구니</li>
               </ul>
             </div>
           )}

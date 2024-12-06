@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Center, Image, SimpleGrid, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 
 function TourList() {
   const [tourList, setTourList] = useState([]);
@@ -51,7 +52,11 @@ function TourList() {
   }
 
   return (
-    <Box>
+    <div className={"tour"}>
+      <Breadcrumb
+        depth1={"Tour 목록"}
+        navigateToDepth1={() => navigate(`/tour/list`)}
+      />
       <h1>Tour 목록</h1>
 
       <Center>
@@ -114,7 +119,7 @@ function TourList() {
           ))}
         </SimpleGrid>
       )}
-    </Box>
+    </div>
   );
 }
 
