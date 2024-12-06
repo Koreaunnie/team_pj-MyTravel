@@ -28,6 +28,7 @@ import React from "react";
 import Payment from "./page/tour/Payment.jsx";
 import MyPage from "./page/member/MyPage.jsx";
 import PaymentComplete from "./page/tour/PaymentComplete.jsx";
+import TourMyList from "./page/tour/TourMyList.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -91,6 +92,10 @@ const router = createBrowserRouter([
       {
         path: "tour/list",
         element: <TourList />,
+      },
+      {
+        path: "tour/list/:email",
+        element: <TourMyList />,
       },
       {
         path: "tour/add",
