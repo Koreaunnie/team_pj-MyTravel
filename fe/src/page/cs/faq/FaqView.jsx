@@ -8,32 +8,27 @@ import { Spinner } from "@chakra-ui/react";
 function FaqView(props) {
   const { id } = useParams();
   const [faq, setFaq] = useState();
-  const [question, setQuestion] = useState("");
-  const [answer, setAnswer] = useState("");
   const [backToListModalOpen, setBackToListModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     axios.get(`/api/cs/faq/view/${id}`).then((res) => {
       setFaq(res.data);
-      setQuestion(res.data.question);
-      setAnswer(res.data.answer);
     });
   }, []);
-
-  const handleSaveButton = () => {
-    axios
-      .post("/api/cs/faq/update/", {
-        question,
-        answer,
-      })
-      .then((res) => res.data);
-  };
 
   if (faq == null) {
     return <Spinner />;
   }
+
+  const handleDeleteButton = () => {
+    axios.delete(`/api/cs/faq/delete/${id}`).then((res) => {
+      navigate("/cs/faq/list/");
+      alert("FAQ가 삭제되었습니다.");
+    });
+  };
 
   return (
     <div className={"faq"}>
@@ -64,25 +59,30 @@ function FaqView(props) {
             수정
           </button>
 
-          {/*<button*/}
-          {/*  type={"button"}*/}
-          {/*  className={"btn btn-warning"}*/}
-          {/*  onClick={() => setDeleteModalOpen(true)}*/}
-          {/*>*/}
-          {/*  삭제*/}
-          {/*</button>*/}
+          <button
+            type={"button"}
+            className={"btn btn-warning"}
+            onClick={() => setDeleteModalOpen(true)}
+          >
+            삭제
+          </button>
         </div>
 
         <fieldset>
           <ul>
             <li>
               <label htmlFor="question">질문</label>
-              <input type="text" id={"question"} value={question} readOnly />
+              <input
+                type="text"
+                id={"question"}
+                value={faq.question}
+                readOnly
+              />
             </li>
 
             <li>
               <label htmlFor="answer">답변</label>
-              <textarea id={"answer"} value={answer} readOnly />
+              <textarea id={"answer"} value={faq.answer} readOnly />
             </li>
           </ul>
         </fieldset>
@@ -106,14 +106,14 @@ function FaqView(props) {
         buttonMessage="수정"
       />
 
-      {/* 삭제 modal */}
-      {/*<Modal*/}
-      {/*  isOpen={deleteModalOpen}*/}
-      {/*  onClose={() => setDeleteModalOpen(false)}*/}
-      {/*  onConfirm={handleDeleteButton}*/}
-      {/*  message="문의 글을 삭제하시겠습니까?"*/}
-      {/*  buttonMessage="삭제"*/}
-      {/*/>*/}
+      {/*삭제 modal*/}
+      <Modal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onConfirm={handleDeleteButton}
+        message="FAQ를 삭제하시겠습니까?"
+        buttonMessage="삭제"
+      />
     </div>
   );
 }

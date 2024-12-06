@@ -38,4 +38,10 @@ public interface FaqMapper {
             WHERE id = #{id}
             """)
     int updateById(Faq faq);
+
+    @Delete("""
+            DELETE FROM faq
+            WHERE id = #{id}
+            """)
+    int deleteById(int id);
 }

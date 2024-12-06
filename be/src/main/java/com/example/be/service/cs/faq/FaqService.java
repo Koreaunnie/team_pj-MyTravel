@@ -29,4 +29,8 @@ public class FaqService {
     public void update(Faq faq) {
         mapper.updateById(faq);
     }
+
+    public void delete(int id) {
+        mapper.deleteById(id);
+    }
 }

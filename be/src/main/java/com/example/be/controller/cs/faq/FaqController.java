@@ -32,4 +32,9 @@ public class FaqController {
     public void update(@RequestBody Faq faq) {
         service.update(faq);
     }
+
+    @DeleteMapping("delete/{id}")
+    public void delete(@PathVariable int id) {
+        service.delete(id);
+    }
 }

@@ -49,7 +49,6 @@ function FaqEdit(props) {
         depth3={"상세보기"}
         navigateToDepth3={() => navigate(`/cs/faq/view/${id}`)}
       />
-
       <div className={"body-normal"}>
         <div>
           <button
@@ -67,14 +66,6 @@ function FaqEdit(props) {
           >
             저장
           </button>
-
-          {/*<button*/}
-          {/*  type={"button"}*/}
-          {/*  className={"btn btn-warning"}*/}
-          {/*  onClick={() => setDeleteModalOpen(true)}*/}
-          {/*>*/}
-          {/*  삭제*/}
-          {/*</button>*/}
         </div>
 
         <fieldset>
@@ -120,15 +111,6 @@ function FaqEdit(props) {
         message="FAQ를 저장하시겠습니까?"
         buttonMessage="저장"
       />
-
-      {/* 삭제 modal */}
-      {/*<Modal*/}
-      {/*  isOpen={deleteModalOpen}*/}
-      {/*  onClose={() => setDeleteModalOpen(false)}*/}
-      {/*  onConfirm={handleDeleteButton}*/}
-      {/*  message="문의 글을 삭제하시겠습니까?"*/}
-      {/*  buttonMessage="삭제"*/}
-      {/*/>*/}
     </div>
   );
 }
