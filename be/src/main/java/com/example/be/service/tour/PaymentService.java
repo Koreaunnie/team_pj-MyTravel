@@ -1,6 +1,7 @@
 package com.example.be.service.tour;
 
 import com.example.be.dto.tour.Payment;
+import com.example.be.dto.tour.PaymentHistory;
 import com.example.be.dto.tour.TourList;
 import com.example.be.mapper.tour.PaymentMapper;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,7 @@ public class PaymentService {
         mapper.insertDetails(payment.getPaymentId(), tour);
 
         //하나씩 cart에서 삭제
-        mapper.deleteFromCart(tour.getId(), payment.getBuyer());
+        mapper.deleteFromCart(tour.getId(), payment.getBuyerEmail());
       }
     });
 
@@ -38,4 +39,11 @@ public class PaymentService {
   }
 
 
+  public List<PaymentHistory> myPaymentHistory(String email) {
+    List<PaymentHistory> paidList = mapper.myPaymentHistory(email);
+
+
+    System.out.println(paidList);
+    return paidList;
+  }
 }

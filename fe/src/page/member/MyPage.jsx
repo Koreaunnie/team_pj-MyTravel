@@ -4,6 +4,7 @@ import { Box, VStack } from "@chakra-ui/react";
 import MemberInfo from "./MemberInfo.jsx";
 import CartList from "../tour/CartList.jsx";
 import TourMyList from "../tour/TourMyList.jsx";
+import PaymentHistory from "../tour/PaymentHistory.jsx";
 
 function MyPage(props) {
   const [selectedMenu, setSelectedMenu] = useState("profile");
@@ -26,7 +27,9 @@ function MyPage(props) {
             내 프로필
           </button>
           <button onClick={() => handleMenuClick("cart")}>내 장바구니</button>
-          <button onClick={() => handleMenuClick("")}>결제 내역</button>
+          <button onClick={() => handleMenuClick("paymentHistory")}>
+            결제 내역
+          </button>
           {(isPartner || isAdmin) && (
             <button onClick={() => handleMenuClick("myTour")}>
               {email}의 상품
@@ -37,7 +40,7 @@ function MyPage(props) {
       <Box flex="1" padding="20px">
         {selectedMenu === "profile" && <MemberInfo />}
         {selectedMenu === "cart" && <CartList />}
-        <p>결제 내역 Payment History</p>
+        {selectedMenu === "paymentHistory" && <PaymentHistory />}
         {selectedMenu === "myTour" && <TourMyList />}
       </Box>
     </div>

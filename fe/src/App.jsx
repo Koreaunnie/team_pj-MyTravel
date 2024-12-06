@@ -29,6 +29,7 @@ import Payment from "./page/tour/Payment.jsx";
 import MyPage from "./page/member/MyPage.jsx";
 import PaymentComplete from "./page/tour/PaymentComplete.jsx";
 import TourMyList from "./page/tour/TourMyList.jsx";
+import PaymentHistory from "./page/tour/PaymentHistory.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -122,6 +123,10 @@ const router = createBrowserRouter([
       {
         path: "payment/complete",
         element: <PaymentComplete />,
+      },
+      {
+        path: "payment/history/:email",
+        element: <PaymentHistory />,
       },
       // 커뮤니티
       {

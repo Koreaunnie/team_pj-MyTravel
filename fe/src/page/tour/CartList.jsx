@@ -111,8 +111,8 @@ function CartList() {
           <p>장바구니가 비어 있습니다.</p>
         ) : (
           <table className={"table-list"}>
-            {cartList.map((cart) => (
-              <tbody>
+            <tbody>
+              {cartList.map((cart) => (
                 <tr key={cart.id} onClick={() => handleRowClick(cart.id)}>
                   <td>
                     <input
@@ -145,8 +145,8 @@ function CartList() {
                     삭제
                   </button>
                 </tr>
-              </tbody>
-            ))}
+              ))}
+            </tbody>
           </table>
         )}
       </div>
