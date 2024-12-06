@@ -50,4 +50,11 @@ public class WalletService {
     public void delete(int id) {
         mapper.deleteById(id);
     }
+
+
+    // 내 지갑 내용 추가 / 수정 시 카테고리 목록 반환
+    public List<String> getCategories() {
+        return mapper.getAllCategories();
+    }
+
 }

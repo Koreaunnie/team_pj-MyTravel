@@ -1,8 +1,28 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Oswald:wght@200..700&family=Platypi:ital,wght@0,300..800;1,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Playwrite+HR+Lijeva:wght@100..400&display=swap');
+
+/*
+font-family: "Noto Sans", sans-serif;
+font-family: "Playwrite HR Lijeva", cursive;
+font-family: "Playfair Display", serif;
+font-family: "Platypi", serif;
+font-family: "Oswald", serif;
+font-family: "Josefin Sans", serif;
+font-family: "Inter", serif;
+*/
 
 :root {
+    --main-bg-gradient: linear-gradient(90deg, #0072ff, #a044ff);
+    --main-purple: #a044ff;
+    --main-blue: #0072ff;
+    --blue-purple-gradient: linear-gradient(90deg, #0072ff, #a044ff);
+    --deep-blue-gradient: linear-gradient(90deg, #1e3c72, #2a5298);
+    --purple-skyblue-gradient: linear-gradient(90deg, #7f7fd5, #86a8e7, #91eae4);
+    --skyblue-blue-gradient: linear-gradient(90deg, #56ccf2, #2f80ed);
+    --blue-skyblue-gradient: linear-gradient(90deg, #5b86e5, #36d1dc);
+    --golden-yellow: #f4a261;
+
     --table-header-color: #f7f7f7;
-    --table-border-color: #e4e4e7;
+    --table-border-color: #eee;
     --table-hover-color: #f9f9f9;
 
     --btn-normal-dark: #212529;
@@ -18,11 +38,15 @@
 
     --bg-gray-color: #f9f9f9;
 
-    --font-gray-color: #52525b;
+    --font-gray-color: #8f8f93;
     --font-light-gray-color: #dcdcdc;
+    --font-red-color: #ef4444;
 
     --small-font-size: 14px;
     --normal-font-size: 16px;
+
+    --box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.05);
+    --box-shadow-hover: 1px 1px 7px rgba(0, 0, 0, 0.1);
 }
 
 html {
@@ -33,9 +57,10 @@ html {
     text-decoration: none;
     list-style: none;
     font-family: 'Noto Sans', sans-serif;
+    box-sizing: border-box;
 }
 
-body, a, p, ul, li {
+body, section, a, p, ul, li {
     margin: 0;
     padding: 0;
 }
@@ -61,9 +86,13 @@ label {
     margin: 10px 5px;
 }
 
-input[type="text"],
-input[type="date"],
-input[type="time"] {
+input[type=text],
+input[type=date],
+input[type=time],
+input[type=number],
+input[type=tel],
+input[type=email],
+input[type=password] {
     border: 1px solid #dee2e6;
     box-sizing: border-box;
     border-radius: 5px;
@@ -78,6 +107,14 @@ input[type=search] {
     border-radius: 5px;
     height: 40px;
     padding: 0 10px;
+}
+
+input[type=checkbox] {
+    width: 15px;
+    height: 15px;
+    margin-top: 7px;
+    cursor: pointer;
+    accent-color: var(--btn-normal-dark);
 }
 
 textarea {
@@ -97,6 +134,7 @@ select {
     padding: 0 10px;
     margin-right: 5px;
     outline: none;
+    width: 140px;
 }
 
 h1 {
@@ -106,10 +144,30 @@ h1 {
     margin: 20px 0;
 }
 
-.body {
+.body-wide {
     width: 1000px;
-    margin: 0 auto;
+    margin: 40px auto;
     position: relative;
+}
+
+.body-normal {
+    width: 800px;
+    margin: 40px auto;
+    position: relative;
+}
+
+.body-narrow {
+    width: 400px;
+    margin: 40px auto;
+    position: relative;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.bg-gray {
+    background: var(--bg-gray-color);
 }
 
 .position-fixed {
@@ -120,15 +178,63 @@ h1 {
     margin: 0 auto;
 }
 
-.pointer {
+.display-flex {
+    display: flex;
+}
+
+.font-bold {
+    font-weight: bold;
+}
+
+
+form .required {
+    color: var(--font-red-color);
+    font-size: 0.8rem;
+    margin-left: 7px;
+}
+
+
+/*------------------- breadcrumb design -------------------*/
+.breadcrumb-wrap {
+    width: 100%;
+    position: fixed;
+    top: 65px;
+    height: 35px;
+    padding-top: 5px;
+    z-index: 50;
+    background: #fff;
+    border: 1px solid var(--table-border-color);
+}
+
+.breadcrumb-wrap ol {
+    display: flex;
+    margin: 0 auto;
+}
+
+.breadcrumb-wrap ol li {
+    margin: 0 10px;
     cursor: pointer;
+    color: var(--font-gray-color);
+    font-size: 0.9rem;
+}
+
+.breadcrumb-wrap ol li.on {
+    font-weight: bold;
+    color: #000;
+}
+
+.breadcrumb-wrap ol li:hover {
+    text-decoration-line: underline;
+}
+
+.breadcrumb-wrap .icon {
+    margin: 3px 0 0 10px;
 }
 
 /*------------------- button design -------------------*/
 .btn-wrap {
     display: flex;
-    justify-content: center;
-
+    justify-content: left;
 }
 
 .btn {
@@ -139,6 +245,18 @@ h1 {
     font-size: 14px;
     font-weight: bold;
     margin: 10px;
+    min-width: 70px;
+}
+
+.btn-wide {
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 8px 15px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 10px;
+    width: 100%;
 }
 
 .btn-search {
@@ -150,7 +268,7 @@ h1 {
     font-weight: bold;
     margin-left: -5px;
     vertical-align: top;
-    width: 60px;
+    min-width: 60px;
 }
 
 .btn-dark {
@@ -166,7 +284,7 @@ h1 {
 
 .btn-dark-outline {
     background: var(--btn-normal-light);
-    border: 1px solid var(--btn-normal-dark);
+    border: 1px solid var(--font-gray-color);
     box-sizing: border-box;
 }
 
@@ -239,6 +357,7 @@ h1 {
 .table-list {
     border-collapse: collapse;
     text-align: center;
+    width: 100%;
 }
 
 .table-list caption {
@@ -256,9 +375,6 @@ h1 {
 
 .table-list thead th {
     font-weight: bold
-}
-
-.table-list tbody {
 }
 
 .table-list tbody tr {
@@ -292,26 +408,115 @@ h1 {
     font-weight: bold
 }
 
+.table-view {
+    border-collapse: collapse;
+    text-align: center;
+    width: 100%;
+}
 
-/*------------------- pagination position -------------------*/
+.table-view caption {
+    font-weight: bold;
+    font-size: 30px;
+    margin: 20px;
+}
+
+.table-view thead tr {
+    height: 50px;
+    border-top: 1px solid #000;
+    background: var(--table-header-color);
+    border-bottom: 1px solid var(--table-border-color);
+}
+
+.table-view thead th {
+    font-weight: bold;
+}
+
+.table-view tbody tr td {
+    border-bottom: 1px solid var(--table-border-color);
+}
+
+.table-view tbody tr:last-child {
+    border-bottom: none;
+}
+
+.table-view tbody tr td {
+    padding: 5px 10px;
+}
+
+.table-view tbody .tbody-content {
+    padding: 30px;
+    height: 400px;
+}
+
+/* -------------------------- card design --------------------------- */
+.card-wrap {
+    width: 90%;
+    height: 180px;
+    margin: 30px 0;
+    border: 1px solid var(--table-border-color);
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: var(--box-shadow);
+    position: relative;
+}
+
+.card-wrap:hover {
+    background: var(--bg-gray-color);
+    box-shadow: var(--box-shadow-hover);
+}
+
+.card-wrap:hover .card-header p {
+    background: #f1f0f0;
+}
+
+.card-wrap .card-header p {
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 13px 25px;
+    background: var(--bg-gray-color);
+    border-radius: 10px 10px 0 0;
+}
+
+.card-wrap .card-header .pinned {
+    position: absolute;
+    top: 5px;
+    right: 0;
+}
+
+.card-wrap .card-body {
+    margin: 15px 25px 10px 25px;
+    height: 60px;
+    font-size: 0.9rem;
+}
+
+.card-wrap .card-footer {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--font-gray-color);
+    margin-left: 30px;
+}
+
+/*------------------- pagination -------------------*/
 .pagination {
-
+    width: 100%;
+    margin: 30px;
+    bottom: 0;
 }
 
 /*------------------- search form -------------------*/
 .search-form {
     width: 100%;
     display: flex;
-    margin: 20px 0;
+    margin: 10px;
 }
 
 .search-form-input {
     width: 100%;
-    margin-left: 5px;
+    margin-left: 10px;
 }
 
 .search-form-input input {
-    width: calc(100% - 55px);
+    width: calc(100% - 110px);
 }
 
 /*------------------- empty list -------------------*/
@@ -330,7 +535,7 @@ h1 {
 }
 
 .empty-container-title {
-    margin-top: 15px;
+    margin: 20px 0 5px 0;
     font-weight: bold;
     font-size: 1.1rem;
 }
@@ -344,43 +549,40 @@ h1 {
 /*------------------- react-calendar -------------------*/
 .calendar-list {
     display: flex;
+    width: 1400px;
+    margin: 0 auto;
+    position: relative;
 }
 
 .calendar {
     width: 500px;
     position: fixed;
-    top: 180px;
+    top: 100px;
     padding: 30px;
-}
-
-.calendar::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
     height: 100vh;
-    width: 1px;
-    background: var(--table-border-color);
-    z-index: -1;
+    background: var(--bg-gray-color);
+    z-index: 10;
+    border-left: 1px solid var(--table-border-color);
+    box-shadow: 3px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
 .day-list {
-    position: sticky;
+    position: absolute;
     left: 500px;
     width: calc(100% - 530px);
-    padding-left: 30px;
+    border-right: 1px solid var(--table-border-color);
+    margin-top: -10px;
 }
 
-.btn-day-list {
-    margin: 0;
-}
 
-.fixed-search-wrap {
+.fixed-list-head-wrap {
     position: sticky;
-    top: 180px;
-    padding-top: 30px;
-    z-index: 100;
+    top: 100px;
+    padding: 20px 20px 20px;
+    width: 100%;
+    z-index: 1;
     background: #fff;
+    border-bottom: 1px solid var(--table-border-color);
 }
 
 /* react-calendar */
@@ -391,7 +593,7 @@ h1 {
     line-height: 1rem;
     border-radius: 10px;
     border: 1px solid var(--table-border-color) !important;
-    background: none !important;
+    box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.1);
 }
 
 /* 년-월 */
@@ -527,9 +729,11 @@ react-calendar__month-view__days__day--weekend {
 
 /*------------------- 화면 크기가 768px 이하 (태블릿 화면) -------------------*/
 @media (max-width: 768px) {
-    .body {
+    .body-wide,
+    .body-normal,
+    .body-narrow {
         width: 80%;
-        display: block; /* 화면이 좁을 때는 block 형태로 배치 */
+        display: block;
     }
 
     .calendar {
@@ -550,7 +754,9 @@ react-calendar__month-view__days__day--weekend {
 
 /*------------------- 화면 크기가 480px 이하 (모바일 화면) -------------------*/
 @media (max-width: 480px) {
-    .body {
+    .body-wide,
+    .body-normal,
+    .body-narrow {
         width: 95%
     }
 

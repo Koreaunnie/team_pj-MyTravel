@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import { Box, Group, Input, Stack } from "@chakra-ui/react";
-import { Button } from "../../components/ui/button.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
 import axios from "axios";
-import { Field } from "../../components/ui/field.jsx";
 import { useNavigate } from "react-router-dom";
+import "./Member.css";
 
 function MemberSignup(props) {
   const [email, setEmail] = useState("");
@@ -95,76 +93,158 @@ function MemberSignup(props) {
   }
 
   return (
-    <Box>
+    <div className={"body-narrow"}>
       <h1>회원 가입</h1>
-      <Stack>
-        <Box>
-          <input
-            onChange={(e) => setFiles(e.target.files)}
-            type={"file"}
-            accept={"image/*"}
-            multiple
-          />
-          <Box>{filesList}</Box>
-        </Box>
-        <Field label={"이메일"}>
-          <Group attached w={"100%"}>
-            <Input
-              value={email}
-              onChange={(e) => {
-                setEmailCheck(false);
-                setEmail(e.target.value);
-              }}
-            />
-            <Button onClick={handleEmailCheckClick} variant={"outline"}>
-              중복 확인
-            </Button>
-          </Group>
-        </Field>
-        <Field label={"닉네임"}>
-          <Group attached w={"100%"}>
-            <Input
-              value={nickname}
-              onChange={(e) => {
-                setNicknameCheck(false);
-                setNickname(e.target.value);
-              }}
-            />
-            <Button
-              onClick={handleNicknameCheckClick}
-              disabled={nicknameCheckButtonDisabled}
-              variant={"outline"}
-            >
-              중복 확인
-            </Button>
-          </Group>
-        </Field>
-        <Field label={"비밀번호"}>
-          <Input
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </Field>
-        <Field label={"비밀번호 확인"}>
-          <Input
-            value={passwordCheck}
-            onChange={(e) => setPasswordCheck(e.target.value)}
-          />
-        </Field>
-        <Field label={"이름"}>
-          <Input value={name} onChange={(e) => setName(e.target.value)} />
-        </Field>
-        <Field label={"전화번호"}>
-          <Input value={phone} onChange={(e) => setPhone(e.target.value)} />
-        </Field>
 
-        <Box>
-          <Button onClick={handleSignupClick} disabled={disabled}>
+      <form className={"member-form"}>
+        <fieldset>
+          <ul>
+            <li>
+              <label htmlFor="">프로필 사진</label>
+              <input
+                onChange={(e) => setFiles(e.target.files)}
+                type={"file"}
+                accept={"image/*"}
+                multiple
+              />
+              {filesList}
+            </li>
+            <li className={"check-form"}>
+              <label htmlFor="email">
+                이메일
+                <span className={"required"}>&#42;</span>
+              </label>
+
+              <input
+                placeholder={"중복 확인을 해주세요."}
+                id={"email"}
+                type="email"
+                maxLength="30"
+                required
+                value={email}
+                onChange={(e) => {
+                  setEmailCheck(false);
+                  setEmail(e.target.value);
+                }}
+              />
+              <button
+                className={"btn-search btn-dark"}
+                onClick={handleEmailCheckClick}
+              >
+                중복 확인
+              </button>
+            </li>
+
+            <li className={"check-form"}>
+              <label htmlFor="nickname">
+                닉네임
+                <span className={"required"}>&#42;</span>
+              </label>
+
+              <input
+                placeholder={"중복 확인을 해주세요."}
+                id={"nickname"}
+                type={"text"}
+                maxLength="20"
+                required
+                value={nickname}
+                onChange={(e) => {
+                  setNicknameCheck(false);
+                  setNickname(e.target.value);
+                }}
+              />
+              <button
+                className={"btn-search btn-dark"}
+                onClick={handleNicknameCheckClick}
+                disabled={nicknameCheckButtonDisabled}
+              >
+                중복 확인
+              </button>
+            </li>
+
+            <li>
+              <label htmlFor="password">
+                비밀번호
+                <span className={"required"}>&#42;</span>
+              </label>
+              <input
+                placeholder={"30자 이내"}
+                maxLength="30"
+                id={"password"}
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </li>
+
+            <li>
+              <label htmlFor="password-check">
+                비밀번호 확인
+                <span className={"required"}>&#42;</span>
+              </label>
+              <input
+                placeholder={"비밀번호를 다시 한 번 입력해주세요."}
+                maxLength="30"
+                id={"password-check"}
+                type="password"
+                required
+                value={passwordCheck}
+                onChange={(e) => setPasswordCheck(e.target.value)}
+              />
+            </li>
+
+            <li>
+              <label htmlFor="name">
+                이름
+                <span className={"required"}>&#42;</span>
+              </label>
+              <input
+                placeholder={"20자 이내"}
+                maxLength="20"
+                id={"name"}
+                type="text"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </li>
+            <li>
+              <label htmlFor="phone">
+                전화번호
+                <span className={"required"}>&#42;</span>
+              </label>
+              <input
+                placeholder={"숫자만 입력해주세요."}
+                maxLength="20"
+                id={"phone"}
+                type="tel"
+                required
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
+            </li>
+          </ul>
+        </fieldset>
+
+        <div className={"btn-wrap"}>
+          <button
+            className={"btn-wide btn-dark"}
+            onClick={handleSignupClick}
+            disabled={disabled}
+          >
             가입
-          </Button>
-        </Box>
-      </Stack>
-    </Box>
+          </button>
+        </div>
+
+        <div className={"move-to-button"}>
+          <p>이미 가입을 하셨나요?</p>
+          <p className={"link"} onClick={() => navigate(`/member/login`)}>
+            로그인
+          </p>
+        </div>
+      </form>
+    </div>
   );
 }
 

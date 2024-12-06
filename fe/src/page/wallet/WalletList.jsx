@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 // import Calendar from "react-calendar";
 import { useNavigate } from "react-router-dom";
 import "./Wallet.css";
+import { Modal } from "../../components/root/Modal.jsx";
+import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 
 function WalletList(props) {
   const [walletList, setWalletList] = useState([]); // 전체 지갑 리스트
   const [currentMonth, setCurrentMonth] = useState(); // 현재 월
   const [selectedDate, setSelectedDate] = useState(); // 선택된 날짜
-  const [filteredWallet, setFilteredWallet] = useState([]); // 필터링된 지갑 리스트
-  const [isAllView, setIsAllView] = useState(true); // 전체 보기 상태
+  const [filteredWallet, setFilteredWallet] = useState(walletList); // 필터링된 지갑 리스트
+  const [activeTab, setActiveTab] = useState(0); // 카테고리 탭 활성화
   const [addModalOpen, setAddModalOpen] = useState(false);
+  const [checkedItems, setCheckedItems] = useState(new Set()); // 체크된 항목 ID 저장
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,7 +34,6 @@ function WalletList(props) {
         (wallet) => wallet.date === formattedDate,
       );
       setFilteredWallet(filtered);
-      setIsAllView(false); // 날짜 선택 시 전체 보기 해제
     } else {
       setFilteredWallet(walletList); // 날짜 선택 안 하면 전체 내역 표시
     }
@@ -40,12 +42,23 @@ function WalletList(props) {
   // 전체 날짜 보기
   const handleAllView = () => {
     setFilteredWallet(walletList);
-    setIsAllView(true);
   };
 
   // 선택된 날짜 업데이트
   const handleDateChange = (date) => {
     setSelectedDate(date);
+  };
+
+  const handleCheckboxChange = (id) => {
+    setCheckedItems((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(id)) {
+        newSet.delete(id);
+      } else {
+        newSet.add(id);
+      }
+      return newSet;
+    });
   };
 
   // 선택된 날짜에 해당하는 소비 금액 합산
@@ -60,6 +73,23 @@ function WalletList(props) {
     );
     return totalExpense;
   };
+
+  // 전체 선택/해제
+  const handleSelectAll = () => {
+    if (checkedItems.size === filteredWallet.length) {
+      setCheckedItems(new Set()); // 전체 해제
+    } else {
+      setCheckedItems(new Set(filteredWallet.map((wallet) => wallet.id))); // 전체 선택
+    }
+  };
+
+  // 선택된 항목의 소비액 합계
+  const getTotalSelectedExpense = useMemo(() => {
+    return [...checkedItems].reduce((total, id) => {
+      const wallet = walletList.find((item) => item.id === id);
+      return total + (wallet ? wallet.expense : 0);
+    }, 0);
+  }, [checkedItems, walletList]);
 
   // 3자리마다 쉼표 추가
   const formatNumberWithCommas = (number) => {
@@ -84,20 +114,69 @@ function WalletList(props) {
     }
   };
 
+  // tileContent 데이터 캐싱
+  const tileContentData = useMemo(() => {
+    const expenseByDate = walletList.reduce((acc, wallet) => {
+      acc[wallet.date] = (acc[wallet.date] || 0) + wallet.expense;
+      return acc;
+    }, {});
+    return expenseByDate;
+  }, [walletList]);
+
+  const categories = ["전체", "식비", "교통비", "여가비", "기타"];
+
+  // 카테고리 탭 활성화
+  const handleTabClick = (index) => {
+    setActiveTab(index);
+    if (index === 0) {
+      // "전체"
+      setFilteredWallet(walletList);
+    } else {
+      const filtered = walletList.filter(
+        (wallet) => wallet.category === categories[index],
+      );
+      setFilteredWallet(filtered);
+    }
+  };
+
+  // 카테고리별 지출 합계 계산
+  const calculateCategoryTotalExpense = (category) => {
+    if (category === "전체") {
+      return filteredWallet.reduce(
+        (total, wallet) => total + wallet.expense,
+        0,
+      );
+    } else {
+      return filteredWallet
+        .filter((wallet) => wallet.category === category)
+        .reduce((total, wallet) => total + wallet.expense, 0);
+    }
+  };
+
+  const isCategoryFiltered = activeTab !== 0; // "전체"가 아닌 카테고리가 선택되었을 때만 tfoot 표시
+
   // 총 지출 계산
   const getTotalExpense = () => {
-    return walletList.reduce((total, wallet) => total + wallet.expense, 0);
+    return formatNumberWithCommas(
+      walletList.reduce((total, wallet) => total + wallet.expense, 0),
+    );
   };
 
   // 총 수입 계산
   const getTotalIncome = () => {
-    return walletList.reduce((total, wallet) => total + wallet.income, 0);
+    return formatNumberWithCommas(
+      walletList.reduce((total, wallet) => total + wallet.income, 0),
+    );
   };
 
   // 해당 하는 날짜
   const getFilteredDate = () => {
     if (filteredWallet.length > 0) {
-      return filteredWallet[0].date; // 첫 번째 항목의 날짜 반환
+      const date = new Date(filteredWallet[0].date); // 첫 번째 항목의 날짜를 Date 객체로 변환
+      const year = date.getFullYear(); // 연도
+      const month = date.getMonth() + 1; // 월 (0부터 시작하므로 1을 더함)
+      const day = date.getDate(); // 일
+      return `${year}년 ${month}월 ${day}일`; // 원하는 형식으로 반환
     }
     return ""; // 필터링된 리스트가 없으면 빈 문자열 반환
   };
@@ -107,78 +186,150 @@ function WalletList(props) {
     return filteredWallet.reduce((total, wallet) => total + wallet.expense, 0);
   };
 
-  const closeModal = () => {
-    setAddModalOpen(false);
-  };
-
   return (
-    <div className={"calendar-list"}>
+    <div>
+      <Breadcrumb
+        depth1={"내 지갑"}
+        navigateToDepth1={() => navigate(`/wallet/list`)}
+      />
+
       <aside className={"calendar"}>
         <Calendar
           formatDay={(locale, date) =>
             date.toLocaleString("en", { day: "numeric" })
           }
           showNeighboringMonth={false}
-          onChange={handleDateChange} // 날짜 선택 이벤트 핸들러
-          value={selectedDate} // 선택된 날짜 상태와 동기화
-          // 선택된 날짜에 해당하는 소비 금액을 표시
+          onChange={handleDateChange}
+          value={selectedDate}
           tileContent={({ date }) => {
-            const totalExpense = getTotalExpenseForDate(date);
-
+            const formattedDate = date.toLocaleDateString("en-CA");
+            const totalExpense = tileContentData[formattedDate] || 0;
             return totalExpense > 0 ? (
               <div className={"calendar-badge"}>
-                {formatNumberWithCommas(totalExpense)}
+                {totalExpense.toLocaleString()}
               </div>
             ) : null;
           }}
         />
       </aside>
 
-      <div className={"day-list"}>
-        <div className={"fixed-search-wrap"}>
+      <div className={"middle-section"}>
+        <h1>내 지갑</h1>
+
+        <div className={"category-table"}>
+          <table>
+            <caption>
+              <p className={"highlight"}>{currentMonth}</p>
+              <br />
+              지출 항목별 합계
+            </caption>
+
+            {categories.map((category) => (
+              <tr>
+                <th>{category}</th>
+                <td>
+                  {formatNumberWithCommas(
+                    calculateCategoryTotalExpense(category),
+                  )}
+                </td>
+                <td>원</td>
+              </tr>
+            ))}
+          </table>
+        </div>
+
+        {filteredWallet.length !== walletList.length && (
+          <div className={"category-table"}>
+            <table>
+              <caption>
+                <p className={"highlight"}>{getFilteredDate()}</p>
+                <br />
+                하루 지출
+              </caption>
+
+              <tr>
+                <th>합계</th>
+                <td>{formatNumberWithCommas(getOneDayExpense())}</td>
+                <td>원</td>
+              </tr>
+            </table>
+          </div>
+        )}
+      </div>
+
+      <div className={"right-section"}>
+        <div className={"btn-wrap fixed-list-head-wrap"}>
           <button
-            className={"btn btn-dark btn-day-list"}
+            className={"btn btn-dark"}
             onClick={() => setAddModalOpen(true)}
           >
             추가
           </button>
 
           <button
-            className={"btn btn-dark btn-day-list"}
+            className={"btn btn-dark-outline"}
+            style={{ marginLeft: "15px" }}
+            onClick={handleAllView}
+          >
+            모든 날짜 보기
+          </button>
+
+          <button
+            className={"btn btn-dark-outline"}
             style={{ marginLeft: "15px" }}
             onClick={handleMonthView}
           >
             월별 보기
           </button>
 
-          <button
-            className={"btn btn-dark btn-day-list"}
-            style={{ marginLeft: "15px" }}
-            onClick={handleAllView}
-          >
-            전체 보기
-          </button>
+          {checkedItems.size > 0 && (
+            <div className={"total-expense-wrap"}>
+              <p className={"font-bold"}>선택한 지출 합계</p>
+              <p>{getTotalSelectedExpense.toLocaleString()}</p>
+            </div>
+          )}
         </div>
 
-        <table className={"table-list wallet-table"}>
-          <caption>{currentMonth}</caption>
+        <h1>{currentMonth}</h1>
 
+        <div className={"category-tab"}>
+          <ul>
+            {categories.map((category, index) => (
+              <li
+                key={index}
+                className={`category-tab ${activeTab === index ? "on" : ""}`}
+                onClick={() => handleTabClick(index)} // 탭 클릭 시 해당 인덱스를 설정
+              >
+                {category}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <table className={"table-list table-total-wrap"}>
           <thead>
             <tr>
               <th>총 지출</th>
-              <td colSpan={7}>{formatNumberWithCommas(getTotalExpense())}</td>
+              <td>{formatNumberWithCommas(getTotalExpense())}</td>
             </tr>
 
             <tr>
               <th>총 수입</th>
-              <td colSpan={7}>{formatNumberWithCommas(getTotalIncome())}</td>
+              <td>{formatNumberWithCommas(getTotalIncome())}</td>
             </tr>
           </thead>
         </table>
 
-        <table className={"table-list wallet-table"}>
+        <table className={"table-list wallet-list"}>
           <thead>
             <tr>
+              <th>
+                <input
+                  type="checkbox"
+                  checked={checkedItems.size === filteredWallet.length}
+                  onChange={handleSelectAll}
+                />
+              </th>
               <th>날짜</th>
               <th>항목</th>
               <th>사용처</th>
@@ -194,12 +345,22 @@ function WalletList(props) {
                 key={wallet.id}
                 onClick={() => navigate(`/wallet/view/${wallet.id}`)}
                 className={"pointer"}
+                className={checkedItems.has(wallet.id) ? "checked-row" : ""}
               >
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={checkedItems.has(wallet.id)}
+                    onChange={() => handleCheckboxChange(wallet.id)}
+                    onClick={(e) => e.stopPropagation()}
+                    className={checkedItems.has(wallet.id)}
+                  />
+                </td>
                 <td>{wallet.date}</td>
                 <td>{wallet.category}</td>
                 <td>{wallet.title}</td>
-                <td>{wallet.income}</td>
-                <td>{wallet.expense}</td>
+                <td>{formatNumberWithCommas(wallet.income)}</td>
+                <td>{formatNumberWithCommas(wallet.expense)}</td>
                 <td>{wallet.paymentMethod}</td>
                 <td>{wallet.memo}</td>
               </tr>
@@ -207,12 +368,26 @@ function WalletList(props) {
           </tbody>
 
           {/* 전체 보기 상태가 아닐 때만 tfoot 렌더링 */}
-          {!isAllView && (
+          {filteredWallet.length !== walletList.length && (
             <tfoot>
               <tr>
-                <th>{getFilteredDate()} 하루 총 지출</th>
-                <td colSpan={7}>
+                <th colSpan={4}>{getFilteredDate()}의 지출</th>
+                <td colSpan={4}>
                   {formatNumberWithCommas(getOneDayExpense())}
+                </td>
+              </tr>
+            </tfoot>
+          )}
+
+          {/* 카테고리별 합계가 필터링된 경우에만 표시 */}
+          {isCategoryFiltered && (
+            <tfoot className={"table-total-wrap"}>
+              <tr>
+                <th colSpan={4}>{categories[activeTab]} 합계</th>
+                <td colSpan={4}>
+                  {formatNumberWithCommas(
+                    calculateCategoryTotalExpense(categories[activeTab]),
+                  )}
                 </td>
               </tr>
             </tfoot>
@@ -221,38 +396,13 @@ function WalletList(props) {
       </div>
 
       {/* 추가 modal */}
-      {addModalOpen && (
-        <div className={"modal"}>
-          <div className={"modal-content"}>
-            <div className={"modal-header"}>
-              <button
-                className="close"
-                onClick={closeModal}
-                aria-label="모달 닫기"
-              >
-                &times;
-              </button>
-            </div>
-
-            <div className={"modal-body"}>
-              <p>새로운 내역을 추가하시겠습니까?</p>
-            </div>
-
-            <div className={"modal-footer btn-wrap"}>
-              <button className={"btn btn-dark-outline"} onClick={closeModal}>
-                닫기
-              </button>
-
-              <button
-                className={"btn btn-dark"}
-                onClick={() => navigate(`/wallet/add`)}
-              >
-                추가
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <Modal
+        isOpen={addModalOpen}
+        onClose={() => setAddModalOpen(false)}
+        onConfirm={() => navigate(`/wallet/add`)}
+        message="내역을 추가하시겠습니까?"
+        buttonMessage="추가"
+      />
     </div>
   );
 }

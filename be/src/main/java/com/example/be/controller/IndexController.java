@@ -5,6 +5,7 @@ import com.example.be.service.tour.TourService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -20,11 +21,11 @@ public class IndexController {
 
     // 메인 화면에 필요한 일부 list 를 가져오기
     @GetMapping
-    public Map<String, Object> getIndex() {
+    public Map<String, Object> getIndex(@RequestParam(value = "keyword", defaultValue = "") String keyword) {
         Map<String, Object> result = new HashMap<>();
 
-        result.put("plans", planService.getMainPagePlans());
-        result.put("tours", tourService.getMainPageTours());
+        result.put("plans", planService.getMainPagePlans(keyword));
+        result.put("tours", tourService.getMainPageTours(keyword));
 
         return result;
     }

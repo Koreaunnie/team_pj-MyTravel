@@ -21,4 +21,5 @@ public class Plan {
     private List<PlanField> planFieldList;
 
     private LocalDateTime updated;
+    private boolean pinned;
 }

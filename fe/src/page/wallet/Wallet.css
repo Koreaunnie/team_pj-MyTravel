@@ -1,11 +1,182 @@
-/*-------------------- WalletList --------------------*/
+.wallet .breadcrumb-wrap ol {
+    width: 800px;
+}
 
+/*-------------------- WalletAdd, WalletEdit --------------------*/
+.form-table {
+    width: 80%;
+}
+
+/*-------------------- WalletList --------------------*/
+section {
+    margin: 0
+}
+
+.box-section {
+    margin: 0;
+    border: 1px solid var(--table-border-color);
+    border-radius: 10px;
+    box-shadow: var(--box-shadow);
+}
+
+.middle-section {
+    position: fixed;
+    left: 530px;
+    width: 350px;
+    height: 83vh;
+    margin-top: 65px;
+    border: 1px solid var(--table-border-color);
+    border-radius: 10px;
+    box-shadow: var(--box-shadow);
+    padding: 0 30px;
+}
+
+.middle-section h1 {
+    margin: 40px 0 0 0;
+}
+
+.middle-section .category-table {
+    width: 100%;
+    border-bottom: 1px solid var(--table-border-color);
+    magin: 0 auto;
+    padding: 40px 30px;
+}
+
+.middle-section .category-table table {
+    width: 100%;
+}
+
+.middle-section .category-table table caption {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+.middle-section .category-table caption .highlight {
+    font-size: 1.2rem;
+    margin-bottom: 2px;
+    background: var(--main-purple);
+    display: inline;
+    padding: 0 5px;
+    color: #fff;
+}
+
+.middle-section .category-table table tr {
+    height: 28px;
+}
+
+.middle-section .category-table table tr th {
+    font-weight: bold;
+    text-align: left;
+}
+
+.middle-section .category-table table tr td {
+    text-align: right;
+}
+
+.right-section {
+    position: fixed;
+    margin: 65px 0;
+    left: 910px;
+    width: calc(100% - 940px);
+    height: 83vh;
+    overflow: hidden;
+    overflow-y: auto;
+    border: 1px solid var(--table-border-color);
+    border-radius: 10px;
+    box-shadow: var(--box-shadow);
+}
+
+.right-section .fixed-list-head-wrap {
+    top: 0;
+}
+
+.right-section .total-expense-wrap {
+    position: absolute;
+    right: 30px;
+    margin: 10px;
+    text-align: right;
+}
+
+.right-section h1 {
+    margin-top: 20px;
+}
+
+.right-section .category-tab {
+    width: 900px;
+    margin: 15px auto 25px auto;
+}
+
+.right-section .category-tab ul {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: space-evenly;
+    border-radius: 7px;
+    background: var(--bg-gray-color);
+}
+
+.right-section .category-tab ul li {
+    margin: 5px;
+    font-weight: bold;
+    width: 20%;
+    text-align: center;
+    height: 40px;
+    line-height: 40px;
+    color: var(--font-gray-color);
+    cursor: pointer;
+}
+
+.right-section .category-tab ul li.on {
+    color: #000;
+    background: #fff;
+    border-radius: 7px;
+    border: 1px solid var(--table-border-color);
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.right-section table {
+    width: 900px;
+    margin: 0 auto 30px auto;
+}
+
+.right-section .table-list tr {
+    height: 30px;
+}
+
+.right-section .table-list td {
+    padding: 0;
+}
+
+.right-section table .checked-row {
+    background: var(--table-hover-color);
+}
+
+.right-section .table-total-wrap {
+    margin-bottom: 20px;
+}
+
+.right-section .table-total-wrap tr {
+    height: 40px;
+}
+
+.right-section .table-total-wrap tr td {
+    background: #fff;
+}
 
 @media (max-width: 768px) {
 
+    /*-------------------- WalletAdd, WalletEdit --------------------*/
+    .form-table {
+        width: 100%;
+    }
+
+    /*-------------------- WalletList --------------------*/
+    .category-table {
+        display: none;
+    }
 }
 
 @media (max-width: 480px) {
-
 
 }
