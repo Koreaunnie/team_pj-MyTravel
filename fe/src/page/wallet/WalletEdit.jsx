@@ -160,12 +160,6 @@ function WalletEdit(props) {
     }
   };
 
-  const closeModal = () => {
-    setBackToListModalOpen(false);
-    setSaveModalOpen(false);
-    setDeleteModalOpen(false);
-  };
-
   return (
     <div className={"wallet"}>
       <Breadcrumb
@@ -357,44 +351,10 @@ function WalletEdit(props) {
         </form>
 
         {/* 목록 modal */}
-        {backToListModalOpen && (
-          <div className={"modal"}>
-            <div className={"modal-content"}>
-              <div className={"modal-header"}>
-                <button
-                  className="close"
-                  onClick={closeModal}
-                  aria-label="모달 닫기"
-                >
-                  &times;
-                </button>
-              </div>
-
-              <div className={"modal-body"}>
-                <p>목록으로 돌아가시겠습니까?</p>
-              </div>
-
-              <div className={"modal-footer btn-wrap"}>
-                <button className={"btn btn-dark-outline"} onClick={closeModal}>
-                  닫기
-                </button>
-
-                <button
-                  className={"btn btn-dark"}
-                  onClick={() => navigate(`/wallet/list`)}
-                >
-                  목록
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* 목록 modal */}
         <Modal
           isOpen={backToListModalOpen}
           onClose={() => setBackToListModalOpen(false)}
-          onConfirm={() => navigate(`/wallet/list`)}
+          onConfirm={() => navigate(`/plan/list`)}
           message="목록으로 돌아가면 작성한 내용이 사라집니다."
           buttonMessage="목록"
         />

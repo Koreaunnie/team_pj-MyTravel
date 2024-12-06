@@ -117,11 +117,6 @@ function PlanAdd(props) {
   // google personal api key
   const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
 
-  const closeModal = () => {
-    setBackToListModalOpen(false);
-    setSaveModalOpen(false);
-  };
-
   return (
     <div className={"plan"}>
       <Breadcrumb

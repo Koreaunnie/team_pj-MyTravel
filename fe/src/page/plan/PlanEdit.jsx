@@ -82,11 +82,6 @@ function PlanEdit(props) {
       .finally();
   }
 
-  const closeModal = () => {
-    setBackToListModalOpen(false);
-    setSaveModalOpen(false);
-  };
-
   return (
     <div className={"plan"}>
       <Breadcrumb

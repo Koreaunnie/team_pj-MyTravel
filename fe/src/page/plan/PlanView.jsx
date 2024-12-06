@@ -43,13 +43,6 @@ function PlanView(props) {
 
   const groupedPlanFields = groupByDate(planFields);
 
-  // modal 팝업
-  const closeModal = () => {
-    setAddModalOpen(false);
-    setEditModalOpen(false);
-    setDeleteModalOpen(false);
-  };
-
   const handleDeleteButton = () => {
     axios
       .delete(`/api/plan/delete/${id}`)

@@ -186,10 +186,6 @@ function WalletList(props) {
     return filteredWallet.reduce((total, wallet) => total + wallet.expense, 0);
   };
 
-  const closeModal = () => {
-    setAddModalOpen(false);
-  };
-
   return (
     <div>
       <Breadcrumb

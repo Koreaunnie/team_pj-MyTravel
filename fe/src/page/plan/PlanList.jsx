@@ -133,11 +133,6 @@ function PlanList(props) {
   // 필터링된 일정이 없으면 전체 일정(planList) 사용
   const plansToDisplay = filteredPlans.length > 0 ? filteredPlans : planList;
 
-  // modal
-  const closeModal = () => {
-    setAddModalOpen(false);
-  };
-
   return (
     <div className={"plan-wide"}>
       <Breadcrumb

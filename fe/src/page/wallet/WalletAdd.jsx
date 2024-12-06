@@ -100,11 +100,6 @@ function WalletAdd(props) {
       .finally();
   };
 
-  const closeModal = () => {
-    setSaveModalOpen(false);
-    setBackToListModalOpen(false);
-  };
-
   return (
     <div className={"wallet"}>
       <Breadcrumb
