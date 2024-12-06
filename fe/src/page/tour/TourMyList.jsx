@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function TourMyList(props) {
   const [tourList, setTourList] = useState([]);
   const { email } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get(`/api/tour/list/${email}`).then((res) => setTourList(res.data));
   }, []);
+
+  function handleRowClick(id) {
+    navigate(`/tour/view/${id}`);
+  }
 
   return (
     <div>
@@ -27,7 +32,7 @@ function TourMyList(props) {
           </thead>
           <tbody>
             {tourList.map((tour) => (
-              <tr>
+              <tr key={tour.id} onClick={() => handleRowClick(tour.id)}>
                 <td>{tour.title}</td>
                 <td>{tour.product}</td>
                 <td>{tour.location}</td>
