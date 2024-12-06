@@ -7,7 +7,7 @@ import TourMyList from "../tour/TourMyList.jsx";
 
 function MyPage(props) {
   const [selectedMenu, setSelectedMenu] = useState("profile");
-  const { email } = useContext(AuthenticationContext);
+  const { email, isPartner, isAdmin } = useContext(AuthenticationContext);
 
   const handleMenuClick = (menu) => {
     setSelectedMenu(menu);
@@ -27,9 +27,11 @@ function MyPage(props) {
           </button>
           <button onClick={() => handleMenuClick("cart")}>내 장바구니</button>
           <button onClick={() => handleMenuClick("")}>결제 내역</button>
-          <button onClick={() => handleMenuClick("myTour")}>
-            {email}의 상품
-          </button>
+          {(isPartner || isAdmin) && (
+            <button onClick={() => handleMenuClick("myTour")}>
+              {email}의 상품
+            </button>
+          )}
         </VStack>
       </Box>
       <Box flex="1" padding="20px">
