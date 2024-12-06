@@ -3,7 +3,7 @@ USE teamPrj1126;
 CREATE TABLE payment_detail
 (
     payment_id VARCHAR(30) REFERENCES payment (payment_id),
-    tour_id    INT REFERENCES tour (id),
+    tour_id    INT DEFAULT 0 REFERENCES tour (id) ON DELETE SET DEFAULT,
     startDate  DATE,
     endDate    DATE,
     price      INT,
@@ -11,4 +11,5 @@ CREATE TABLE payment_detail
 );
 
 DROP TABLE payment_detail;
+
 
