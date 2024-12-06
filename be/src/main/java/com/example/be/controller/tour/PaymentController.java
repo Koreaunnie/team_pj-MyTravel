@@ -4,8 +4,6 @@ import com.example.be.dto.tour.Payment;
 import com.example.be.service.tour.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,9 +21,6 @@ public class PaymentController {
   @PostMapping("payment")
   public ResponseEntity<Map<String, Object>> completePayment(
           @RequestBody Payment payment) {
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    System.out.println(auth);
-
     Map<String, Object> response = new HashMap<>();
     if (service.add(payment)) {
       response.put("status", "SUCCESS");
