@@ -107,7 +107,7 @@ public class CommunityService {
         String nickname = mapper.findNickname(auth.getName());
         comment.setWriter(nickname);
 
-//        TODO : communityId 값 삽입
+//        TODO : communityId 값 삽입 -> 나중에 jsx 에서 전송하는 것으로 하기.
 
 
         mapper.writeCommunityComment(comment);
