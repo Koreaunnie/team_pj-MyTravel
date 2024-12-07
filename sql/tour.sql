@@ -48,3 +48,16 @@ ALTER TABLE tour
 
 ALTER TABLE tour
     RENAME COLUMN activate TO active;
+
+ALTER TABLE tour
+    MODIFY partnerEmail VARCHAR(30) DEFAULT '탈퇴한 회원';
+
+ALTER TABLE tour
+    DROP FOREIGN KEY tour_ibfk_2;
+
+ALTER TABLE tour
+    ADD CONSTRAINT tour_ibfk_2
+        FOREIGN KEY (partner) REFERENCES member (nickname)
+            ON DELETE SET NULL;
+
+SHOW CREATE TABLE tour;

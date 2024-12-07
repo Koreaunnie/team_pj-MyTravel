@@ -8,5 +8,5 @@ CREATE TABLE auth
 );
 
 INSERT INTO auth
-VALUES ('jm@jm', 'admin');
+VALUES ('1', 'admin');
 
