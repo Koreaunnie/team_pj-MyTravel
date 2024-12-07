@@ -17,42 +17,39 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CommunityController {
 
-  final CommunityService service;
+    final CommunityService service;
 
-  @GetMapping("list")
-  public List<Map<String, Object>> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                                        @RequestParam(value = "type", defaultValue = "all") String searchType,
-                                        @RequestParam(value = "keyword", defaultValue = "") String searchKeyword) {
-    return service.list(page, searchType, searchKeyword);
-  }
+    @GetMapping("list")
+    public List<Map<String, Object>> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                                          @RequestParam(value = "type", defaultValue = "all") String searchType,
+                                          @RequestParam(value = "keyword", defaultValue = "") String searchKeyword) {
+        return service.list(page, searchType, searchKeyword);
+    }
 
 
-  @PostMapping("write")
-  public void write(
-          Community community,
-          @RequestParam(value = "files[]", required = false) MultipartFile[] files,
-          Authentication auth) {
-    System.out.println(files);
-    service.write(community, files, auth);
-  }
+    @PostMapping("write")
+    public void write(Community community, @RequestParam(value = "files[]", required = false) MultipartFile[] files, Authentication auth) {
 
-  @GetMapping("view/{id}")
-  public Map<String, Object> view(@PathVariable Integer id) {
-    return service.view(id);
-  }
+        service.write(community, files, auth);
+    }
 
-  @PutMapping("edit")
-  public void edit(@RequestBody Community community) {
-    System.out.println(community);
-    service.edit(community);
-  }
+    @GetMapping("view/{id}")
+    public Map<String, Object> view(@PathVariable Integer id) {
+        return service.view(id);
+    }
 
-  @DeleteMapping("delete/{id}")
-  public void delete(@PathVariable Integer id) {
-    service.delete(id);
-  }
+    @PutMapping("edit")
+    public void edit(@RequestBody Community community) {
+        System.out.println(community);
+        service.edit(community);
+    }
 
-  // TODO : UPDATE 기능 추가
+    @DeleteMapping("delete/{id}")
+    public void delete(@PathVariable Integer id) {
+        service.delete(id);
+    }
+
+    // TODO : UPDATE 기능 추가
 
 
 }
