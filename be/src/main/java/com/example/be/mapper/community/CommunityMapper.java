@@ -1,6 +1,7 @@
 package com.example.be.mapper.community;
 
 import com.example.be.dto.community.Community;
+import com.example.be.dto.community.CommunityComment;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -91,5 +92,9 @@ public interface CommunityMapper {
             """)
     int deleteCommunity(Integer id);
 
-
+    @Insert("""
+            INSERT INTO community_file (comment, writer, community_id)
+            Values (#{comment}, #{writer}, #{communityId})
+            """)
+    int writeCommunityComment(CommunityComment comment);
 }

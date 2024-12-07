@@ -1,6 +1,7 @@
 package com.example.be.service.community;
 
 import com.example.be.dto.community.Community;
+import com.example.be.dto.community.CommunityComment;
 import com.example.be.mapper.community.CommunityMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,7 +62,7 @@ public class CommunityService {
             for (MultipartFile file : files) {
 
                 String fileName = file.getOriginalFilename();
-                String filePath = STR."C:/Temp/teamPrj1126/\{community.getId()}/\{fileName}";
+                String filePath = STR."C:/Temp/teamPrj1126/\{id}/\{fileName}";
                 try {
                     file.transferTo(new File(filePath));
                     mapper.addFile(fileName, id);
@@ -100,5 +101,15 @@ public class CommunityService {
 
     public void delete(Integer id) {
         mapper.deleteCommunity(id);
+    }
+
+    public void commentWrite(CommunityComment comment, Authentication auth) {
+        String nickname = mapper.findNickname(auth.getName());
+        comment.setWriter(nickname);
+
+//        TODO : communityId 값 삽입
+
+
+        mapper.writeCommunityComment(comment);
     }
 }

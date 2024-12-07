@@ -1,6 +1,7 @@
 package com.example.be.controller.community;
 
 import com.example.be.dto.community.Community;
+import com.example.be.dto.community.CommunityComment;
 import com.example.be.service.community.CommunityService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,4 +53,10 @@ public class CommunityController {
     // TODO : UPDATE 기능 추가
 
 
+//    TODO :  게시판 댓글 기능
+
+    @PostMapping("comment/write")
+    public void commentWrite(@RequestBody CommunityComment comment, Authentication auth) {
+        service.commentWrite(comment, auth);
+    }
 }
