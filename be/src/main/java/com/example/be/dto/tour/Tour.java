@@ -18,5 +18,5 @@ public class Tour {
   private LocalDateTime inserted;
   private List<TourImg> fileList;
   private Cart cart;
-
+  private Boolean active;
 }

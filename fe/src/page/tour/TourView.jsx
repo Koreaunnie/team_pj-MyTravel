@@ -110,7 +110,7 @@ function TourView() {
         navigateToDepth2={() => navigate(`/tour/view/${id}`)}
       />
       <div>
-        <h1>{tour.title}</h1>
+        {tour.active ? <h1>{tour.title}</h1> : <h1>삭제된 상품입니다.</h1>}
         <Stack>
           <Field label={"상품"} readOnly>
             <Input value={tour.product} />
@@ -142,7 +142,11 @@ function TourView() {
             </li>
           </ul>
           <Box>
-            <button className={"btn btn-dark"} onClick={handleAddToCartClick}>
+            <button
+              className={"btn btn-dark"}
+              disabled={!tour.active}
+              onClick={() => handleAddToCartClick()}
+            >
               장바구니에 담기
             </button>
           </Box>
