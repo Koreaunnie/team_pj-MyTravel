@@ -108,26 +108,28 @@ function TourList() {
             columns={{ base: 2, md: 4, lg: 5, xl: 6, "2xl": 7 }}
             spacing={6}
           >
-            {tourList.map((tour) => (
-              <Box
-                key={tour.id}
-                borderWidth={"1px"}
-                borderRadius={"1g"}
-                overflow={"hidden"}
-                p={4}
-                m={1}
-                _hover={{ boxShadow: "1g" }}
-                onClick={() => handleRowClick(tour.id)}
-              >
-                <Image key={tour.image} src={tour.src} />
-                <Text>
-                  <b>{tour.title}</b>
-                </Text>
-                <Text>{tour.location}</Text>
-                <Text>{tour.product}</Text>
-                <Text>{tour.price}</Text>
-              </Box>
-            ))}
+            {tourList.map((tour) =>
+              tour.active ? (
+                <Box
+                  key={tour.id}
+                  borderWidth={"1px"}
+                  borderRadius={"1g"}
+                  overflow={"hidden"}
+                  p={4}
+                  m={1}
+                  _hover={{ boxShadow: "1g" }}
+                  onClick={() => handleRowClick(tour.id)}
+                >
+                  <Image key={tour.image} src={tour.src} />
+                  <Text>
+                    <b>{tour.title}</b>
+                  </Text>
+                  <Text>{tour.location}</Text>
+                  <Text>{tour.product}</Text>
+                  <Text>{tour.price}</Text>
+                </Box>
+              ) : null,
+            )}
           </SimpleGrid>
         )}
       </div>

@@ -39,3 +39,12 @@ ALTER TABLE tour
 SELECT *
 FROM tour
 WHERE id = 61;
+
+ALTER TABLE tour
+    ADD activate BOOLEAN DEFAULT true;
+
+ALTER TABLE tour
+    DROP COLUMN inserted;
+
+ALTER TABLE tour
+    RENAME COLUMN activate TO active;
