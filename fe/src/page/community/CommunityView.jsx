@@ -102,7 +102,13 @@ function CommunityView(props) {
               <Button onClick={handleEditClick}>수정</Button>
             </HStack>
           </Box>
-          <Box>{/*  TODO: 코멘트 작성, 코멘트 리스트 추가 */}</Box>
+          <Box>
+            {/*  TODO: 코멘트 작성, 코멘트 리스트 추가 */}
+            <HStack>
+              <Textarea h={100} w={700} />
+              <Button h={100}>댓글 등록</Button>
+            </HStack>
+          </Box>
           <Box>
             <CommunityList />
           </Box>
