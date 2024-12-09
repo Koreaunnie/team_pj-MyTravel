@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Breadcrumb } from "../../../components/root/Breadcrumb.jsx";
 import { Modal } from "../../../components/root/Modal.jsx";
 import axios from "axios";
 import { Spinner } from "@chakra-ui/react";
+import { AuthenticationContext } from "../../../components/context/AuthenticationProvider.jsx";
 
 function FaqList(props) {
   const [faqList, setFaqList] = useState();
   const [addModalOpen, setAddModalOpen] = useState();
   const navigate = useNavigate();
+  const { isAdmin, hasAccess } = useContext(AuthenticationContext);
 
   useEffect(() => {
     axios.get("/api/cs/faq/list").then((res) => setFaqList(res.data));
@@ -29,12 +31,14 @@ function FaqList(props) {
 
       <div className={"body-normal"}>
         <div className={"btn-wrap"}>
-          <button
-            className={"btn btn-dark"}
-            onClick={() => setAddModalOpen(true)}
-          >
-            작성
-          </button>
+          {isAdmin && hasAccess && (
+            <button
+              className={"btn btn-dark"}
+              onClick={() => setAddModalOpen(true)}
+            >
+              작성
+            </button>
+          )}
         </div>
 
         <h1>자주 묻는 질문</h1>
