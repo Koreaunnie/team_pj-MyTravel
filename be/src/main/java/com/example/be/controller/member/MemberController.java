@@ -80,6 +80,12 @@ public class MemberController {
     }
   }
 
+  @GetMapping("partners")
+  @PreAuthorize("hasAuthority('SCOPE_admin')")
+  public List<Member> partnerList() {
+    return service.partnerList();
+  }
+
   @GetMapping("list")
   @PreAuthorize("hasAuthority('SCOPE_admin')")
   public List<Member> list() {

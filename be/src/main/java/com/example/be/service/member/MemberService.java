@@ -221,4 +221,8 @@ public class MemberService {
     return auth.getAuthorities().stream().map(e -> e.toString())
             .anyMatch(s -> s.equals("SCOPE_partner"));
   }
+
+  public List<Member> partnerList() {
+    return mapper.partnerList();
+  }
 }
