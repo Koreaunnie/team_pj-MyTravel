@@ -17,6 +17,7 @@ import {
 import { toaster } from "../../components/ui/toaster.jsx";
 import { ImageView } from "../../Image/ImageView.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
+import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 
 function TourUpdate() {
   const { id } = useParams();
@@ -91,8 +92,14 @@ function TourUpdate() {
   }
 
   return (
-    <Box>
-      <h1>{id}번 상품 수정</h1>
+    <div className={"tour"}>
+      <Breadcrumb
+        depth1={"Tour 목록"}
+        navigateToDepth1={() => navigate(`/tour/list`)}
+        depth2={"상품 수정"}
+        navigateToDepth2={() => navigate(`/tour/update/${id}`)}
+      />
+      <h1>{id}번 Tour 상품 수정</h1>
       <Stack>
         <Field label={"제목"}>
           <Input
@@ -165,7 +172,7 @@ function TourUpdate() {
           </Box>
         )}
       </Stack>
-    </Box>
+    </div>
   );
 }
 

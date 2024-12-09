@@ -92,20 +92,6 @@ public class TourService {
               }
             });
 
-
-    //tourList의 image에 경로
-
-  /*  //게시글 별 id에 따른 첫번째 사진과 그 경로
-    List<TourImg> imageNames = mapper.selectFirstFilesOfTourId(searchType, keyword);
-    List<TourImg> fileSrcList = imageNames.stream()
-            .map(image -> new TourImg(
-                    image.getId(),
-                    image.getName(),
-                    imageSrcPrefix + "/" + image.getId() + "/" + image.getName()
-            ))
-            .toList();
-*/
-
     return Map.of("tourList", tourList);
   }
 
@@ -125,24 +111,27 @@ public class TourService {
   }
 
   public boolean delete(int id) {
-    //첨부파일 삭제
-    List<String> fileName = mapper.selectFilesByTourId(id);
-    for (String file : fileName) {
-      String key = "teamPrj1126/" + id + "/" + file;
-      DeleteObjectRequest dor = DeleteObjectRequest.builder()
-              .bucket(bucketName)
-              .key(key)
-              .build();
-      s3.deleteObject(dor);
-    }
-
-    //DB테이블에서 삭제
-    mapper.deleteFileByTourId(id);
+    //삭제 선택 시 데이터 삭제가 아닌 active 컬럼 false로 변경
+//    //첨부파일 삭제
+//    List<String> fileName = mapper.selectFilesByTourId(id);
+//    for (String file : fileName) {
+//      String key = "teamPrj1126/" + id + "/" + file;
+//      DeleteObjectRequest dor = DeleteObjectRequest.builder()
+//              .bucket(bucketName)
+//              .key(key)
+//              .build();
+//      s3.deleteObject(dor);
+//    }
+//
+//    //DB테이블에서 삭제
+//    mapper.deleteFileByTourId(id);
 
     //장바구니 저장 내용 삭제
     mapper.deleteCartByTourId(id);
 
-    int cnt = mapper.deleteById(id);
+//    int cnt = mapper.deleteById(id);
+    int cnt = mapper.updateActiveToFalse(id);
+
     return cnt == 1;
   }
 
@@ -198,10 +187,10 @@ public class TourService {
     return tour.getPartnerEmail().equals(authentication.getName());
   }
 
-    // 메인 화면에 필요한 일부 tour 리스트 가져오기
-    public List<Tour> getMainPageTours(String keyword) {
-        return mapper.getTop4ByOrderByInserted();
-    }
+  // 메인 화면에 필요한 일부 tour 리스트 가져오기
+  public List<Tour> getMainPageTours(String keyword) {
+    return mapper.getTop4ByOrderByInserted();
+  }
 
   public List<Tour> myList(String email) {
     return mapper.myList(email);

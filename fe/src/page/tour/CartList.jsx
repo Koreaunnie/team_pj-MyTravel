@@ -106,10 +106,10 @@ function CartList() {
     <div>
       <h1>장바구니 목록</h1>
 
-      <div>
-        {cartList.length === 0 ? (
-          <p>장바구니가 비어 있습니다.</p>
-        ) : (
+      {cartList.length === 0 ? (
+        <p>장바구니가 비어 있습니다.</p>
+      ) : (
+        <div>
           <table className={"table-list"}>
             <tbody>
               {cartList.map((cart) => (
@@ -148,43 +148,45 @@ function CartList() {
               ))}
             </tbody>
           </table>
-        )}
-      </div>
-      <adise>
-        <h2>선택한 제품</h2>
-        <form>
-          <table className={"table-list"}>
-            <thead>
-              <tr>
-                <th>
-                  <label htmlFor="product">상품</label>
-                </th>
-                <th>
-                  <label htmlFor="price">가격</label>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {checkedList.map((cart) => (
+        </div>
+      )}
+      {cartList.length === 0 || (
+        <div>
+          <h2>선택한 제품</h2>
+          <form>
+            <table className={"table-list"}>
+              <thead>
                 <tr>
-                  <td>
-                    <input value={cart.product} />
-                  </td>
-                  <td>
-                    <input value={cart.price} />
-                  </td>
+                  <th>
+                    <label htmlFor="product">상품</label>
+                  </th>
+                  <th>
+                    <label htmlFor="price">가격</label>
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </form>
-        <button className={"btn btn-dark"} onClick={handlePayButton}>
-          총 {calculateTotalPrice()}원 결제
-        </button>
-        <button className={"btn btn-warning"} onClick={handleDeleteAll}>
-          선택한 항목 삭제
-        </button>
-      </adise>
+              </thead>
+              <tbody>
+                {checkedList.map((cart) => (
+                  <tr>
+                    <td>
+                      <input value={cart.product} />
+                    </td>
+                    <td>
+                      <input value={cart.price} />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </form>
+          <button className={"btn btn-dark"} onClick={handlePayButton}>
+            총 {calculateTotalPrice()}원 결제
+          </button>
+          <button className={"btn btn-warning"} onClick={handleDeleteAll}>
+            선택한 항목 삭제
+          </button>
+        </div>
+      )}
     </div>
   );
 }

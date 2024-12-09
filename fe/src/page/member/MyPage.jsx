@@ -5,6 +5,8 @@ import MemberInfo from "./MemberInfo.jsx";
 import CartList from "../tour/CartList.jsx";
 import TourMyList from "../tour/TourMyList.jsx";
 import PaymentHistory from "../tour/PaymentHistory.jsx";
+import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
+import "./Member.css";
 
 function MyPage(props) {
   const [selectedMenu, setSelectedMenu] = useState("profile");
@@ -15,7 +17,11 @@ function MyPage(props) {
   };
 
   return (
-    <div>
+    <div className={"member"}>
+      <Breadcrumb
+        depth1={"마이페이지"}
+        navigateToDepth1={() => navigate(`/mypage/${id}`)}
+      />
       <h1>마이페이지</h1>
       <Box>
         <VStack align={"start"} spacing={"10px"}>
