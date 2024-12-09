@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Image } from "@chakra-ui/react";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
-import * as PortOne from "/src/libs/browser-sdk/package.json";
+import PortOne from "@portone/browser-sdk";
 
 const { VITE_STORE_ID, VITE_CHANNEL_KEY } = import.meta.env;
 
