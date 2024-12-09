@@ -52,7 +52,7 @@ public interface TourMapper {
                    </if>
                 GROUP BY id
                 ORDER BY id DESC
-                LIMIT #{offset}, 10
+                LIMIT #{offset}, 12
             </script>
           """)
   List<TourList> selectAll(int offset, String searchType, String keyword);
