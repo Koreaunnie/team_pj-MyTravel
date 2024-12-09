@@ -21,9 +21,10 @@ public interface WalletMapper {
     @Select("""
             SELECT * 
             FROM wallet
+            WHERE writer = #{writer}
             ORDER BY date DESC 
             """)
-    List<Wallet> selectAllByDate();
+    List<Wallet> selectAllByDate(String writer);
 
     // 내 지갑 내역 상세 보기
     @Select("""

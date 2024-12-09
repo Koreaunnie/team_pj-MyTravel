@@ -3,6 +3,7 @@ package com.example.be.service.wallet;
 import com.example.be.dto.wallet.Wallet;
 import com.example.be.mapper.wallet.WalletMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,8 +22,10 @@ public class WalletService {
     }
 
     // 내 지갑 내역 보기
-    public List<Wallet> list() {
-        return mapper.selectAllByDate();
+    public List<Wallet> list(Authentication authentication) {
+        String writer = authentication.getName();
+
+        return mapper.selectAllByDate(writer);
     }
 
     // 내 지갑 내역 상세 보기, 수정
