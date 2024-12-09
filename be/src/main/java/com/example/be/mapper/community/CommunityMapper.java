@@ -12,7 +12,7 @@ public interface CommunityMapper {
 
     @Select("""
                         <script>
-                        SELECT id, title, writer, inserted
+                        SELECT id, title, writer, inserted creationDate
                         FROM community
                         WHERE 
                                 <if test="searchType == 'all'">
@@ -38,10 +38,10 @@ public interface CommunityMapper {
                                      </choose>
                                  </if>
                         ORDER BY id DESC
-                        LIMIT #{pageList}, 10
+                        LIMIT #{pageList},15
                         </script>
             """)
-    List<Map<String, Object>> listUp(Integer pageList, String searchType, String searchKeyword);
+    List<Community> listUp(Integer pageList, String searchType, String searchKeyword);
 
     @Select("""
             SELECT id, title, content, writer, inserted creationDate
@@ -118,4 +118,9 @@ public interface CommunityMapper {
             """)
     int deleteFileByCommunityId(int id);
 
+    @Select("""
+            SELECT COUNT(*)
+            FROM community
+            """)
+    Integer countAllCommunity();
 }

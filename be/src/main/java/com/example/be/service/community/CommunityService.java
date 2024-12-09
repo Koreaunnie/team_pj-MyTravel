@@ -36,11 +36,17 @@ public class CommunityService {
     @Value("${bucket.name}")
     String bucketName;
 
-    public List<Map<String, Object>> list(Integer page, String searchType, String searchKeyword) {
+    public Map<String, Object> list(Integer page, String searchType, String searchKeyword) {
 
-        Integer pageList = (page - 1) * 10;
+        Integer pageList = (page - 1) * 15;
 
-        return mapper.listUp(pageList, searchType, searchKeyword);
+//        모든 수를 세는 것을 만들어야 함
+
+        List<Community> list = mapper.listUp(pageList, searchType, searchKeyword);
+        Integer countCommunity = mapper.countAllCommunity();
+
+
+        return Map.of("list", list, "countCommunity", countCommunity);
     }
 
     public void write(Community community, MultipartFile[] files, Authentication auth) {
@@ -74,15 +80,12 @@ public class CommunityService {
     public Map<String, Object> view(Integer id) {
 
         Map<String, Object> viewer = mapper.viewCommunity(id);
-        System.out.println("viewer = " + viewer);
         List<String> fileList = mapper.callCommunityFile(id);
-        System.out.println("fileList = " + fileList);
         if (fileList.size() != 0) {
             List<Object> files = new ArrayList();
             for (String fileName : fileList) {
                 Map<String, Object> file = new HashMap<>();
                 String filePath = STR."\{imageSrcPrefix}/community/\{viewer.get("id").toString()}/\{fileName}";
-                System.out.println("filePath = " + filePath);
                 file.put("fileName", fileName);
                 file.put("filePath", filePath);
                 files.add(file);
@@ -99,8 +102,7 @@ public class CommunityService {
     }
 
     public void delete(Integer id) {
-        // 첨부파일 지우기
-        // 실제 파일(s3) 지우기
+
         List<String> fileName = mapper.selectFilesByCommunityId(id);
 
         for (String file : fileName) {
@@ -112,8 +114,6 @@ public class CommunityService {
             s3.deleteObject(dor);
         }
 
-
-        // db 지우기
         mapper.deleteFileByCommunityId(id);
 
         // 댓글 지우기
