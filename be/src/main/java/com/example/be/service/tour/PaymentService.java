@@ -46,4 +46,8 @@ public class PaymentService {
     System.out.println(paidList);
     return paidList;
   }
+
+  public List<PaymentHistory> allPayment() {
+    return mapper.allPayment();
+  }
 }
