@@ -39,6 +39,7 @@ import FaqView from "./page/cs/faq/FaqView.jsx";
 import PaymentComplete from "./page/tour/PaymentComplete.jsx";
 import TourMyList from "./page/tour/TourMyList.jsx";
 import PaymentHistory from "./page/tour/PaymentHistory.jsx";
+import PaymentHistoryAll from "./page/tour/PaymentHistoryAll.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -136,6 +137,10 @@ const router = createBrowserRouter([
       {
         path: "payment/history/:email",
         element: <PaymentHistory />,
+      },
+      {
+        path: "payment/history",
+        element: <PaymentHistoryAll />,
       },
       // 커뮤니티
       {
