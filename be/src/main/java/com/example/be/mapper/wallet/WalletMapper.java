@@ -11,8 +11,8 @@ public interface WalletMapper {
     // 내 지갑 지출 / 수입 추가
     @Insert("""
             INSERT INTO wallet(
-                    date, category, title, income, expense, payment_method, memo)
-            VALUES (#{date}, #{category}, #{title}, #{income}, #{expense}, #{paymentMethod}, #{memo})
+                    date, category, title, income, expense, payment_method, memo, inserted, writer)
+            VALUES (#{date}, #{category}, #{title}, #{income}, #{expense}, #{paymentMethod}, #{memo}, NOW(), #{writer})
             """)
     @Options(keyProperty = "id", useGeneratedKeys = true)
     int insertWallet(Wallet wallet);

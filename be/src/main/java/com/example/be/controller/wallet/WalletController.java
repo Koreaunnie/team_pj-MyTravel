@@ -22,7 +22,10 @@ public class WalletController {
     // 내 지갑 지출 / 수입 추가
     @PostMapping("add")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Map<String, Object>> add(@RequestBody Wallet wallet) {
+    public ResponseEntity<Map<String, Object>> add(@RequestBody Wallet wallet,
+                                                   Authentication authentication) {
+
+        wallet.setWriter(authentication.getName());
 
         if (service.add(wallet)) {
             // 성공
