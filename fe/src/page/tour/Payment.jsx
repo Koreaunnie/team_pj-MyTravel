@@ -6,7 +6,8 @@ import { AuthenticationContext } from "../../components/context/AuthenticationPr
 import * as PortOne from "/libs/browser-sdk";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 
-const { VITE_STORE_ID, VITE_CHANNEL_KEY } = import.meta.env;
+const { VITE_STORE_ID, VITE_KAKAOPAY_CHANNEL_KEY, VITE_TOSSPAY_CHANNEL_KEY } =
+  import.meta.env;
 
 function randomId() {
   return Array.from(crypto.getRandomValues(new Uint32Array(2)))
@@ -23,6 +24,9 @@ function Payment() {
   });
   const { email } = useContext(AuthenticationContext);
   const navigate = useNavigate();
+  const paymentId = randomId();
+  const currency = "CURRENCY_KRW";
+  const payMethod = "EASY_PAY";
 
   useEffect(() => {
     if (location.state && location.state.tour) {
@@ -38,18 +42,13 @@ function Payment() {
     );
   }
 
-  const handleSubmit = async (e) => {
+  const handleKakaoSubmit = async (e) => {
     e.preventDefault();
     setWaitingPayment(true);
 
-    const paymentId = randomId();
-    const currency = "CURRENCY_KRW";
-    const payMethod = "EASY_PAY";
-    const totalAmount = totalPrice();
-
-    const payment = await PortOne.requestPayment({
+    const kakaoPayment = await PortOne.requestPayment({
       storeId: VITE_STORE_ID,
-      channelKey: VITE_CHANNEL_KEY,
+      channelKey: VITE_KAKAOPAY_CHANNEL_KEY,
       paymentId,
       orderName: tour[0].product + " 그 외",
       totalAmount,
@@ -57,19 +56,18 @@ function Payment() {
       payMethod,
     });
 
-    if (payment.code != null) {
+    if (kakaoPayment.code != null) {
       //실패 내용
-      console.log("결제 실패", payment.message);
       setWaitingPayment(false);
       setPaymentStatus({
         status: "FAILED",
-        message: payment.message,
+        message: kakaoPayment.message,
       });
       return;
     }
 
     // payment/complete 엔드포인트 구현
-    const response = await fetch(`/api/payment/payment`, {
+    const kakaoResponse = await fetch(`/api/payment/payment`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -85,8 +83,8 @@ function Payment() {
       }),
     });
 
-    if (response.ok) {
-      const paymentComplete = await response.json();
+    if (kakaoResponse.ok) {
+      const paymentComplete = await kakaoResponse.json();
 
       if (paymentComplete.status === "SUCCESS") {
         setPaymentStatus({ status: "SUCCESS" });
@@ -106,7 +104,73 @@ function Payment() {
     } else {
       setPaymentStatus({
         status: "FAILED",
-        message: (await response.text()) || "2 결제 처리 오류",
+        message: (await kakaoResponse.text()) || "2 결제 처리 오류",
+      });
+    }
+  };
+
+  const handleTossSubmit = async (e) => {
+    e.preventDefault();
+    setWaitingPayment(true);
+
+    const tossPayment = await PortOne.requestPayment({
+      storeId: VITE_STORE_ID,
+      channelKey: VITE_TOSSPAY_CHANNEL_KEY,
+      paymentId,
+      orderName: tour[0].product + " 그 외",
+      totalAmount,
+      currency,
+      payMethod,
+    });
+
+    const tossResponse = await fetch(`/api/payment/payment`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      //paymentId와 주문정보를 서버에 전달
+      body: JSON.stringify({
+        tourList: tour,
+        paymentId,
+        amount: totalAmount,
+        payMethod,
+        currency,
+        buyerEmail: email,
+      }),
+    });
+
+    if (tossPayment.code != null) {
+      //실패 내용
+      setWaitingPayment(false);
+      setPaymentStatus({
+        status: "FAILED",
+        message: tossPayment.message,
+      });
+      return;
+    }
+
+    if (tossResponse.ok) {
+      const paymentComplete = await tossResponse.json();
+
+      if (paymentComplete.status === "SUCCESS") {
+        setPaymentStatus({ status: "SUCCESS" });
+        navigate(`/payment/complete`, {
+          state: {
+            paidList: tour,
+            paymentId,
+            totalAmount,
+          },
+        });
+      } else {
+        setPaymentStatus({
+          status: "FAILED",
+          message: "1 결제 실패" + paymentComplete.message,
+        });
+      }
+    } else {
+      setPaymentStatus({
+        status: "FAILED",
+        message: (await tossResponse.text()) || "2 결제 처리 오류",
       });
     }
   };
@@ -114,6 +178,7 @@ function Payment() {
   const totalPrice = () => {
     return tour.reduce((sum, tour) => sum + tour.price, 0);
   };
+  const totalAmount = totalPrice();
 
   const handleClose = () => {
     setPaymentStatus({ status: "IDLE" });
@@ -131,7 +196,7 @@ function Payment() {
       />
       <h1>결제</h1>
       <main>
-        <form onSubmit={handleSubmit}>
+        <form>
           <h2>결제 내역</h2>
           <div>
             <table className={"table-list"}>
@@ -175,10 +240,10 @@ function Payment() {
           <br />
           <div>
             <h2>결제 방법</h2>
-            <div
-              role={"button"}
-              onClick={handleSubmit}
-              style={{ display: "inline-block", cursor: "pointer" }}
+            <button
+              type={"button"}
+              onClick={handleKakaoSubmit}
+              style={{ cursor: "pointer" }}
               aria-busy={waitingPayment}
               disabled={waitingPayment}
             >
@@ -187,7 +252,20 @@ function Payment() {
                 alt="결제 버튼"
                 width="100"
               />
-            </div>
+            </button>
+            <button
+              type={"button"}
+              onClick={handleTossSubmit}
+              style={{ cursor: "pointer" }}
+              aria-busy={waitingPayment}
+              disabled={waitingPayment}
+            >
+              <img
+                src="https://prj241114-j19121m.s3.ap-northeast-2.amazonaws.com/teamPrj1126/74/toss.jpg"
+                alt="결제 버튼"
+                width="100"
+              />
+            </button>
           </div>
         </form>
       </main>
