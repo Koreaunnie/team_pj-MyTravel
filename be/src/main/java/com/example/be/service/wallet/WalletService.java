@@ -3,7 +3,6 @@ package com.example.be.service.wallet;
 import com.example.be.dto.wallet.Wallet;
 import com.example.be.mapper.wallet.WalletMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,15 +21,12 @@ public class WalletService {
     }
 
     // 내 지갑 내역 보기
-    public List<Wallet> list(Authentication authentication) {
-        String writer = authentication.getName();
-
+    public List<Wallet> list(String writer) {
         return mapper.selectAllByDate(writer);
     }
 
     // 내 지갑 내역 상세 보기, 수정
-    public Wallet view(int id, Authentication authentication) {
-        String writer = authentication.getName();
+    public Wallet view(int id, String writer) {
         return mapper.selectById(id, writer);
     }
 
@@ -51,8 +47,7 @@ public class WalletService {
     }
 
     // 내 지갑 내역 삭제
-    public void delete(int id, Authentication authentication) {
-        String writer = authentication.getName();
+    public void delete(int id, String writer) {
         mapper.deleteById(id, writer);
     }
 

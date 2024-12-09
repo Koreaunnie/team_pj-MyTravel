@@ -43,7 +43,8 @@ public class WalletController {
     @GetMapping("list")
     @PreAuthorize("isAuthenticated()")
     public List<Wallet> list(Authentication authentication) {
-        return service.list(authentication);
+        String writer = authentication.getName();
+        return service.list(writer);
     }
 
     // 내 지갑 내역 상세 보기
@@ -51,7 +52,8 @@ public class WalletController {
     @PreAuthorize("isAuthenticated()")
     public Wallet view(@PathVariable int id,
                        Authentication authentication) {
-        return service.view(id, authentication);
+        String writer = authentication.getName();
+        return service.view(id, writer);
     }
 
     // 내 지갑 내역 상세 보기 화면에서 수정
@@ -76,7 +78,8 @@ public class WalletController {
     @PreAuthorize("isAuthenticated()")
     public void delete(@PathVariable int id,
                        Authentication authentication) {
-        service.delete(id, authentication);
+        String writer = authentication.getName();
+        service.delete(id, writer);
     }
 
     // 내 지갑 내용 추가 / 수정 시 카테고리 목록 반환

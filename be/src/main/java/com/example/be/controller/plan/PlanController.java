@@ -49,7 +49,8 @@ public class PlanController {
                                     @RequestParam(value = "st", defaultValue = "all") String searchType,
                                     @RequestParam(value = "sk", defaultValue = "") String searchKeyword,
                                     Authentication authentication) {
-        return service.list(page, searchType, searchKeyword, authentication);
+        String writer = authentication.getName();
+        return service.list(page, searchType, searchKeyword, writer);
     }
 
     // 내 여행 목록에서 상단 고정

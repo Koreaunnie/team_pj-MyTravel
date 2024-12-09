@@ -76,9 +76,7 @@ public class PlanService {
     }
 
     // 내 여행 목록 조회
-    public Map<String, Object> list(Integer page, String searchType, String searchKeyword, Authentication authentication) {
-        String writer = authentication.getName();
-
+    public Map<String, Object> list(Integer page, String searchType, String searchKeyword, String writer) {
         // SQL 의 LIMIT 키워드에서 사용되는 offset
         Integer offset = (page - 1) * 10;
 
