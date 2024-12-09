@@ -76,15 +76,17 @@ public class PlanService {
     }
 
     // 내 여행 목록 조회
-    public Map<String, Object> list(Integer page, String searchType, String searchKeyword) {
+    public Map<String, Object> list(Integer page, String searchType, String searchKeyword, Authentication authentication) {
+        String writer = authentication.getName();
+
         // SQL 의 LIMIT 키워드에서 사용되는 offset
         Integer offset = (page - 1) * 10;
 
         // 조회되는 게시물
-        List<Plan> list = mapper.selectPlanByPageOffset(offset, searchType, searchKeyword);
+        List<Plan> list = mapper.selectPlanByPageOffset(offset, searchType, searchKeyword, writer);
 
         // 전체 게시물 수
-        Integer count = mapper.countAll(searchType, searchKeyword);
+        Integer count = mapper.countAll(searchType, searchKeyword, writer);
 
         return Map.of("list", list, "count", count);
     }

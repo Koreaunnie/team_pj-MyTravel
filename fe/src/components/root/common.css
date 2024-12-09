@@ -522,7 +522,7 @@ form .required {
 /*------------------- empty list -------------------*/
 .empty-container {
     width: 100%;
-    margin: 45px 0;
+    margin: 50px 0;
     text-align: center;
 }
 
@@ -532,6 +532,7 @@ form .required {
     justify-content: center;
     align-items: center;
     font-size: 3rem;
+    margin-top: 100px;
 }
 
 .empty-container-title {
@@ -571,7 +572,6 @@ form .required {
     left: 500px;
     width: calc(100% - 530px);
     border-right: 1px solid var(--table-border-color);
-    margin-top: -10px;
 }
 
 

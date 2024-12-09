@@ -47,8 +47,9 @@ public class PlanController {
     @PreAuthorize("isAuthenticated()")
     public Map<String, Object> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                     @RequestParam(value = "st", defaultValue = "all") String searchType,
-                                    @RequestParam(value = "sk", defaultValue = "") String searchKeyword) {
-        return service.list(page, searchType, searchKeyword);
+                                    @RequestParam(value = "sk", defaultValue = "") String searchKeyword,
+                                    Authentication authentication) {
+        return service.list(page, searchType, searchKeyword, authentication);
     }
 
     // 내 여행 목록에서 상단 고정
