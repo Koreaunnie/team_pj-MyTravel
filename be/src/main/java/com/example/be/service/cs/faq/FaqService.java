@@ -33,4 +33,8 @@ public class FaqService {
     public void delete(int id) {
         mapper.deleteById(id);
     }
+
+    public List<Faq> getFaq() {
+        return mapper.selectFaqForIndex();
+    }
 }

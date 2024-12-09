@@ -44,4 +44,12 @@ public interface FaqMapper {
             WHERE id = #{id}
             """)
     int deleteById(int id);
+
+    @Select("""
+            SELECT *
+            FROM faq
+            ORDER BY updated DESC
+            LIMIT 5
+            """)
+    List<Faq> selectFaqForIndex();
 }

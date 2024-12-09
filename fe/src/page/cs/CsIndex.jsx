@@ -6,11 +6,15 @@ import { Spinner } from "@chakra-ui/react";
 import axios from "axios";
 
 function CsIndex(props) {
+  const [faqList, setFaqList] = useState([]);
   const [inquiryList, setInquiryList] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get("/api/cs/index").then((res) => setInquiryList(res.data));
+    axios.get("/api/cs/index").then((res) => {
+      setFaqList(res.data.faq);
+      setInquiryList(res.data.inquiry);
+    });
   }, []);
 
   if (!inquiryList || inquiryList.length === 0) {
@@ -38,26 +42,12 @@ function CsIndex(props) {
           </button>
 
           <ul>
-            <li>
-              <span>Q.</span>
-              환불 규정이 어떻게 되나요?
-            </li>
-            <li>
-              <span>Q.</span>
-              환불 규정이 어떻게 되나요?
-            </li>
-            <li>
-              <span>Q.</span>
-              환불 규정이 어떻게 되나요?
-            </li>
-            <li>
-              <span>Q.</span>
-              환불 규정이 어떻게 되나요?
-            </li>
-            <li>
-              <span>Q.</span>
-              환불 규정이 어떻게 되나요?
-            </li>
+            {faqList.map((faq) => (
+              <li>
+                <span>Q.</span>
+                {faq.question}
+              </li>
+            ))}
           </ul>
         </section>
 
