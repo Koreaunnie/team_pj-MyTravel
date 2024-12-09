@@ -75,26 +75,16 @@ function Navbar(props) {
       </div>
 
       <div className={"user-container"}>
-        <div className={"dropdown"} ref={dropdownRef}>
-          <button className={"dropdown-toggle-button"} onClick={toggleDropdown}>
-            My Page
-          </button>
-          {dropdownOpen && (
-            <div className={"dropdown-toggle-container"}>
-              <ul>
-                {isAuthenticated || (
-                  <li onClick={() => navigate("/member/signup")}>회원가입</li>
-                )}
-                {isAuthenticated || (
-                  <li onClick={() => navigate("/member/login")}>로그인</li>
-                )}
-                {isAuthenticated && (
+        {isAuthenticated && (
+          <div ref={dropdownRef}>
+            <button className={"user-button"} onClick={toggleDropdown}>
+              My Page
+            </button>
+            {dropdownOpen && (
+              <div className={"mypage-toggle-container"}>
+                <ul>
                   <li onClick={() => navigate(`/mypage/${email}`)}>회원정보</li>
-                )}
-                {isAuthenticated && (
                   <li onClick={() => navigate("/cart")}>장바구니</li>
-                )}
-                {isAuthenticated && (
                   <li
                     onClick={() => {
                       logout();
@@ -103,11 +93,22 @@ function Navbar(props) {
                   >
                     로그아웃
                   </li>
-                )}
-              </ul>
-            </div>
-          )}
-        </div>
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
+
+        {isAuthenticated || (
+          <div>
+            <button
+              className={"user-button"}
+              onClick={() => navigate("/member/login")}
+            >
+              Login
+            </button>
+          </div>
+        )}
       </div>
     </nav>
   );
