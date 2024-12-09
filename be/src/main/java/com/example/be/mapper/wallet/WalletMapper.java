@@ -22,7 +22,7 @@ public interface WalletMapper {
             SELECT * 
             FROM wallet
             WHERE writer = #{writer}
-            ORDER BY date DESC 
+            ORDER BY date
             """)
     List<Wallet> selectAllByDate(String writer);
 
@@ -30,9 +30,9 @@ public interface WalletMapper {
     @Select("""
             select *
             FROM wallet
-            WHERE id = #{id}
+            WHERE id = #{id} AND writer = #{writer}
             """)
-    Wallet selectById(int id);
+    Wallet selectById(int id, String writer);
 
     // 내 지갑 내역 상세 보기 화면에서 수정
     @Update("""

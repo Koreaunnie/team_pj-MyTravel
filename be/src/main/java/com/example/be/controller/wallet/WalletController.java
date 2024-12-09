@@ -49,8 +49,9 @@ public class WalletController {
     // 내 지갑 내역 상세 보기
     @GetMapping("view/{id}")
     @PreAuthorize("isAuthenticated()")
-    public Wallet view(@PathVariable int id) {
-        return service.view(id);
+    public Wallet view(@PathVariable int id,
+                       Authentication authentication) {
+        return service.view(id, authentication);
     }
 
     // 내 지갑 내역 상세 보기 화면에서 수정

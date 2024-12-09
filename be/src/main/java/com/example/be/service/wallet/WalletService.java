@@ -29,8 +29,9 @@ public class WalletService {
     }
 
     // 내 지갑 내역 상세 보기, 수정
-    public Wallet view(int id) {
-        return mapper.selectById(id);
+    public Wallet view(int id, Authentication authentication) {
+        String writer = authentication.getName();
+        return mapper.selectById(id, writer);
     }
 
     // 내 지갑 내역 상세 보기 화면에서 수정
