@@ -43,7 +43,10 @@ function CsIndex(props) {
 
           <ul>
             {faqList.map((faq) => (
-              <li>
+              <li
+                key={faq.id}
+                onClick={() => navigate(`/cs/faq/view/${faq.id}`)}
+              >
                 <span>Q.</span>
                 {faq.question}
               </li>

@@ -60,7 +60,7 @@ function FaqView(props) {
           <button
             type={"button"}
             className={"btn btn-dark-outline"}
-            onClick={() => setBackToListModalOpen(true)}
+            onClick={() => navigate(`/cs/faq/list`)}
           >
             목록
           </button>
@@ -101,15 +101,6 @@ function FaqView(props) {
           </ul>
         </fieldset>
       </div>
-
-      {/* 목록 modal */}
-      <Modal
-        isOpen={backToListModalOpen}
-        onClose={() => setBackToListModalOpen(false)}
-        onConfirm={() => navigate(`/cs/faq/list`)}
-        message="목록으로 돌아가면 작성한 내용이 사라집니다."
-        buttonMessage="목록"
-      />
 
       {/* 수정 modal */}
       <Modal
