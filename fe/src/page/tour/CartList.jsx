@@ -183,7 +183,7 @@ function CartList() {
             총 {calculateTotalPrice()}원 결제
           </button>
           <button className={"btn btn-warning"} onClick={handleDeleteAll}>
-            선택한 항목 삭제
+            선택 삭제
           </button>
         </div>
       )}

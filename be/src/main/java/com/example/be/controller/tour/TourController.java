@@ -31,14 +31,14 @@ public class TourController {
   }
 
   @PostMapping("cart")
+  @PreAuthorize("isAuthenticated()")
   public ResponseEntity<Map<String, Object>> cart(
           @RequestBody Tour tour,
           Authentication authentication) {
     Cart cart = tour.getCart();
 
     if (service.addCart(tour, cart, authentication)) {
-      return ResponseEntity.ok(Map.of("message",
-              Map.of("type", "success", "text", "상품을 장바구니에 담았습니다.")));
+      return null;
     } else {
       return ResponseEntity.status(409).body(Map.of("message",
               Map.of("type", "warning", "text", "이미 장바구니에 담은 상품입니다.")));
