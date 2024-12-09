@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import * as PortOne from "@portone/browser-sdk";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Image } from "@chakra-ui/react";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
+import * as PortOne from "../../libs/@portone/browser-sdk";
 
 const { VITE_STORE_ID, VITE_CHANNEL_KEY } = import.meta.env;
 
@@ -13,7 +13,7 @@ function randomId() {
     .join("");
 }
 
-function Payment(props) {
+function Payment() {
   const location = useLocation();
   const [tour, setTour] = useState(null);
   const [waitingPayment, setWaitingPayment] = useState(false);
