@@ -5,7 +5,8 @@ import { Image } from "@chakra-ui/react";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import PortOne from "/libs/browser-sdk";
 
-const { VITE_STORE_ID, VITE_CHANNEL_KEY } = import.meta.env;
+const { VITE_STORE_ID, VITE_KAKAOPAY_CHANNEL_KEY, VITE_TOSSPAY_CHANNEL_KEY } =
+  import.meta.env;
 
 function randomId() {
   return Array.from(crypto.getRandomValues(new Uint32Array(2)))
@@ -48,7 +49,7 @@ function Payment(props) {
 
     const payment = await PortOne.requestPayment({
       storeId: VITE_STORE_ID,
-      channelKey: VITE_CHANNEL_KEY,
+      channelKey: VITE_KAKAOPAY_CHANNEL_KEY,
       paymentId,
       orderName: tour[0].product + " 그 외",
       totalAmount,
