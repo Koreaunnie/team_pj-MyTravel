@@ -79,6 +79,7 @@ public class PlanController {
     @DeleteMapping("delete/{id}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable int id, Authentication authentication) {
+        String writer = authentication.getName();
         Map<String, Object> result = service.view(id, writer);
         Plan plan = (Plan) result.get("plan");
         String userEmail = plan.getWriter();
