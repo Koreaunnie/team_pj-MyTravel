@@ -36,13 +36,15 @@ function CommunityView(props) {
   const [community, setCommunity] = useState({});
   const navigate = useNavigate();
   const [comment, setComment] = useState("");
+  const [commentList, setCommentList] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(`/api/community/view/${id}`, { id })
-      .then((e) => setCommunity(e.data));
+    axios.get(`/api/community/view/${id}`, { id }).then((e) => {
+      setCommunity(e.data);
+      setCommentList(e.data.commentList);
+    });
   }, []);
-
+  console.log(community);
   const handleDeleteClick = () => {
     axios
       .delete(`/api/community/delete/${id}`)
@@ -128,6 +130,20 @@ function CommunityView(props) {
                     댓글 등록
                   </Button>
                 </HStack>
+              </Field>
+              <br />
+              <Field label={"코멘트"}>
+                {commentList.map((list) => (
+                  <Box>
+                    <Stack>
+                      <HStack>
+                        <Field>{list.writer}</Field>
+                        <Field>{list.creationDate}</Field>
+                      </HStack>
+                      <Input value={list.comment} readOnly />
+                    </Stack>
+                  </Box>
+                ))}
               </Field>
             </Stack>
           </Box>

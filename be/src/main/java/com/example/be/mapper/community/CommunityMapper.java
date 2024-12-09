@@ -129,4 +129,12 @@ public interface CommunityMapper {
             WHERE community_id=#{id} AND file_name=#{removeFile}
             """)
     int deleteFileByFileName(Integer id, String removeFiles);
+
+    @Select("""
+            SELECT comment, writer , inserted creationDate
+            FROM community_comment
+            WHERE community_id=#{id}
+            ORDER BY creationDate DESC
+            """)
+    List<Map<String, Object>> callCommunityComment(Integer id);
 }

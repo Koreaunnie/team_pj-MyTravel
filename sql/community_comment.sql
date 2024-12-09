@@ -12,3 +12,7 @@ CREATE TABLE community_comment
 
 SELECT *
 FROM community_comment;
+
+SELECT *
+FROM community_comment
+WHERE community_id = 57;
