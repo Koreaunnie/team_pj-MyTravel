@@ -3,6 +3,7 @@ package com.example.be.service.cs.faq;
 import com.example.be.dto.cs.faq.Faq;
 import com.example.be.mapper.cs.faq.FaqMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,8 +15,11 @@ import java.util.List;
 public class FaqService {
     final FaqMapper mapper;
 
-    public void add(Faq faq) {
-        mapper.insertFaq(faq);
+    public boolean add(Faq faq) {
+        int cnt = 0;
+        cnt = mapper.insertFaq(faq);
+
+        return cnt == 1;
     }
 
     public List<Faq> list() {
@@ -26,15 +30,28 @@ public class FaqService {
         return mapper.selectById(id);
     }
 
-    public void update(Faq faq) {
-        mapper.updateById(faq);
+    public boolean update(Faq faq) {
+        int cnt = mapper.updateById(faq);
+        return cnt == 1;
     }
 
-    public void delete(int id) {
-        mapper.deleteById(id);
+    public boolean delete(int id) {
+        int cnt = mapper.deleteById(id);
+        return cnt == 1;
     }
 
     public List<Faq> getFaq() {
         return mapper.selectFaqForIndex();
+    }
+
+    public boolean hasAccess(String email, Authentication auth) {
+        return email.equals(auth.getName());
+    }
+
+    public boolean isAdmin(Authentication auth) {
+        return auth.getAuthorities()
+                .stream()
+                .map(a -> a.toString())
+                .anyMatch(a -> a.equals("SCOPE_admin"));
     }
 }

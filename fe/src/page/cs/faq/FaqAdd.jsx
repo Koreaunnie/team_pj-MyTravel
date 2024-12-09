@@ -1,27 +1,56 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Breadcrumb } from "../../../components/root/Breadcrumb.jsx";
 import { Modal } from "../../../components/root/Modal.jsx";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toaster } from "../../../components/ui/toaster.jsx";
+import { AuthenticationContext } from "../../../components/context/AuthenticationProvider.jsx";
 
 function FaqAdd(props) {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [backToListModalOpen, setBackToListModalOpen] = useState(false);
   const [saveModalOpen, setSaveModalOpen] = useState(false);
+  const { isAdmin, isAuthenticated } = useContext(AuthenticationContext);
 
   const navigate = useNavigate();
 
   const handleSaveButton = () => {
+    if (!isAuthenticated) {
+      toaster.create({
+        type: "warning",
+        description: "로그인이 필요합니다.",
+      });
+      return;
+    }
+
+    if (!isAdmin) {
+      toaster.create({
+        type: "warning",
+        description: "관리자만 FAQ를 등록할 수 있습니다.",
+      });
+      return;
+    }
+
     axios
       .post("/api/cs/faq/add", {
         question,
         answer,
       })
-      .then((res) => {
-        res.data;
-        navigate("/cs/faq/list");
-        alert("faq가 작성 되었습니다.");
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+        navigate(`/cs/faq/view/${data.id}`);
+      })
+      .catch((e) => {
+        const data = e.response.data;
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
       });
   };
 

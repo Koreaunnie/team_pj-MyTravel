@@ -71,6 +71,14 @@ function Navbar(props) {
           >
             고객센터
           </li>
+          {isAdmin && (
+            <li
+              className={isActive("/admin") ? "active" : ""}
+              onClick={() => navigate("/admin")}
+            >
+              관리자
+            </li>
+          )}
         </ul>
       </div>
 

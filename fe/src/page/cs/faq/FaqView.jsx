@@ -4,6 +4,7 @@ import { Modal } from "../../../components/root/Modal.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { Spinner } from "@chakra-ui/react";
+import { toaster } from "../../../components/ui/toaster.jsx";
 
 function FaqView(props) {
   const { id } = useParams();
@@ -24,10 +25,23 @@ function FaqView(props) {
   }
 
   const handleDeleteButton = () => {
-    axios.delete(`/api/cs/faq/delete/${id}`).then((res) => {
-      navigate("/cs/faq/list/");
-      alert("FAQ가 삭제되었습니다.");
-    });
+    axios
+      .delete(`/api/cs/faq/delete/${id}`)
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+        navigate("/cs/faq/list");
+      })
+      .catch((e) => {
+        const data = e.response.data;
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+      });
   };
 
   return (
