@@ -31,26 +31,31 @@ public interface TourMapper {
                 SELECT id, title, product, price, location, ti.name image, active
                 FROM tour t
                 LEFT JOIN tour_img ti ON t.id = ti.tour_id
-                WHERE
-                  <trim prefixOverrides="OR">
-                    <if test="searchType == 'all' or searchType == 'title'">
-                        title LIKE CONCAT('%', #{keyword}, '%')
-                    </if>
-                    <if test="searchType == 'all' or searchType == 'product'">
-                        OR product LIKE CONCAT('%', #{keyword}, '%')
-                    </if>
-                    <if test="searchType == 'all' or searchType == 'location'">
-                        OR location LIKE CONCAT('%', #{keyword}, '%')
-                    </if>
-                    <if test="searchType == 'all' or searchType == 'partner'">
-                        OR partner LIKE CONCAT('%', #{keyword}, '%')
-                    </if>
-                  </trim>
+           WHERE t.active = true
+                    <if test="keyword != null and keyword.trim() != ''">
+                     AND (
+                       <trim prefixOverrides="OR">
+                         <if test="searchType == 'all' or searchType == 'title'">
+                             t.title LIKE CONCAT('%', #{keyword}, '%')
+                         </if>
+                         <if test="searchType == 'all' or searchType == 'product'">
+                             OR t.product LIKE CONCAT('%', #{keyword}, '%')
+                         </if>
+                         <if test="searchType == 'all' or searchType == 'location'">
+                             OR t.location LIKE CONCAT('%', #{keyword}, '%')
+                         </if>
+                         <if test="searchType == 'all' or searchType == 'partner'">
+                             OR t.partner LIKE CONCAT('%', #{keyword}, '%')
+                         </if>
+                       </trim>
+                     )
+                   </if>
                 GROUP BY id
                 ORDER BY id DESC
+                LIMIT #{offset}, 10
             </script>
           """)
-  List<TourList> selectAll(String searchType, String keyword);
+  List<TourList> selectAll(int offset, String searchType, String keyword);
 
   @Select("""
           SELECT *
@@ -150,4 +155,31 @@ public interface TourMapper {
           WHERE id=#{id}
           """)
   int updateActiveToFalse(int id);
+
+  @Select("""
+          <script>
+          SELECT COUNT(*)
+          FROM tour
+          WHERE active = true
+              <if test="keyword != null and keyword.trim() != ''">
+                 AND (
+                <trim prefixOverrides="OR">
+                <if test="searchType == 'all' or searchType == 'title'">
+                t.title LIKE CONCAT('%', #{keyword}, '%')
+                </if>
+                <if test="searchType == 'all' or searchType == 'product'">
+                OR t.product LIKE CONCAT('%', #{keyword}, '%')
+                </if>
+                <if test="searchType == 'all' or searchType == 'location'">
+                OR t.location LIKE CONCAT('%', #{keyword}, '%')
+                </if>
+                <if test="searchType == 'all' or searchType == 'partner'">
+                OR t.partner LIKE CONCAT('%', #{keyword}, '%')
+                </if>
+                </trim>
+                )
+              </if>
+          </script>
+          """)
+  Integer countAll(String searchType, String keyword);
 }

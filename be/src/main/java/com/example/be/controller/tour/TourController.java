@@ -91,10 +91,10 @@ public class TourController {
 
   @GetMapping("list")
   public Map<String, Object> list(
+          @RequestParam(value = "page", defaultValue = "1") Integer page,
           @RequestParam(value = "type", defaultValue = "all") String searchType,
-          @RequestParam(value = "key", defaultValue = "") String keyword
-  ) {
-    return service.list(searchType, keyword);
+          @RequestParam(value = "key", defaultValue = "") String keyword) {
+    return service.list(page, searchType, keyword);
   }
 
   @PostMapping("add")

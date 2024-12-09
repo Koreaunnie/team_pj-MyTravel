@@ -77,9 +77,15 @@ public class TourService {
     return tour;
   }
 
-  public Map<String, Object> list(String searchType, String keyword) {
+  public Map<String, Object> list(Integer page, String searchType, String keyword) {
+
+    int offset = (page - 1) * 10;
+
     //리스트 조회
-    List<TourList> tourList = mapper.selectAll(searchType, keyword);
+    List<TourList> tourList = mapper.selectAll(offset, searchType, keyword);
+
+    //전체 게시물
+    Integer count = mapper.countAll(searchType, keyword);
 
     if (tourList == null || tourList.isEmpty()) {
       return Map.of("tourList", List.of()); // 빈 리스트 반환
@@ -91,8 +97,7 @@ public class TourService {
                 tour.setSrc(imageSrcPrefix + "/" + tour.getId() + "/" + tour.getImage());
               }
             });
-
-    return Map.of("tourList", tourList);
+    return Map.of("tourList", tourList, "count", count);
   }
 
   public boolean validate(Tour tour) {
