@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -39,9 +40,11 @@ public class CommunityController {
     }
 
     @PutMapping("edit")
-    public void edit(@RequestBody Community community) {
-        System.out.println(community);
-        service.edit(community);
+    public void edit(@RequestBody Community community,
+                     @RequestParam(value = "removeFiles[]", required = false) List<String> removeFiles,
+                     @RequestParam(value = "uploadFiles[]", required = false) MultipartFile[] uploadFiles,
+                     Authentication auth) {
+        service.edit(community, removeFiles, uploadFiles, auth);
     }
 
     @DeleteMapping("delete/{id}")

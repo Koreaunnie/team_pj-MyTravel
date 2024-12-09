@@ -97,8 +97,13 @@ public class CommunityService {
         }
     }
 
-    public void edit(Community community) {
+    public void edit(Community community, List<String> removeFiles, MultipartFile[] uploadFiles, Authentication auth) {
         mapper.editCommunity(community);
+        Integer id = community.getId();
+
+        for (String removeFile : removeFiles) {
+            mapper.deleteFileByFileName(id, removeFile);
+        }
     }
 
     public void delete(Integer id) {

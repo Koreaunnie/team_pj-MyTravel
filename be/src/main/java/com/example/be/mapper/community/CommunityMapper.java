@@ -123,4 +123,10 @@ public interface CommunityMapper {
             FROM community
             """)
     Integer countAllCommunity();
+
+    @Delete("""
+            DELETE FROM community_file
+            WHERE community_id=#{id} AND file_name=#{removeFile}
+            """)
+    int deleteFileByFileName(Integer id, String removeFiles);
 }
