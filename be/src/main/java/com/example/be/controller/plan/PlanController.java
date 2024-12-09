@@ -1,8 +1,10 @@
 package com.example.be.controller.plan;
 
 import com.example.be.dto.plan.Plan;
+import com.example.be.service.member.MemberService;
 import com.example.be.service.plan.PlanService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -15,6 +17,7 @@ import java.util.Map;
 @RequestMapping("/api/plan")
 public class PlanController {
     final PlanService service;
+    final MemberService memberService;
 
     // 내 여행 추가
     @PostMapping("add")
@@ -72,7 +75,20 @@ public class PlanController {
     // 내 여행 삭제
     @DeleteMapping("delete/{id}")
     @PreAuthorize("isAuthenticated()")
-    public void delete(@PathVariable int id) {
-        service.delete(id);
+    public ResponseEntity<Map<String, Object>> delete(@PathVariable int id, Authentication authentication) {
+        Map<String, Object> result = service.view(id);
+        Plan plan = (Plan) result.get("plan");
+        String userEmail = plan.getWriter();
+
+        if (memberService.hasAccess(userEmail, authentication)) {
+            service.delete(id);
+            return ResponseEntity.ok().body(Map.of(
+                    "message", Map.of("type", "success", "text", "여행이 삭제되었습니다.")
+            ));
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of(
+                    "message", Map.of("type", "warning", "text", "권한이 없습니다.")
+            ));
+        }
     }
 }

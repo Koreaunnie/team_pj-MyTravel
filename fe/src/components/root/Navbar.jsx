@@ -42,18 +42,6 @@ function Navbar(props) {
       <div className={"nav-container"}>
         <ul>
           <li
-            className={isActive("/plan") ? "active" : ""}
-            onClick={() => navigate("/plan/list")}
-          >
-            내 여행
-          </li>
-          <li
-            className={isActive("/wallet") ? "active" : ""}
-            onClick={() => navigate("/wallet/list")}
-          >
-            내 지갑
-          </li>
-          <li
             className={isActive("/tour") ? "active" : ""}
             onClick={() => navigate("/tour/list")}
           >
@@ -70,6 +58,20 @@ function Navbar(props) {
             onClick={() => navigate("/cs/index")}
           >
             고객센터
+          </li>
+          {isAuthenticated && (
+            <li
+              className={isActive("/plan") ? "active" : ""}
+              onClick={() => navigate("/plan/list")}
+            >
+              내 여행
+            </li>
+          )}
+          <li
+            className={isActive("/wallet") ? "active" : ""}
+            onClick={() => navigate("/wallet/list")}
+          >
+            내 지갑
           </li>
           {isAdmin && (
             <li
