@@ -155,15 +155,20 @@ function Payment() {
               </tr>
             </tfoot>
           </table>
-
-          <button
-            className={"btn btn-dark-outline"}
-            type={"submit"}
+          <br />
+          <div
+            role={"button"}
+            onClick={handleSubmit}
+            style={{ display: "inline-block", cursor: "pointer" }}
             aria-busy={waitingPayment}
             disabled={waitingPayment}
           >
-            결제
-          </button>
+            <img
+              src="https://prj241114-j19121m.s3.ap-northeast-2.amazonaws.com/teamPrj1126/74/pay.jpg"
+              alt="결제 버튼"
+              width="100"
+            />
+          </div>
         </form>
       </main>
       {paymentStatus.status === "FAILED" && (
