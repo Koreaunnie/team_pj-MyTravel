@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Image } from "@chakra-ui/react";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import * as PortOne from "/libs/browser-sdk";
+import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 
 const { VITE_STORE_ID, VITE_CHANNEL_KEY } = import.meta.env;
 
@@ -119,7 +120,15 @@ function Payment() {
   };
 
   return (
-    <div>
+    <div className={"tour"}>
+      <Breadcrumb
+        depth1={"Tour 목록"}
+        navigateToDepth1={() => navigate(`/tour/list`)}
+        depth2={"장바구니"}
+        navigateToDepth2={() => navigate(`/cart`)}
+        depth3={"결제창"}
+        navigateToDepth3={() => navigate(`/payment`)}
+      />
       <h1>결제</h1>
       <main>
         <form onSubmit={handleSubmit}>

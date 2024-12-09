@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
+import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 
 function CartList() {
   const [cartList, setCartList] = useState([]);
@@ -103,7 +104,13 @@ function CartList() {
   }
 
   return (
-    <div>
+    <div className={"tour"}>
+      <Breadcrumb
+        depth1={"Tour 목록"}
+        navigateToDepth1={() => navigate(`/tour/list`)}
+        depth2={"장바구니"}
+        navigateToDepth2={() => navigate(`/cart`)}
+      />
       <h1>장바구니 목록</h1>
 
       {cartList.length === 0 ? (
