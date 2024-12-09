@@ -20,6 +20,7 @@ public class PaymentService {
 
   public boolean add(Payment payment) {
     int cnt;
+
     cnt = mapper.insertPayment(payment);
 
     //넘어온 tour를 하나씩 payment_detail에 추가
