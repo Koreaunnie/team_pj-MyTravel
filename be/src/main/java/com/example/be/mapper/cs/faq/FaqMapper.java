@@ -10,8 +10,8 @@ public interface FaqMapper {
 
     @Insert("""
             INSERT INTO faq
-                (question, answer)
-            VALUES (#{question}, #{answer})
+                (question, answer, writer)
+            VALUES (#{question}, #{answer}, #{writer})
             """)
     @Options(keyProperty = "id", useGeneratedKeys = true)
     int insertFaq(Faq faq);

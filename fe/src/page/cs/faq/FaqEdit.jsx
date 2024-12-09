@@ -36,7 +36,7 @@ function FaqEdit(props) {
           type: data.message.type,
           description: data.message.text,
         });
-        navigate(`/cs/faq/view/${faq.id}`);
+        navigate(`/cs/faq/view/${id}`);
       })
       .catch((e) => {
         const message = e.response.data.message;
@@ -44,7 +44,8 @@ function FaqEdit(props) {
           type: message.type,
           description: message.text,
         });
-      });
+      })
+      .finally();
   };
 
   if (faq == null) {

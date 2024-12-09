@@ -2,6 +2,7 @@ package com.example.be.service.cs.faq;
 
 import com.example.be.dto.cs.faq.Faq;
 import com.example.be.mapper.cs.faq.FaqMapper;
+import com.example.be.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FaqService {
     final FaqMapper mapper;
+    final MemberService memberService;
 
     public boolean add(Faq faq) {
         int cnt = 0;
@@ -44,14 +46,10 @@ public class FaqService {
         return mapper.selectFaqForIndex();
     }
 
-    public boolean hasAccess(String email, Authentication auth) {
-        return email.equals(auth.getName());
-    }
+    public boolean hasAccess(String email, Authentication authentication) {
+        String userEmail = authentication.getName();
+        String userNickname = memberService.getNicknameByEmail(userEmail);
 
-    public boolean isAdmin(Authentication auth) {
-        return auth.getAuthorities()
-                .stream()
-                .map(a -> a.toString())
-                .anyMatch(a -> a.equals("SCOPE_admin"));
+        return userNickname.equals(email);
     }
 }

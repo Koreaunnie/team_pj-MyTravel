@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Breadcrumb } from "../../../components/root/Breadcrumb.jsx";
 import { Modal } from "../../../components/root/Modal.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { Spinner } from "@chakra-ui/react";
 import { toaster } from "../../../components/ui/toaster.jsx";
+import { AuthenticationContext } from "../../../components/context/AuthenticationProvider.jsx";
 
 function FaqView(props) {
   const { id } = useParams();
   const [faq, setFaq] = useState();
-  const [backToListModalOpen, setBackToListModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const navigate = useNavigate();
+  const { isAdmin, hasAccess } = useContext(AuthenticationContext);
 
   useEffect(() => {
     axios.get(`/api/cs/faq/view/${id}`).then((res) => {
@@ -65,21 +66,25 @@ function FaqView(props) {
             목록
           </button>
 
-          <button
-            type={"button"}
-            className={"btn btn-dark"}
-            onClick={() => setEditModalOpen(true)}
-          >
-            수정
-          </button>
+          {isAdmin && hasAccess && (
+            <button
+              type={"button"}
+              className={"btn btn-dark"}
+              onClick={() => setEditModalOpen(true)}
+            >
+              수정
+            </button>
+          )}
 
-          <button
-            type={"button"}
-            className={"btn btn-warning"}
-            onClick={() => setDeleteModalOpen(true)}
-          >
-            삭제
-          </button>
+          {isAdmin && hasAccess && (
+            <button
+              type={"button"}
+              className={"btn btn-warning"}
+              onClick={() => setDeleteModalOpen(true)}
+            >
+              삭제
+            </button>
+          )}
         </div>
 
         <fieldset>

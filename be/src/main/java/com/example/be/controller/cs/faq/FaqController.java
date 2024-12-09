@@ -17,17 +17,25 @@ import java.util.Map;
 @RequestMapping("/api/cs/faq")
 public class FaqController {
     final FaqService service;
-    private final MemberService memberService;
+    final MemberService memberService;
 
     @PostMapping("add")
     @PreAuthorize("hasAuthority('SCOPE_admin')")
     public ResponseEntity<Map<String, Object>> add(@RequestBody Faq faq,
                                                    Authentication authentication) {
-        if (service.isAdmin(authentication)) {
+        if (!authentication.isAuthenticated()) {
+            return ResponseEntity.status(401).body(Map.of("message", Map.of("type", "warning", "text", "로그인이 필요합니다.")));
+        }
+
+        String userNickname = authentication.getName();
+        faq.setWriter(userNickname);
+
+        if (memberService.isAdmin(authentication)) {
             if (service.add(faq)) {
                 return ResponseEntity.ok().body(Map.of(
                         "message", Map.of("type", "success",
-                                "text", "FAQ가 저장되었습니다.")));
+                                "text", "FAQ가 저장되었습니다."),
+                        "id", faq.getId()));
             } else {
                 return ResponseEntity.status(500).body(Map.of(
                         "message", Map.of("type", "warning", "text", "FAQ 저장에 실패하였습니다.")));
@@ -53,7 +61,7 @@ public class FaqController {
     @PreAuthorize("hasAuthority('SCOPE_admin')")
     public ResponseEntity<Map<String, Object>> update(@RequestBody Faq faq,
                                                       Authentication authentication) {
-        if (service.isAdmin(authentication)) {
+        if (memberService.isAdmin(authentication)) {
             if (service.update(faq)) {
                 return ResponseEntity.ok().body(Map.of(
                         "message", Map.of("type", "success",
@@ -69,16 +77,29 @@ public class FaqController {
     }
 
     @DeleteMapping("delete/{id}")
-    public ResponseEntity<Map<String, Object>> delete(@PathVariable int id) {
-        if (service.delete(id)) {
-            return ResponseEntity.ok().body(Map.of(
-                    "message", Map.of("type", "success",
-                            "text", "FAQ가 삭제되었습니다.")));
-        } else {
-            return ResponseEntity.internalServerError().body(Map.of(
-                    "message", Map.of("type", "warning",
-                            "text", "FAQ가 삭제 중 문제가 발생하였습니다.")));
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, Object>> delete(@PathVariable int id,
+                                                      Authentication authentication) {
 
+        String userEmail = authentication.getName();
+        String userNickname = memberService.getNicknameByEmail(userEmail);
+        Faq faq = service.view(id);
+
+        if (faq != null && faq.getWriter().equals(userNickname) && memberService.hasAccess(userEmail, authentication)) {
+            if (service.delete(id)) {
+                return ResponseEntity.ok().body(Map.of(
+                        "message", Map.of("type", "success",
+                                "text", "FAQ가 삭제되었습니다.")));
+            } else {
+                return ResponseEntity.internalServerError().body(Map.of(
+                        "message", Map.of("type", "warning",
+                                "text", "FAQ가 삭제 중 문제가 발생하였습니다.")));
+
+            }
+        } else {
+            return ResponseEntity.status(401).body(Map.of("message", Map.of(
+                    "type", "error",
+                    "text", "삭제 권한이 없습니다.")));
         }
     }
 }
