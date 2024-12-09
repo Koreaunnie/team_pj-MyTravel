@@ -47,7 +47,7 @@ function CsIndex(props) {
                 key={faq.id}
                 onClick={() => navigate(`/cs/faq/view/${faq.id}`)}
               >
-                <span>Q.</span>
+                <span>Q. </span>
                 {faq.question}
               </li>
             ))}
@@ -80,13 +80,13 @@ function CsIndex(props) {
             </section>
 
             <section className={"tel-container"}>
-              <h3>
-                고객센터 <span>1588-1111</span>
-              </h3>
+              <h3>고객센터</h3>
+              <h5>1588-1111</h5>
 
               <ul>
-                <li>평일: 09:00 ~ 18:00</li>
-                <li>주말 / 공휴일 휴무</li>
+                <li>&#10023; 평일: 09:00 ~ 18:00</li>
+                <li>&#10023; 주말 / 공휴일 휴무</li>
+                <li>휴무일에는 문의 게시판을 이용해주세요.</li>
               </ul>
             </section>
           </div>

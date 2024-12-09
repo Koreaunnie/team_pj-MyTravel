@@ -32,6 +32,8 @@
     font-size: 0.9rem;
 }
 
+/*------------------- 자주 하는 질문 -------------------*/
+
 .cs .faq-container {
     margin: 30px auto;
 }
@@ -45,14 +47,20 @@
     height: 60px;
     line-height: 60px;
     border-bottom: 1px solid var(--table-border-color);
+    cursor: pointer;
 }
 
 .cs .faq-container ul li:last-child {
     border-bottom: none;
 }
 
+/*------------------- 문의 게시판 -------------------*/
+
 .cs .cs-wrap {
     background: var(--bg-gray-color);
+}
+
+.cs .cs-wrap h3 {
     text-align: center;
 }
 
@@ -66,5 +74,51 @@
     background: #fff;
     box-shadow: var(--box-shadow);
     border-radius: 20px;
+}
+
+.cs .cs-wrap .inquiry-container ul {
+    margin: 20px 40px;
+}
+
+.cs .cs-wrap .inquiry-container ul li {
+    height: 50px;
+    line-height: 50px;
+    border: 1px solid red;
+    cursor: pointer;
+}
+
+/*------------------- 고객센터 -------------------*/
+
+.cs .cs-wrap .tel-container h5 {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    color: var(--main-blue);
+}
+
+.cs .cs-wrap .tel-container ul {
+    margin: 50px 100px;
+}
+
+.cs .cs-wrap .tel-container ul li {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.cs .cs-wrap .tel-container ul li:last-child {
+    font-size: 1.1rem;
+    font-weight: normal;
+    margin: 20px 0;
+}
+
+/*------------------- 화면 크기가 768px 이하 (태블릿 화면) -------------------*/
+@media (max-width: 768px) {
+
+}
+
+/*------------------- 화면 크기가 480px 이하 (모바일 화면) -------------------*/
+@media (max-width: 480px) {
+
 }
 
