@@ -9,9 +9,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
+import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,8 +44,6 @@ public class CommunityService {
     }
 
     public void write(Community community, MultipartFile[] files, Authentication auth) {
-
-
         String nickname = mapper.findNickname(auth.getName());
         community.setWriter(nickname);
         mapper.writeCommunity(community);
@@ -50,40 +51,38 @@ public class CommunityService {
 
         if (files != null && files.length > 0) {
 
-            String directory = STR."C:/Temp/teamPrj1126/\{id}";
-            File dir = new File(directory);
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-
             // 파일 업로드
             // TODO: local -> aws
-
             for (MultipartFile file : files) {
-
                 String fileName = file.getOriginalFilename();
-                String filePath = STR."C:/Temp/teamPrj1126/\{id}/\{fileName}";
+                String objectKey = STR."teamPrj1126/community/\{id}/\{fileName}";
+                PutObjectRequest por = PutObjectRequest.builder()
+                        .bucket(bucketName)
+                        .key(objectKey)
+                        .acl(ObjectCannedACL.PUBLIC_READ)
+                        .build();
                 try {
-                    file.transferTo(new File(filePath));
-                    mapper.addFile(fileName, id);
+                    s3.putObject(por, RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    throw new RuntimeException(e.getMessage(), e);
                 }
+                mapper.addFile(fileName, id);
             }
         }
-
-
     }
 
     public Map<String, Object> view(Integer id) {
 
         Map<String, Object> viewer = mapper.viewCommunity(id);
+        System.out.println("viewer = " + viewer);
         List<String> fileList = mapper.callCommunityFile(id);
+        System.out.println("fileList = " + fileList);
         if (fileList.size() != 0) {
             List<Object> files = new ArrayList();
             for (String fileName : fileList) {
                 Map<String, Object> file = new HashMap<>();
-                String filePath = STR."\{imageSrcPrefix}/\{viewer.get("id").toString()}/\{fileName}";
+                String filePath = STR."\{imageSrcPrefix}/community/\{viewer.get("id").toString()}/\{fileName}";
+                System.out.println("filePath = " + filePath);
                 file.put("fileName", fileName);
                 file.put("filePath", filePath);
                 files.add(file);
@@ -100,7 +99,26 @@ public class CommunityService {
     }
 
     public void delete(Integer id) {
-        mapper.deleteCommunity(id);
+        // 첨부파일 지우기
+        // 실제 파일(s3) 지우기
+        List<String> fileName = mapper.selectFilesByCommunityId(id);
+
+        for (String file : fileName) {
+            String key = STR."teamPrj1126/community/\{id}/\{file}";
+            DeleteObjectRequest dor = DeleteObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(key)
+                    .build();
+            s3.deleteObject(dor);
+        }
+
+
+        // db 지우기
+        mapper.deleteFileByCommunityId(id);
+
+        // 댓글 지우기
+
+        // 좋아요 지우기
     }
 
     public void commentWrite(CommunityComment comment, Authentication auth) {

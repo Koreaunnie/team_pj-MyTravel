@@ -13,5 +13,5 @@ public class Community {
     private String content;
     private LocalDateTime creationDate;
 
-    private List<CommunityFile> files;
+    private List<CommunityFile> communityFileList;
 }

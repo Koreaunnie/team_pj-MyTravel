@@ -97,4 +97,25 @@ public interface CommunityMapper {
             Values (#{comment}, #{writer}, #{communityId})
             """)
     int writeCommunityComment(CommunityComment comment);
+
+    @Select("""
+            SELECT *
+            FROM community
+            WHERE id=#{id}
+            """)
+    Community selectByCommunityId(int id);
+
+    @Select("""
+            SELECT file_name
+            FROM community_file
+            WHERE community_id=#{id}
+            """)
+    List<String> selectFilesByCommunityId(int id);
+
+    @Delete("""
+            DELETE FROM community_file
+            WHERE community_id=#{id}
+            """)
+    int deleteFileByCommunityId(int id);
+
 }
