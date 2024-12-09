@@ -4,6 +4,8 @@ import com.example.be.dto.plan.Plan;
 import com.example.be.service.plan.PlanService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -16,9 +18,11 @@ public class PlanController {
 
     // 내 여행 추가
     @PostMapping("add")
-    public ResponseEntity<Map<String, Object>> add(@RequestBody Plan plan) {
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, Object>> add(@RequestBody Plan plan,
+                                                   Authentication authentication) {
         if (service.validate(plan)) {
-            if (service.add(plan)) {
+            if (service.add(plan, authentication)) {
                 return ResponseEntity.ok().body(Map.of(
                         "message", Map.of("type", "success",
                                 "text", "여행이 저장되었습니다."),
@@ -37,6 +41,7 @@ public class PlanController {
 
     // 내 여행 목록 조회
     @GetMapping("list")
+    @PreAuthorize("isAuthenticated()")
     public Map<String, Object> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                     @RequestParam(value = "st", defaultValue = "all") String searchType,
                                     @RequestParam(value = "sk", defaultValue = "") String searchKeyword) {
@@ -45,24 +50,28 @@ public class PlanController {
 
     // 내 여행 목록에서 상단 고정
     @PutMapping("pinned/{id}")
+    @PreAuthorize("isAuthenticated()")
     public void pinned(@PathVariable int id) {
         service.pinned(id);
     }
 
     // 내 여행 세부사항
     @GetMapping("view/{id}")
+    @PreAuthorize("isAuthenticated()")
     public Map<String, Object> view(@PathVariable int id) {
         return service.view(id);
     }
 
     // 내 여행 수정
     @PutMapping("update")
+    @PreAuthorize("isAuthenticated()")
     public Map<String, Object> update(@RequestBody Plan plan) {
         return service.update(plan);
     }
 
     // 내 여행 삭제
     @DeleteMapping("delete/{id}")
+    @PreAuthorize("isAuthenticated()")
     public void delete(@PathVariable int id) {
         service.delete(id);
     }

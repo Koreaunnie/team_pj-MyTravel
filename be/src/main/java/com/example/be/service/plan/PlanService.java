@@ -4,6 +4,7 @@ import com.example.be.dto.plan.Plan;
 import com.example.be.dto.plan.PlanField;
 import com.example.be.mapper.plan.PlanMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,14 +20,17 @@ public class PlanService {
 
     // 내 여행 추가
     // 1. 여행 저장
-    public boolean add(Plan plan) {
-        // 1. 여행 날짜가 비어 있으면 null로 처리
+    public boolean add(Plan plan, Authentication authentication) {
+        // 1. 작성자를 현재 로그인 된 user 로 설정
+        plan.setWriter(authentication.getName());
+
+        // 2. 여행 날짜가 비어 있으면 null로 처리
         NullCheckUtils.handleNullOrEmptyDates(plan);
 
-        // 2. Plan 의 기본 정보 저장 (ID 생성)
+        // 3. Plan 의 기본 정보 저장 (ID 생성)
         int cnt = mapper.insertPlan(plan);
 
-        // 3. plan body fields 데이터를 반복적으로 저장
+        // 4. plan body fields 데이터를 반복적으로 저장
         if (plan.getPlanFieldList() != null) {
             for (PlanField field : plan.getPlanFieldList()) {
                 // PlanField의 날짜와 시간이 비어 있으면 null로 처리
