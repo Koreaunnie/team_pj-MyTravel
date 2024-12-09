@@ -27,11 +27,8 @@ public class FaqController {
             return ResponseEntity.status(401).body(Map.of("message", Map.of("type", "warning", "text", "로그인이 필요합니다.")));
         }
 
-        String userNickname = authentication.getName();
-        faq.setWriter(userNickname);
-
         if (memberService.isAdmin(authentication)) {
-            if (service.add(faq)) {
+            if (service.add(faq, authentication)) {
                 return ResponseEntity.ok().body(Map.of(
                         "message", Map.of("type", "success",
                                 "text", "FAQ가 저장되었습니다."),

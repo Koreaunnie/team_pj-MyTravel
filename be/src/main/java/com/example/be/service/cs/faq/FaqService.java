@@ -17,7 +17,10 @@ public class FaqService {
     final FaqMapper mapper;
     final MemberService memberService;
 
-    public boolean add(Faq faq) {
+    public boolean add(Faq faq, Authentication authentication) {
+        String userNickname = authentication.getName();
+        faq.setWriter(userNickname);
+
         int cnt = 0;
         cnt = mapper.insertFaq(faq);
 
