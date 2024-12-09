@@ -44,9 +44,9 @@ public interface WalletMapper {
                 expense = #{expense},
                 payment_method = #{paymentMethod},
                 memo = #{memo}
-            WHERE id = #{id}
+            WHERE id = #{id} AND writer = #{writer}
             """)
-    int update(Wallet wallet);
+    int update(Wallet wallet, String writer);
 
     // 내 지갑 내역 삭제
     @Delete("""

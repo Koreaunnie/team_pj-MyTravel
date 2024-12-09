@@ -59,8 +59,11 @@ public class WalletController {
     // 내 지갑 내역 상세 보기 화면에서 수정
     @PutMapping("update/{id}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Map<String, Object>> update(@PathVariable int id, @RequestBody Wallet wallet) {
-        boolean isUpdated = service.update(id, wallet);
+    public ResponseEntity<Map<String, Object>> update(@PathVariable int id,
+                                                      @RequestBody Wallet wallet,
+                                                      Authentication authentication) {
+        String writer = authentication.getName();
+        boolean isUpdated = service.update(id, wallet, writer);
 
         if (isUpdated) {
             // 성공

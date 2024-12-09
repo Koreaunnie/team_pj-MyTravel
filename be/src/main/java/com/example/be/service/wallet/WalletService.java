@@ -31,7 +31,7 @@ public class WalletService {
     }
 
     // 내 지갑 내역 상세 보기 화면에서 수정
-    public boolean update(int id, Wallet wallet) {
+    public boolean update(int id, Wallet wallet, String writer) {
         wallet.setId(id);
 
         // 수입 / 지출이 null 일 경우 0
@@ -42,7 +42,7 @@ public class WalletService {
             wallet.setExpense(0);
         }
 
-        int cnt = mapper.update(wallet);
+        int cnt = mapper.update(wallet, writer);
         return cnt == 1;
     }
 
