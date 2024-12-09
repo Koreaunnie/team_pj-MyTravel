@@ -28,7 +28,7 @@ public interface TourMapper {
 
   @Select("""
             <script>
-                SELECT id, title, product, price, location, ti.name image
+                SELECT id, title, product, price, location, ti.name image, active
                 FROM tour t
                 LEFT JOIN tour_img ti ON t.id = ti.tour_id
                 WHERE
@@ -143,4 +143,11 @@ public interface TourMapper {
           ORDER BY id DESC;    
           """)
   List<Tour> myList(String email);
+
+  @Update("""
+          UPDATE tour
+          SET active= FALSE
+          WHERE id=#{id}
+          """)
+  int updateActiveToFalse(int id);
 }

@@ -4,11 +4,11 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function MemberList(props) {
-  const [memberList, setMemberList] = useState([]);
+  const [partnerList, setPartnerList] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get("/api/member/list").then((res) => setMemberList(res.data));
+    axios.get("/api/member/partners").then((res) => setPartnerList(res.data));
   }, []);
 
   function handleRowClick(email) {
@@ -21,19 +21,21 @@ function MemberList(props) {
       <Table.Root interactive>
         <Table.Header>
           <Table.Row>
+            <Table.ColumnHeader>기업명</Table.ColumnHeader>
             <Table.ColumnHeader>Email</Table.ColumnHeader>
-            <Table.ColumnHeader>닉네임</Table.ColumnHeader>
+            <Table.ColumnHeader>담당자</Table.ColumnHeader>
             <Table.ColumnHeader>가입일시</Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {memberList.map((member) => (
+          {partnerList.map((member) => (
             <Table.Row
               onClick={() => handleRowClick(member.email)}
               key={member.email}
             >
-              <Table.Cell>{member.email}</Table.Cell>
               <Table.Cell>{member.nickname}</Table.Cell>
+              <Table.Cell>{member.email}</Table.Cell>
+              <Table.Cell>{member.name}</Table.Cell>
               <Table.Cell>{member.inserted}</Table.Cell>
             </Table.Row>
           ))}

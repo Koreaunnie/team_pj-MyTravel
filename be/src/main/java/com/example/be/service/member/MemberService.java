@@ -96,12 +96,17 @@ public class MemberService {
 
     Member db = mapper.selectByEmail(member.getEmail());
     if (db != null && db.getPassword().equals(member.getPassword())) {
+      //게시글은 on delete set null 설정으로 변경함: 목록 찾아 tour id 알아내고 탈퇴 후 null된 tour를 탈퇴한 사용자
       //쓴 게시물 목록
       List<Integer> tourBoards = tourMapper.selectByPartner(db.getNickname());
-      //게시물 삭제
+//      //게시물 삭제가 아니라 active false로
       for (Integer tourId : tourBoards) {
         tourService.delete(tourId);
       }
+
+      //권한 삭제 (auth)
+      mapper.deleteAuthByEmail(member.getEmail());
+
 
       //프로필 사진 삭제
       String profile = mapper.selectPictureByEmail(db.getEmail());
@@ -117,6 +122,19 @@ public class MemberService {
 
       //member 삭제
       cnt = mapper.deleteByEmail(member.getEmail());
+
+      //멤버의 구매 이력 관리
+//      for (Integer tourBoard : tourBoards) {
+//      }
+
+      //tour partner와 partnerEmail 탈퇴한 회원으로 변경
+      for (Integer tourId : tourBoards) {
+        mapper.updatePartnerToLeft(tourId);
+      }
+
+      //community writer 탈퇴한 회원으로 변경
+
+
     }
 
     return cnt == 1;
@@ -202,5 +220,9 @@ public class MemberService {
   public boolean isPartner(Authentication auth) {
     return auth.getAuthorities().stream().map(e -> e.toString())
             .anyMatch(s -> s.equals("SCOPE_partner"));
+  }
+
+  public List<Member> partnerList() {
+    return mapper.partnerList();
   }
 }

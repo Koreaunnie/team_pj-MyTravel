@@ -17,6 +17,8 @@ import {
 } from "../../components/ui/dialog.jsx";
 import { ImageFileView } from "../../Image/ImageFileView.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
+import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
+import "./Tour.css";
 
 function TourView() {
   const { id } = useParams();
@@ -96,81 +98,97 @@ function TourView() {
   };
 
   return (
-    <Box>
-      <h1>{tour.title}</h1>
-      <Stack>
-        <Field label={"상품"} readOnly>
-          <Input value={tour.product} />
-        </Field>
-        <ImageFileView files={tour.fileList} />
-        <Field label={"위치"} readOnly>
-          <Input value={tour.location} />
-        </Field>
-        <Field label={"가격"} readOnly>
-          <Input value={tour.price} />
-        </Field>
-        <ul className={"period"}>
-          날짜 선택
-          <li>
-            <label htmlFor="startDate">시작 날짜</label>
-            <input
-              type={"date"}
-              id={"startDate"}
-              onChange={(e) => setStartDate(e.target.value)}
-            />
-          </li>
-          <li>
-            <label htmlFor="endDate">종료 날짜</label>
-            <input
-              type={"date"}
-              id={"endDate"}
-              onChange={(e) => setEndDate(e.target.value)}
-            />
-          </li>
-        </ul>
-        <Box>
-          <button className={"btn btn-dark"} onClick={handleAddToCartClick}>
-            장바구니에 담기
-          </button>
-        </Box>
-        <Field label={"내용"} readOnly>
-          <Textarea value={tour.content} />
-        </Field>
-        <Field label={"제공사"} readOnly>
-          <Input value={tour.partner} />
-        </Field>
-
-        {(hasAccess(tour.partnerEmail) || isAdmin) && (
+    <div className={"tour"}>
+      <Breadcrumb
+        depth1={"Tour 목록"}
+        navigateToDepth1={() => navigate(`/tour/list`)}
+        depth2={
+          tour.title.length > 15
+            ? `${tour.title.substring(0, 15)}...`
+            : tour.title
+        }
+        navigateToDepth2={() => navigate(`/tour/view/${id}`)}
+      />
+      <div>
+        {tour.active ? <h1>{tour.title}</h1> : <h1>삭제된 상품입니다.</h1>}
+        <Stack>
+          <Field label={"상품"} readOnly>
+            <Input value={tour.product} />
+          </Field>
+          <ImageFileView files={tour.fileList} />
+          <Field label={"위치"} readOnly>
+            <Input value={tour.location} />
+          </Field>
+          <Field label={"가격"} readOnly>
+            <Input value={tour.price} />
+          </Field>
+          <ul className={"period"}>
+            날짜 선택
+            <li>
+              <label htmlFor="startDate">시작 날짜</label>
+              <input
+                type={"date"}
+                id={"startDate"}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+            </li>
+            <li>
+              <label htmlFor="endDate">종료 날짜</label>
+              <input
+                type={"date"}
+                id={"endDate"}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
+            </li>
+          </ul>
           <Box>
             <button
               className={"btn btn-dark"}
-              onClick={() => navigate(`/tour/update/${id}`)}
+              disabled={!tour.active}
+              onClick={() => handleAddToCartClick()}
             >
-              수정
+              장바구니에 담기
             </button>
-            <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
-              <DialogTrigger>
-                <button className={"btn btn-warning"}>삭제</button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>삭제 확인</DialogTitle>
-                </DialogHeader>
-                <DialogBody>
-                  <p>{tour.title} 게시물을 삭제하시겠습니까?</p>
-                </DialogBody>
-                <DialogFooter>
-                  <DialogActionTrigger>
-                    <Button>취소</Button>
-                  </DialogActionTrigger>
-                  <Button onClick={handleDeleteClick}>삭제</Button>
-                </DialogFooter>
-              </DialogContent>
-            </DialogRoot>
           </Box>
-        )}
-      </Stack>
-    </Box>
+          <Field label={"내용"} readOnly>
+            <Textarea value={tour.content} />
+          </Field>
+          <Field label={"제공사"} readOnly>
+            <Input value={tour.partner} />
+          </Field>
+
+          {(hasAccess(tour.partnerEmail) || isAdmin) && (
+            <Box>
+              <button
+                className={"btn btn-dark"}
+                onClick={() => navigate(`/tour/update/${id}`)}
+              >
+                수정
+              </button>
+              <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
+                <DialogTrigger>
+                  <button className={"btn btn-warning"}>삭제</button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>삭제 확인</DialogTitle>
+                  </DialogHeader>
+                  <DialogBody>
+                    <p>{tour.title} 게시물을 삭제하시겠습니까?</p>
+                  </DialogBody>
+                  <DialogFooter>
+                    <DialogActionTrigger>
+                      <Button>취소</Button>
+                    </DialogActionTrigger>
+                    <Button onClick={handleDeleteClick}>삭제</Button>
+                  </DialogFooter>
+                </DialogContent>
+              </DialogRoot>
+            </Box>
+          )}
+        </Stack>
+      </div>
+    </div>
   );
 }
 

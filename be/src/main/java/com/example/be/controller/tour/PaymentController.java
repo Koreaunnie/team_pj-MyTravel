@@ -20,6 +20,11 @@ public class PaymentController {
   final PaymentService service;
   private final MemberService memberService;
 
+  @GetMapping("list")
+  public List<PaymentHistory> PaymentList() {
+    return service.allPayment();
+  }
+
   @PostMapping("payment")
   public ResponseEntity<Map<String, Object>> completePayment(
           @RequestBody Payment payment) {

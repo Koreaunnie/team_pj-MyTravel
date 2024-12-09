@@ -74,4 +74,25 @@ public interface MemberMapper {
           WHERE member_email=#{email}
           """)
   List<String> selectAuthByMemberEmail(String email);
+
+  @Update("""
+          UPDATE tour
+          SET partner = '탈퇴한 회원',
+              partnerEmail = 'left'
+          WHERE id = #{tourId};
+          """)
+  int updatePartnerToLeft(Integer tourId);
+
+  @Delete("""
+          DELETE FROM auth
+          WHERE member_email=#{email}""")
+  int deleteAuthByEmail(String email);
+
+  @Select("""
+          SELECT *
+          FROM member m
+          RIGHT JOIN auth ON m.email = auth.member_email
+          WHERE auth.auth='partner';
+          """)
+  List<Member> partnerList();
 }
