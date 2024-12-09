@@ -9,9 +9,8 @@ function Navbar(props) {
   const dropdownRef = useRef(null); // 드롭다운 영역 참조
   const navigate = useNavigate();
   const location = useLocation();
-  const { email, isAdmin, isPartner, isAuthenticated, logout } = useContext(
-    AuthenticationContext,
-  );
+  const { email, nickname, isAdmin, isPartner, isAuthenticated, logout } =
+    useContext(AuthenticationContext);
 
   const isActive = (path) => location.pathname.startsWith(path);
 
@@ -87,6 +86,10 @@ function Navbar(props) {
       <div className={"user-container"}>
         {isAuthenticated && (
           <div ref={dropdownRef}>
+            <p className={"user-info"}>
+              <span className={"user"}>{nickname}</span>
+              님, 환영합니다.
+            </p>
             <button className={"user-button"} onClick={toggleDropdown}>
               My Page
             </button>

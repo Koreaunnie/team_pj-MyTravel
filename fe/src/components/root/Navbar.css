@@ -51,6 +51,16 @@
 
 /*------------------------- user -------------------------*/
 
+.navbar .user-info {
+    position: absolute;
+    top: 20px;
+    right: 160px;
+}
+
+.navbar .user-info .user {
+    font-weight: bold;
+}
+
 .navbar .user-button {
     position: absolute;
     top: 10px;
