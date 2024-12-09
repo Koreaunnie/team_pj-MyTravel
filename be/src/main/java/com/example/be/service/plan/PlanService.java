@@ -95,9 +95,9 @@ public class PlanService {
     }
 
     // 내 여행 세부사항
-    public Map<String, Object> view(int id) {
+    public Map<String, Object> view(int id, String writer) {
         // Plan 객체 조회
-        Plan plan = mapper.selectPlanById(id);
+        Plan plan = mapper.selectPlanById(id, writer);
         // 해당 Plan 에 대한 PlanField 목록을 조회
         List<PlanField> planFields = mapper.selectPlanFieldsByPlanId(id);
 

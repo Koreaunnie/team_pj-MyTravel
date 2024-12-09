@@ -63,8 +63,9 @@ public class PlanController {
     // 내 여행 세부사항
     @GetMapping("view/{id}")
     @PreAuthorize("isAuthenticated()")
-    public Map<String, Object> view(@PathVariable int id) {
-        return service.view(id);
+    public Map<String, Object> view(@PathVariable int id, Authentication authentication) {
+        String writer = authentication.getName();
+        return service.view(id, writer);
     }
 
     // 내 여행 수정
@@ -78,7 +79,7 @@ public class PlanController {
     @DeleteMapping("delete/{id}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable int id, Authentication authentication) {
-        Map<String, Object> result = service.view(id);
+        Map<String, Object> result = service.view(id, writer);
         Plan plan = (Plan) result.get("plan");
         String userEmail = plan.getWriter();
 

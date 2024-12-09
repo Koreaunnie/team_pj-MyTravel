@@ -93,9 +93,9 @@ public interface PlanMapper {
     @Select("""
             SELECT *
             FROM plan
-            WHERE id = #{id};
+            WHERE id = #{id} AND writer = #{writer};
             """)
-    Plan selectPlanById(int id);
+    Plan selectPlanById(int id, String writer);
 
     // 2. PlanField
     @Select("""
