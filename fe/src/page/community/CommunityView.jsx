@@ -35,6 +35,7 @@ function CommunityView(props) {
   const { id } = useParams();
   const [community, setCommunity] = useState({});
   const navigate = useNavigate();
+  const [communityComment, setCommunityComment] = useState("");
 
   useEffect(() => {
     axios
@@ -51,6 +52,12 @@ function CommunityView(props) {
   const handleEditClick = () => {
     navigate(`/community/edit/${id}`);
     ///community/edit/18
+  };
+
+  const handleCommentSaveClick = () => {
+    axios
+      .post(`/api/community/comment/write`, { communityComment })
+      .then(navigate(`/community/view/${id}`));
   };
 
   return (
@@ -102,12 +109,24 @@ function CommunityView(props) {
               <Button onClick={handleEditClick}>수정</Button>
             </HStack>
           </Box>
+          <br />
+          {/*  TODO: 코멘트 작성, 코멘트 리스트 추가 */}
           <Box>
-            {/*  TODO: 코멘트 작성, 코멘트 리스트 추가 */}
-            <HStack>
-              <Textarea h={100} w={700} />
-              <Button h={100}>댓글 등록</Button>
-            </HStack>
+            <Stack>
+              <Field label={community.writer + " 님에게 댓글 작성"}>
+                <HStack>
+                  <Textarea
+                    h={100}
+                    w={700}
+                    value={communityComment}
+                    onChange={(e) => setCommunityComment(e.target.value)}
+                  />
+                  <Button h={100} onClick={handleCommentSaveClick}>
+                    댓글 등록
+                  </Button>
+                </HStack>
+              </Field>
+            </Stack>
           </Box>
           <Box>
             <CommunityList />

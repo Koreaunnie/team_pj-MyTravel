@@ -126,13 +126,13 @@ public class CommunityService {
         // 좋아요 지우기
     }
 
-    public void commentWrite(CommunityComment comment, Authentication auth) {
+    public void commentWrite(CommunityComment communityComment, Authentication auth) {
         String nickname = mapper.findNickname(auth.getName());
-        comment.setWriter(nickname);
+        communityComment.setWriter(nickname);
 
 //        TODO : communityId 값 삽입 -> 나중에 jsx 에서 전송하는 것으로 하기.
 
 
-        mapper.writeCommunityComment(comment);
+        mapper.writeCommunityComment(communityComment);
     }
 }

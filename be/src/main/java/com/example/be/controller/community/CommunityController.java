@@ -58,7 +58,10 @@ public class CommunityController {
 //    TODO :  게시판 댓글 기능
 
     @PostMapping("comment/write")
-    public void commentWrite(@RequestBody CommunityComment comment, Authentication auth) {
-        service.commentWrite(comment, auth);
+    public void commentWrite(@RequestBody CommunityComment communityComment, Authentication auth) {
+
+        System.out.println(communityComment);
+        System.out.println(auth);
+        service.commentWrite(communityComment, auth);
     }
 }
