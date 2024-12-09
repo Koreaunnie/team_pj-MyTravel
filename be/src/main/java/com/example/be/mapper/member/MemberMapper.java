@@ -87,4 +87,12 @@ public interface MemberMapper {
           DELETE FROM auth
           WHERE member_email=#{email}""")
   int deleteAuthByEmail(String email);
+
+  @Select("""
+          SELECT *
+          FROM member m
+          RIGHT JOIN auth ON m.email = auth.member_email
+          WHERE auth.auth='partner';
+          """)
+  List<Member> partnerList();
 }

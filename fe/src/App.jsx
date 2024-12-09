@@ -40,6 +40,7 @@ import PaymentComplete from "./page/tour/PaymentComplete.jsx";
 import TourMyList from "./page/tour/TourMyList.jsx";
 import PaymentHistory from "./page/tour/PaymentHistory.jsx";
 import PaymentHistoryAll from "./page/tour/PaymentHistoryAll.jsx";
+import AdminPage from "./page/member/AdminPage.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -225,6 +226,10 @@ const router = createBrowserRouter([
       {
         path: "mypage/:email",
         element: <MyPage />,
+      },
+      {
+        path: "admin",
+        element: <AdminPage />,
       },
     ],
   },
