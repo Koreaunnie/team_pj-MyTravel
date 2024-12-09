@@ -18,8 +18,8 @@ function FaqAdd(props) {
   const handleSaveButton = () => {
     if (!isAuthenticated) {
       toaster.create({
-        type: "warning",
-        description: "로그인이 필요합니다.",
+        type: message.type,
+        description: message.text,
       });
       return;
     }
@@ -114,7 +114,7 @@ function FaqAdd(props) {
       <Modal
         isOpen={backToListModalOpen}
         onClose={() => setBackToListModalOpen(false)}
-        onConfirm={() => navigate(`/cs/inquiry/list`)}
+        onConfirm={() => navigate(`/cs/faq/list`)}
         message="목록으로 돌아가면 작성한 내용이 사라집니다."
         buttonMessage="목록"
       />
