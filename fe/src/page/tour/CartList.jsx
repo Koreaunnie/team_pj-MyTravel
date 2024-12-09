@@ -150,6 +150,7 @@ function CartList() {
           </table>
         </div>
       )}
+      <br />
       {cartList.length === 0 || (
         <div>
           <h2>선택한 제품</h2>

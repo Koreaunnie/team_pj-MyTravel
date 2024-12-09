@@ -123,51 +123,62 @@ function Payment() {
       <h1>결제</h1>
       <main>
         <form onSubmit={handleSubmit}>
-          <table className={"table-list"}>
-            <thead>
-              <tr>
-                <th colSpan={2}>상품</th>
-                <th>일정</th>
-                <th>가격</th>
-              </tr>
-            </thead>
-            {/*결제할 상품 나열*/}
-            {tour.map((product) => (
-              <tbody>
+          <h2>결제 내역</h2>
+          <div>
+            <table className={"table-list"}>
+              <thead>
                 <tr>
-                  <td>
-                    <Image key={product.image} src={product.src} w={"100px"} />
-                  </td>
-                  <td>{product.product}</td>
-                  <td>
-                    {product.startDate} ~ {product.endDate}
-                  </td>
-                  <td>{product.price}</td>
+                  <th colSpan={2}>상품</th>
+                  <th>일정</th>
+                  <th>가격</th>
                 </tr>
-              </tbody>
-            ))}
-            {/*총 합*/}
-            <tfoot>
-              <tr>
-                <td colSpan={2}></td>
-                <th>결제 금액</th>
-                <td>{totalPrice()}</td>
-              </tr>
-            </tfoot>
-          </table>
+              </thead>
+              {/*결제할 상품 나열*/}
+              {tour.map((product) => (
+                <tbody>
+                  <tr>
+                    <td>
+                      <Image
+                        key={product.image}
+                        src={product.src}
+                        w={"100px"}
+                      />
+                    </td>
+                    <td>{product.product}</td>
+                    <td>
+                      {product.startDate} ~ {product.endDate}
+                    </td>
+                    <td>{product.price}</td>
+                  </tr>
+                </tbody>
+              ))}
+              {/*총 합*/}
+              <tfoot>
+                <tr>
+                  <td colSpan={2}></td>
+                  <th>결제 금액</th>
+                  <td>{totalPrice()}</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+
           <br />
-          <div
-            role={"button"}
-            onClick={handleSubmit}
-            style={{ display: "inline-block", cursor: "pointer" }}
-            aria-busy={waitingPayment}
-            disabled={waitingPayment}
-          >
-            <img
-              src="https://prj241114-j19121m.s3.ap-northeast-2.amazonaws.com/teamPrj1126/74/pay.jpg"
-              alt="결제 버튼"
-              width="100"
-            />
+          <div>
+            <h2>결제 방법</h2>
+            <div
+              role={"button"}
+              onClick={handleSubmit}
+              style={{ display: "inline-block", cursor: "pointer" }}
+              aria-busy={waitingPayment}
+              disabled={waitingPayment}
+            >
+              <img
+                src="https://prj241114-j19121m.s3.ap-northeast-2.amazonaws.com/teamPrj1126/74/pay.jpg"
+                alt="결제 버튼"
+                width="100"
+              />
+            </div>
           </div>
         </form>
       </main>
