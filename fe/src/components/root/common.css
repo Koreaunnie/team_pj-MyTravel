@@ -304,6 +304,16 @@ form .required {
     background: var(--btn-warning-hover);
 }
 
+.btn-blue {
+    background: var(--main-blue);
+    color: var(--btn-normal-light);
+    box-sizing: border-box;
+}
+
+.btn-blue:hover {
+    background: #1668d6;
+}
+
 /*------------------- modal design -------------------*/
 .modal {
     position: fixed;
