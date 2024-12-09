@@ -51,9 +51,9 @@ public interface WalletMapper {
     // 내 지갑 내역 삭제
     @Delete("""
             DELETE FROM wallet
-            WHERE id = #{id}
+            WHERE id = #{id} AND writer = #{writer}
             """)
-    int deleteById(int id);
+    int deleteById(int id, String writer);
 
     // 내 지갑 내용 추가 / 수정 시 카테고리 목록 반환
     @Select("""

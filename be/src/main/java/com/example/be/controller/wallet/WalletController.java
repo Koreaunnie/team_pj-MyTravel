@@ -74,8 +74,9 @@ public class WalletController {
     // 내 지갑 내역 삭제
     @DeleteMapping("delete/{id}")
     @PreAuthorize("isAuthenticated()")
-    public void delete(@PathVariable int id) {
-        service.delete(id);
+    public void delete(@PathVariable int id,
+                       Authentication authentication) {
+        service.delete(id, authentication);
     }
 
     // 내 지갑 내용 추가 / 수정 시 카테고리 목록 반환

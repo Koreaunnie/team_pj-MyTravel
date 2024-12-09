@@ -51,8 +51,9 @@ public class WalletService {
     }
 
     // 내 지갑 내역 삭제
-    public void delete(int id) {
-        mapper.deleteById(id);
+    public void delete(int id, Authentication authentication) {
+        String writer = authentication.getName();
+        mapper.deleteById(id, writer);
     }
 
 
