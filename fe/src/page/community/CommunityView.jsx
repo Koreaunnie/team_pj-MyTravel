@@ -35,7 +35,7 @@ function CommunityView(props) {
   const { id } = useParams();
   const [community, setCommunity] = useState({});
   const navigate = useNavigate();
-  const [communityComment, setCommunityComment] = useState("");
+  const [comment, setComment] = useState("");
 
   useEffect(() => {
     axios
@@ -56,8 +56,11 @@ function CommunityView(props) {
 
   const handleCommentSaveClick = () => {
     axios
-      .post(`/api/community/comment/write`, { communityComment })
-      .then(navigate(`/community/view/${id}`));
+      .post(`/api/community/comment/write`, {
+        comment,
+        communityId: community.id,
+      })
+      .then(navigate(`/community/view/${id}/`));
   };
 
   return (
@@ -118,8 +121,8 @@ function CommunityView(props) {
                   <Textarea
                     h={100}
                     w={700}
-                    value={communityComment}
-                    onChange={(e) => setCommunityComment(e.target.value)}
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
                   />
                   <Button h={100} onClick={handleCommentSaveClick}>
                     댓글 등록

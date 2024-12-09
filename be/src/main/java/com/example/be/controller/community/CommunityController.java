@@ -59,9 +59,7 @@ public class CommunityController {
 
     @PostMapping("comment/write")
     public void commentWrite(@RequestBody CommunityComment communityComment, Authentication auth) {
-
-        System.out.println(communityComment);
-        System.out.println(auth);
+        
         service.commentWrite(communityComment, auth);
     }
 }

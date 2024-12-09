@@ -9,3 +9,6 @@ CREATE TABLE community_comment
     community_id INT         NOT NULL REFERENCES community (id)
 );
 
+
+SELECT *
+FROM community_comment;

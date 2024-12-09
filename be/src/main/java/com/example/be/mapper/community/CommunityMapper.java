@@ -93,10 +93,10 @@ public interface CommunityMapper {
     int deleteCommunity(Integer id);
 
     @Insert("""
-            INSERT INTO community_file (comment, writer, community_id)
-            Values (#{comment}, #{writer}, #{communityId})
+            INSERT INTO community_comment (comment, writer, community_id)
+            VALUES (#{comment}, #{writer}, #{communityId})
             """)
-    int writeCommunityComment(CommunityComment comment);
+    int writeCommunityComment(CommunityComment communityComment);
 
     @Select("""
             SELECT *
