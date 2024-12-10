@@ -155,6 +155,8 @@ function PlanList(props) {
               date.toLocaleString("en", { day: "numeric" })
             }
             showNeighboringMonth={false}
+            next2Label={null}
+            prev2Label={null}
             onChange={handleDateChange} // 날짜 선택 이벤트 핸들러
             value={selectedDate} // 선택된 날짜 상태와 동기화
             // 여행이 있는 날짜에 스타일 적용
