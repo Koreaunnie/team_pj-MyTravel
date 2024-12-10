@@ -178,7 +178,11 @@ function WalletList(props) {
     return expenseByDate;
   }, [walletList]);
 
-  const categories = ["전체", "식비", "교통비", "여가비", "기타"];
+  // 서버에서
+  const categories = useMemo(() => {
+    const categories = walletList.map((wallet) => wallet.category);
+    return ["전체", ...new Set(categories)]; // "전체" 추가 및 중복 제거
+  }, [walletList]);
 
   // 카테고리 탭 활성화
   const handleTabClick = (index) => {
