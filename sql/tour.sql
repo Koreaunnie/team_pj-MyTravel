@@ -36,6 +36,11 @@ ORDER BY tour.id DESC;
 ALTER TABLE tour
     ADD partnerEmail VARCHAR(30) REFERENCES member (email);
 
+ALTER TABLE tour
+    ADD inserted DATETIME DEFAULT NOW();
+
+DESC tour;
+
 SELECT *
 FROM tour
 WHERE id = 61;
@@ -78,3 +83,5 @@ FROM plan p
 WHERE title LIKE CONCAT('%', '피자', '%')
 GROUP BY p.id
 ORDER BY p.updated DESC, p.inserted DESC;
+
+
