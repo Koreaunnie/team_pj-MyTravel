@@ -11,7 +11,7 @@ CREATE TABLE community_comment
 
 
 SELECT *
-FROM community_comment;
+FROM community_file;
 DELETE
 FROM community_comment
 WHERE id = 30;
@@ -19,3 +19,7 @@ WHERE id = 30;
 SELECT *
 FROM community_comment
 WHERE community_id = 57;
+
+SELECT COUNT(*)
+FROM community_comment
+WHERE community_id = 63;

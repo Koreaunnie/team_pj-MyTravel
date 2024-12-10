@@ -143,4 +143,18 @@ public interface CommunityMapper {
             WHERE id = #{id}
             """)
     int deleteCommentByCommentId(Integer id);
+
+    @Select("""
+            SELECT COUNT(*)
+            FROM community_file
+            WHERE community_id=#{id}
+            """)
+    int countFilesByCommunityId(Integer id);
+
+    @Select("""
+            SELECT COUNT(*)
+            FROM community_comment
+            WHERE community_id=#{id}
+            """)
+    int countCommentsByCommunityId(Integer id);
 }

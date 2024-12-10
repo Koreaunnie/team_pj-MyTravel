@@ -13,5 +13,8 @@ public class Community {
     private String content;
     private LocalDateTime creationDate;
 
+    private boolean existOfFiles;
+    private String numberOfComments;
+
     private List<CommunityFile> communityFileList;
 }

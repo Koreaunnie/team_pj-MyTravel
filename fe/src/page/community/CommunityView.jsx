@@ -15,6 +15,7 @@ import {
 } from "../../components/ui/dialog.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import CommunityList from "./CommunityList.jsx";
+import { FiMessageSquare } from "react-icons/fi";
 
 function ImageFileView({ files }) {
   return (
@@ -141,7 +142,13 @@ function CommunityView(props) {
                 </HStack>
               </Field>
               <br />
-              <Field label={"코멘트"}>
+              <Field>
+                <h2>
+                  <HStack>
+                    <FiMessageSquare />
+                    코멘트 ({commentList.length})
+                  </HStack>
+                </h2>
                 {commentList.map((list) => (
                   <Box value={list.id}>
                     <HStack>
