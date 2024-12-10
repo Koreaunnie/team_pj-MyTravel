@@ -1,20 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Breadcrumb } from "../../../components/root/Breadcrumb.jsx";
 import axios from "axios";
 import { Spinner } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "../../../components/root/Modal.jsx";
+import { AuthenticationContext } from "../../../components/context/AuthenticationProvider.jsx";
 
 function InquiryList(props) {
+  const { nickname } = useContext(AuthenticationContext);
   const [inquiryList, setInquiryList] = useState([]);
   const [addModalOpen, setAddModalOpen] = useState(false);
+  const [showMyInquiries, setShowMyInquiries] = useState(false); // 내가 쓴 글 여부
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get("/api/cs/inquiry/list").then((res) => setInquiryList(res.data));
+    axios.get("/api/cs/inquiry/list").then((res) => {
+      setInquiryList(res.data);
+    });
   }, []);
 
-  if (!inquiryList || inquiryList.length === 0) {
+  // 내가 쓴 글만 필터링
+  const filteredInquiries = showMyInquiries
+    ? inquiryList.filter((inquiry) => inquiry.writer === nickname)
+    : inquiryList;
+
+  if (!filteredInquiries || filteredInquiries.length === 0) {
     return <Spinner />;
   }
 
@@ -38,10 +48,9 @@ function InquiryList(props) {
 
           <button
             className={"btn btn-blue"}
-            // TODO
-            // onClick={}
+            onClick={() => setShowMyInquiries((prev) => !prev)} // 내가 쓴 글 필터 토글
           >
-            내가 쓴 글
+            {showMyInquiries ? "전체글" : "내가 쓴 글"}
           </button>
         </div>
 
@@ -58,7 +67,7 @@ function InquiryList(props) {
           </thead>
 
           <tbody>
-            {inquiryList.map((inquiry) => (
+            {filteredInquiries.map((inquiry) => (
               <tr
                 key={inquiry.id}
                 onClick={() => navigate(`/cs/inquiry/view/${inquiry.id}`)}
