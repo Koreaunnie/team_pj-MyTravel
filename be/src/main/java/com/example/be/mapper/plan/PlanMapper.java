@@ -52,7 +52,7 @@ public interface PlanMapper {
                          )
                      </if>
                 GROUP BY p.id
-                ORDER BY p.updated DESC, p.inserted DESC
+                ORDER BY p.pinned DESC, p.updated DESC, p.inserted DESC
                 LIMIT #{offset}, 10;
             </script>
             """)
