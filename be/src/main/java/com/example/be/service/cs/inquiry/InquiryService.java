@@ -14,10 +14,6 @@ import java.util.List;
 public class InquiryService {
     final InquiryMapper mapper;
 
-    public List<Inquiry> getInquiry() {
-        return mapper.selectInquiryForIndex();
-    }
-
     public void add(Inquiry inquiry) {
         mapper.insertInquiry(inquiry);
     }
@@ -29,12 +25,16 @@ public class InquiryService {
     public Inquiry get(int id) {
         return mapper.selectById(id);
     }
-    
+
     public void update(Inquiry inquiry) {
         mapper.updateById(inquiry);
     }
 
     public void delete(int id) {
         mapper.deleteById(id);
+    }
+
+    public List<Inquiry> getInquiry() {
+        return mapper.selectInquiryForIndex();
     }
 }

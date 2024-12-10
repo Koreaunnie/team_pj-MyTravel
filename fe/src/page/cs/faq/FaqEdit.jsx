@@ -4,6 +4,7 @@ import { Modal } from "../../../components/root/Modal.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { Spinner } from "@chakra-ui/react";
+import { toaster } from "../../../components/ui/toaster.jsx";
 
 function FaqEdit(props) {
   const { id } = useParams();
@@ -29,10 +30,22 @@ function FaqEdit(props) {
         question,
         answer,
       })
-      .then((res) => {
-        navigate("/cs/faq/list");
-        alert("수정되었습니다.");
-      });
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+        navigate(`/cs/faq/view/${id}`);
+      })
+      .catch((e) => {
+        const message = e.response.data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+      })
+      .finally();
   };
 
   if (faq == null) {

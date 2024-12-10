@@ -21,17 +21,17 @@ public class WalletService {
     }
 
     // 내 지갑 내역 보기
-    public List<Wallet> list() {
-        return mapper.selectAllByDate();
+    public List<Wallet> list(String writer) {
+        return mapper.selectAllByDate(writer);
     }
 
     // 내 지갑 내역 상세 보기, 수정
-    public Wallet view(int id) {
-        return mapper.selectById(id);
+    public Wallet view(int id, String writer) {
+        return mapper.selectById(id, writer);
     }
 
     // 내 지갑 내역 상세 보기 화면에서 수정
-    public boolean update(int id, Wallet wallet) {
+    public boolean update(int id, Wallet wallet, String writer) {
         wallet.setId(id);
 
         // 수입 / 지출이 null 일 경우 0
@@ -42,13 +42,13 @@ public class WalletService {
             wallet.setExpense(0);
         }
 
-        int cnt = mapper.update(wallet);
+        int cnt = mapper.update(wallet, writer);
         return cnt == 1;
     }
 
     // 내 지갑 내역 삭제
-    public void delete(int id) {
-        mapper.deleteById(id);
+    public void delete(int id, String writer) {
+        mapper.deleteById(id, writer);
     }
 
 

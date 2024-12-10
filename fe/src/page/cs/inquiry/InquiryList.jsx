@@ -35,6 +35,14 @@ function InquiryList(props) {
           >
             작성
           </button>
+
+          <button
+            className={"btn btn-blue"}
+            // TODO
+            // onClick={}
+          >
+            내가 쓴 글
+          </button>
         </div>
 
         <h1>문의하기</h1>

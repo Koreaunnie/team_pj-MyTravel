@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import "./Plan.css";
 import { useNavigate } from "react-router-dom";
@@ -12,24 +12,24 @@ import { toaster } from "../../components/ui/toaster.jsx";
 import { Modal } from "/src/components/root/Modal.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 
-const MyComponent = () => {
-  // useMapsLibrary loads the geocoding library, it might initially return `null`
-  // if the library hasn't been loaded. Once loaded, it will return the library
-  // object as it would be returned by `await google.maps.importLibrary()`
-  const geocodingLib = useMapsLibrary("geocoding");
-  const geocoder = useMemo(
-    () => geocodingLib && new geocodingLib.Geocoder(),
-    [geocodingLib],
-  );
-
-  useEffect(() => {
-    if (!geocoder) return;
-
-    // now you can use `geocoder.geocode(...)` here
-  }, [geocoder]);
-
-  return <></>;
-};
+// const MyComponent = () => {
+//   // useMapsLibrary loads the geocoding library, it might initially return `null`
+//   // if the library hasn't been loaded. Once loaded, it will return the library
+//   // object as it would be returned by `await google.maps.importLibrary()`
+//   const geocodingLib = useMapsLibrary("geocoding");
+//   const geocoder = useMemo(
+//     () => geocodingLib && new geocodingLib.Geocoder(),
+//     [geocodingLib],
+//   );
+//
+//   useEffect(() => {
+//     if (!geocoder) return;
+//
+//     // now you can use `geocoder.geocode(...)` here
+//   }, [geocoder]);
+//
+//   return <></>;
+// };
 
 function PlanAdd(props) {
   const [backToListModalOpen, setBackToListModalOpen] = useState(false);
@@ -48,8 +48,8 @@ function PlanAdd(props) {
       memo: "",
     },
   ]);
-  const [selectedPlace, setSelectedPlace] = useState(null);
-  const [markerRef, marker] = useAdvancedMarkerRef();
+  // const [selectedPlace, setSelectedPlace] = useState(null);
+  // const [markerRef, marker] = useAdvancedMarkerRef();
   const navigate = useNavigate();
 
   const position = { lat: 37, lng: 128 };
@@ -115,7 +115,7 @@ function PlanAdd(props) {
   }
 
   // google personal api key
-  const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+  // const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
 
   return (
     <div className={"plan"}>
@@ -251,43 +251,43 @@ function PlanAdd(props) {
                 />
                 <button type="button">검색</button>
 
-                <APIProvider apiKey={apiKey}>
-                  <Map
-                    onLoad={(mapInstance) => setMap(mapInstance)}
-                    style={{ width: "500px", height: "250px" }}
-                    initialCenter={{ lat: 37, lng: 128 }}
-                  ></Map>
+                {/*<APIProvider apiKey={apiKey}>*/}
+                {/*  <Map*/}
+                {/*    onLoad={(mapInstance) => setMap(mapInstance)}*/}
+                {/*    style={{ width: "500px", height: "250px" }}*/}
+                {/*    initialCenter={{ lat: 37, lng: 128 }}*/}
+                {/*  ></Map>*/}
 
-                  <gmp-map
-                    center="40.749933,-73.98633"
-                    zoom="13"
-                    map-id="DEMO_MAP_ID"
-                  >
-                    <div
-                      slot="control-block-start-inline-start"
-                      className="place-picker-container"
-                    >
-                      <gmpx-place-picker
-                        placeholder="장소를 입력하세요."
-                        value={field.place}
-                        onPlaceChanged={() => {
-                          const place = document
-                            .querySelector("gmpx-place-picker")
-                            .getPlace();
-                          if (place && place.formatted_address) {
-                            handleFieldChange(
-                              index,
-                              "place",
-                              place.formatted_address,
-                            );
-                          }
-                        }}
-                      ></gmpx-place-picker>
-                    </div>
+                {/*  <gmp-map*/}
+                {/*    center="40.749933,-73.98633"*/}
+                {/*    zoom="13"*/}
+                {/*    map-id="DEMO_MAP_ID"*/}
+                {/*  >*/}
+                {/*    <div*/}
+                {/*      slot="control-block-start-inline-start"*/}
+                {/*      className="place-picker-container"*/}
+                {/*    >*/}
+                {/*      <gmpx-place-picker*/}
+                {/*        placeholder="장소를 입력하세요."*/}
+                {/*        value={field.place}*/}
+                {/*        onPlaceChanged={() => {*/}
+                {/*          const place = document*/}
+                {/*            .querySelector("gmpx-place-picker")*/}
+                {/*            .getPlace();*/}
+                {/*          if (place && place.formatted_address) {*/}
+                {/*            handleFieldChange(*/}
+                {/*              index,*/}
+                {/*              "place",*/}
+                {/*              place.formatted_address,*/}
+                {/*            );*/}
+                {/*          }*/}
+                {/*        }}*/}
+                {/*      ></gmpx-place-picker>*/}
+                {/*    </div>*/}
 
-                    <gmp-advanced-marker></gmp-advanced-marker>
-                  </gmp-map>
-                </APIProvider>
+                {/*    <gmp-advanced-marker></gmp-advanced-marker>*/}
+                {/*  </gmp-map>*/}
+                {/*</APIProvider>*/}
 
                 <label htmlFor="memo">메모</label>
                 <textarea

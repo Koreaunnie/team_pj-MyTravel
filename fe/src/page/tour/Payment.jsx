@@ -1,9 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 
-// import * as PortOne from "@portone/browser-sdk";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Image } from "@chakra-ui/react";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
+import PortOne from "/libs/browser-sdk";
+
+const { VITE_STORE_ID, VITE_KAKAOPAY_CHANNEL_KEY, VITE_TOSSPAY_CHANNEL_KEY } =
+  import.meta.env;
 
 function randomId() {
   return Array.from(crypto.getRandomValues(new Uint32Array(2)))
@@ -45,8 +48,8 @@ function Payment(props) {
     const totalAmount = totalPrice();
 
     const payment = await PortOne.requestPayment({
-      storeId: "store-e9111bf4-6996-4a6c-ac48-58b9ee8f9c43",
-      channelKey: "channel-key-b42ef11e-6046-4851-8610-45af77d2ff86",
+      storeId: VITE_STORE_ID,
+      channelKey: VITE_KAKAOPAY_CHANNEL_KEY,
       paymentId,
       orderName: tour[0].product + " 그 외",
       totalAmount,
@@ -78,7 +81,7 @@ function Payment(props) {
         amount: totalAmount,
         payMethod,
         currency,
-        buyer: email,
+        buyerEmail: email,
       }),
     });
 
