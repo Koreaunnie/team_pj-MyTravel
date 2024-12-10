@@ -52,12 +52,6 @@ function Navbar(props) {
           >
             커뮤니티
           </li>
-          <li
-            className={isActive("/cs") ? "active" : ""}
-            onClick={() => navigate("/cs/index")}
-          >
-            고객센터
-          </li>
           {isAuthenticated && (
             <li
               className={isActive("/plan") ? "active" : ""}
@@ -71,6 +65,12 @@ function Navbar(props) {
             onClick={() => navigate("/wallet/list")}
           >
             내 지갑
+          </li>
+          <li
+            className={isActive("/cs") ? "active" : ""}
+            onClick={() => navigate("/cs/index")}
+          >
+            고객센터
           </li>
           {isAdmin && (
             <li
