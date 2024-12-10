@@ -54,7 +54,6 @@
 }
 
 .main-section-wrap .section-body .section-body-list {
-    width: 100%;
     display: flex;
     justify-content: space-between;
 }
@@ -68,7 +67,6 @@
     border-radius: 5px;
     width: 25%;
     cursor: pointer;
-    flex: auto;
 }
 
 .main-section-wrap .section-body .section-body-list h3 {
@@ -80,7 +78,7 @@
     text-overflow: initial;
 }
 
-/* 내 여행 */
+/*------------------- section -------------------*/
 .main-section-wrap .section-body .section-body-list .list-item .description {
     height: 88px;
     color: var(--font-gray-color);

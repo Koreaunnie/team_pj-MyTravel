@@ -13,46 +13,45 @@ export function Index() {
 
   useEffect(() => {
     axios
-      .get("/api/index")
+      .get("/api/index", {
+        params: searchParams,
+      })
       .then((res) => {
+        console.log("Response data:", res.data);
         setPlanList(res.data.plans);
         setTourList(res.data.tours);
       })
       .catch((error) => {
         console.error("Error fetching index data:", error);
       });
-  }, []);
-
-  useEffect(() => {
-    const nextSearch = { ...search };
-
-    if (searchParams.get("keyword")) {
-      nextSearch.keyword = searchParams.get("keyword");
-    } else {
-      nextSearch.keyword = "";
-    }
-    setSearch(nextSearch);
   }, [searchParams]);
 
-  const isEmpty = (list) => {
-    return list.length === 0;
-  };
+  useEffect(() => {
+    const keyword = searchParams.get("keyword") || "";
+    setSearch(keyword);
+  }, [searchParams]);
 
   function handleSearchButton() {
     const nextSearchParam = new URLSearchParams(searchParams);
 
-    if (search.keyword.trim().length > 0) {
+    if (search.trim().length > 0) {
       // 검색
-      nextSearchParam.set("keyword", search.keyword);
-
-      setSearchParams(nextSearchParam);
+      nextSearchParam.set("keyword", search.trim());
     } else {
       // 검색 안 함
       nextSearchParam.delete("keyword");
+    }
+    setSearchParams(nextSearchParam);
+  }
 
-      setSearchParams(nextSearchParam);
+  // 엔터 키로 검색 실행
+  function handleKeyPress(event) {
+    if (event.key === "Enter") {
+      handleSearchButton();
     }
   }
+
+  const isEmpty = (list) => list.length === 0;
 
   return (
     <div className={"body-wide"}>
@@ -61,10 +60,9 @@ export function Index() {
         <input
           type="search"
           placeholder={"어디로 떠나고 싶은가요?"}
-          value={search.keyword}
-          onChange={(e) =>
-            setSearch({ ...search, keyword: e.target.value.trim() })
-          }
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          onKeyPress={handleKeyPress}
         />
         <button className={"main-search-wrap-btn"} onClick={handleSearchButton}>
           <IoSearch />
@@ -120,7 +118,7 @@ export function Index() {
         </div>
 
         <div className={"section-body"}>
-          {isEmpty(planList) ? (
+          {isEmpty(tourList) ? (
             <div className={"empty-container"}>
               <p className={"empty-container-title"}>투어가 없습니다.</p>
               <p className={"empty-container-description"}>

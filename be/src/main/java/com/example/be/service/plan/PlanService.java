@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -137,9 +138,14 @@ public class PlanService {
         mapper.deleteById(id);
     }
 
-    // 메인 화면에 필요한 일부 plan 리스트 가져오기
+    // 메인 화면에 필요한 일부 plan 리스트 가져오기 (최신 4개)
     public List<Plan> getMainPagePlans(String keyword) {
-        // 최신 4개의 계획만
-        return mapper.getTop4ByOrderByUpdated(keyword);
+        try {
+            List<Plan> plans = mapper.getTop4ByOrderByUpdated(keyword);
+            return plans != null ? plans : new ArrayList<>();
+        } catch (Exception e) {
+            e.printStackTrace(); // 디버깅 용도
+            return new ArrayList<>();
+        }
     }
 }

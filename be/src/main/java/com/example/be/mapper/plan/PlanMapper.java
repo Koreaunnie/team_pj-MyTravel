@@ -141,7 +141,8 @@ public interface PlanMapper {
     @Select("""
             <script>
                 SELECT *
-                FROM plan p JOIN plan_field pf
+                FROM plan p 
+                    LEFT JOIN plan_field pf
                     ON p.id = pf.plan_id
                 WHERE
                     <trim prefixOverrides="OR">
