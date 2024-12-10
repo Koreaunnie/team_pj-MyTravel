@@ -1,17 +1,16 @@
 package com.example.be.dto.community;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
-public class Community {
+@AllArgsConstructor
+public class CommunityComment {
     private Integer id;
-    private String title;
+    private String comment;
     private String writer;
-    private String content;
     private LocalDateTime creationDate;
-
-    private List<CommunityFile> communityFileList;
+    private String communityId;
 }
