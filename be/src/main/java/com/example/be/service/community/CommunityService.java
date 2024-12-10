@@ -122,6 +122,7 @@ public class CommunityService {
         }
 
         mapper.deleteFileByCommunityId(id);
+        mapper.deleteCommunity(id);
 
         // 댓글 지우기
 

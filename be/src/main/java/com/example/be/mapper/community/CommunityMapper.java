@@ -134,7 +134,7 @@ public interface CommunityMapper {
             SELECT comment, writer , inserted creationDate
             FROM community_comment
             WHERE community_id=#{id}
-            ORDER BY creationDate DESC
+            ORDER BY creationDate ASC
             """)
     List<Map<String, Object>> callCommunityComment(Integer id);
 }

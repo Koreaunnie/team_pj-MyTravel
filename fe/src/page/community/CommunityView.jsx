@@ -62,7 +62,7 @@ function CommunityView(props) {
         comment,
         communityId: community.id,
       })
-      .then(navigate(`/community/view/${id}/`));
+      .then(location.reload(true));
   };
 
   return (
