@@ -80,10 +80,8 @@ public class CommunityService {
     public Map<String, Object> view(Integer id) {
 
         Map<String, Object> viewer = mapper.viewCommunity(id);
-        System.out.println("viewer = " + viewer);
         List<String> fileList = mapper.callCommunityFile(id);
         List<Map<String, Object>> commentList = mapper.callCommunityComment(id);
-        System.out.println(commentList);
         viewer.put("commentList", commentList);
         if (fileList.size() != 0) {
             List<Object> files = new ArrayList();
@@ -95,10 +93,8 @@ public class CommunityService {
                 files.add(file);
             }
             viewer.put("files", files);
-            System.out.println(viewer);
             return viewer;
         } else {
-            System.out.println(viewer);
             return viewer;
         }
     }
