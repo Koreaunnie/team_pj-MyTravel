@@ -38,7 +38,7 @@ public interface CommunityMapper {
                                      </choose>
                                  </if>
                         ORDER BY id DESC
-                        LIMIT #{pageList},15
+                        LIMIT #{pageList},10    
                         </script>
             """)
     List<Community> listUp(Integer pageList, String searchType, String searchKeyword);
@@ -157,4 +157,18 @@ public interface CommunityMapper {
             WHERE community_id=#{id}
             """)
     int countCommentsByCommunityId(Integer id);
+
+//    @Select("""
+//            SELECT views
+//            FROM community
+//            WHERE id=#{id}
+//            """)
+//    Integer checkViews(Integer id);
+//
+//    @Update("""
+//            UPDATE community
+//            SET views=#{plusViews}
+//            WHERE id=#{id}
+//            """)
+//    int updateViews(Integer plusViews, Integer id);
 }

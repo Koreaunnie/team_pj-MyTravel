@@ -54,6 +54,8 @@ public class CommunityController {
 
     // TODO : UPDATE 기능 추가
 
+//    TODO: 조회수 기능 (기존 테이블에 있어도 되겠는데)
+
 
 //    TODO :  게시판 댓글 기능
 

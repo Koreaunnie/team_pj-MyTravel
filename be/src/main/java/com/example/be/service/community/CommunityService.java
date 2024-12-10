@@ -38,7 +38,7 @@ public class CommunityService {
 
     public Map<String, Object> list(Integer page, String searchType, String searchKeyword) {
 
-        Integer pageList = (page - 1) * 15;
+        Integer pageList = (page - 1) * 10;
 
 //        모든 수를 세는 것을 만들어야 함
 
@@ -93,6 +93,11 @@ public class CommunityService {
     }
 
     public Map<String, Object> view(Integer id) {
+//        Integer views = mapper.checkViews(id);
+//        Integer plusViews = views + 1;
+//        mapper.updateViews(plusViews, id);
+//        System.out.println("plusViews = " + plusViews);
+//        조회수가 안돼
 
         Map<String, Object> viewer = mapper.viewCommunity(id);
         List<String> fileList = mapper.callCommunityFile(id);

@@ -7,6 +7,10 @@ CREATE TABLE community
     inserted DATETIME DEFAULT NOW()
 );
 
+# TODO : 게시글 조회수
+ALTER TABLE community
+    ADD views INT DEFAULT 0;
+
 
 SELECT *
 FROM community

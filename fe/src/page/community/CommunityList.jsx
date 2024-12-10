@@ -154,7 +154,7 @@ function CommunityList(props) {
           <Box>
             <PaginationRoot
               count={countCommunity}
-              pageSize={15}
+              pageSize={10}
               defaultPage={1}
               onPageChange={handlePageChangeClick}
               siblingCount={2}
@@ -166,7 +166,9 @@ function CommunityList(props) {
               </HStack>
             </PaginationRoot>
           </Box>
+          <br />
         </Stack>
+        <br />
       </div>
     </div>
   );
