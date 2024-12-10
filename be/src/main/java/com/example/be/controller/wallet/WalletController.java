@@ -93,17 +93,19 @@ public class WalletController {
         return ResponseEntity.ok(categories);
     }
 
-    // 내 지갑 내역에서 선택한 항목만 삭제
     @DeleteMapping("delete")
     @PreAuthorize("isAuthenticated()")
-    public void delete(@RequestBody List<Integer> id,
-                       Authentication authentication) {
-        if (id == null || id.isEmpty()) {
-            throw new IllegalArgumentException("삭제할 항목이 없습니다.");
-        }
-        
+    public ResponseEntity<Map<String, Object>> delete(@RequestBody List<Integer> id,
+                                                      Authentication authentication) {
         String writer = authentication.getName();
-        System.out.println(id);
-        service.deleteSelectedItems(id, writer);
+        if (service.deleteSelectedItems(id, writer)) {
+            // 성공
+            return ResponseEntity.ok(Map.of("message", Map.of(
+                    "type", "success", "text", "삭제되었습니다.")));
+        } else {
+            // 실패
+            return ResponseEntity.badRequest().body(Map.of("message", Map.of(
+                    "type", "warning", "text", "삭제 중 오류가 생겼습니다.")));
+        }
     }
 }

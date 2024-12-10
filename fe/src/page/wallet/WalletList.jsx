@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "./Wallet.css";
 import { Modal } from "../../components/root/Modal.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
+import { toaster } from "../../components/ui/toaster.jsx";
 
 function WalletList(props) {
   const [walletList, setWalletList] = useState([]); // 전체 지갑 리스트
@@ -166,6 +167,8 @@ function WalletList(props) {
         data: selectedIds,
       })
       .then((res) => {
+        const { type, text } = res.data.message;
+
         setWalletList((prevList) =>
           prevList.filter((wallet) => !selectedIds.includes(wallet.id)),
         );
@@ -173,12 +176,21 @@ function WalletList(props) {
           prevList.filter((wallet) => !selectedIds.includes(wallet.id)),
         );
         setCheckedItems(new Set()); // 삭제 후 체크된 항목 해제
+
         setDeleteModalOpen(false);
-        alert("선택된 항목이 삭제되었습니다.");
+
+        toaster.create({
+          type: type,
+          description: text,
+        });
       })
       .catch((error) => {
-        console.error("삭제 중 오류가 발생했습니다:", error);
-        alert("삭제에 실패했습니다.");
+        const { type, text } = error.data.message;
+
+        toaster.create({
+          type: type,
+          description: text,
+        });
       });
   };
 
