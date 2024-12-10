@@ -14,6 +14,7 @@ function WalletList(props) {
   const [filteredWallet, setFilteredWallet] = useState(walletList); // 필터링된 지갑 리스트
   const [activeTab, setActiveTab] = useState(0); // 카테고리 탭 활성화
   const [addModalOpen, setAddModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [checkedItems, setCheckedItems] = useState(new Set()); // 체크된 항목 ID 저장
   const navigate = useNavigate();
 
@@ -172,6 +173,7 @@ function WalletList(props) {
           prevList.filter((wallet) => !selectedIds.includes(wallet.id)),
         );
         setCheckedItems(new Set()); // 삭제 후 체크된 항목 해제
+        setDeleteModalOpen(false);
         alert("선택된 항목이 삭제되었습니다.");
       })
       .catch((error) => {
@@ -379,7 +381,7 @@ function WalletList(props) {
           <button
             className={"btn btn-warning"}
             style={{ marginLeft: "15px" }}
-            onClick={handleDeleteSelectedItems}
+            onClick={() => setDeleteModalOpen(true)}
           >
             선택 항목 삭제
           </button>
@@ -519,6 +521,15 @@ function WalletList(props) {
         onConfirm={() => navigate(`/wallet/add`)}
         message="내역을 추가하시겠습니까?"
         buttonMessage="추가"
+      />
+
+      {/* 삭제 modal */}
+      <Modal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onConfirm={handleDeleteSelectedItems}
+        message="선택된 내역을 삭제하시겠습니까?"
+        buttonMessage="삭제"
       />
     </div>
   );
