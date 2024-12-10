@@ -47,6 +47,7 @@ function AuthenticationProvider({ children }) {
     <AuthenticationContext.Provider
       value={{
         email: userToken.sub,
+        nickname: userToken.nickname,
         login,
         logout,
         isAuthenticated,

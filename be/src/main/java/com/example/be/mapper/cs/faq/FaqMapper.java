@@ -10,8 +10,8 @@ public interface FaqMapper {
 
     @Insert("""
             INSERT INTO faq
-                (question, answer)
-            VALUES (#{question}, #{answer})
+                (question, answer, writer)
+            VALUES (#{question}, #{answer}, #{writer})
             """)
     @Options(keyProperty = "id", useGeneratedKeys = true)
     int insertFaq(Faq faq);
@@ -44,4 +44,12 @@ public interface FaqMapper {
             WHERE id = #{id}
             """)
     int deleteById(int id);
+
+    @Select("""
+            SELECT *
+            FROM faq
+            ORDER BY updated DESC
+            LIMIT 5
+            """)
+    List<Faq> selectFaqForIndex();
 }

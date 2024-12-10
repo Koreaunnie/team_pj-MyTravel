@@ -4,6 +4,7 @@ import com.example.be.dto.plan.Plan;
 import com.example.be.dto.plan.PlanField;
 import com.example.be.mapper.plan.PlanMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,14 +20,17 @@ public class PlanService {
 
     // 내 여행 추가
     // 1. 여행 저장
-    public boolean add(Plan plan) {
-        // 1. 여행 날짜가 비어 있으면 null로 처리
+    public boolean add(Plan plan, Authentication authentication) {
+        // 1. 작성자를 현재 로그인 된 user 로 설정
+        plan.setWriter(authentication.getName());
+
+        // 2. 여행 날짜가 비어 있으면 null로 처리
         NullCheckUtils.handleNullOrEmptyDates(plan);
 
-        // 2. Plan 의 기본 정보 저장 (ID 생성)
+        // 3. Plan 의 기본 정보 저장 (ID 생성)
         int cnt = mapper.insertPlan(plan);
 
-        // 3. plan body fields 데이터를 반복적으로 저장
+        // 4. plan body fields 데이터를 반복적으로 저장
         if (plan.getPlanFieldList() != null) {
             for (PlanField field : plan.getPlanFieldList()) {
                 // PlanField의 날짜와 시간이 비어 있으면 null로 처리
@@ -72,15 +76,15 @@ public class PlanService {
     }
 
     // 내 여행 목록 조회
-    public Map<String, Object> list(Integer page, String searchType, String searchKeyword) {
+    public Map<String, Object> list(Integer page, String searchType, String searchKeyword, String writer) {
         // SQL 의 LIMIT 키워드에서 사용되는 offset
         Integer offset = (page - 1) * 10;
 
         // 조회되는 게시물
-        List<Plan> list = mapper.selectPlanByPageOffset(offset, searchType, searchKeyword);
+        List<Plan> list = mapper.selectPlanByPageOffset(offset, searchType, searchKeyword, writer);
 
         // 전체 게시물 수
-        Integer count = mapper.countAll(searchType, searchKeyword);
+        Integer count = mapper.countAll(searchType, searchKeyword, writer);
 
         return Map.of("list", list, "count", count);
     }
@@ -91,9 +95,9 @@ public class PlanService {
     }
 
     // 내 여행 세부사항
-    public Map<String, Object> view(int id) {
+    public Map<String, Object> view(int id, String writer) {
         // Plan 객체 조회
-        Plan plan = mapper.selectPlanById(id);
+        Plan plan = mapper.selectPlanById(id, writer);
         // 해당 Plan 에 대한 PlanField 목록을 조회
         List<PlanField> planFields = mapper.selectPlanFieldsByPlanId(id);
 

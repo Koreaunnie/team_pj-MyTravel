@@ -9,9 +9,8 @@ function Navbar(props) {
   const dropdownRef = useRef(null); // 드롭다운 영역 참조
   const navigate = useNavigate();
   const location = useLocation();
-  const { email, isAdmin, isPartner, isAuthenticated, logout } = useContext(
-    AuthenticationContext,
-  );
+  const { email, nickname, isAdmin, isPartner, isAuthenticated, logout } =
+    useContext(AuthenticationContext);
 
   const isActive = (path) => location.pathname.startsWith(path);
 
@@ -42,18 +41,6 @@ function Navbar(props) {
       <div className={"nav-container"}>
         <ul>
           <li
-            className={isActive("/plan") ? "active" : ""}
-            onClick={() => navigate("/plan/list")}
-          >
-            내 여행
-          </li>
-          <li
-            className={isActive("/wallet") ? "active" : ""}
-            onClick={() => navigate("/wallet/list")}
-          >
-            내 지갑
-          </li>
-          <li
             className={isActive("/tour") ? "active" : ""}
             onClick={() => navigate("/tour/list")}
           >
@@ -71,30 +58,46 @@ function Navbar(props) {
           >
             고객센터
           </li>
+          {isAuthenticated && (
+            <li
+              className={isActive("/plan") ? "active" : ""}
+              onClick={() => navigate("/plan/list")}
+            >
+              내 여행
+            </li>
+          )}
+          <li
+            className={isActive("/wallet") ? "active" : ""}
+            onClick={() => navigate("/wallet/list")}
+          >
+            내 지갑
+          </li>
+          {isAdmin && (
+            <li
+              className={isActive("/admin") ? "active" : ""}
+              onClick={() => navigate("/admin")}
+            >
+              관리자
+            </li>
+          )}
         </ul>
       </div>
 
       <div className={"user-container"}>
-        <div className={"dropdown"} ref={dropdownRef}>
-          <button className={"dropdown-toggle-button"} onClick={toggleDropdown}>
-            My Page
-          </button>
-          {dropdownOpen && (
-            <div className={"dropdown-toggle-container"}>
-              <ul>
-                {isAuthenticated || (
-                  <li onClick={() => navigate("/member/signup")}>회원가입</li>
-                )}
-                {isAuthenticated || (
-                  <li onClick={() => navigate("/member/login")}>로그인</li>
-                )}
-                {isAuthenticated && (
+        {isAuthenticated && (
+          <div ref={dropdownRef}>
+            <p className={"user-info"}>
+              <span className={"user"}>{nickname}</span>
+              님, 환영합니다.
+            </p>
+            <button className={"user-button"} onClick={toggleDropdown}>
+              My Page
+            </button>
+            {dropdownOpen && (
+              <div className={"mypage-toggle-container"}>
+                <ul>
                   <li onClick={() => navigate(`/mypage/${email}`)}>회원정보</li>
-                )}
-                {isAuthenticated && (
                   <li onClick={() => navigate("/cart")}>장바구니</li>
-                )}
-                {isAuthenticated && (
                   <li
                     onClick={() => {
                       logout();
@@ -103,11 +106,22 @@ function Navbar(props) {
                   >
                     로그아웃
                   </li>
-                )}
-              </ul>
-            </div>
-          )}
-        </div>
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
+
+        {isAuthenticated || (
+          <div>
+            <button
+              className={"user-button"}
+              onClick={() => navigate("/member/login")}
+            >
+              Login
+            </button>
+          </div>
+        )}
       </div>
     </nav>
   );

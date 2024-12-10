@@ -51,7 +51,17 @@
 
 /*------------------------- user -------------------------*/
 
-.navbar .dropdown-toggle-button {
+.navbar .user-info {
+    position: absolute;
+    top: 20px;
+    right: 160px;
+}
+
+.navbar .user-info .user {
+    font-weight: bold;
+}
+
+.navbar .user-button {
     position: absolute;
     top: 10px;
     right: 15px;
@@ -65,7 +75,7 @@
     box-shadow: var(--box-shadow);
 }
 
-.navbar .dropdown-toggle-container {
+.navbar .mypage-toggle-container {
     position: absolute;
     top: 65px;
     right: 10px;
@@ -77,12 +87,12 @@
     z-index: 1000;
 }
 
-.navbar .dropdown-toggle-container li {
+.navbar .mypage-toggle-container li {
     margin: 10px;
     height: 30px;
     line-height: 30px;
 }
 
-.navbar .dropdown-toggle-container li:hover {
+.navbar .mypage-toggle-container li:hover {
     font-weight: bold;
 }
