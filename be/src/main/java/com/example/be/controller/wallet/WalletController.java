@@ -62,8 +62,8 @@ public class WalletController {
     public ResponseEntity<Map<String, Object>> update(@PathVariable int id,
                                                       @RequestBody Wallet wallet,
                                                       Authentication authentication) {
-        String writer = authentication.getName();
-        boolean isUpdated = service.update(id, wallet, writer);
+        wallet.setWriter(authentication.getName());
+        boolean isUpdated = service.update(id, wallet);
 
         if (isUpdated) {
             // 성공
