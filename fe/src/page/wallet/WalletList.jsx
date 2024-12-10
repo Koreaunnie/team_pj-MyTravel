@@ -394,6 +394,7 @@ function WalletList(props) {
             className={"btn btn-warning"}
             style={{ marginLeft: "15px" }}
             onClick={() => setDeleteModalOpen(true)}
+            style={{ display: checkedItems.size > 0 ? "inline-block" : "none" }}
           >
             선택 항목 삭제
           </button>
