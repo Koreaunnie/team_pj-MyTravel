@@ -61,3 +61,20 @@ ALTER TABLE tour
             ON DELETE SET NULL;
 
 SHOW CREATE TABLE tour;
+
+
+SELECT id, title, product, price, location, ti.name image, active
+FROM tour t
+         LEFT JOIN tour_img ti ON t.id = ti.tour_id
+WHERE title LIKE CONCAT('%', '유후인', '%')
+GROUP BY id
+ORDER BY id DESC
+LIMIT 10, 10;
+
+SELECT *
+FROM plan p
+         JOIN plan_field pf
+              ON p.id = pf.plan_id
+WHERE title LIKE CONCAT('%', '피자', '%')
+GROUP BY p.id
+ORDER BY p.updated DESC, p.inserted DESC;

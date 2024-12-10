@@ -19,6 +19,7 @@ import { ImageFileView } from "../../Image/ImageFileView.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import "./Tour.css";
+import { Modal } from "../../components/root/Modal.jsx";
 
 function TourView() {
   const { id } = useParams();
@@ -26,11 +27,13 @@ function TourView() {
   const [open, setOpen] = useState(false);
   const [cart, setCart] = useState({ cart: false });
   const [startDate, setStartDate] = useState("");
+  const [saveModalOpen, setSaveModalOpen] = useState(false);
   const [endDate, setEndDate] = useState("");
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
+
   const { hasAccess, isAuthenticated, isAdmin } = useContext(
     AuthenticationContext,
   );
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -67,12 +70,7 @@ function TourView() {
 
   const handleAddToCartClick = () => {
     if (!isAuthenticated) {
-      toaster.create({
-        type: "warning",
-        description: "로그인 후 사용 가능합니다.",
-      });
-      navigate(`/member/login`);
-      return;
+      setLoginModalOpen(true);
     }
     axios
       .post(`/api/tour/cart`, {
@@ -83,10 +81,7 @@ function TourView() {
       .then((res) => res.data)
       .then((data) => {
         setCart(data);
-        toaster.create({
-          type: data.message.type,
-          description: data.message.text,
-        });
+        setSaveModalOpen(true);
       })
       .catch((e) => {
         const data = e.response.data;
@@ -187,6 +182,23 @@ function TourView() {
             </Box>
           )}
         </Stack>
+
+        {/*장바구니 추가 modal*/}
+        <Modal
+          isOpen={saveModalOpen}
+          onClose={() => setSaveModalOpen(false)}
+          onConfirm={() => navigate(`/cart`)}
+          message={"장바구니에 상품을 담았습니다."}
+          buttonMessage={"장바구니로 가기"}
+        />
+        {/* 로그아웃 상황에서 장바구니 추가 modal */}
+        <Modal
+          isOpen={loginModalOpen}
+          onClose={() => setLoginModalOpen(false)}
+          onConfirm={() => navigate(`/member/login`)}
+          message={"로그인 후 사용 가능합니다."}
+          buttonMessage={"로그인 페이지로"}
+        />
       </div>
     </div>
   );

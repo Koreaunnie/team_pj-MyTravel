@@ -6,6 +6,7 @@ import "./Member.css";
 import PaymentHistoryAll from "../tour/PaymentHistoryAll.jsx";
 import MemberList from "./MemberList.jsx";
 import PartnerList from "./PartnerList.jsx";
+import CsIndex from "../cs/CsIndex.jsx";
 
 function MyPage(props) {
   const [selectedMenu, setSelectedMenu] = useState("profile");
@@ -33,12 +34,14 @@ function MyPage(props) {
           <button onClick={() => handleMenuClick("paymentAll")}>
             사이트 내 총 결제 내역
           </button>
+          <button onClick={() => handleMenuClick("csList")}>고객센터</button>
         </VStack>
       </Box>
       <Box flex="1" padding="20px">
         {selectedMenu === "memberList" && <MemberList />}
         {selectedMenu === "partnerList" && <PartnerList />}
         {selectedMenu === "paymentAll" && <PaymentHistoryAll />}
+        {selectedMenu === "csList" && <CsIndex />}
       </Box>
     </div>
   );

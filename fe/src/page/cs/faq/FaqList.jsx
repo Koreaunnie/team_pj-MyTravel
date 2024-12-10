@@ -1,22 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Breadcrumb } from "../../../components/root/Breadcrumb.jsx";
 import { Modal } from "../../../components/root/Modal.jsx";
 import axios from "axios";
-import { Spinner } from "@chakra-ui/react";
+import { AuthenticationContext } from "../../../components/context/AuthenticationProvider.jsx";
 
 function FaqList(props) {
   const [faqList, setFaqList] = useState();
   const [addModalOpen, setAddModalOpen] = useState();
   const navigate = useNavigate();
+  const { isAdmin, hasAccess } = useContext(AuthenticationContext);
 
   useEffect(() => {
     axios.get("/api/cs/faq/list").then((res) => setFaqList(res.data));
   }, []);
 
-  if (!faqList || faqList.length === 0) {
-    return <Spinner />;
-  }
+  // 날짜 포맷을 yyyy-MM-dd 형식으로 변환
+  const formatDate = (date) => {
+    const d = new Date(date);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  };
 
   return (
     <div className={"faq"}>
@@ -29,38 +32,46 @@ function FaqList(props) {
 
       <div className={"body-normal"}>
         <div className={"btn-wrap"}>
-          <button
-            className={"btn btn-dark"}
-            onClick={() => setAddModalOpen(true)}
-          >
-            작성
-          </button>
+          {isAdmin && hasAccess && (
+            <button
+              className={"btn btn-dark"}
+              onClick={() => setAddModalOpen(true)}
+            >
+              작성
+            </button>
+          )}
         </div>
 
         <h1>자주 묻는 질문</h1>
 
-        <table className={"table-list"}>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>질문</th>
-              <th>작성일</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {faqList.map((faq) => (
-              <tr
-                key={faq.id}
-                onClick={() => navigate(`/cs/faq/view/${faq.id}`)}
-              >
-                <td>{faq.id}</td>
-                <td>{faq.question}</td>
-                <td>{faq.updated}</td>
+        {!faqList || faqList.length === 0 ? (
+          <div className={"empty-container"}>
+            <p className={"empty-container-title"}>등록된 FAQ가 없습니다.</p>
+          </div>
+        ) : (
+          <table className={"table-list"}>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>질문</th>
+                <th>작성일</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              {faqList.map((faq) => (
+                <tr
+                  key={faq.id}
+                  onClick={() => navigate(`/cs/faq/view/${faq.id}`)}
+                >
+                  <td>{faq.id}</td>
+                  <td>{faq.question}</td>
+                  <td>{formatDate(faq.updated)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
 
       {/* 추가 modal */}

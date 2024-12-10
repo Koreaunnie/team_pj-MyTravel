@@ -5,6 +5,7 @@ import { Spinner } from "@chakra-ui/react";
 import "/src/components/root/common.css";
 import { Modal } from "../../components/root/Modal.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
+import { toaster } from "../../components/ui/toaster.jsx";
 
 function PlanView(props) {
   const { id } = useParams();
@@ -46,11 +47,21 @@ function PlanView(props) {
   const handleDeleteButton = () => {
     axios
       .delete(`/api/plan/delete/${id}`)
-      .then((res) => {
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
         navigate(`/plan/list`);
-        alert("일정이 삭제되었습니다.");
       })
-      .catch()
+      .catch((e) => {
+        const data = e.response.data;
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+      })
       .finally();
   };
 

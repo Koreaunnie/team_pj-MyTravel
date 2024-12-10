@@ -13,9 +13,9 @@ public interface PlanMapper {
     // 1. plan header 항목 추가
     @Insert("""
             INSERT INTO plan
-                (inserted, title, description, destination, startDate, endDate)
+                (inserted, title, description, destination, startDate, endDate, writer)
             VALUES 
-                (NOW(), #{title}, #{description}, #{destination}, #{startDate}, #{endDate})
+                (NOW(), #{title}, #{description}, #{destination}, #{startDate}, #{endDate}, #{writer})
             """)
     @Options(keyProperty = "id", useGeneratedKeys = true)
     int insertPlan(Plan plan);
@@ -35,41 +35,50 @@ public interface PlanMapper {
     @Select("""
             <script>
                 SELECT * 
-                FROM plan p JOIN plan_field pf 
+                FROM plan p 
+                    JOIN plan_field pf 
                     ON p.id = pf.plan_id
-               WHERE
-                    <trim prefixOverrides="OR">
-                        <if test="searchType == 'all' or searchType == 'title'">
-                            title LIKE CONCAT('%', #{searchKeyword}, '%')
-                        </if>
-                        <if test="searchType == 'all' or searchType == 'destination'">
-                            OR destination LIKE CONCAT('%', #{searchKeyword}, '%')
-                        </if>
-                    </trim>
+               WHERE p.writer = #{writer}
+                   <if test="searchKeyword != null and searchKeyword != ''">
+                         AND (
+                             <trim prefixOverrides="OR">
+                                 <if test="searchType == 'all' or searchType == 'title'">
+                                     p.title LIKE CONCAT('%', #{searchKeyword}, '%')
+                                 </if>
+                                 <if test="searchType == 'all' or searchType == 'destination'">
+                                     OR p.destination LIKE CONCAT('%', #{searchKeyword}, '%')
+                                 </if>
+                             </trim>
+                         )
+                     </if>
                 GROUP BY p.id
                 ORDER BY p.updated DESC, p.inserted DESC
                 LIMIT #{offset}, 10;
             </script>
             """)
-    List<Plan> selectPlanByPageOffset(Integer offset, String searchType, String searchKeyword);
+    List<Plan> selectPlanByPageOffset(Integer offset, String searchType, String searchKeyword, String writer);
 
     // 2. pagination : 전체 plan 개수 조회
     @Select("""
             <script>
                 SELECT COUNT(*)
                 FROM plan 
-                WHERE
-                    <trim prefixOverrides="OR">
-                        <if test="searchType == 'all' or searchType == 'title'">
-                            title LIKE CONCAT('%', #{searchKeyword}, '%')
-                        </if>
-                        <if test="searchType == 'all' or searchType == 'destination'">
-                            OR destination LIKE CONCAT('%', #{searchKeyword}, '%')
-                        </if>
-                    </trim>
+                WHERE writer = #{writer}
+                    <if test="searchKeyword != null and searchKeyword != ''">
+                         AND (
+                             <trim prefixOverrides="OR">
+                                 <if test="searchType == 'all' or searchType == 'title'">
+                                     p.title LIKE CONCAT('%', #{searchKeyword}, '%')
+                                 </if>
+                                 <if test="searchType == 'all' or searchType == 'destination'">
+                                     OR p.destination LIKE CONCAT('%', #{searchKeyword}, '%')
+                                 </if>
+                             </trim>
+                         )
+                     </if>
             </script>
             """)
-    Integer countAll(String searchType, String searchKeyword);
+    Integer countAll(String searchType, String searchKeyword, String writer);
 
     // 3. pinned : 상단 고정
     @Update("""
@@ -84,9 +93,9 @@ public interface PlanMapper {
     @Select("""
             SELECT *
             FROM plan
-            WHERE id = #{id};
+            WHERE id = #{id} AND writer = #{writer};
             """)
-    Plan selectPlanById(int id);
+    Plan selectPlanById(int id, String writer);
 
     // 2. PlanField
     @Select("""

@@ -3,6 +3,7 @@ package com.example.be.dto.wallet;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 public class Wallet {
@@ -14,4 +15,6 @@ public class Wallet {
     private Integer expense;
     private String paymentMethod;
     private String memo;
+    private LocalDateTime inserted;
+    private String writer;
 }

@@ -144,6 +144,12 @@ h1 {
     margin: 20px 0;
 }
 
+h2 {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
 .body-wide {
     width: 1000px;
     margin: 40px auto;
@@ -302,6 +308,16 @@ form .required {
 
 .btn-warning:hover {
     background: var(--btn-warning-hover);
+}
+
+.btn-blue {
+    background: var(--main-blue);
+    color: var(--btn-normal-light);
+    box-sizing: border-box;
+}
+
+.btn-blue:hover {
+    background: #1668d6;
 }
 
 /*------------------- modal design -------------------*/
@@ -522,7 +538,7 @@ form .required {
 /*------------------- empty list -------------------*/
 .empty-container {
     width: 100%;
-    margin: 45px 0;
+    margin: 50px 0;
     text-align: center;
 }
 
@@ -532,6 +548,7 @@ form .required {
     justify-content: center;
     align-items: center;
     font-size: 3rem;
+    margin-top: 100px;
 }
 
 .empty-container-title {
@@ -571,7 +588,6 @@ form .required {
     left: 500px;
     width: calc(100% - 530px);
     border-right: 1px solid var(--table-border-color);
-    margin-top: -10px;
 }
 
 

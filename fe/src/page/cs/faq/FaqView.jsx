@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Breadcrumb } from "../../../components/root/Breadcrumb.jsx";
 import { Modal } from "../../../components/root/Modal.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { Spinner } from "@chakra-ui/react";
+import { toaster } from "../../../components/ui/toaster.jsx";
+import { AuthenticationContext } from "../../../components/context/AuthenticationProvider.jsx";
 
 function FaqView(props) {
   const { id } = useParams();
   const [faq, setFaq] = useState();
-  const [backToListModalOpen, setBackToListModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const navigate = useNavigate();
+  const { isAdmin, hasAccess } = useContext(AuthenticationContext);
 
   useEffect(() => {
     axios.get(`/api/cs/faq/view/${id}`).then((res) => {
@@ -24,10 +26,23 @@ function FaqView(props) {
   }
 
   const handleDeleteButton = () => {
-    axios.delete(`/api/cs/faq/delete/${id}`).then((res) => {
-      navigate("/cs/faq/list/");
-      alert("FAQ가 삭제되었습니다.");
-    });
+    axios
+      .delete(`/api/cs/faq/delete/${id}`)
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+        navigate("/cs/faq/list");
+      })
+      .catch((e) => {
+        const data = e.response.data;
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+      });
   };
 
   return (
@@ -46,26 +61,30 @@ function FaqView(props) {
           <button
             type={"button"}
             className={"btn btn-dark-outline"}
-            onClick={() => setBackToListModalOpen(true)}
+            onClick={() => navigate(`/cs/faq/list`)}
           >
             목록
           </button>
 
-          <button
-            type={"button"}
-            className={"btn btn-dark"}
-            onClick={() => setEditModalOpen(true)}
-          >
-            수정
-          </button>
+          {isAdmin && hasAccess && (
+            <button
+              type={"button"}
+              className={"btn btn-dark"}
+              onClick={() => setEditModalOpen(true)}
+            >
+              수정
+            </button>
+          )}
 
-          <button
-            type={"button"}
-            className={"btn btn-warning"}
-            onClick={() => setDeleteModalOpen(true)}
-          >
-            삭제
-          </button>
+          {isAdmin && hasAccess && (
+            <button
+              type={"button"}
+              className={"btn btn-warning"}
+              onClick={() => setDeleteModalOpen(true)}
+            >
+              삭제
+            </button>
+          )}
         </div>
 
         <fieldset>
@@ -87,15 +106,6 @@ function FaqView(props) {
           </ul>
         </fieldset>
       </div>
-
-      {/* 목록 modal */}
-      <Modal
-        isOpen={backToListModalOpen}
-        onClose={() => setBackToListModalOpen(false)}
-        onConfirm={() => navigate(`/cs/faq/list`)}
-        message="목록으로 돌아가면 작성한 내용이 사라집니다."
-        buttonMessage="목록"
-      />
 
       {/* 수정 modal */}
       <Modal
