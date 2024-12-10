@@ -98,8 +98,15 @@ section {
     text-align: right;
 }
 
-.right-section h1 {
+.right-section .month-wrap ul {
     margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.right-section .month-wrap ul li button {
+    margin: 30px;
+    cursor: pointer;
 }
 
 .right-section .category-tab {
@@ -150,6 +157,10 @@ section {
 
 .right-section table .checked-row {
     background: var(--table-hover-color);
+}
+
+.right-section .wallet-list {
+    font-size: 0.9rem;
 }
 
 .right-section .table-total-wrap {

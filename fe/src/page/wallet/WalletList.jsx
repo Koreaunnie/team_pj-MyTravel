@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "./Wallet.css";
 import { Modal } from "../../components/root/Modal.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
+import moment from "moment";
 
 function WalletList(props) {
   const [walletList, setWalletList] = useState([]); // 전체 지갑 리스트
@@ -26,6 +27,18 @@ function WalletList(props) {
     setCurrentMonth(`${year}년 ${month}`); // 예: "2024년 December"
   }, []);
 
+  // 월별 필터링
+  useEffect(() => {
+    if (walletList.length > 0 && currentMonth) {
+      const filtered = walletList.filter((wallet) => {
+        const walletDate = new Date(wallet.date);
+        const walletMonthFormatted = `${walletDate.getFullYear()}년 ${walletDate.toLocaleString("default", { month: "long" })}`;
+        return walletMonthFormatted === currentMonth;
+      });
+      setFilteredWallet(filtered); // currentMonth에 맞는 지갑 리스트 필터링
+    }
+  }, [currentMonth, walletList]); // currentMonth나 walletList가 변경될 때마다 실행
+
   // 선택된 날짜가 변경될 때 필터링
   useEffect(() => {
     if (selectedDate) {
@@ -39,14 +52,44 @@ function WalletList(props) {
     }
   }, [selectedDate, walletList]);
 
+  function ReactCalendar() {
+    const currentDate = new Date();
+    const [value, onChange] = useState(currentDate);
+    const activeDate = moment(value).format("YYYY-MM-DD");
+  }
+
+  const prevMonth = () => {
+    const newDate = new Date(currentMonth); // 현재 `currentMonth` 기준으로 새 `Date` 객체 생성
+    newDate.setMonth(newDate.getMonth() - 1); // 한 달 이전으로 설정
+    handleMonthView(newDate); // 해당 월에 맞는 데이터를 갱신
+  };
+
+  const nextMonth = () => {
+    const newDate = new Date(currentMonth); // 현재 `currentMonth` 기준으로 새 `Date` 객체 생성
+    newDate.setMonth(newDate.getMonth() + 1); // 한 달 이후로 설정
+    handleMonthView(newDate); // 해당 월에 맞는 데이터를 갱신
+  };
+
+  // 월별 보기 버튼 클릭 처리
+  const handleMonthView = (date) => {
+    const month = date.getMonth(); // 선택된 월
+    const year = date.getFullYear(); // 선택된 연도
+    const formattedMonth = `${year}년 ${date.toLocaleString("default", { month: "long" })}`;
+
+    setCurrentMonth(formattedMonth); // currentMonth 갱신
+
+    const filtered = walletList.filter((wallet) => {
+      const walletDate = new Date(wallet.date);
+      return (
+        walletDate.getMonth() === month && walletDate.getFullYear() === year
+      );
+    });
+    setFilteredWallet(filtered); // 월별로 필터링된 데이터 표시
+  };
+
   // 전체 날짜 보기
   const handleAllView = () => {
     setFilteredWallet(walletList);
-  };
-
-  // 선택된 날짜 업데이트
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
   };
 
   const handleCheckboxChange = (id) => {
@@ -94,24 +137,6 @@ function WalletList(props) {
   // 3자리마다 쉼표 추가
   const formatNumberWithCommas = (number) => {
     return number.toLocaleString(); // 3자리마다 쉼표 추가
-  };
-
-  // 월별 보기 버튼 클릭 처리
-  const handleMonthView = () => {
-    if (selectedDate) {
-      const month = selectedDate.getMonth(); // 선택된 월
-      const year = selectedDate.getFullYear(); // 선택된 연도
-
-      const filtered = walletList.filter((wallet) => {
-        const walletDate = new Date(wallet.date); // wallet.date를 Date 객체로 변환
-        return (
-          walletDate.getMonth() === month && walletDate.getFullYear() === year
-        );
-      });
-      setFilteredWallet(filtered); // 월별 필터링된 지갑 리스트 설정
-    } else {
-      setFilteredWallet(walletList); // 선택된 날짜가 없다면 전체 지갑 리스트 표시
-    }
   };
 
   // tileContent 데이터 캐싱
@@ -199,7 +224,9 @@ function WalletList(props) {
             date.toLocaleString("en", { day: "numeric" })
           }
           showNeighboringMonth={false}
-          onChange={handleDateChange}
+          next2Label={null}
+          prev2Label={null}
+          onChange={setSelectedDate}
           value={selectedDate}
           tileContent={({ date }) => {
             const formattedDate = date.toLocaleDateString("en-CA");
@@ -225,7 +252,7 @@ function WalletList(props) {
             </caption>
 
             {categories.map((category) => (
-              <tr>
+              <tr key={category}>
                 <th>{category}</th>
                 <td>
                   {formatNumberWithCommas(
@@ -238,23 +265,24 @@ function WalletList(props) {
           </table>
         </div>
 
-        {filteredWallet.length !== walletList.length && (
-          <div className={"category-table"}>
-            <table>
-              <caption>
-                <p className={"highlight"}>{getFilteredDate()}</p>
-                <br />
-                하루 지출
-              </caption>
+        {filteredWallet.length !== walletList.length &&
+          filteredWallet.length > 0 && (
+            <div className={"category-table"}>
+              <table>
+                <caption>
+                  <p className={"highlight"}>{getFilteredDate()}</p>
+                  <br />
+                  하루 지출
+                </caption>
 
-              <tr>
-                <th>합계</th>
-                <td>{formatNumberWithCommas(getOneDayExpense())}</td>
-                <td>원</td>
-              </tr>
-            </table>
-          </div>
-        )}
+                <tr>
+                  <th>합계</th>
+                  <td>{formatNumberWithCommas(getOneDayExpense())}</td>
+                  <td>원</td>
+                </tr>
+              </table>
+            </div>
+          )}
       </div>
 
       <div className={"right-section"}>
@@ -290,7 +318,23 @@ function WalletList(props) {
           )}
         </div>
 
-        <h1>{currentMonth}</h1>
+        <div className={"month-wrap"}>
+          <ul>
+            <li>
+              <button type={"button"} onClick={prevMonth}>
+                &#10094;
+              </button>
+            </li>
+            <li>
+              <h1>{currentMonth}</h1>
+            </li>
+            <li>
+              <button type={"button"} onClick={nextMonth}>
+                &#10095;
+              </button>
+            </li>
+          </ul>
+        </div>
 
         <div className={"category-tab"}>
           <ul>
@@ -309,13 +353,13 @@ function WalletList(props) {
         <table className={"table-list table-total-wrap"}>
           <thead>
             <tr>
-              <th>총 지출</th>
-              <td>{formatNumberWithCommas(getTotalExpense())}</td>
+              <th>총 수입</th>
+              <td>{formatNumberWithCommas(getTotalIncome())}</td>
             </tr>
 
             <tr>
-              <th>총 수입</th>
-              <td>{formatNumberWithCommas(getTotalIncome())}</td>
+              <th>총 지출</th>
+              <td>{formatNumberWithCommas(getTotalExpense())}</td>
             </tr>
           </thead>
         </table>
@@ -382,7 +426,7 @@ function WalletList(props) {
           {isCategoryFiltered && (
             <tfoot className={"table-total-wrap"}>
               <tr>
-                <th colSpan={4}>{categories[activeTab]} 합계</th>
+                <th colSpan={4}>{categories[activeTab]} 지출 합계</th>
                 <td colSpan={4}>
                   {formatNumberWithCommas(
                     calculateCategoryTotalExpense(categories[activeTab]),
