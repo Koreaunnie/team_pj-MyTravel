@@ -92,4 +92,18 @@ public class WalletController {
         List<String> categories = service.getCategories();
         return ResponseEntity.ok(categories);
     }
+
+    // 내 지갑 내역에서 선택한 항목만 삭제
+    @DeleteMapping("delete")
+    @PreAuthorize("isAuthenticated()")
+    public void delete(@RequestBody List<Integer> id,
+                       Authentication authentication) {
+        if (id == null || id.isEmpty()) {
+            throw new IllegalArgumentException("삭제할 항목이 없습니다.");
+        }
+        
+        String writer = authentication.getName();
+        System.out.println(id);
+        service.deleteSelectedItems(id, writer);
+    }
 }

@@ -156,6 +156,30 @@ function WalletList(props) {
     }
   };
 
+  // 선택된 항목 삭제
+  const handleDeleteSelectedItems = () => {
+    const selectedIds = [...checkedItems];
+
+    axios
+      .delete("/api/wallet/delete", {
+        data: selectedIds,
+      })
+      .then((res) => {
+        setWalletList((prevList) =>
+          prevList.filter((wallet) => !selectedIds.includes(wallet.id)),
+        );
+        setFilteredWallet((prevList) =>
+          prevList.filter((wallet) => !selectedIds.includes(wallet.id)),
+        );
+        setCheckedItems(new Set()); // 삭제 후 체크된 항목 해제
+        alert("선택된 항목이 삭제되었습니다.");
+      })
+      .catch((error) => {
+        console.error("삭제 중 오류가 발생했습니다:", error);
+        alert("삭제에 실패했습니다.");
+      });
+  };
+
   // 선택된 항목의 소비액 합계
   const getTotalSelectedExpense = useMemo(() => {
     return [...checkedItems].reduce((total, id) => {
@@ -178,7 +202,7 @@ function WalletList(props) {
     return expenseByDate;
   }, [walletList]);
 
-  // 서버에서
+  // 서버에서 카테고리 받아오기
   const categories = useMemo(() => {
     const categories = walletList.map((wallet) => wallet.category);
     return ["전체", ...new Set(categories)]; // "전체" 추가 및 중복 제거
@@ -350,6 +374,14 @@ function WalletList(props) {
             onClick={handleAllView}
           >
             전체
+          </button>
+
+          <button
+            className={"btn btn-warning"}
+            style={{ marginLeft: "15px" }}
+            onClick={handleDeleteSelectedItems}
+          >
+            선택 항목 삭제
           </button>
 
           {checkedItems.size > 0 && (

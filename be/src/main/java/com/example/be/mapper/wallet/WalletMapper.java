@@ -61,4 +61,17 @@ public interface WalletMapper {
             FROM wallet
             """)
     List<String> getAllCategories();
+
+    // 내 지갑 내역에서 선택한 항목만 삭제
+    @Delete("""
+            <script>
+            DELETE FROM wallet
+            WHERE id IN 
+                <foreach collection="id" item="id" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            AND writer = #{writer}
+            </script>
+            """)
+    int deleteSelectedItemsById(List<Integer> id, String writer);
 }

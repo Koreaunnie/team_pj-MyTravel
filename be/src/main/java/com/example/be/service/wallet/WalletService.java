@@ -56,4 +56,13 @@ public class WalletService {
     public List<String> getCategories() {
         return mapper.getAllCategories();
     }
+
+    // 내 지갑 내역에서 선택한 항목만 삭제
+    public int deleteSelectedItems(List<Integer> id, String writer) {
+        if (id == null || id.isEmpty()) {
+            return 0;  // 삭제할 항목이 없으므로 0을 반환
+        }
+        
+        return mapper.deleteSelectedItemsById(id, writer);
+    }
 }
