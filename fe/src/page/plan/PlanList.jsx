@@ -8,10 +8,10 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../components/ui/pagination.jsx";
-// import "react-calendar/dist/Calendar.css";
+import "react-calendar/dist/Calendar.css";
 import { FaRegQuestionCircle } from "react-icons/fa";
 import "./Plan.css";
-// import Calendar from "react-calendar";
+import Calendar from "react-calendar";
 import { Modal } from "/src/components/root/Modal.jsx";
 import { Breadcrumb } from "/src/components/root/Breadcrumb.jsx";
 import { GoHeart, GoHeartFill } from "react-icons/go";
