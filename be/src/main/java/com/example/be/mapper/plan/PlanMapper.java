@@ -36,7 +36,7 @@ public interface PlanMapper {
             <script>
                 SELECT * 
                 FROM plan p 
-                    JOIN plan_field pf 
+                    JOIN plan_field pf
                     ON p.id = pf.plan_id
                WHERE p.writer = #{writer}
                    <if test="searchKeyword != null and searchKeyword != ''">
@@ -62,16 +62,16 @@ public interface PlanMapper {
     @Select("""
             <script>
                 SELECT COUNT(*)
-                FROM plan 
+                FROM plan
                 WHERE writer = #{writer}
                     <if test="searchKeyword != null and searchKeyword != ''">
                          AND (
                              <trim prefixOverrides="OR">
                                  <if test="searchType == 'all' or searchType == 'title'">
-                                     p.title LIKE CONCAT('%', #{searchKeyword}, '%')
+                                     title LIKE CONCAT('%', #{searchKeyword}, '%')
                                  </if>
                                  <if test="searchType == 'all' or searchType == 'destination'">
-                                     OR p.destination LIKE CONCAT('%', #{searchKeyword}, '%')
+                                     OR destination LIKE CONCAT('%', #{searchKeyword}, '%')
                                  </if>
                              </trim>
                          )

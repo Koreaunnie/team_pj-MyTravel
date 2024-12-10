@@ -50,6 +50,7 @@ public class PlanController {
                                     @RequestParam(value = "sk", defaultValue = "") String searchKeyword,
                                     Authentication authentication) {
         String writer = authentication.getName();
+        System.out.println(searchKeyword);
         return service.list(page, searchType, searchKeyword, writer);
     }
 

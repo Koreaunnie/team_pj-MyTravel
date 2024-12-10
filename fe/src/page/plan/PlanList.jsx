@@ -77,6 +77,13 @@ function PlanList(props) {
     setSearch(nextSearch);
   }, [searchParams]);
 
+  // 엔터 키로 검색 실행
+  function handleKeyPress(event) {
+    if (event.key === "Enter") {
+      handleSearchButton();
+    }
+  }
+
   const handlePinnedClick = (planId) => {
     axios.put(`/api/plan/pinned/${planId}`).then((res) => {
       // pinned 상태 업데이트
@@ -130,8 +137,9 @@ function PlanList(props) {
     setSearchParams(nextSearchParams);
   }
 
-  // 필터링된 일정이 없으면 전체 일정(planList) 사용
-  const plansToDisplay = filteredPlans.length > 0 ? filteredPlans : planList;
+  const handleShowAllPlans = () => {
+    setFilteredPlans(planList);
+  };
 
   return (
     <div className={"plan-wide"}>
@@ -179,7 +187,7 @@ function PlanList(props) {
 
               <button
                 className="btn btn-dark-outline"
-                onClick={() => setFilteredPlans(planList)}
+                onClick={handleShowAllPlans}
               >
                 전체보기
               </button>
@@ -202,6 +210,7 @@ function PlanList(props) {
                   onChange={(e) =>
                     setSearch({ ...search, keyword: e.target.value.trim() })
                   }
+                  onKeyPress={handleKeyPress}
                 />
                 <button
                   className={"btn-search btn-dark"}
