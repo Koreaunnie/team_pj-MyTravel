@@ -1,6 +1,7 @@
 package com.example.be.mapper.community;
 
 import com.example.be.dto.community.Community;
+import com.example.be.dto.community.CommunityComment;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public interface CommunityMapper {
 
     @Select("""
                         <script>
-                        SELECT id, title, writer, inserted
+                        SELECT id, title, writer, inserted creationDate
                         FROM community
                         WHERE 
                                 <if test="searchType == 'all'">
@@ -37,10 +38,10 @@ public interface CommunityMapper {
                                      </choose>
                                  </if>
                         ORDER BY id DESC
-                        LIMIT #{pageList}, 10
+                        LIMIT #{pageList},15
                         </script>
             """)
-    List<Map<String, Object>> listUp(Integer pageList, String searchType, String searchKeyword);
+    List<Community> listUp(Integer pageList, String searchType, String searchKeyword);
 
     @Select("""
             SELECT id, title, content, writer, inserted creationDate
@@ -91,5 +92,49 @@ public interface CommunityMapper {
             """)
     int deleteCommunity(Integer id);
 
+    @Insert("""
+            INSERT INTO community_comment (comment, writer, community_id)
+            VALUES (#{comment}, #{writer}, #{communityId})
+            """)
+    int writeCommunityComment(CommunityComment communityComment);
 
+    @Select("""
+            SELECT *
+            FROM community
+            WHERE id=#{id}
+            """)
+    Community selectByCommunityId(int id);
+
+    @Select("""
+            SELECT file_name
+            FROM community_file
+            WHERE community_id=#{id}
+            """)
+    List<String> selectFilesByCommunityId(int id);
+
+    @Delete("""
+            DELETE FROM community_file
+            WHERE community_id=#{id}
+            """)
+    int deleteFileByCommunityId(int id);
+
+    @Select("""
+            SELECT COUNT(*)
+            FROM community
+            """)
+    Integer countAllCommunity();
+
+    @Delete("""
+            DELETE FROM community_file
+            WHERE community_id=#{id} AND file_name=#{removeFile}
+            """)
+    int deleteFileByFileName(Integer id, String removeFiles);
+
+    @Select("""
+            SELECT comment, writer , inserted creationDate
+            FROM community_comment
+            WHERE community_id=#{id}
+            ORDER BY creationDate DESC
+            """)
+    List<Map<String, Object>> callCommunityComment(Integer id);
 }
