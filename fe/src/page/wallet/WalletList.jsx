@@ -113,7 +113,7 @@ function WalletList(props) {
   const handleYearView = () => {
     const filtered = walletList.filter((wallet) => {
       const walletDate = new Date(wallet.date);
-      return walletDate.getFullYear() === currentYear;
+      return walletDate.getFullYear() === currentYear; // 현재 연도만 필터링
     });
     setFilteredWallet(filtered);
   };
@@ -295,8 +295,8 @@ function WalletList(props) {
           </table>
         </div>
 
-        {filteredWallet.length !== walletList.length &&
-          filteredWallet.length > 0 && (
+        {filteredWallet.length > 0 &&
+          filteredWallet.length !== walletList.length && (
             <div className={"category-table"}>
               <table>
                 <caption>
@@ -329,7 +329,7 @@ function WalletList(props) {
             style={{ marginLeft: "15px" }}
             onClick={handleMonthView}
           >
-            이번 달 보기
+            이번 달
           </button>
 
           <button
@@ -345,7 +345,7 @@ function WalletList(props) {
             style={{ marginLeft: "15px" }}
             onClick={handleAllView}
           >
-            전체 보기
+            전체
           </button>
 
           {checkedItems.size > 0 && (
