@@ -1,6 +1,7 @@
 import React from "react";
 import { Image } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
+import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 
 function PaymentComplete(props) {
   const location = useLocation();
@@ -11,7 +12,15 @@ function PaymentComplete(props) {
   }
 
   return (
-    <div>
+    <div className={"tour"}>
+      <Breadcrumb
+        depth1={"Tour 목록"}
+        navigateToDepth1={() => navigate(`/tour/list`)}
+        depth2={"장바구니"}
+        navigateToDepth2={() => navigate(`/cart`)}
+        depth3={"결제 완료"}
+        navigateToDepth3={() => navigate(`/payment/complete`)}
+      />
       <h1>결제 완료</h1>
       <main>
         <h2>결제 번호: {paymentId}</h2>

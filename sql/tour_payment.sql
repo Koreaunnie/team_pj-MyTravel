@@ -25,3 +25,9 @@ FROM payment p
          RIGHT JOIN payment_detail pd ON p.payment_id = pd.payment_id
          LEFT JOIN tour ON tour.id = pd.tour_id
 ORDER BY paid_at DESC;
+
+
+SHOW CREATE TABLE payment;
+
+# ALTER TABLE payment
+#     DROP FOREIGN KEY payment_ibfk_1;

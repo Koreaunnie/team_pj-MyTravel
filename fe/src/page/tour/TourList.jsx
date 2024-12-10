@@ -1,17 +1,26 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Box, Center, Image, SimpleGrid, Text } from "@chakra-ui/react";
+import { Box, Center, HStack, Image, SimpleGrid, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
+import {
+  PaginationItems,
+  PaginationNextTrigger,
+  PaginationPrevTrigger,
+  PaginationRoot,
+} from "../../components/ui/pagination.jsx";
 
 function TourList() {
   const [tourList, setTourList] = useState([]);
+  const [selectedMenu, setSelectedMenu] = useState("box");
+  const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState({
     type: searchParams.get("type") ?? "all",
     keyword: searchParams.get("key") ?? "",
   });
+
   const { isPartner, isAdmin } = useContext(AuthenticationContext);
   const navigate = useNavigate();
 
@@ -24,6 +33,7 @@ function TourList() {
       })
       .then((res) => {
         setTourList(res.data.tourList);
+        setCount(res.data.count);
       })
       .catch((err) => {
         setTourList([]);
@@ -53,12 +63,24 @@ function TourList() {
     }
   }
 
+  const handleMenuClick = (menu) => {
+    setSelectedMenu(menu);
+  };
+
+  //pagination
+  function handlePageChange(e) {
+    const pageNumber = { page: e.page };
+    const pageQuery = new URLSearchParams(pageNumber);
+    navigate(`/tour/list?${pageQuery.toString()}`);
+  }
+
   return (
     <div className={"tour"}>
       <Breadcrumb
         depth1={"Tour 목록"}
         navigateToDepth1={() => navigate(`/tour/list`)}
       />
+
       <div>
         {(isPartner || isAdmin) && (
           <button
@@ -68,70 +90,135 @@ function TourList() {
             새 상품 등록
           </button>
         )}
-        <h1>Tour 목록</h1>
+        <div>
+          <h1>Tour 목록</h1>
 
-        <Center>
-          <div className={"search-form"}>
-            <select
-              value={search.type}
-              onChange={(e) => setSearch({ ...search, type: e.target.value })}
-            >
-              <option value="all">전체</option>
-              <option value="title">제목</option>
-              <option value="product">제품</option>
-              <option value="location">위치</option>
-              <option value="content">본문</option>
-              <option value="partner">파트너사</option>
-            </select>
-            <div className={"search-form-input"}>
-              <input
-                type={"search"}
-                value={search.keyword}
-                onChange={(e) =>
-                  setSearch({ ...search, keyword: e.target.value.trim() })
-                }
-              />
-              <button
-                className={"btn-search btn-dark"}
-                onClick={handleSearchClick}
+          <Center>
+            {/*검색*/}
+            <div className={"search-form"}>
+              <select
+                value={search.type}
+                onChange={(e) => setSearch({ ...search, type: e.target.value })}
               >
-                검색
-              </button>
-            </div>
-          </div>
-        </Center>
-
-        {tourList.length === 0 ? (
-          <p>찾으시는 상품이 존재하지 않습니다.</p>
-        ) : (
-          <SimpleGrid
-            columns={{ base: 2, md: 4, lg: 5, xl: 6, "2xl": 7 }}
-            spacing={6}
-          >
-            {tourList.map((tour) =>
-              tour.active ? (
-                <Box
-                  key={tour.id}
-                  borderWidth={"1px"}
-                  borderRadius={"1g"}
-                  overflow={"hidden"}
-                  p={4}
-                  m={1}
-                  _hover={{ boxShadow: "1g" }}
-                  onClick={() => handleRowClick(tour.id)}
+                <option value="all">전체</option>
+                <option value="title">제목</option>
+                <option value="product">제품</option>
+                <option value="location">위치</option>
+                <option value="content">본문</option>
+                <option value="partner">파트너사</option>
+              </select>
+              <div className={"search-form-input"}>
+                <input
+                  type={"search"}
+                  value={search.keyword}
+                  onChange={(e) =>
+                    setSearch({ ...search, keyword: e.target.value.trim() })
+                  }
+                />
+                <button
+                  className={"btn-search btn-dark"}
+                  onClick={handleSearchClick}
                 >
-                  <Image key={tour.image} src={tour.src} />
-                  <Text>
-                    <b>{tour.title}</b>
-                  </Text>
-                  <Text>{tour.location}</Text>
-                  <Text>{tour.product}</Text>
-                  <Text>{tour.price}</Text>
-                </Box>
-              ) : null,
-            )}
-          </SimpleGrid>
-        )}
+                  검색
+                </button>
+              </div>
+            </div>
+          </Center>
+
+          {/* 보기 선택 */}
+          <button
+            className={"btn btn-dark-outline"}
+            onClick={() => handleMenuClick("box")}
+          >
+            박스형
+          </button>
+          <button
+            className={"btn btn-dark-outline"}
+            onClick={() => handleMenuClick("list")}
+          >
+            목록형
+          </button>
+
+          {selectedMenu === "box" && (
+            <div>
+              {tourList.length === 0 ? (
+                <p>찾으시는 상품이 존재하지 않습니다.</p>
+              ) : (
+                <SimpleGrid
+                  columns={{ base: 2, md: 3, lg: 4, xl: 5, "2xl": 6 }}
+                  spacing={6}
+                >
+                  {tourList.map((tour) => (
+                    <Box
+                      key={tour.id}
+                      borderWidth={"1px"}
+                      borderRadius={"1g"}
+                      overflow={"hidden"}
+                      p={4}
+                      m={1}
+                      _hover={{ boxShadow: "1g" }}
+                      onClick={() => handleRowClick(tour.id)}
+                    >
+                      <Image key={tour.image} src={tour.src} />
+                      <Text>
+                        <b>{tour.title}</b>
+                      </Text>
+                      <Text>{tour.location}</Text>
+                      <Text>{tour.product}</Text>
+                      <Text>{tour.price}</Text>
+                    </Box>
+                  ))}
+                </SimpleGrid>
+              )}
+            </div>
+          )}
+          {selectedMenu === "list" && (
+            <div>
+              {tourList.length === 0 ? (
+                <p>찾으시는 상품이 존재하지 않습니다.</p>
+              ) : (
+                <table className={"table-list"}>
+                  <tbody>
+                    {tourList.map((tour) => (
+                      <tr
+                        key={tour.id}
+                        _hover={{ boxShadow: "1g" }}
+                        onClick={() => handleRowClick(tour.id)}
+                      >
+                        <td>
+                          <Image
+                            key={tour.image}
+                            src={tour.src}
+                            style={{ maxWidth: "400px" }}
+                          />
+                        </td>
+                        <td>{tour.title}</td>
+                        <td>{tour.location}</td>
+                        <td>{tour.product}</td>
+                        <td>{tour.price}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          )}
+          {/*pagination*/}
+          <div className={"pagination"}>
+            <PaginationRoot
+              count={count}
+              pageSize={10}
+              defaultPage={1}
+              onPageChange={handlePageChange}
+            >
+              <HStack>
+                <PaginationPrevTrigger />
+                <PaginationItems />
+                <PaginationNextTrigger />
+              </HStack>
+            </PaginationRoot>
+          </div>
+        </div>
       </div>
     </div>
   );
