@@ -59,7 +59,13 @@ public class CommunityController {
 
     @PostMapping("comment/write")
     public void commentWrite(@RequestBody CommunityComment communityComment, Authentication auth) {
-        
+
         service.commentWrite(communityComment, auth);
+    }
+
+    @DeleteMapping("comment/delete/{id}")
+    public void commentDelete(@PathVariable Integer id) {
+        System.out.println(id);
+        service.commentDelete(id);
     }
 }

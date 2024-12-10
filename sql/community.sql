@@ -17,6 +17,11 @@ VALUES ('그걸 지켜보는 너', '그건 아마도 전쟁같은 사랑', 'user
 
 SELECT id, title, writer, inserted
 FROM community
+ORDER BY id DESC
+LIMIT 45, 15;
+
+SELECT id, title, writer, inserted
+FROM community
 ORDER BY id DESC;
 
 SELECT *
@@ -43,3 +48,6 @@ SELECT c.id, c.title, c.content, f.file_name, c.writer, c.inserted creationDate
 FROM community c
          LEFT JOIN community_file f ON c.id = f.community_id
 WHERE c.id = 40;
+
+SELECT COUNT(*)
+FROM community;

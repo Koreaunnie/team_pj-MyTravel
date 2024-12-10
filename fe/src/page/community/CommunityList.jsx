@@ -32,8 +32,6 @@ function CommunityList(props) {
   const [searchParams] = useSearchParams();
   const [countCommunity, setCountCommunity] = useState("");
 
-  console.log("검색조건", search);
-
   useEffect(() => {
     axios.get(`/api/community/list?${searchParams.toString()}`).then((res) => {
       setCommunityList(res.data.list);
@@ -144,7 +142,7 @@ function CommunityList(props) {
           <Box>
             <PaginationRoot
               count={countCommunity}
-              pageSize={20}
+              pageSize={15}
               defaultPage={1}
               onPageChange={handlePageChangeClick}
               siblingCount={2}

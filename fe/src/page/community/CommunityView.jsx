@@ -37,6 +37,8 @@ function CommunityView(props) {
   const navigate = useNavigate();
   const [comment, setComment] = useState("");
   const [commentList, setCommentList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [commentId, setCommentId] = useState("");
 
   useEffect(() => {
     axios.get(`/api/community/view/${id}`, { id }).then((e) => {
@@ -44,7 +46,6 @@ function CommunityView(props) {
       setCommentList(e.data.commentList);
     });
   }, []);
-  console.log(community);
   const handleDeleteClick = () => {
     axios
       .delete(`/api/community/delete/${id}`)
@@ -62,8 +63,16 @@ function CommunityView(props) {
         comment,
         communityId: community.id,
       })
-      .then(location.reload(true));
+      .then(navigate(`/community/view/${id}`))
+      .finally(setLoading(false));
   };
+
+  const handleCommentDeleteClick = (e) => {
+    console.log(e);
+    axios.delete(`/api/community/comment/delete/${e}`);
+  };
+
+  const handleCommentEditClick = () => {};
 
   return (
     <div>
@@ -134,14 +143,19 @@ function CommunityView(props) {
               <br />
               <Field label={"코멘트"}>
                 {commentList.map((list) => (
-                  <Box>
-                    <Stack>
-                      <HStack>
-                        <Field>{list.writer}</Field>
-                        <Field>{list.creationDate}</Field>
-                      </HStack>
-                      <Input value={list.comment} readOnly />
-                    </Stack>
+                  <Box value={list.id}>
+                    <HStack>
+                      <Stack>
+                        <HStack>
+                          <Field>{list.writer}</Field>
+                          <Field>{list.creationDate}</Field>
+                        </HStack>
+                        <Input value={list.comment} readOnly />
+                      </Stack>
+                      {/* TODO : 권한받은 유저만 보이게 */}
+                      <Button onClick={handleCommentEditClick}>수정</Button>
+                      <Button onClick={handleCommentDeleteClick}>삭제</Button>
+                    </HStack>
                   </Box>
                 ))}
               </Field>
@@ -151,6 +165,7 @@ function CommunityView(props) {
             <CommunityList />
           </Box>
         </Stack>
+        <input type="hidden" value={loading} />
       </div>
     </div>
   );

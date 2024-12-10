@@ -139,4 +139,8 @@ public class CommunityService {
 
         mapper.writeCommunityComment(communityComment);
     }
+
+    public void commentDelete(Integer id) {
+        mapper.deleteCommentByCommentId(id);
+    }
 }
