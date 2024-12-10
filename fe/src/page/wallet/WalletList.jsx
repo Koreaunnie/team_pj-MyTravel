@@ -5,11 +5,11 @@ import { useNavigate } from "react-router-dom";
 import "./Wallet.css";
 import { Modal } from "../../components/root/Modal.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
-import moment from "moment";
 
 function WalletList(props) {
   const [walletList, setWalletList] = useState([]); // 전체 지갑 리스트
   const [currentMonth, setCurrentMonth] = useState(); // 현재 월
+  const [currentYear, setCurrentYear] = useState(); // 현재 년도
   const [selectedDate, setSelectedDate] = useState(); // 선택된 날짜
   const [filteredWallet, setFilteredWallet] = useState(walletList); // 필터링된 지갑 리스트
   const [activeTab, setActiveTab] = useState(0); // 카테고리 탭 활성화
@@ -18,22 +18,46 @@ function WalletList(props) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get("/api/wallet/list").then((res) => setWalletList(res.data));
+    axios.get("/api/wallet/list").then((res) => {
+      setWalletList(res.data);
 
-    // 현재 월 가져오기
-    const today = new Date();
-    const month = today.toLocaleString("default", { month: "long" }); // 예: "December"
-    const year = today.getFullYear(); // 예: 2024
-    setCurrentMonth(`${year}년 ${month}`); // 예: "2024년 December"
+      // 현재 월에 해당하는 데이터 필터링
+      const now = new Date();
+      const month = now.getMonth();
+      const year = now.getFullYear();
+      const formattedMonth = `${year}년 ${now.toLocaleString("default", {
+        month: "long",
+      })}`;
+      setCurrentMonth(formattedMonth);
+      setCurrentYear(year);
+
+      const filtered = walletList.filter((wallet) => {
+        const walletDate = new Date(wallet.date);
+        return (
+          walletDate.getMonth() === month && walletDate.getFullYear() === year
+        );
+      });
+
+      setFilteredWallet(filtered);
+    });
   }, []);
 
   // 월별 필터링
   useEffect(() => {
     if (walletList.length > 0 && currentMonth) {
+      const now = new Date(); // 현재 날짜 가져오기
+      const month = now.getMonth(); // 현재 월 (0부터 시작)
+      const year = now.getFullYear(); // 현재 연도
+      const formattedMonth = `${year}년 ${now.toLocaleString("default", {
+        month: "long",
+      })}`;
+
+      setCurrentMonth(formattedMonth);
+
       const filtered = walletList.filter((wallet) => {
         const walletDate = new Date(wallet.date);
         const walletMonthFormatted = `${walletDate.getFullYear()}년 ${walletDate.toLocaleString("default", { month: "long" })}`;
-        return walletMonthFormatted === currentMonth;
+        return walletMonthFormatted === month && walletMonthFormatted === year;
       });
       setFilteredWallet(filtered); // currentMonth에 맞는 지갑 리스트 필터링
     }
@@ -52,31 +76,29 @@ function WalletList(props) {
     }
   }, [selectedDate, walletList]);
 
-  function ReactCalendar() {
-    const currentDate = new Date();
-    const [value, onChange] = useState(currentDate);
-    const activeDate = moment(value).format("YYYY-MM-DD");
-  }
+  useEffect(() => {
+    console.log("Current Month updated:", currentMonth);
+  }, [currentMonth]);
 
   const prevMonth = () => {
-    const newDate = new Date(currentMonth); // 현재 `currentMonth` 기준으로 새 `Date` 객체 생성
-    newDate.setMonth(newDate.getMonth() - 1); // 한 달 이전으로 설정
-    handleMonthView(newDate); // 해당 월에 맞는 데이터를 갱신
+    const newDate = new Date();
+    newDate.setMonth(newDate.getMonth() - 1);
+    setCurrentMonth(newDate.toLocaleString("default", { month: "long" }));
+    handleMonthView();
   };
 
   const nextMonth = () => {
-    const newDate = new Date(currentMonth); // 현재 `currentMonth` 기준으로 새 `Date` 객체 생성
-    newDate.setMonth(newDate.getMonth() + 1); // 한 달 이후로 설정
-    handleMonthView(newDate); // 해당 월에 맞는 데이터를 갱신
+    const newDate = new Date();
+    newDate.setMonth(newDate.getMonth() + 1);
+    setCurrentMonth(newDate.toLocaleString("default", { month: "long" }));
+    handleMonthView();
   };
 
-  // 월별 보기 버튼 클릭 처리
-  const handleMonthView = (date) => {
-    const month = date.getMonth(); // 선택된 월
-    const year = date.getFullYear(); // 선택된 연도
-    const formattedMonth = `${year}년 ${date.toLocaleString("default", { month: "long" })}`;
-
-    setCurrentMonth(formattedMonth); // currentMonth 갱신
+  // 이번 달 보기
+  const handleMonthView = () => {
+    const now = new Date(); // 현재 날짜 가져오기
+    const month = now.getMonth(); // 현재 월 (0부터 시작)
+    const year = now.getFullYear(); // 현재 연도
 
     const filtered = walletList.filter((wallet) => {
       const walletDate = new Date(wallet.date);
@@ -84,10 +106,18 @@ function WalletList(props) {
         walletDate.getMonth() === month && walletDate.getFullYear() === year
       );
     });
-    setFilteredWallet(filtered); // 월별로 필터링된 데이터 표시
+    setFilteredWallet(filtered);
   };
 
-  // 전체 날짜 보기
+  // 년도 별로 보기
+  const handleYearView = () => {
+    const filtered = walletList.filter((wallet) => {
+      const walletDate = new Date(wallet.date);
+      return walletDate.getFullYear() === currentYear;
+    });
+    setFilteredWallet(filtered);
+  };
+
   const handleAllView = () => {
     setFilteredWallet(walletList);
   };
@@ -297,17 +327,25 @@ function WalletList(props) {
           <button
             className={"btn btn-dark-outline"}
             style={{ marginLeft: "15px" }}
-            onClick={handleAllView}
+            onClick={handleMonthView}
           >
-            모든 날짜 보기
+            이번 달 보기
           </button>
 
           <button
             className={"btn btn-dark-outline"}
             style={{ marginLeft: "15px" }}
-            onClick={handleMonthView}
+            onClick={handleYearView}
           >
-            월별 보기
+            {currentYear}
+          </button>
+
+          <button
+            className={"btn btn-dark-outline"}
+            style={{ marginLeft: "15px" }}
+            onClick={handleAllView}
+          >
+            전체 보기
           </button>
 
           {checkedItems.size > 0 && (
