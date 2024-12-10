@@ -139,13 +139,8 @@ public class PlanService {
     }
 
     // 메인 화면에 필요한 일부 plan 리스트 가져오기 (최신 4개)
-    public List<Plan> getMainPagePlans(String keyword) {
-        try {
-            List<Plan> plans = mapper.getTop4ByOrderByUpdated(keyword);
-            return plans != null ? plans : new ArrayList<>();
-        } catch (Exception e) {
-            e.printStackTrace(); // 디버깅 용도
-            return new ArrayList<>();
-        }
+    public List<Plan> getMainPagePlans(String keyword, String writer) {
+        List<Plan> plans = mapper.getTop4ByOrderByUpdated(keyword, writer);
+        return plans != null ? plans : new ArrayList<>();
     }
 }
