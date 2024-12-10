@@ -1,6 +1,7 @@
 package com.example.be.controller.community;
 
 import com.example.be.dto.community.Community;
+import com.example.be.dto.community.CommunityComment;
 import com.example.be.service.community.CommunityService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,9 +21,9 @@ public class CommunityController {
     final CommunityService service;
 
     @GetMapping("list")
-    public List<Map<String, Object>> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                                          @RequestParam(value = "type", defaultValue = "all") String searchType,
-                                          @RequestParam(value = "keyword", defaultValue = "") String searchKeyword) {
+    public Map<String, Object> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                                    @RequestParam(value = "type", defaultValue = "all") String searchType,
+                                    @RequestParam(value = "keyword", defaultValue = "") String searchKeyword) {
         return service.list(page, searchType, searchKeyword);
     }
 
@@ -39,9 +40,11 @@ public class CommunityController {
     }
 
     @PutMapping("edit")
-    public void edit(@RequestBody Community community) {
-        System.out.println(community);
-        service.edit(community);
+    public void edit(@RequestBody Community community,
+                     @RequestParam(value = "removeFiles[]", required = false) List<String> removeFiles,
+                     @RequestParam(value = "uploadFiles[]", required = false) MultipartFile[] uploadFiles,
+                     Authentication auth) {
+        service.edit(community, removeFiles, uploadFiles, auth);
     }
 
     @DeleteMapping("delete/{id}")
@@ -52,4 +55,11 @@ public class CommunityController {
     // TODO : UPDATE 기능 추가
 
 
+//    TODO :  게시판 댓글 기능
+
+    @PostMapping("comment/write")
+    public void commentWrite(@RequestBody CommunityComment communityComment, Authentication auth) {
+        
+        service.commentWrite(communityComment, auth);
+    }
 }
