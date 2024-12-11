@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Modal } from "../../../components/root/Modal.jsx";
 import { AuthenticationContext } from "../../../components/context/AuthenticationProvider.jsx";
 import { CiLock } from "react-icons/ci";
+import { toaster } from "../../../components/ui/toaster.jsx";
 
 function InquiryList(props) {
   const { nickname } = useContext(AuthenticationContext);
@@ -16,14 +17,25 @@ function InquiryList(props) {
   useEffect(() => {
     axios.get("/api/cs/inquiry/list").then((res) => {
       setInquiryList(res.data);
-      console.log(res.data);
     });
   }, []);
 
   // 내가 쓴 글만 필터링
   const filteredInquiries = showMyInquiries
-    ? inquiryList.filter((inquiry) => inquiry.writer === nickname)
+    ? inquiryList.filter((inquiry) => inquiry.writerNickname === nickname)
     : inquiryList;
+
+  // 비밀글 여부 확인
+  const checkSecretOrNot = (inquiry) => {
+    if (inquiry.secret && inquiry.writerNickname != nickname) {
+      toaster.create({
+        type: "warning",
+        description: "비공개 문의내역은 작성자 본인만 확인하실 수 있습니다.",
+      });
+    } else {
+      navigate(`/cs/inquiry/view/${inquiry.id}`);
+    }
+  };
 
   return (
     <div className={"inquiry"}>
@@ -65,10 +77,7 @@ function InquiryList(props) {
 
           <tbody>
             {filteredInquiries.map((inquiry) => (
-              <tr
-                key={inquiry.id}
-                onClick={() => navigate(`/cs/inquiry/view/${inquiry.id}`)}
-              >
+              <tr key={inquiry.id} onClick={() => checkSecretOrNot(inquiry)}>
                 <td>{inquiry.id}</td>
                 {inquiry.secret ? (
                   <td className={"title-center secret"}>

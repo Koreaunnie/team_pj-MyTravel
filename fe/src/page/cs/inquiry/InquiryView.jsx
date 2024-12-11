@@ -19,10 +19,18 @@ function InquiryView(props) {
   const { hasAccess } = useContext(AuthenticationContext);
 
   useEffect(() => {
-    axios.get(`/api/cs/inquiry/view/${id}`).then((res) => {
-      setInquiry(res.data);
-    });
-  }, []);
+    axios
+      .get(`/api/cs/inquiry/view/${id}`)
+      .then((res) => {
+        setInquiry(res.data.inquiry);
+      })
+      .catch((error) => {
+        toaster.create({
+          type: error.response.data.message.type,
+          description: error.response.data.message.text,
+        });
+      });
+  }, [id]);
 
   if (inquiry == null) {
     return <Spinner />;

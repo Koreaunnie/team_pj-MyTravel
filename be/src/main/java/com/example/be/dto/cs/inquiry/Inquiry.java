@@ -12,7 +12,7 @@ public class Inquiry {
     private String category;
     private String title;
     private String content;
-    private Boolean secret;
+    private boolean secret;
     private LocalDateTime inserted;
     private LocalDateTime updated;
 }

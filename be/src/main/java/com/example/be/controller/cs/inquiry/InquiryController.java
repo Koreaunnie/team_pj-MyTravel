@@ -40,8 +40,17 @@ public class InquiryController {
     }
 
     @GetMapping("view/{id}")
-    public Inquiry list(@PathVariable int id) {
-        return service.get(id);
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, Object>> get(@PathVariable int id, Authentication authentication) {
+        Inquiry inquiry = service.get(id);
+        if (inquiry.isSecret() && !(authentication.getName().equals(inquiry.getWriter()))) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Map.of("message", Map.of(
+                            "type", "warning",
+                            "text", "비공개 문의내역은 작성자 본인만 확인하실 수 있습니다."
+                    )));
+        }
+        return ResponseEntity.ok(Map.of("inquiry", inquiry));
     }
 
     @PutMapping("update")
