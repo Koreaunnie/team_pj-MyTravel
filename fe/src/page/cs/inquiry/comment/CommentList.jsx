@@ -6,13 +6,16 @@ export function CommentList({ inquiryId }) {
   const [commentList, setCommentList] = useState([]);
   const [editingCommentId, setEditingCommentID] = useState(null); // 수정 중인 댓글 ID
   const [newComment, setNewComment] = useState(""); // 수정된 댓글 내용
+  const [processing, setProcessing] = useState(false); // 수정 내용 바로 반영
 
   useEffect(() => {
-    axios
-      .get(`/api/cs/inquiry/comment/list/${inquiryId}`)
-      .then((res) => res.data)
-      .then((data) => setCommentList(data));
-  }, [inquiryId]);
+    if (!processing) {
+      axios
+        .get(`/api/cs/inquiry/comment/list/${inquiryId}`)
+        .then((res) => res.data)
+        .then((data) => setCommentList(data));
+    }
+  }, [processing]);
 
   // 수정 버튼 클릭 시 해당 댓글을 수정 모드로 설정
   function handleEditButton(commentId, currentComment) {
@@ -21,6 +24,7 @@ export function CommentList({ inquiryId }) {
   }
 
   function handleSaveButton(commentId) {
+    setProcessing(true);
     axios
       .put(`/api/cs/inquiry/comment/edit`, {
         id: commentId,
@@ -33,6 +37,9 @@ export function CommentList({ inquiryId }) {
       })
       .catch((error) => {
         console.error("댓글 수정 실패:", error);
+      })
+      .finally(() => {
+        setProcessing(false);
       });
   }
 
