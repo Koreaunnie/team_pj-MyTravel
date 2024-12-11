@@ -63,54 +63,57 @@ export function CommentList({ inquiryId }) {
       });
   }
 
+  // 날짜와 시간 포맷팅
+  const formattedDateTime = (props) => {
+    const date = new Date(props);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // 월은 0부터 시작하므로 +1 해줘야 함
+    const day = String(date.getDate()).padStart(2, "0"); // 두 자릿수로 맞추기 위해 padStart 사용
+
+    const hours = String(date.getHours()).padStart(2, "0"); // 두 자릿수로 맞추기
+    const minutes = String(date.getMinutes()).padStart(2, "0"); // 두 자릿수로 맞추기
+
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
+  };
+
   return (
-    <div className={"inquiry body-normal"}>
-      <div className={"comment-list"}>
-        {commentList.map((comment) => (
-          <div>
-            <ul className={"comment-btn"}>
-              <li
-                className={"comment-btn-edit"}
-                onClick={() => handleEditButton(comment.id, comment.comment)}
+    <div className={"inquiry inquiry-comment body-normal"}>
+      {commentList.map((comment) => (
+        <div className={"comment-list"}>
+          <ul className={"comment-btn-wrap"}>
+            <li onClick={() => handleEditButton(comment.id, comment.comment)}>
+              수정
+            </li>
+
+            <li onClick={() => handleDeleteButton(comment.id)}>삭제</li>
+          </ul>
+
+          {editingCommentId === comment.id ? (
+            // 수정 모드
+            <div className={"comment-list-body"}>
+              <textarea
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+              />
+              <button
+                className={"btn btn-dark"}
+                onClick={() => {
+                  handleSaveButton(comment.id);
+                }}
               >
                 수정
-              </li>
-
-              <li
-                className={"comment-btn-delete"}
-                onClick={() => handleDeleteButton(comment.id)}
-              >
-                삭제
-              </li>
+              </button>
+            </div>
+          ) : (
+            // 보기 모드
+            <ul key={comment.id} className={"comment-list-body"}>
+              <li className={"nickname"}>{comment.memberNickname}</li>
+              <li className={"content"}>{comment.comment}</li>
+              <li className={"date"}>{formattedDateTime(comment.updated)}</li>
             </ul>
-
-            {editingCommentId === comment.id ? (
-              // 수정 모드
-              <div>
-                <textarea
-                  value={newComment}
-                  onChange={(e) => setNewComment(e.target.value)}
-                />
-                <button
-                  className={"btn btn-dark"}
-                  onClick={() => {
-                    handleSaveButton(comment.id);
-                  }}
-                >
-                  수정
-                </button>
-              </div>
-            ) : (
-              // 보기 모드
-              <ul key={comment.id} className={"comment-list-body"}>
-                <li>{comment.memberNickname}</li>
-                <li>{comment.comment}</li>
-                <li>{comment.updated}</li>
-              </ul>
-            )}
-          </div>
-        ))}
-      </div>
+          )}
+        </div>
+      ))}
     </div>
   );
 }

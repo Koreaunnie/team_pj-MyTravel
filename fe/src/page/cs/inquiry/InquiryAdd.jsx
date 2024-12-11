@@ -34,7 +34,7 @@ function InquiryAdd(props) {
   };
 
   return (
-    <div className={"cs"}>
+    <div className={"inquiry"}>
       <Breadcrumb
         depth1={"고객센터"}
         navigateToDepth1={() => navigate(`/cs/index`)}
