@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import { Box, HStack, Image, Input, Stack, Textarea } from "@chakra-ui/react";
+import {
+  Box,
+  DialogTitle,
+  HStack,
+  Image,
+  Input,
+  Stack,
+  Textarea,
+} from "@chakra-ui/react";
 import { Field } from "../../components/ui/field.jsx";
 import { Button } from "../../components/ui/button.jsx";
 import {
@@ -15,6 +23,8 @@ import {
 } from "../../components/ui/dialog.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import CommunityList from "./CommunityList.jsx";
+import { FiMessageSquare } from "react-icons/fi";
+import { LuPencilLine } from "react-icons/lu";
 
 function ImageFileView({ files }) {
   return (
@@ -37,6 +47,9 @@ function CommunityView(props) {
   const navigate = useNavigate();
   const [comment, setComment] = useState("");
   const [commentList, setCommentList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [commentId, setCommentId] = useState("");
+  const [commentContent, setCommentContent] = useState("");
 
   useEffect(() => {
     axios.get(`/api/community/view/${id}`, { id }).then((e) => {
@@ -44,7 +57,6 @@ function CommunityView(props) {
       setCommentList(e.data.commentList);
     });
   }, []);
-  console.log(community);
   const handleDeleteClick = () => {
     axios
       .delete(`/api/community/delete/${id}`)
@@ -56,13 +68,44 @@ function CommunityView(props) {
     ///community/edit/18
   };
 
+  const fetchComments = () => {
+    axios
+      .get(`/api/community/view/${id}`)
+      .then((res) => {
+        setCommentList(res.data.commentList);
+      })
+      .catch((err) => console.error(err));
+  };
+
   const handleCommentSaveClick = () => {
     axios
       .post(`/api/community/comment/write`, {
         comment,
         communityId: community.id,
       })
-      .then(navigate(`/community/view/${id}/`));
+      .then(() => fetchComments())
+      .finally(() => setComment(""));
+  };
+
+  const handleCommentDeleteClick = (id) => {
+    axios.delete(`/api/community/comment/delete/${id}`).then(() => {
+      fetchComments();
+    });
+  };
+
+  const handleCommentChange = (id, value) => {
+    setCommentContent((prev) => ({ ...prev, [id]: value }));
+  };
+
+  const handleCommentUpdateClick = (id) => {
+    const updatedComment = commentContent[id]; // 수정된 댓글 가져오기
+    axios
+      .put(`/api/community/comment/edit/${id}`, { comment: updatedComment })
+      .then(() => {
+        // 댓글 목록 갱신
+        fetchComments();
+      })
+      .catch((err) => console.error(err));
   };
 
   return (
@@ -132,16 +175,90 @@ function CommunityView(props) {
                 </HStack>
               </Field>
               <br />
-              <Field label={"코멘트"}>
+              <Field>
+                <h2>
+                  <HStack>
+                    <FiMessageSquare />
+                    코멘트 ({commentList.length})
+                  </HStack>
+                </h2>
                 {commentList.map((list) => (
-                  <Box>
-                    <Stack>
-                      <HStack>
-                        <Field>{list.writer}</Field>
-                        <Field>{list.creationDate}</Field>
-                      </HStack>
-                      <Input value={list.comment} readOnly />
-                    </Stack>
+                  <Box value={list.id}>
+                    <HStack>
+                      <Stack>
+                        <HStack>
+                          <Field>{list.writer}</Field>
+                          <Field>{list.creationDate}</Field>
+                        </HStack>
+                        <Input value={list.comment} readOnly />
+                      </Stack>
+                      {/* TODO : 권한받은 유저만 보이게 */}
+                      <DialogRoot>
+                        <DialogTrigger asChild>
+                          <Button variant="outline">수정</Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>댓글 수정</DialogTitle>
+                          </DialogHeader>
+                          <DialogBody pb="4">
+                            <Stack gap="4">
+                              <Field>
+                                <HStack>
+                                  <LuPencilLine /> 수정하기
+                                </HStack>
+                                <Textarea
+                                  defaultValue={list.comment} // 기존 댓글 내용 표시
+                                  onChange={
+                                    (e) =>
+                                      handleCommentChange(
+                                        list.id,
+                                        e.target.value,
+                                      ) // 변경 이벤트 핸들러
+                                  }
+                                  placeholder="내용을 입력해주세요."
+                                />
+                              </Field>
+                            </Stack>
+                          </DialogBody>
+                          <DialogFooter>
+                            <DialogActionTrigger asChild>
+                              <Button variant="outline">취소</Button>
+                            </DialogActionTrigger>
+                            <DialogActionTrigger>
+                              <Button
+                                onClick={() =>
+                                  handleCommentUpdateClick(list.id)
+                                }
+                              >
+                                수정
+                              </Button>
+                            </DialogActionTrigger>
+                          </DialogFooter>
+                        </DialogContent>
+                      </DialogRoot>
+                      <DialogRoot>
+                        <DialogTrigger>
+                          <Button>삭제</Button>
+                          <DialogContent>
+                            <DialogHeader>글 삭제</DialogHeader>
+                            <DialogBody>
+                              해당 댓글을 정말 삭제하시겠습니까?
+                            </DialogBody>
+                            <DialogFooter>
+                              <Button>취소</Button>
+                              <Button
+                                onClick={() =>
+                                  handleCommentDeleteClick(list.id)
+                                }
+                              >
+                                삭제
+                              </Button>
+                            </DialogFooter>
+                          </DialogContent>
+                        </DialogTrigger>
+                      </DialogRoot>
+                    </HStack>
                   </Box>
                 ))}
               </Field>
@@ -151,6 +268,7 @@ function CommunityView(props) {
             <CommunityList />
           </Box>
         </Stack>
+        <input type="hidden" value={loading} />
       </div>
     </div>
   );

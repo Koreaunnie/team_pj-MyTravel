@@ -24,6 +24,10 @@ function CommunityWrite(props) {
       .then(navigate(`/community/list`));
   };
 
+  const handleCancelClick = () => {
+    navigate(`/community/list`);
+  };
+
   return (
     <div>
       <h1>게시글 작성</h1>
@@ -61,7 +65,7 @@ function CommunityWrite(props) {
         <br />
         <Box>
           <HStack>
-            <Button>취소</Button>
+            <Button onClick={handleCancelClick}>취소</Button>
             <Button onClick={handleSaveClick}>저장</Button>
           </HStack>
         </Box>
