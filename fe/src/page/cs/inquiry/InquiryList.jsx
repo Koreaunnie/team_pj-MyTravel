@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "../../../components/root/Modal.jsx";
 import { AuthenticationContext } from "../../../components/context/AuthenticationProvider.jsx";
+import { CiLock } from "react-icons/ci";
 
 function InquiryList(props) {
   const { nickname } = useContext(AuthenticationContext);
@@ -15,6 +16,7 @@ function InquiryList(props) {
   useEffect(() => {
     axios.get("/api/cs/inquiry/list").then((res) => {
       setInquiryList(res.data);
+      console.log(res.data);
     });
   }, []);
 
@@ -68,7 +70,16 @@ function InquiryList(props) {
                 onClick={() => navigate(`/cs/inquiry/view/${inquiry.id}`)}
               >
                 <td>{inquiry.id}</td>
-                <td>{inquiry.title}</td>
+                {inquiry.secret ? (
+                  <td className={"secret-title"}>
+                    <span className={"icon"}>
+                      <CiLock />
+                    </span>
+                    비밀글입니다.
+                  </td>
+                ) : (
+                  <td>{inquiry.title}</td>
+                )}
                 <td>{inquiry.writer}</td>
                 <td>{inquiry.updated}</td>
               </tr>

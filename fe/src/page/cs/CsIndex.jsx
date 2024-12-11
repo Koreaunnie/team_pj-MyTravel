@@ -3,6 +3,7 @@ import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import { useNavigate } from "react-router-dom";
 import "./CsIndex.css";
 import axios from "axios";
+import { CiLock } from "react-icons/ci";
 
 function CsIndex(props) {
   const [faqList, setFaqList] = useState([]);
@@ -67,7 +68,13 @@ function CsIndex(props) {
                     key={inquiry.id}
                     onClick={() => navigate(`/cs/inquiry/view/${inquiry.id}`)}
                   >
-                    {inquiry.title}
+                    {inquiry.secret ? (
+                      <p>
+                        <CiLock /> 비밀글입니다.
+                      </p>
+                    ) : (
+                      <p>{inquiry.title}</p>
+                    )}
                     <span>{inquiry.inserted}</span>
                   </li>
                 ))}

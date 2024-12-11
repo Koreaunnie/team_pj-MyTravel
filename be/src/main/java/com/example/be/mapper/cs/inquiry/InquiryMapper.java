@@ -17,7 +17,7 @@ public interface InquiryMapper {
     int insertInquiry(Inquiry inquiry);
 
     @Select("""
-            SELECT id, title, writer, updated
+            SELECT *
             FROM inquiry
             ORDER BY updated DESC
             """)
@@ -48,7 +48,7 @@ public interface InquiryMapper {
     int deleteById(int id, String writer);
 
     @Select("""
-            SELECT id, title, writer, updated
+            SELECT *
             FROM inquiry
             ORDER BY updated DESC
             LIMIT 5

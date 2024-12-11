@@ -1,3 +1,16 @@
+/*------------------- InquiryList -------------------*/
+.table-list .secret-title {
+    position: relative;
+    font-size: 0.9rem;
+    color: var(--font-gray-color);
+}
+
+.table-list .secret-title .icon {
+    position: absolute;
+    left: 39px;
+    top: 11px
+}
+
 /*------------------- InquiryView -------------------*/
 .inquiry .table-view .thead-sub-title {
     height: 30px;
