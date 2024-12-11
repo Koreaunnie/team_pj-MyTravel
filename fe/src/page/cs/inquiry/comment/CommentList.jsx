@@ -15,20 +15,20 @@ export function CommentList({ inquiryId }) {
   return (
     <div className={"inquiry body-normal"}>
       <div className={"comment-list"}>
-        <div>
-          <ul className={"comment-btn"}>
-            <li>수정</li>
-            <li>삭제</li>
-          </ul>
+        {commentList.map((comment) => (
+          <div>
+            <ul className={"comment-btn"}>
+              <li>수정</li>
+              <li>삭제</li>
+            </ul>
 
-          {commentList.map((comment) => (
             <ul key={comment.id} className={"comment-list-body"}>
               <li>{comment.memberNickname}</li>
               <li>{comment.comment}</li>
               <li>{comment.updated}</li>
             </ul>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </div>
   );
