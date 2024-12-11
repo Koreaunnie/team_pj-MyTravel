@@ -160,9 +160,29 @@ function CommunityView(props) {
                       </Stack>
                       {/* TODO : 권한받은 유저만 보이게 */}
                       <Button onClick={handleCommentEditClick}>수정</Button>
-                      <Button onClick={() => handleCommentDeleteClick(list.id)}>
-                        삭제
-                      </Button>
+                      <DialogRoot>
+                        <DialogTrigger>
+                          <Button>삭제</Button>
+                          <DialogContent>
+                            <DialogHeader>글 삭제</DialogHeader>
+                            <DialogBody>
+                              해당 댓글을 정말 삭제하시겠습니까?
+                            </DialogBody>
+                            <DialogFooter>
+                              <Button>취소</Button>
+                              <DialogActionTrigger>
+                                <Button
+                                  onClick={() =>
+                                    handleCommentDeleteClick(list.id)
+                                  }
+                                >
+                                  삭제
+                                </Button>
+                              </DialogActionTrigger>
+                            </DialogFooter>
+                          </DialogContent>
+                        </DialogTrigger>
+                      </DialogRoot>
                     </HStack>
                   </Box>
                 ))}

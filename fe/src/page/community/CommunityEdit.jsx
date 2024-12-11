@@ -12,26 +12,12 @@ import {
 import { HiUpload } from "react-icons/hi";
 import { CloseButton } from "../../components/ui/close-button.jsx";
 
-function ImageFileView({ files }) {
-  function handleDeleteFileClick(file) {}
-
-  return (
-    <Box>
-      {files?.map((file) => (
-        <HStack key={file.fileName}>
-          <Image src={file.filePath} border={"1px solid black"} m={3} />
-          <CloseButton onClick={() => handleDeleteFileClick(file)} />
-        </HStack>
-      ))}
-    </Box>
-  );
-}
-
 function CommunityEdit(props) {
   const [community, setCommunity] = useState({});
   const { id } = useParams();
   const navigate = useNavigate();
   const [files, setFiles] = useState([]);
+  const [removeFiles, setRemoveFiles] = useState([]);
 
   useEffect(() => {
     axios.get(`/api/community/view/${id}`).then((res) => {
@@ -52,10 +38,14 @@ function CommunityEdit(props) {
       .then(navigate(`/community/list`));
   };
 
-  console.log(community);
   const handleCancelClick = () => {
     navigate(`/community/view/${community.id}`);
   };
+
+  const handleDeleteFileClick = (file) => {
+    setRemoveFiles([...removeFiles, file.fileName]);
+  };
+  console.log(removeFiles);
 
   return (
     <div>
@@ -83,7 +73,17 @@ function CommunityEdit(props) {
             h={300}
           />
         </Field>
-        <ImageFileView files={community.files} />
+        <Field>
+          {community.files?.map((file) => (
+            <HStack key={file.fileName}>
+              <Image src={file.filePath} border={"1px solid black"} m={3} />
+              <CloseButton
+                variant="solid"
+                onClick={() => handleDeleteFileClick(file)}
+              />
+            </HStack>
+          ))}
+        </Field>
         <Field label={"파일 첨부"}>
           <FileUploadRoot
             value={files}

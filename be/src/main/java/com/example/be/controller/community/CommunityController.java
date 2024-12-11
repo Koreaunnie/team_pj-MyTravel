@@ -70,4 +70,9 @@ public class CommunityController {
         System.out.println(id);
         service.commentDelete(id);
     }
+
+    @PutMapping("comment/edit")
+    public void commentEdit(@RequestBody CommunityComment communityComment, Authentication auth) {
+        service.updateComment(communityComment, auth);
+    }
 }

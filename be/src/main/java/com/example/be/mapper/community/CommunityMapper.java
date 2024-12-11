@@ -44,11 +44,31 @@ public interface CommunityMapper {
     List<Community> listUp(Integer pageList, String searchType, String searchKeyword);
 
     @Select("""
+            SELECT COUNT(*)
+            FROM community
+            """)
+    Integer countAllCommunity();
+
+    @Select("""
+            SELECT COUNT(*)
+            FROM community_file
+            WHERE community_id=#{id}
+            """)
+    int countFilesByCommunityId(Integer id);
+
+    @Select("""
             SELECT id, title, content, writer, inserted creationDate
             FROM community
             WHERE id = #{id}
             """)
     Map<String, Object> viewCommunity(Integer id);
+
+    @Select("""
+            SELECT file_name
+            FROM community_file
+            WHERE community_id=#{id}
+            """)
+    List<String> selectFilesByCommunityId(int id);
 
     @Select("""
             SELECT file_name
@@ -59,11 +79,11 @@ public interface CommunityMapper {
     List<String> callCommunityFile(Integer id);
 
     @Select("""
-            SELECT nickname
-            FROM member
-            WHERE email = #{email}
+            SELECT COUNT(*)
+            FROM community_comment
+            WHERE community_id=#{id}
             """)
-    String findNickname(String email);
+    int countCommentsByCommunityId(Integer id);
 
     @Insert("""
             INSERT INTO community (title, content, writer)
@@ -105,12 +125,6 @@ public interface CommunityMapper {
             """)
     Community selectByCommunityId(int id);
 
-    @Select("""
-            SELECT file_name
-            FROM community_file
-            WHERE community_id=#{id}
-            """)
-    List<String> selectFilesByCommunityId(int id);
 
     @Delete("""
             DELETE FROM community_file
@@ -118,11 +132,6 @@ public interface CommunityMapper {
             """)
     int deleteFileByCommunityId(int id);
 
-    @Select("""
-            SELECT COUNT(*)
-            FROM community
-            """)
-    Integer countAllCommunity();
 
     @Delete("""
             DELETE FROM community_file
@@ -144,19 +153,26 @@ public interface CommunityMapper {
             """)
     int deleteCommentByCommentId(Integer id);
 
-    @Select("""
-            SELECT COUNT(*)
-            FROM community_file
+    @Delete("""
+            DELETE FROM community_comment
             WHERE community_id=#{id}
             """)
-    int countFilesByCommunityId(Integer id);
+    int deleteCommentByCommunityId(Integer id);
+
+
+    @Update("""
+            UPDATE community_comment
+            SET comment=#{comment}
+            WHERE id=#{id}
+            """)
+    int updateCommunityComment(CommunityComment communityComment);
 
     @Select("""
-            SELECT COUNT(*)
-            FROM community_comment
-            WHERE community_id=#{id}
+            SELECT nickname
+            FROM member
+            WHERE email = #{email}
             """)
-    int countCommentsByCommunityId(Integer id);
+    String findNickname(String email);
 
 //    @Select("""
 //            SELECT views

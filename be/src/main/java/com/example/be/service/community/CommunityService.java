@@ -140,11 +140,11 @@ public class CommunityService {
         }
 
         mapper.deleteFileByCommunityId(id);
-        mapper.deleteCommunity(id);
 
         // 댓글 지우기
-
+        mapper.deleteCommentByCommunityId(id);
         // 좋아요 지우기
+        mapper.deleteCommunity(id);
     }
 
     public void commentWrite(CommunityComment communityComment, Authentication auth) {
@@ -160,5 +160,10 @@ public class CommunityService {
 
     public void commentDelete(Integer id) {
         mapper.deleteCommentByCommentId(id);
+    }
+
+    public void updateComment(CommunityComment communityComment, Authentication auth) {
+//        TODO : 권한이 있을 경우 수정 가능, 권한이 없을 경우 toaster 로 수정 불가
+        mapper.updateCommunityComment(communityComment);
     }
 }

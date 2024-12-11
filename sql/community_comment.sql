@@ -11,7 +11,7 @@ CREATE TABLE community_comment
 
 
 SELECT *
-FROM community_file;
+FROM community_comment;
 DELETE
 FROM community_comment
 WHERE id = 30;
