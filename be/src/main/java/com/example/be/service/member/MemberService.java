@@ -231,4 +231,9 @@ public class MemberService {
     public String getNicknameByEmail(String email) {
         return memberMapper.selectNicknameByEmail(email);
     }
+
+    public boolean isPasswordValid(String email, String password) {
+        Member member = mapper.selectByEmail(email);
+        return member.getPassword().equals(password);
+    }
 }

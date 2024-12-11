@@ -52,8 +52,17 @@ public class InquiryController {
     @DeleteMapping("delete/{id}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable int id,
+                                                      @RequestBody Map<String, String> request,
                                                       Authentication authentication) {
         String writer = memberService.getNicknameByEmail(authentication.getName());
+        String password = request.get("password");
+
+        if (!memberService.isPasswordValid(authentication.getName(), password)) {
+            return ResponseEntity.badRequest().body(Map.of("message", Map.of(
+                    "type", "warning", "text", "비밀번호가 일치하지 않습니다."
+            )));
+        }
+
         if (service.delete(id, writer)) {
             // 성공
             return ResponseEntity.ok(Map.of("message", Map.of(

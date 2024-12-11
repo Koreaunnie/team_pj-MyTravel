@@ -5,6 +5,7 @@ import axios from "axios";
 import { Spinner } from "@chakra-ui/react";
 import "./Inquiry.css";
 import { Modal } from "../../../components/root/Modal.jsx";
+import { toaster } from "../../../components/ui/toaster.jsx";
 
 function InquiryView(props) {
   const { id } = useParams();
@@ -12,6 +13,7 @@ function InquiryView(props) {
   const [backToListModalOpen, setBackToListModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,10 +27,23 @@ function InquiryView(props) {
   }
 
   const handleDeleteButton = () => {
-    axios.delete(`/api/cs/inquiry/delete/${id}`).then((res) => {
-      navigate("/cs/inquiry/list");
-      alert("문의 글이 삭제되었습니다.");
-    });
+    axios
+      .delete(`/api/cs/inquiry/delete/${id}`, { data: { password } })
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+        navigate("/cs/inquiry/list");
+      })
+      .catch((error) => {
+        toaster.create({
+          type: "error",
+          description: "비밀번호가 일치하지 않습니다.",
+        });
+        setPassword("");
+      });
   };
 
   return (
@@ -110,13 +125,40 @@ function InquiryView(props) {
       />
 
       {/* 삭제 modal */}
-      <Modal
-        isOpen={deleteModalOpen}
-        onClose={() => setDeleteModalOpen(false)}
-        onConfirm={handleDeleteButton}
-        message="문의 글을 삭제하시겠습니까?"
-        buttonMessage="삭제"
-      />
+      {deleteModalOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <div className="modal-header">
+              <button
+                className="close"
+                onClick={() => setDeleteModalOpen(false)}
+              >
+                &times;
+              </button>
+            </div>
+            <div className="modal-body">
+              <p>비밀번호를 입력해주세요.</p>
+              <input
+                type="password"
+                className="modal-input"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <div className="modal-footer btn-wrap">
+              <button
+                className="btn btn-dark-outline"
+                onClick={() => setDeleteModalOpen(false)}
+              >
+                닫기
+              </button>
+              <button className="btn btn-dark" onClick={handleDeleteButton}>
+                삭제
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
