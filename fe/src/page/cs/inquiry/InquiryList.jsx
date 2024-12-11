@@ -71,14 +71,14 @@ function InquiryList(props) {
               >
                 <td>{inquiry.id}</td>
                 {inquiry.secret ? (
-                  <td className={"secret"}>
+                  <td className={"title-center secret"}>
                     <span className={"icon"}>
                       <CiLock />
                     </span>
                     비밀글입니다.
                   </td>
                 ) : (
-                  <td>{inquiry.title}</td>
+                  <td className={"title-center"}>{inquiry.title}</td>
                 )}
                 <td>{inquiry.writerNickname}</td>
                 <td>{inquiry.updated}</td>

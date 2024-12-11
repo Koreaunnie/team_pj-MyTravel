@@ -1,15 +1,19 @@
 /*------------------- InquiryList -------------------*/
-.table-list .secret {
-    position: relative;
+.inquiry .table-list .title-center {
+    text-align: left;
+}
+
+.inquiry .table-list .secret {
     font-size: 0.9rem;
     color: var(--font-gray-color);
 
 }
 
-.table-list .secret .icon {
-    position: absolute;
-    left: 55px;
-    top: 12px
+.inquiry .table-list .secret .icon {
+    float: left;
+    left: 0;
+    margin-top: 3px;
+    margin-right: 3px
 }
 
 /*------------------- InquiryView -------------------*/
