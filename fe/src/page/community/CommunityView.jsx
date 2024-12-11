@@ -96,6 +96,7 @@ function CommunityView(props) {
   const handleCommentChange = (id, value) => {
     setCommentContent((prev) => ({ ...prev, [id]: value }));
   };
+
   const handleCommentUpdateClick = (id) => {
     const updatedComment = commentContent[id]; // 수정된 댓글 가져오기
     axios

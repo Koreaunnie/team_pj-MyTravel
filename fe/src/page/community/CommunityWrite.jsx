@@ -22,7 +22,6 @@ function CommunityWrite(props) {
     axios
       .postForm(`/api/community/write`, { title, content, files })
       .then(navigate(`/community/list`));
-    // .finally(location.reload(true));
   };
 
   const handleCancelClick = () => {
