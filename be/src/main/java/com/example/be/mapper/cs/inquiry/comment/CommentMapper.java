@@ -1,10 +1,7 @@
 package com.example.be.mapper.cs.inquiry.comment;
 
 import com.example.be.dto.cs.inquiry.comment.Comment;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -22,7 +19,15 @@ public interface CommentMapper {
             SELECT *
             FROM comment
             WHERE inquiry_id = #{inquiryId}
-            ORDER BY updated, inserted
+            ORDER BY inserted
             """)
     List<Comment> selectAll(Integer inquiryId);
+
+    @Update("""
+            UPDATE comment 
+            SET comment = #{comment},
+                updated = NOW()
+            WHERE id = #{id}
+            """)
+    int updateById(Comment comment);
 }

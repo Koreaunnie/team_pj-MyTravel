@@ -50,4 +50,17 @@ public class CommentController {
     public List<Comment> list(@PathVariable Integer inquiryId) {
         return service.list(inquiryId);
     }
+
+    @PutMapping("edit")
+    public ResponseEntity<Map<String, Object>> edit(@RequestBody Comment comment) {
+        if (service.update(comment)) {
+            return ResponseEntity.ok().body(Map.of("message",
+                    Map.of("type", "success",
+                            "text", "댓글이 수정되었습니다.")));
+        } else {
+            return ResponseEntity.internalServerError().body(Map.of("message",
+                    Map.of("type", "error",
+                            "text", "댓글이 수정되지 않았습니다.")));
+        }
+    }
 }

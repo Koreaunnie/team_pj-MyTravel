@@ -22,4 +22,9 @@ public class CommentService {
     public List<Comment> list(Integer inquiryId) {
         return mapper.selectAll(inquiryId);
     }
+
+    public boolean update(Comment comment) {
+        int cnt = mapper.updateById(comment);
+        return cnt == 1;
+    }
 }
