@@ -28,8 +28,10 @@ public class KakaoService {
   @Value("${kakao.client.id}")
   private String kakaoClientId;
 
+  RestTemplate restTemplate = new RestTemplate();
+
+
   public KakaoResponse kakaoLogin(String code) {
-    RestTemplate restTemplate = new RestTemplate();
 
     //1. 액세스 토큰 요청
     String tokenRequestUrl = kakaoTokenUri + "?grant_type=authorization_code" +
@@ -56,11 +58,30 @@ public class KakaoService {
     ResponseEntity<Map> userResponse = restTemplate.exchange(kakaoUserInfoUri, HttpMethod.GET, entity, Map.class);
 
     Map<String, Object> kakaoAccount = (Map<String, Object>) userResponse.getBody().get("kakao_account");
-    String name = (String) ((Map<String, Object>) kakaoAccount.get("profile")).get("nickname");
+    String nickname = (String) ((Map<String, Object>) kakaoAccount.get("profile")).get("nickname");
 
     AuthTokens authTokens = new AuthTokens(accessToken, refreshToken);
-    System.out.println(name);
+    System.out.println(nickname);
     System.out.println(authTokens);
-    return new KakaoResponse(name, authTokens);
+    return new KakaoResponse(nickname, authTokens);
+  }
+
+  public KakaoResponse verifyAccessToken(String accessToken, String refreshToken) {
+    HttpHeaders headers = new HttpHeaders();
+    System.out.println("Authorization 헤더: " + headers.get("Authorization"));
+
+    headers.add("Authorization", "Bearer " + accessToken);
+    HttpEntity<String> entity = new HttpEntity<>(headers);
+    ResponseEntity<Map> userResponse = restTemplate.exchange(kakaoUserInfoUri, HttpMethod.GET, entity, Map.class);
+
+    if (userResponse.getStatusCode().is2xxSuccessful()) {
+      Map<String, Object> kakaoAccount = (Map<String, Object>) userResponse.getBody().get("kakao_account");
+      String nickname = (String) ((Map<String, Object>) kakaoAccount.get("profile")).get("nickname");
+
+      AuthTokens tokens = new AuthTokens(accessToken, refreshToken);
+      return new KakaoResponse(nickname, tokens);
+    } else {
+      throw new RuntimeException("사용자 정보 조회 실패");
+    }
   }
 }

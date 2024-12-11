@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class KakaoResponse {
-  private String name;
+  private String profileNickname;
   private AuthTokens token;
 }

@@ -5,7 +5,7 @@ export function KakaoLogout() {
     fetch("https://kapi.kakao.com/v1/user/unlink", {
       method: "POST",
       headers: {
-        Authorization: `KakaoAK 88ce9eac13e603f698971f7149c16003`, // 앱 어드민 키
+        Authorization: `KakaoAK ${process.env.VITE_KAKAO_ADMIN_KEY}`, // 앱 어드민 키
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
       },
       body: new URLSearchParams({
@@ -21,7 +21,9 @@ export function KakaoLogout() {
   };
   return (
     <>
-      <button onClick={handleKakaoLogout}>로그아웃</button>
+      <button onClick={handleKakaoLogout} className={"btn btn-warning"}>
+        로그아웃
+      </button>
     </>
   );
 }

@@ -32,8 +32,12 @@ export function MemberLoginProcess() {
           if (tokenData.access_token) {
             //accessToken 저장
             localStorage.setItem("accessToken", tokenData.access_token);
-
-            //추가처리
+            console.log(tokenData);
+            console.log(
+              "Authorization 헤더:",
+              `Bearer ${tokenData.access_token}`,
+            );
+            //백엔드 전달
             fetch(`/api/member/login/kakao`, {
               method: "POST",
               headers: {
