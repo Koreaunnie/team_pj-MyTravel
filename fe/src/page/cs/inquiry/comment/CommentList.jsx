@@ -43,6 +43,13 @@ export function CommentList({ inquiryId }) {
       });
   }
 
+  function handleDeleteButton(id) {
+    setProcessing(true);
+    axios.delete(`/api/cs/inquiry/comment/delete/${id}`).finally(() => {
+      setProcessing(false);
+    });
+  }
+
   return (
     <div className={"inquiry body-normal"}>
       <div className={"comment-list"}>
@@ -55,7 +62,13 @@ export function CommentList({ inquiryId }) {
               >
                 수정
               </li>
-              <li>삭제</li>
+
+              <li
+                className={"comment-btn-delete"}
+                onClick={() => handleDeleteButton(comment.id)}
+              >
+                삭제
+              </li>
             </ul>
 
             {editingCommentId === comment.id ? (

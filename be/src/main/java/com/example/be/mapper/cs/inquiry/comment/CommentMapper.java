@@ -30,4 +30,10 @@ public interface CommentMapper {
             WHERE id = #{id}
             """)
     int updateById(Comment comment);
+
+    @Delete("""
+            DELETE FROM comment
+            WHERE id = #{id}
+            """)
+    int deleteById(int id);
 }

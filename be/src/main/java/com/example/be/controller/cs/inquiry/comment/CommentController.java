@@ -63,4 +63,17 @@ public class CommentController {
                             "text", "댓글이 수정되지 않았습니다.")));
         }
     }
+
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<Map<String, Object>> delete(@PathVariable int id) {
+        if (service.delete(id)) {
+            return ResponseEntity.ok().body(Map.of("message",
+                    Map.of("type", "success",
+                            "text", "댓글이 삭제되었습니다.")));
+        } else {
+            return ResponseEntity.internalServerError().body(Map.of("message",
+                    Map.of("type", "error",
+                            "text", "댓글이 삭제되지 않았습니다.")));
+        }
+    }
 }

@@ -27,4 +27,9 @@ public class CommentService {
         int cnt = mapper.updateById(comment);
         return cnt == 1;
     }
+
+    public boolean delete(int id) {
+        int cnt = mapper.deleteById(id);
+        return cnt == 1;
+    }
 }
