@@ -8,7 +8,7 @@ import { CiLock } from "react-icons/ci";
 import { toaster } from "../../../components/ui/toaster.jsx";
 
 function InquiryList(props) {
-  const { nickname } = useContext(AuthenticationContext);
+  const { nickname, isAuthenticated } = useContext(AuthenticationContext);
   const [inquiryList, setInquiryList] = useState([]);
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [showMyInquiries, setShowMyInquiries] = useState(false); // 내가 쓴 글 여부
@@ -19,6 +19,18 @@ function InquiryList(props) {
       setInquiryList(res.data);
     });
   }, []);
+
+  // 로그인 안 했을 때 작성 버튼 클릭하면 로그인 유도
+  const checkLoginOrNot = () => {
+    if (isAuthenticated) {
+      setAddModalOpen(true);
+    } else {
+      toaster.create({
+        type: "error",
+        description: "로그인 후 문의글 작성이 가능합니다.",
+      });
+    }
+  };
 
   // 내가 쓴 글만 필터링
   const filteredInquiries = showMyInquiries
@@ -58,19 +70,18 @@ function InquiryList(props) {
 
       <div className={"body-normal"}>
         <div className={"btn-wrap"}>
-          <button
-            className={"btn btn-blue"}
-            onClick={() => setAddModalOpen(true)}
-          >
+          <button className={"btn btn-blue"} onClick={checkLoginOrNot}>
             작성
           </button>
 
-          <button
-            className={"btn btn-dark"}
-            onClick={() => setShowMyInquiries((prev) => !prev)} // 내가 쓴 글 필터 토글
-          >
-            {showMyInquiries ? "전체글" : "내가 쓴 글"}
-          </button>
+          {isAuthenticated && (
+            <button
+              className={"btn btn-dark"}
+              onClick={() => setShowMyInquiries((prev) => !prev)} // 내가 쓴 글 필터 토글
+            >
+              {showMyInquiries ? "전체글" : "내가 쓴 글"}
+            </button>
+          )}
         </div>
 
         <h1>문의하기</h1>
