@@ -74,8 +74,13 @@ export function MemberLoginProcess() {
                   })
                   .catch(() => {
                     //기존 정보 없으면 kakao 회원 가입 추가
-                    //
-                    navigate("/member/signup/kakao");
+                    navigate("/member/signup/kakao", {
+                      state: {
+                        kakaoId,
+                        kakaoNickname: nickname,
+                        kakaoImageSrc: imageSrc,
+                      },
+                    });
                   });
               })
               .catch((error) => {

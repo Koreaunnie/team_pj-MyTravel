@@ -29,3 +29,7 @@ ALTER TABLE member
 INSERT INTO member
     (email, nickname, password, name, member.phone, kakao)
 VALUES ('3829160102', '아로', 'a', '아로', '0', TRUE);
+
+SELECT *
+FROM member
+WHERE nickname = '아로';
