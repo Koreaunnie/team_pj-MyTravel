@@ -105,7 +105,7 @@ public interface MemberMapper {
 
   @Select("""
           SELECT COUNT(*) FROM member
-          WHERE name=#{kakanName};      
+          WHERE email=#{kakaoId};      
           """)
-  int hasSameName(String kakaoName);
+  int checkKakaoAccount(String kakaoId);
 }

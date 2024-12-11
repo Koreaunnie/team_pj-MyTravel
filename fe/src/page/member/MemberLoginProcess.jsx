@@ -1,10 +1,12 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { KakaoLogout } from "../../components/login/KakaoLogout.jsx";
 import axios from "axios";
+import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 
 export function MemberLoginProcess() {
   const [searchParams] = useSearchParams();
+  const { login } = useContext(AuthenticationContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -48,11 +50,9 @@ export function MemberLoginProcess() {
                 //사용자 정보 읽기
                 const userInfo = userResponse.data;
                 const nickname = userInfo.properties.nickname;
-                // const imageSrc =
-                //   userInfo.kakao_account.profile.profile_image_url;
-
-                console.log("Nickname:", nickname);
-                // console.log("Profile Image URL:", imageSrc);
+                const imageSrc =
+                  userInfo.kakao_account.profile.profile_image_url;
+                const kakaoId = userInfo.id;
 
                 //백엔드 전달
                 axios
@@ -60,22 +60,20 @@ export function MemberLoginProcess() {
                     accessToken: tokenData.access_token,
                     refreshToken: tokenData.refresh_token,
                     expiresIn: tokenData.expires_in,
+                    kakaoId,
                     nickname,
-                    // imageSrc,
+                    imageSrc,
                     tokenType: tokenData.token_type,
                   })
-                  .then((r) => {
-                    if (!r.ok) {
-                      console.error(`HTTP 에러: ${r.status} ${r.statusText}`);
-                      throw new Error("HTTP 에러 발생");
-                    }
-                    return r.json();
-                  })
-                  .then((userData) => {
-                    console.log("사용자 데이터", userData);
+                  .then((r) => r.data)
+                  .then((data) => {
+                    console.log("사용자 데이터", data);
+                    navigate("/");
+                    login(data.token);
                   })
                   .catch((error) => {
                     console.error("백엔드 호출 실패:", error);
+                    navigate();
                   });
               })
               .catch((error) => {

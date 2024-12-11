@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class KakaoInfo {
+  private String kakaoId;
   private String nickname;
   private String imageSrc;
   private String accessToken;
