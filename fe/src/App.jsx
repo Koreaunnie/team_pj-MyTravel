@@ -42,6 +42,7 @@ import PaymentHistory from "./page/tour/PaymentHistory.jsx";
 import PaymentHistoryAll from "./page/tour/PaymentHistoryAll.jsx";
 import AdminPage from "./page/member/AdminPage.jsx";
 import { MemberLoginProcess } from "./page/member/MemberLoginProcess.jsx";
+import MemberSignupKakao from "./page/member/MemberSignupKakao.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -204,6 +205,10 @@ const router = createBrowserRouter([
       {
         path: "member/signup",
         element: <MemberSignup />,
+      },
+      {
+        path: "member/signup/kakao",
+        element: <MemberSignupKakao />,
       },
       // 로그인
       {

@@ -64,6 +64,7 @@ export function MemberLoginProcess() {
                     nickname,
                     imageSrc,
                     tokenType: tokenData.token_type,
+                    //TODO: 불필요한 정보전달 잘라내기
                   })
                   .then((r) => r.data)
                   .then((data) => {
@@ -71,9 +72,10 @@ export function MemberLoginProcess() {
                     navigate("/");
                     login(data.token);
                   })
-                  .catch((error) => {
-                    console.error("백엔드 호출 실패:", error);
-                    navigate();
+                  .catch(() => {
+                    //기존 정보 없으면 kakao 회원 가입 추가
+                    //
+                    navigate("/member/signup/kakao");
                   });
               })
               .catch((error) => {
