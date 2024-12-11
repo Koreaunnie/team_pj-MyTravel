@@ -96,7 +96,7 @@ function InquiryView(props) {
               <th colSpan={2}>{inquiry.title}</th>
             </tr>
             <tr className={"thead-sub-title"}>
-              <th>{inquiry.writer}</th>
+              <th>{inquiry.writerNickname}</th>
               <th>{inquiry.inserted}</th>
             </tr>
           </thead>
