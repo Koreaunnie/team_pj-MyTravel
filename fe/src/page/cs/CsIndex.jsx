@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import { useNavigate } from "react-router-dom";
 import "./CsIndex.css";
-import { Spinner } from "@chakra-ui/react";
 import axios from "axios";
 
 function CsIndex(props) {
@@ -16,10 +15,6 @@ function CsIndex(props) {
       setInquiryList(res.data.inquiry);
     });
   }, []);
-
-  if (!inquiryList || inquiryList.length === 0) {
-    return <Spinner />;
-  }
 
   return (
     <div className={"cs"}>

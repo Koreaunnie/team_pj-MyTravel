@@ -10,6 +10,7 @@ CREATE TABLE plan
     startDate   DATE,
     endDate     DATE,
     updated     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    writer      VARCHAR(20) NOT NULL REFERENCES member (email),
     pinned      BOOLEAN   DEFAULT FALSE
 );
 

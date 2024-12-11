@@ -21,7 +21,6 @@ function InquiryAdd(props) {
     axios
       .post("/api/cs/inquiry/add", {
         category,
-        writer,
         title,
         content,
         secret,
@@ -51,24 +50,16 @@ function InquiryAdd(props) {
             <ul>
               <li>
                 <label htmlFor="category">문의 유형</label>
-                <select id="category" value={category}>
+                <select
+                  id="category"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                >
                   <option value="plan">내 여행 문의</option>
                   <option value="wallet">내 지갑 문의</option>
                   <option value="tour">투어 문의</option>
                   <option value="community">커뮤니티 문의</option>
                 </select>
-              </li>
-
-              <li>
-                <label htmlFor="writer">작성자</label>
-                <input
-                  type="text"
-                  id={"writer"}
-                  required
-                  maxLength={20}
-                  value={writer}
-                  onChange={(e) => setWriter(e.target.value)}
-                />
               </li>
 
               <li>

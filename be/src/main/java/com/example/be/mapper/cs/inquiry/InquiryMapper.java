@@ -10,8 +10,8 @@ public interface InquiryMapper {
 
     @Insert("""
             INSERT INTO inquiry
-                (category, writer, title, content, secret)
-            VALUES (#{category}, #{writer}, #{title}, #{content}, #{secret})
+                (category, writer, title, content, secret, inserted)
+            VALUES (#{category}, #{writer}, #{title}, #{content}, #{secret}, NOW())
             """)
     @Options(keyProperty = "id", useGeneratedKeys = true)
     int insertInquiry(Inquiry inquiry);
@@ -37,15 +37,15 @@ public interface InquiryMapper {
                 content = #{content},
                 secret = #{secret},
                 updated = NOW()
-            WHERE id = #{id}
+            WHERE id = #{id} AND writer = #{writer}
             """)
     int updateById(Inquiry inquiry);
 
     @Delete("""
             DELETE FROM inquiry
-            WHERE id = #{id}
+            WHERE id = #{id} AND writer = #{writer}
             """)
-    int deleteById(int id);
+    int deleteById(int id, String writer);
 
     @Select("""
             SELECT id, title, writer, updated

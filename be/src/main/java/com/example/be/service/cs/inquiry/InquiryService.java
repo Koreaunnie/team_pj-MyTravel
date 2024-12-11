@@ -30,8 +30,8 @@ public class InquiryService {
         mapper.updateById(inquiry);
     }
 
-    public void delete(int id) {
-        mapper.deleteById(id);
+    public void delete(int id, String writer) {
+        mapper.deleteById(id, writer);
     }
 
     public List<Inquiry> getInquiry() {

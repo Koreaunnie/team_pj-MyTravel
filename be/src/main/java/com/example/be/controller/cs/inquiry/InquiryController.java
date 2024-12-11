@@ -2,7 +2,10 @@ package com.example.be.controller.cs.inquiry;
 
 import com.example.be.dto.cs.inquiry.Inquiry;
 import com.example.be.service.cs.inquiry.InquiryService;
+import com.example.be.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,9 +15,15 @@ import java.util.List;
 @RequestMapping("/api/cs/inquiry")
 public class InquiryController {
     final InquiryService service;
+    final MemberService memberService;
 
     @PostMapping("add")
-    public void add(@RequestBody Inquiry inquiry) {
+    @PreAuthorize("isAuthenticated()")
+    public void add(@RequestBody Inquiry inquiry,
+                    Authentication authentication) {
+
+        String writer = memberService.getNicknameByEmail(authentication.getName());
+        inquiry.setWriter(writer);
         service.add(inquiry);
     }
 
@@ -29,13 +38,21 @@ public class InquiryController {
     }
 
     @PutMapping("update")
-    public void update(@RequestBody Inquiry inquiry) {
+    @PreAuthorize("isAuthenticated()")
+    public void update(@RequestBody Inquiry inquiry,
+                       Authentication authentication) {
+
+        String writer = memberService.getNicknameByEmail(authentication.getName());
+        inquiry.setWriter(writer);
         service.update(inquiry);
     }
 
     @DeleteMapping("delete/{id}")
-    public void delete(@PathVariable int id) {
-        service.delete(id);
+    @PreAuthorize("isAuthenticated()")
+    public void delete(@PathVariable int id,
+                       Authentication authentication) {
+        String writer = authentication.getName();
+        service.delete(id, writer);
     }
 
 

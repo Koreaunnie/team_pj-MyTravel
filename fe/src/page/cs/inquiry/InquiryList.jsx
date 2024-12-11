@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Breadcrumb } from "../../../components/root/Breadcrumb.jsx";
 import axios from "axios";
-import { Spinner } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "../../../components/root/Modal.jsx";
 import { AuthenticationContext } from "../../../components/context/AuthenticationProvider.jsx";
@@ -24,10 +23,6 @@ function InquiryList(props) {
     ? inquiryList.filter((inquiry) => inquiry.writer === nickname)
     : inquiryList;
 
-  if (!filteredInquiries || filteredInquiries.length === 0) {
-    return <Spinner />;
-  }
-
   return (
     <div className={"inquiry"}>
       <Breadcrumb
@@ -40,14 +35,14 @@ function InquiryList(props) {
       <div className={"body-normal"}>
         <div className={"btn-wrap"}>
           <button
-            className={"btn btn-dark"}
+            className={"btn btn-blue"}
             onClick={() => setAddModalOpen(true)}
           >
             작성
           </button>
 
           <button
-            className={"btn btn-blue"}
+            className={"btn btn-dark"}
             onClick={() => setShowMyInquiries((prev) => !prev)} // 내가 쓴 글 필터 토글
           >
             {showMyInquiries ? "전체글" : "내가 쓴 글"}
