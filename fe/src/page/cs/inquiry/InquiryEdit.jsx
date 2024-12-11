@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { Spinner } from "@chakra-ui/react";
 import { Modal } from "../../../components/root/Modal.jsx";
+import { toaster } from "../../../components/ui/toaster.jsx";
 
 function InquiryEdit(props) {
   const { id } = useParams();
@@ -36,8 +37,18 @@ function InquiryEdit(props) {
         secret,
       })
       .then((response) => {
-        console.log("성공적으로 저장됨:", response);
+        toaster.create({
+          type: response.data.message.type,
+          description: response.data.message.text,
+        });
         navigate("/cs/inquiry/list");
+      })
+      .catch((e) => {
+        const message = e.response.data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
       });
   };
 

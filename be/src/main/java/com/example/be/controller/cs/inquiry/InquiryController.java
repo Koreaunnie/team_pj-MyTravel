@@ -4,6 +4,7 @@ import com.example.be.dto.cs.inquiry.Inquiry;
 import com.example.be.service.cs.inquiry.InquiryService;
 import com.example.be.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -41,12 +42,36 @@ public class InquiryController {
 
     @PutMapping("update")
     @PreAuthorize("isAuthenticated()")
-    public void update(@RequestBody Inquiry inquiry,
-                       Authentication authentication) {
+    public ResponseEntity<Map<String, Object>> update(@RequestBody Inquiry inquiry,
+                                                      Authentication authentication) {
 
-        String writer = memberService.getNicknameByEmail(authentication.getName());
+        String userEmail = authentication.getName();
+        String writer = memberService.getNicknameByEmail(userEmail);
+
         inquiry.setWriter(writer);
-        service.update(inquiry);
+
+        // 작성자와 로그인한 사용자가 동일한지 확인
+        if (writer.equals(inquiry.getWriter())) {
+            boolean isUpdated = service.update(inquiry);
+            if (isUpdated) {
+                return ResponseEntity.ok(Map.of("message", Map.of(
+                        "type", "success",
+                        "text", "문의글이 수정되었습니다."
+                )));
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+                        "message", Map.of(
+                                "type", "error",
+                                "text", "문의글 수정 중 오류가 발생했습니다."
+                        )));
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of(
+                    "message", Map.of(
+                            "type", "warning",
+                            "text", "자신이 작성한 글만 수정할 수 있습니다."
+                    )));
+        }
     }
 
     @DeleteMapping("delete/{id}")

@@ -26,8 +26,9 @@ public class InquiryService {
         return mapper.selectById(id);
     }
 
-    public void update(Inquiry inquiry) {
-        mapper.updateById(inquiry);
+    public boolean update(Inquiry inquiry) {
+        int cnt = mapper.updateById(inquiry);
+        return cnt == 1;
     }
 
     public boolean delete(int id, String writer) {
