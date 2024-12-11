@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import { useNavigate } from "react-router-dom";
 import "./CsIndex.css";
 import axios from "axios";
 import { CiLock } from "react-icons/ci";
+import { toaster } from "../../components/ui/toaster.jsx";
+import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 
 function CsIndex(props) {
   const [faqList, setFaqList] = useState([]);
   const [inquiryList, setInquiryList] = useState([]);
   const navigate = useNavigate();
+  const { nickname } = useContext(AuthenticationContext);
 
   useEffect(() => {
     axios.get("/api/cs/index").then((res) => {
@@ -16,6 +19,19 @@ function CsIndex(props) {
       setInquiryList(res.data.inquiry);
     });
   }, []);
+
+  // 비밀글 여부 확인
+  const checkSecretOrNot = (inquiry) => {
+    console.log(inquiry.secret, inquiry.writerNickname, nickname);
+    if (inquiry.secret && inquiry.writerNickname != nickname) {
+      toaster.create({
+        type: "warning",
+        description: "비공개 문의내역은 작성자 본인만 확인하실 수 있습니다.",
+      });
+    } else {
+      navigate(`/cs/inquiry/view/${inquiry.id}`);
+    }
+  };
 
   return (
     <div className={"cs"}>
@@ -63,10 +79,7 @@ function CsIndex(props) {
               </button>
 
               {inquiryList.map((inquiry) => (
-                <ul
-                  key={inquiry.id}
-                  onClick={() => navigate(`/cs/inquiry/view/${inquiry.id}`)}
-                >
+                <ul key={inquiry.id} onClick={() => checkSecretOrNot(inquiry)}>
                   {inquiry.secret ? (
                     <li className={"secret"}>
                       <span className={"icon"}>
