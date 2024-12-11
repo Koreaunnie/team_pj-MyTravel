@@ -10,8 +10,8 @@ public interface InquiryMapper {
 
     @Insert("""
             INSERT INTO inquiry
-                (category, writer, title, content, secret, inserted)
-            VALUES (#{category}, #{writer}, #{title}, #{content}, #{secret}, NOW())
+                (category, writer, writer_nickname, title, content, secret, inserted)
+            VALUES (#{category}, #{writer}, #{writerNickname}, #{title}, #{content}, #{secret}, NOW())
             """)
     @Options(keyProperty = "id", useGeneratedKeys = true)
     int insertInquiry(Inquiry inquiry);

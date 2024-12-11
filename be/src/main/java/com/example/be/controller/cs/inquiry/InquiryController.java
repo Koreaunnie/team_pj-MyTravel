@@ -25,7 +25,12 @@ public class InquiryController {
     public void add(@RequestBody Inquiry inquiry,
                     Authentication authentication) {
 
-        inquiry.setWriter(authentication.getName());
+        String writer = authentication.getName();
+        String writerNickName = memberService.getNicknameByEmail(writer);
+
+        inquiry.setWriter(writer);
+        inquiry.setWriterNickname(writerNickName);
+
         service.add(inquiry);
     }
 

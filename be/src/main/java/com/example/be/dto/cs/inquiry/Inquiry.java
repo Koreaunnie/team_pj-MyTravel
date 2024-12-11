@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 public class Inquiry {
     private Integer id;
     private String writer;
+    private String writerNickname;
     private String category;
     private String title;
     private String content;
