@@ -68,7 +68,7 @@ function CsIndex(props) {
                     onClick={() => navigate(`/cs/inquiry/view/${inquiry.id}`)}
                   >
                     {inquiry.title}
-                    <span>{inquiry.date}</span>
+                    <span>{inquiry.inserted}</span>
                   </li>
                 ))}
               </ul>
