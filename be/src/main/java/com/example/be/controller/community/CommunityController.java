@@ -54,12 +54,25 @@ public class CommunityController {
 
     // TODO : UPDATE 기능 추가
 
+//    TODO: 조회수 기능 (기존 테이블에 있어도 되겠는데)
+
 
 //    TODO :  게시판 댓글 기능
 
     @PostMapping("comment/write")
     public void commentWrite(@RequestBody CommunityComment communityComment, Authentication auth) {
-        
+
         service.commentWrite(communityComment, auth);
+    }
+
+    @DeleteMapping("comment/delete/{id}")
+    public void commentDelete(@PathVariable Integer id) {
+        System.out.println(id);
+        service.commentDelete(id);
+    }
+
+    @PutMapping("comment/edit/{id}")
+    public void commentEdit(@RequestBody CommunityComment communityComment, @PathVariable Integer id, Authentication auth) {
+        service.updateComment(communityComment, id, auth);
     }
 }
