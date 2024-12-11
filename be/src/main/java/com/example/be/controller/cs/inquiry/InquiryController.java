@@ -4,11 +4,13 @@ import com.example.be.dto.cs.inquiry.Inquiry;
 import com.example.be.service.cs.inquiry.InquiryService;
 import com.example.be.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -49,11 +51,17 @@ public class InquiryController {
 
     @DeleteMapping("delete/{id}")
     @PreAuthorize("isAuthenticated()")
-    public void delete(@PathVariable int id,
-                       Authentication authentication) {
-        String writer = authentication.getName();
-        service.delete(id, writer);
+    public ResponseEntity<Map<String, Object>> delete(@PathVariable int id,
+                                                      Authentication authentication) {
+        String writer = memberService.getNicknameByEmail(authentication.getName());
+        if (service.delete(id, writer)) {
+            // 성공
+            return ResponseEntity.ok(Map.of("message", Map.of(
+                    "type", "success", "text", "문의 글이 삭제되었습니다.")));
+        } else {
+            // 실패
+            return ResponseEntity.badRequest().body(Map.of("message", Map.of(
+                    "type", "warning", "text", "삭제 중 오류가 생겼습니다.")));
+        }
     }
-
-
 }
