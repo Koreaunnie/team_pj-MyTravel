@@ -25,8 +25,7 @@ public class InquiryController {
     public void add(@RequestBody Inquiry inquiry,
                     Authentication authentication) {
 
-        String writer = memberService.getNicknameByEmail(authentication.getName());
-        inquiry.setWriter(writer);
+        inquiry.setWriter(authentication.getName());
         service.add(inquiry);
     }
 
@@ -45,13 +44,10 @@ public class InquiryController {
     public ResponseEntity<Map<String, Object>> update(@RequestBody Inquiry inquiry,
                                                       Authentication authentication) {
 
-        String userEmail = authentication.getName();
-        String writer = memberService.getNicknameByEmail(userEmail);
-
-        inquiry.setWriter(writer);
+        inquiry.setWriter(authentication.getName());
 
         // 작성자와 로그인한 사용자가 동일한지 확인
-        if (writer.equals(inquiry.getWriter())) {
+        if (authentication.getName().equals(inquiry.getWriter())) {
             boolean isUpdated = service.update(inquiry);
             if (isUpdated) {
                 return ResponseEntity.ok(Map.of("message", Map.of(
@@ -79,7 +75,6 @@ public class InquiryController {
     public ResponseEntity<Map<String, Object>> delete(@PathVariable int id,
                                                       @RequestBody Map<String, String> request,
                                                       Authentication authentication) {
-        String writer = memberService.getNicknameByEmail(authentication.getName());
         String password = request.get("password");
 
         if (!memberService.isPasswordValid(authentication.getName(), password)) {
@@ -88,7 +83,7 @@ public class InquiryController {
             )));
         }
 
-        if (service.delete(id, writer)) {
+        if (service.delete(id, authentication.getName())) {
             // 성공
             return ResponseEntity.ok(Map.of("message", Map.of(
                     "type", "success", "text", "문의 글이 삭제되었습니다.")));
