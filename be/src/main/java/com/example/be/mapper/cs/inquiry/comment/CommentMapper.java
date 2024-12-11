@@ -4,6 +4,9 @@ import com.example.be.dto.cs.inquiry.comment.Comment;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 @Mapper
 public interface CommentMapper {
@@ -14,4 +17,12 @@ public interface CommentMapper {
             """)
     @Options(keyProperty = "id", useGeneratedKeys = true)
     int insert(Comment comment);
+
+    @Select("""
+            SELECT *
+            FROM comment
+            WHERE inquiry_id = #{inquiryId}
+            ORDER BY updated, inserted
+            """)
+    List<Comment> selectAll(Integer inquiryId);
 }

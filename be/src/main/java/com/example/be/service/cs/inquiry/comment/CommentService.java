@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -15,5 +17,9 @@ public class CommentService {
     public boolean add(Comment comment) {
         int cnt = mapper.insert(comment);
         return cnt == 1;
+    }
+
+    public List<Comment> list(Integer inquiryId) {
+        return mapper.selectAll(inquiryId);
     }
 }

@@ -2,9 +2,9 @@ import "./Comment.css";
 import axios from "axios";
 import { useState } from "react";
 import { toaster } from "../../../../components/ui/toaster.jsx";
+import { CommentList } from "./CommentList.jsx";
 
-export function Comment(props) {
-  const { inquiryId } = props;
+export function CommentContainer({ inquiryId }) {
   const [comment, setComment] = useState("");
 
   function handleSaveButton() {
@@ -40,20 +40,7 @@ export function Comment(props) {
         </button>
       </div>
 
-      <div className={"comment-list"}>
-        <div>
-          <ul className={"comment-btn"}>
-            <li>수정</li>
-            <li>삭제</li>
-          </ul>
-
-          <ul className={"comment-list-body"}>
-            <li>nickname</li>
-            <li>댓글 내용</li>
-            <li>날짜</li>
-          </ul>
-        </div>
-      </div>
+      <CommentList inquiryId={inquiryId} />
     </div>
   );
 }
