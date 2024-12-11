@@ -10,7 +10,6 @@ export function MemberLoginProcess() {
   useEffect(() => {
     const code = searchParams.get("code");
 
-    //백엔드에 인증 코드 전달
     if (code) {
       const data = new URLSearchParams();
       data.append("grant_type", "authorization_code");
@@ -19,32 +18,25 @@ export function MemberLoginProcess() {
       data.append("code", code); // 인가 코드
 
       //카카오에 토큰 요청
-      fetch("https://kauth.kakao.com/oauth/token", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-        },
-        //요청 본문
-        body: data.toString(),
-      })
-        .then((res) => res.json())
+      axios
+        .post("https://kauth.kakao.com/oauth/token", data, {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+          },
+        })
         .then((tokenData) => {
           if (tokenData.access_token) {
             //accessToken 저장
             localStorage.setItem("accessToken", tokenData.access_token);
-            // console.log(tokenData);
-            // console.log(
-            //   "Authorization 헤더:",
-            //   `Bearer ${tokenData.access_token}`,
-            // );
 
-            fetch("https://kapi.kakao.com/v2/user/me", {
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-              },
-            })
-              .then((res) => res.json())
+            axios
+              .get("https://kapi.kakao.com/v2/user/me", {
+                headers: {
+                  Authorization: `Bearer ${tokenData.access_token}`,
+                  "Content-Type":
+                    "application/x-www-form-urlencoded;charset=utf-8",
+                },
+              })
               .then((userInfo) => {
                 const nickname = userInfo.kakao_account.profile.nickname;
                 const imageSrc =
