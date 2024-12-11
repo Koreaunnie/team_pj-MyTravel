@@ -71,7 +71,7 @@ function InquiryList(props) {
               >
                 <td>{inquiry.id}</td>
                 {inquiry.secret ? (
-                  <td className={"secret-title"}>
+                  <td className={"secret"}>
                     <span className={"icon"}>
                       <CiLock />
                     </span>

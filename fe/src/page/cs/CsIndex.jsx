@@ -62,23 +62,24 @@ function CsIndex(props) {
                 더 보기
               </button>
 
-              <ul>
-                {inquiryList.map((inquiry) => (
-                  <li
-                    key={inquiry.id}
-                    onClick={() => navigate(`/cs/inquiry/view/${inquiry.id}`)}
-                  >
-                    {inquiry.secret ? (
-                      <p>
-                        <CiLock /> 비밀글입니다.
-                      </p>
-                    ) : (
-                      <p>{inquiry.title}</p>
-                    )}
-                    <span>{inquiry.inserted}</span>
-                  </li>
-                ))}
-              </ul>
+              {inquiryList.map((inquiry) => (
+                <ul
+                  key={inquiry.id}
+                  onClick={() => navigate(`/cs/inquiry/view/${inquiry.id}`)}
+                >
+                  {inquiry.secret ? (
+                    <li className={"secret"}>
+                      <span className={"icon"}>
+                        <CiLock />
+                      </span>
+                      비밀글입니다.
+                    </li>
+                  ) : (
+                    <li>{inquiry.title}</li>
+                  )}
+                  <li className={"date"}>{inquiry.inserted}</li>
+                </ul>
+              ))}
             </section>
 
             <section className={"tel-container"}>

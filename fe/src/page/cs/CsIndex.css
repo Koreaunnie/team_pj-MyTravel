@@ -67,7 +67,7 @@
 .cs .cs-wrap .body-normal {
     display: flex;
     width: 1000px;
-    height: 500px;
+    height: 465px;
 }
 
 .cs .cs-wrap .inquiry-container {
@@ -76,14 +76,35 @@
     border-radius: 20px;
 }
 
+.cs .cs-wrap .inquiry-container h3 {
+    margin-bottom: 30px;
+}
+
 .cs .cs-wrap .inquiry-container ul {
-    margin: 20px 40px;
+    margin: 0 40px;
+    height: 40px;
+    line-height: 40px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
 }
 
 .cs .cs-wrap .inquiry-container ul li {
-    height: 50px;
-    line-height: 50px;
     cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+}
+
+.cs .cs-wrap .inquiry-container ul .secret .icon {
+    margin-right: 5px;
+    margin-top: 11px
+}
+
+.cs .cs-wrap .inquiry-container ul .date {
+    font-size: 0.9rem;
+    color: var(--font-gray-color);
 }
 
 /*------------------- 고객센터 -------------------*/
@@ -96,7 +117,7 @@
 }
 
 .cs .cs-wrap .tel-container ul {
-    margin: 50px 100px;
+    margin: 45px 100px;
 }
 
 .cs .cs-wrap .tel-container ul li {
