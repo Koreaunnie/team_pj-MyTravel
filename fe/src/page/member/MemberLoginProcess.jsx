@@ -1,6 +1,7 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
 import { KakaoLogout } from "../../components/login/KakaoLogout.jsx";
+import axios from "axios";
 
 export function MemberLoginProcess() {
   const [searchParams] = useSearchParams();
@@ -8,7 +9,6 @@ export function MemberLoginProcess() {
 
   useEffect(() => {
     const code = searchParams.get("code");
-    console.log(code);
 
     //백엔드에 인증 코드 전달
     if (code) {
@@ -32,40 +32,59 @@ export function MemberLoginProcess() {
           if (tokenData.access_token) {
             //accessToken 저장
             localStorage.setItem("accessToken", tokenData.access_token);
-            console.log(tokenData);
-            console.log(
-              "Authorization 헤더:",
-              `Bearer ${tokenData.access_token}`,
-            );
-            //백엔드 전달
-            fetch(`/api/member/login/kakao`, {
-              method: "POST",
+            // console.log(tokenData);
+            // console.log(
+            //   "Authorization 헤더:",
+            //   `Bearer ${tokenData.access_token}`,
+            // );
+
+            fetch("https://kapi.kakao.com/v2/user/me", {
+              method: "GET",
               headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${tokenData.access_token}`,
+                Authorization: `Bearer ${accessToken}`,
               },
-              body: JSON.stringify({
-                accessToken: tokenData.access_token,
-                refreshToken: tokenData.resresh_token,
-              }),
             })
-              .then((r) => {
-                if (!r.ok) {
-                  console.error(`HTTP 에러: ${r.status} ${r.statusText}`);
-                  throw new Error("HTTP 에러 발생");
-                }
-                return r.json();
+              .then((res) => res.json())
+              .then((userInfo) => {
+                const nickname = userInfo.kakao_account.profile.nickname;
+                const imageSrc =
+                  userInfo.kakao_account.profile.profile_image_url;
+
+                console.log("Nickname:", nickname);
+                console.log("Profile Image URL:", imageSrc);
+
+                //백엔드 전달
+                axios
+                  .post(`/api/member/login/kakao`, {
+                    accessToken: tokenData.access_token,
+                    refreshToken: tokenData.refresh_token,
+                    expiresIn: tokenData.expires_in,
+                    nickname,
+                    imageSrc,
+                    tokenType: tokenData.brearer,
+                  })
+                  .then((r) => {
+                    if (!r.ok) {
+                      console.error(`HTTP 에러: ${r.status} ${r.statusText}`);
+                      throw new Error("HTTP 에러 발생");
+                    }
+                    return r.json();
+                  })
+                  .then((userData) => {
+                    console.log("사용자 데이터", userData);
+                  })
+                  .catch((error) => {
+                    console.error("백엔드 호출 실패:", error);
+                  });
               })
-              .then((userData) => {
-                console.log("사용자 데이터", userData);
-              })
-              .catch((error) => console.error("백엔드 호출 실패: ", error));
+              .catch((error) => {
+                console.error("카카오 사용자 정보 요청 실패:", error);
+              });
           } else {
-            console.error("token 요청 실패: ", tokenData);
+            console.error("토큰 요청 실패:", tokenData);
           }
-          //로그인 처리 로직(토큰 저장, redirect)
         })
-        .catch((error) => console.error("카카오 토큰 요청 실패", error));
+        .catch((error) => console.error("카카오 토큰 요청 실패:", error));
     }
   }, [window.location.search]);
 
