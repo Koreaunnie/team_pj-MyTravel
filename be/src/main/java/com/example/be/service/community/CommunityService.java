@@ -38,11 +38,24 @@ public class CommunityService {
 
     public Map<String, Object> list(Integer page, String searchType, String searchKeyword) {
 
-        Integer pageList = (page - 1) * 15;
+        Integer pageList = (page - 1) * 10;
 
 //        모든 수를 세는 것을 만들어야 함
 
         List<Community> list = mapper.listUp(pageList, searchType, searchKeyword);
+        for (Community community : list) {
+            Integer countFiles = mapper.countFilesByCommunityId(community.getId());
+            if (countFiles > 0) {
+                community.setExistOfFiles(true);
+            } else {
+                community.setExistOfFiles(false);
+            }
+            Integer countComments = mapper.countCommentsByCommunityId(community.getId());
+            if (countComments != null) {
+                community.setNumberOfComments(countComments + "개");
+            }
+        }
+
         Integer countCommunity = mapper.countAllCommunity();
 
 
@@ -78,6 +91,11 @@ public class CommunityService {
     }
 
     public Map<String, Object> view(Integer id) {
+//        Integer views = mapper.checkViews(id);
+//        Integer plusViews = views + 1;
+//        mapper.updateViews(plusViews, id);
+//        System.out.println("plusViews = " + plusViews);
+//        조회수가 안돼
 
         Map<String, Object> viewer = mapper.viewCommunity(id);
         List<String> fileList = mapper.callCommunityFile(id);
@@ -124,8 +142,9 @@ public class CommunityService {
         mapper.deleteFileByCommunityId(id);
 
         // 댓글 지우기
-
+        mapper.deleteCommentByCommunityId(id);
         // 좋아요 지우기
+        mapper.deleteCommunity(id);
     }
 
     public void commentWrite(CommunityComment communityComment, Authentication auth) {
@@ -137,5 +156,16 @@ public class CommunityService {
 
 
         mapper.writeCommunityComment(communityComment);
+    }
+
+    public void commentDelete(Integer id) {
+        mapper.deleteCommentByCommentId(id);
+    }
+
+    public void updateComment(CommunityComment communityComment, Integer id, Authentication auth) {
+        String comment = communityComment.getComment();
+        System.out.println(comment);
+//        TODO : 권한이 있을 경우 수정 가능, 권한이 없을 경우 toaster 로 수정 불가
+        mapper.updateCommunityComment(comment, id);
     }
 }

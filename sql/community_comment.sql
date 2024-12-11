@@ -12,7 +12,14 @@ CREATE TABLE community_comment
 
 SELECT *
 FROM community_comment;
+DELETE
+FROM community_comment
+WHERE id = 30;
 
 SELECT *
 FROM community_comment
 WHERE community_id = 57;
+
+SELECT COUNT(*)
+FROM community_comment
+WHERE community_id = 63;
