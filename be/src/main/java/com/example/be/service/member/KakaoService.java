@@ -1,23 +1,18 @@
 package com.example.be.service.member;
 
-import com.example.be.dto.member.AuthTokens;
-import com.example.be.dto.member.KakaoResponse;
+import com.example.be.dto.member.KakaoInfo;
+import com.example.be.mapper.member.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.Map;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class KakaoService {
+  private final MemberMapper mapper;
 
   @Value("${kakao.token-uri}")
   private String kakaoTokenUri;
@@ -31,57 +26,21 @@ public class KakaoService {
   RestTemplate restTemplate = new RestTemplate();
 
 
-  public KakaoResponse kakaoLogin(String code) {
+  public KakaoInfo kakaoLogin(KakaoInfo request) {
 
-    //1. 액세스 토큰 요청
-    String tokenRequestUrl = kakaoTokenUri + "?grant_type=authorization_code" +
-            "&client_id=" + kakaoClientId +
-            "&redirect_uri=" + kakaoRedirectUri +
-            "&code=" + code;
+    String kakaoName = request.getNickname();
 
-    ResponseEntity<Map> tokenResponse =
-            restTemplate.getForEntity(tokenRequestUrl, null, Map.class);
-    Map<String, Object> tokenResponseBody = tokenResponse.getBody();
-
-    if (tokenResponseBody == null || !tokenResponseBody.containsKey("access_token")) {
-      throw new RuntimeException("카카오 인증 토큰 받지 못함");
-    }
-
-    String accessToken = tokenResponseBody.get("access_token").toString();
-    String refreshToken = tokenResponseBody.get("refresh_token").toString();
-
-    //2. 사용자 정보 요청
-    HttpHeaders headers = new HttpHeaders();
-    headers.add("Authorization", "Bearer " + accessToken);
-
-    HttpEntity<String> entity = new HttpEntity<>(headers);
-    ResponseEntity<Map> userResponse = restTemplate.exchange(kakaoUserInfoUri, HttpMethod.GET, entity, Map.class);
-
-    Map<String, Object> kakaoAccount = (Map<String, Object>) userResponse.getBody().get("kakao_account");
-    String nickname = (String) ((Map<String, Object>) kakaoAccount.get("profile")).get("nickname");
-
-    AuthTokens authTokens = new AuthTokens(accessToken, refreshToken);
-    System.out.println(nickname);
-    System.out.println(authTokens);
-    return new KakaoResponse(nickname, authTokens);
-  }
-
-  public KakaoResponse verifyAccessToken(String accessToken, String refreshToken) {
-    HttpHeaders headers = new HttpHeaders();
-    System.out.println("Authorization 헤더: " + headers.get("Authorization"));
-
-    headers.add("Authorization", "Bearer " + accessToken);
-    HttpEntity<String> entity = new HttpEntity<>(headers);
-    ResponseEntity<Map> userResponse = restTemplate.exchange(kakaoUserInfoUri, HttpMethod.GET, entity, Map.class);
-
-    if (userResponse.getStatusCode().is2xxSuccessful()) {
-      Map<String, Object> kakaoAccount = (Map<String, Object>) userResponse.getBody().get("kakao_account");
-      String nickname = (String) ((Map<String, Object>) kakaoAccount.get("profile")).get("nickname");
-
-      AuthTokens tokens = new AuthTokens(accessToken, refreshToken);
-      return new KakaoResponse(nickname, tokens);
+    System.out.println(kakaoName);
+    //1. mapper의 멤버 정보와 이름 대조 if(대조){없으면 생성}
+    if (mapper.hasSameName(kakaoName) != 1) {
+      //없으면 회원가입: kakao=true
+      System.out.println("계정 없음 => 회원 가입");
     } else {
-      throw new RuntimeException("사용자 정보 조회 실패");
+      //있으면 내용 token으로 전달 + 카카오 연동 true로 변경
+      System.out.println("계정 있음!");
     }
+
+    return null;
   }
+
 }

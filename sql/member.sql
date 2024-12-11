@@ -19,4 +19,9 @@ SELECT picture
 FROM member
 WHERE email = 'fire';
 
+SELECT *
+FROM member
+WHERE name = '2';
 
+ALTER TABLE member
+    ADD kakao BOOLEAN DEFAULT FALSE;
