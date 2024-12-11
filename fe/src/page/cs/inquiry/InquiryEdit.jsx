@@ -14,6 +14,7 @@ function InquiryEdit(props) {
   const [content, setContent] = useState("");
   // const [files, setFiles] = useState([]);
   const [secret, setSecret] = useState(false);
+  const [backToListModalOpen, setBackToListModalOpen] = useState(false);
   const [saveModalOpen, setSaveModalOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -122,14 +123,32 @@ function InquiryEdit(props) {
             </ul>
           </fieldset>
 
-          <button
-            className={"btn btn-dark"}
-            onClick={() => setSaveModalOpen(true)}
-          >
-            저장
-          </button>
+          <div className={"btn-wrap"}>
+            <button
+              className={"btn btn-dark-outline"}
+              onClick={() => setBackToListModalOpen(true)}
+            >
+              목록
+            </button>
+
+            <button
+              className={"btn btn-dark"}
+              onClick={() => setSaveModalOpen(true)}
+            >
+              저장
+            </button>
+          </div>
         </div>
       </div>
+
+      {/* 목록 modal */}
+      <Modal
+        isOpen={backToListModalOpen}
+        onClose={() => setBackToListModalOpen(false)}
+        onConfirm={() => navigate(`/cs/inquiry/list`)}
+        message="목록으로 돌아가면 작성한 내용이 사라집니다."
+        buttonMessage="목록"
+      />
 
       {/* 저장 modal */}
       <Modal
