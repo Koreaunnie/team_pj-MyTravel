@@ -5,6 +5,7 @@ import axios from "axios";
 import { Spinner } from "@chakra-ui/react";
 import "./Inquiry.css";
 import { Modal } from "../../../components/root/Modal.jsx";
+import { Comment } from "../../../page/cs/inquiry/comment/Comment.jsx";
 import { toaster } from "../../../components/ui/toaster.jsx";
 import { AuthenticationContext } from "../../../components/context/AuthenticationProvider.jsx";
 
@@ -119,6 +120,8 @@ function InquiryView(props) {
           </tbody>
         </table>
       </div>
+
+      <Comment inquiryId={inquiry.id} />
 
       {/* 수정 modal */}
       <Modal
