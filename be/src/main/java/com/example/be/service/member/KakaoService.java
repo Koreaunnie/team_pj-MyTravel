@@ -56,13 +56,11 @@ public class KakaoService {
     ResponseEntity<Map> userResponse = restTemplate.exchange(kakaoUserInfoUri, HttpMethod.GET, entity, Map.class);
 
     Map<String, Object> kakaoAccount = (Map<String, Object>) userResponse.getBody().get("kakao_account");
-    String email = (String) kakaoAccount.get("email");
     String name = (String) ((Map<String, Object>) kakaoAccount.get("profile")).get("nickname");
 
     AuthTokens authTokens = new AuthTokens(accessToken, refreshToken);
     System.out.println(name);
-    System.out.println(email);
     System.out.println(authTokens);
-    return new KakaoResponse(name, email, authTokens);
+    return new KakaoResponse(name, authTokens);
   }
 }

@@ -7,6 +7,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class KakaoResponse {
   private String name;
-  private String email;
   private AuthTokens token;
 }
