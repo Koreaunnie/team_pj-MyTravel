@@ -68,9 +68,8 @@ function CommunityView(props) {
       .finally(setLoading(false));
   };
 
-  const handleCommentDeleteClick = (e) => {
-    console.log(e);
-    axios.delete(`/api/community/comment/delete/${e}`);
+  const handleCommentDeleteClick = (id) => {
+    axios.delete(`/api/community/comment/delete/${id}`);
   };
 
   const handleCommentEditClick = () => {};
@@ -161,7 +160,9 @@ function CommunityView(props) {
                       </Stack>
                       {/* TODO : 권한받은 유저만 보이게 */}
                       <Button onClick={handleCommentEditClick}>수정</Button>
-                      <Button onClick={handleCommentDeleteClick}>삭제</Button>
+                      <Button onClick={() => handleCommentDeleteClick(list.id)}>
+                        삭제
+                      </Button>
                     </HStack>
                   </Box>
                 ))}

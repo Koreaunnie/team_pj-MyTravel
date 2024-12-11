@@ -43,7 +43,6 @@ public class CommunityService {
 //        모든 수를 세는 것을 만들어야 함
 
         List<Community> list = mapper.listUp(pageList, searchType, searchKeyword);
-        System.out.println("list = " + list);
         for (Community community : list) {
             Integer countFiles = mapper.countFilesByCommunityId(community.getId());
             if (countFiles > 0) {
@@ -56,7 +55,6 @@ public class CommunityService {
                 community.setNumberOfComments(countComments + "개");
             }
         }
-        System.out.println(list);
 
         Integer countCommunity = mapper.countAllCommunity();
 

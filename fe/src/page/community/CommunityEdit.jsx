@@ -10,17 +10,18 @@ import {
   FileUploadTrigger,
 } from "../../components/ui/file-button.jsx";
 import { HiUpload } from "react-icons/hi";
+import { CloseButton } from "../../components/ui/close-button.jsx";
 
 function ImageFileView({ files }) {
+  function handleDeleteFileClick(file) {}
+
   return (
     <Box>
       {files?.map((file) => (
-        <Image
-          key={file.fileName}
-          src={file.filePath}
-          border={"1px solid black"}
-          m={3}
-        />
+        <HStack key={file.fileName}>
+          <Image src={file.filePath} border={"1px solid black"} m={3} />
+          <CloseButton onClick={() => handleDeleteFileClick(file)} />
+        </HStack>
       ))}
     </Box>
   );
@@ -51,6 +52,11 @@ function CommunityEdit(props) {
       .then(navigate(`/community/list`));
   };
 
+  console.log(community);
+  const handleCancelClick = () => {
+    navigate(`/community/view/${community.id}`);
+  };
+
   return (
     <div>
       <h1>게시글 수정</h1>
@@ -77,6 +83,7 @@ function CommunityEdit(props) {
             h={300}
           />
         </Field>
+        <ImageFileView files={community.files} />
         <Field label={"파일 첨부"}>
           <FileUploadRoot
             value={files}
@@ -95,7 +102,7 @@ function CommunityEdit(props) {
         <br />
         <Box>
           <HStack>
-            <Button>취소</Button>
+            <Button onClick={handleCancelClick}>취소</Button>
             <Button onClick={handleSaveClick}>저장</Button>
           </HStack>
         </Box>
