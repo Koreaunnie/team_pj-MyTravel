@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Breadcrumb } from "../../../components/root/Breadcrumb.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -6,6 +6,7 @@ import { Spinner } from "@chakra-ui/react";
 import "./Inquiry.css";
 import { Modal } from "../../../components/root/Modal.jsx";
 import { toaster } from "../../../components/ui/toaster.jsx";
+import { AuthenticationContext } from "../../../components/context/AuthenticationProvider.jsx";
 
 function InquiryView(props) {
   const { id } = useParams();
@@ -15,6 +16,7 @@ function InquiryView(props) {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { hasAccess } = useContext(AuthenticationContext);
 
   useEffect(() => {
     axios.get(`/api/cs/inquiry/view/${id}`).then((res) => {
@@ -62,26 +64,30 @@ function InquiryView(props) {
           <button
             type={"button"}
             className={"btn btn-dark-outline"}
-            onClick={() => setBackToListModalOpen(true)}
+            onClick={() => navigate(`/cs/inquiry/list`)}
           >
             목록
           </button>
 
-          <button
-            type={"button"}
-            className={"btn btn-dark"}
-            onClick={() => setEditModalOpen(true)}
-          >
-            수정
-          </button>
+          {hasAccess(inquiry.writer) && (
+            <button
+              type={"button"}
+              className={"btn btn-dark"}
+              onClick={() => setEditModalOpen(true)}
+            >
+              수정
+            </button>
+          )}
 
-          <button
-            type={"button"}
-            className={"btn btn-warning"}
-            onClick={() => setDeleteModalOpen(true)}
-          >
-            삭제
-          </button>
+          {hasAccess(inquiry.writer) && (
+            <button
+              type={"button"}
+              className={"btn btn-warning"}
+              onClick={() => setDeleteModalOpen(true)}
+            >
+              삭제
+            </button>
+          )}
         </div>
 
         <table className={"table-view"}>
@@ -105,15 +111,6 @@ function InquiryView(props) {
           </tbody>
         </table>
       </div>
-
-      {/* 목록 modal */}
-      <Modal
-        isOpen={backToListModalOpen}
-        onClose={() => setBackToListModalOpen(false)}
-        onConfirm={() => navigate(`/cs/inquiry/add`)}
-        message="목록으로 돌아가면 작성한 내용이 사라집니다."
-        buttonMessage="목록"
-      />
 
       {/* 수정 modal */}
       <Modal
