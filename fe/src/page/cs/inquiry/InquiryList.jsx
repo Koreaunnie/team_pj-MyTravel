@@ -80,7 +80,7 @@ function InquiryList(props) {
                 ) : (
                   <td>{inquiry.title}</td>
                 )}
-                <td>{inquiry.writer}</td>
+                <td>{inquiry.writerNickname}</td>
                 <td>{inquiry.updated}</td>
               </tr>
             ))}

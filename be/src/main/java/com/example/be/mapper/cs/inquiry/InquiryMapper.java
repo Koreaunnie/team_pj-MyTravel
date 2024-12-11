@@ -54,4 +54,12 @@ public interface InquiryMapper {
             LIMIT 5
             """)
     List<Inquiry> selectInquiryForIndex();
+
+    // 회원 닉네임 변경 시 문의글 닉네임도 변경
+    @Update("""
+            UPDATE inquiry 
+                SET writer_nickname = #{writerNickname}
+            WHERE writer = #{writer}
+            """)
+    int updateWriterNickname(Inquiry inquiry);
 }

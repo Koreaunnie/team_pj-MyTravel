@@ -39,4 +39,10 @@ public class InquiryService {
     public List<Inquiry> getInquiry() {
         return mapper.selectInquiryForIndex();
     }
+
+    // 회원 닉네임 변경 시 문의글 닉네임도 변경
+    public boolean updateWriterNickname(Inquiry inquiry) {
+        int cnt = mapper.updateWriterNickname(inquiry);
+        return cnt == 1;
+    }
 }
