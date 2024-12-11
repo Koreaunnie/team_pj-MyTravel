@@ -71,8 +71,8 @@ public class CommunityController {
         service.commentDelete(id);
     }
 
-    @PutMapping("comment/edit")
-    public void commentEdit(@RequestBody CommunityComment communityComment, Authentication auth) {
-        service.updateComment(communityComment, auth);
+    @PutMapping("comment/edit/{id}")
+    public void commentEdit(@RequestBody CommunityComment communityComment, @PathVariable Integer id, Authentication auth) {
+        service.updateComment(communityComment, id, auth);
     }
 }

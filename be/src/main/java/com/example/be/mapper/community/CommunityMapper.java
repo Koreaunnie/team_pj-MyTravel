@@ -165,7 +165,7 @@ public interface CommunityMapper {
             SET comment=#{comment}
             WHERE id=#{id}
             """)
-    int updateCommunityComment(CommunityComment communityComment);
+    int updateCommunityComment(String comment, Integer id);
 
     @Select("""
             SELECT nickname

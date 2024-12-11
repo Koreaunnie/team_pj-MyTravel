@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import { Box, HStack, Image, Input, Stack, Textarea } from "@chakra-ui/react";
+import {
+  Box,
+  DialogTitle,
+  HStack,
+  Image,
+  Input,
+  Stack,
+  Textarea,
+} from "@chakra-ui/react";
 import { Field } from "../../components/ui/field.jsx";
 import { Button } from "../../components/ui/button.jsx";
 import {
@@ -16,6 +24,7 @@ import {
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import CommunityList from "./CommunityList.jsx";
 import { FiMessageSquare } from "react-icons/fi";
+import { LuPencilLine } from "react-icons/lu";
 
 function ImageFileView({ files }) {
   return (
@@ -40,6 +49,7 @@ function CommunityView(props) {
   const [commentList, setCommentList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [commentId, setCommentId] = useState("");
+  const [commentContent, setCommentContent] = useState("");
 
   useEffect(() => {
     axios.get(`/api/community/view/${id}`, { id }).then((e) => {
@@ -64,15 +74,34 @@ function CommunityView(props) {
         comment,
         communityId: community.id,
       })
-      .then(navigate(`/community/view/${id}`))
-      .finally(setLoading(false));
+      .then(navigate(`/community/view/${id}/`));
   };
 
   const handleCommentDeleteClick = (id) => {
     axios.delete(`/api/community/comment/delete/${id}`);
   };
 
-  const handleCommentEditClick = () => {};
+  const fetchComments = () => {
+    axios
+      .get(`/api/community/view/${id}`)
+      .then((res) => {
+        setCommentList(res.data.commentList);
+      })
+      .catch((err) => console.error(err));
+  };
+  const handleCommentChange = (id, value) => {
+    setCommentContent((prev) => ({ ...prev, [id]: value }));
+  };
+  const handleCommentUpdateClick = (id) => {
+    const updatedComment = commentContent[id]; // 수정된 댓글 가져오기
+    axios
+      .put(`/api/community/comment/edit/${id}`, { comment: updatedComment })
+      .then(() => {
+        // 댓글 목록 갱신
+        fetchComments();
+      })
+      .catch((err) => console.error(err));
+  };
 
   return (
     <div>
@@ -159,7 +188,46 @@ function CommunityView(props) {
                         <Input value={list.comment} readOnly />
                       </Stack>
                       {/* TODO : 권한받은 유저만 보이게 */}
-                      <Button onClick={handleCommentEditClick}>수정</Button>
+                      <DialogRoot>
+                        <DialogTrigger asChild>
+                          <Button variant="outline">수정</Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>댓글 수정</DialogTitle>
+                          </DialogHeader>
+                          <DialogBody pb="4">
+                            <Stack gap="4">
+                              <Field>
+                                <HStack>
+                                  <LuPencilLine /> 수정하기
+                                </HStack>
+                                <Textarea
+                                  defaultValue={list.comment} // 기존 댓글 내용 표시
+                                  onChange={
+                                    (e) =>
+                                      handleCommentChange(
+                                        list.id,
+                                        e.target.value,
+                                      ) // 변경 이벤트 핸들러
+                                  }
+                                  placeholder="내용을 입력해주세요."
+                                />
+                              </Field>
+                            </Stack>
+                          </DialogBody>
+                          <DialogFooter>
+                            <DialogActionTrigger asChild>
+                              <Button variant="outline">취소</Button>
+                            </DialogActionTrigger>
+                            <Button
+                              onClick={() => handleCommentUpdateClick(list.id)}
+                            >
+                              수정
+                            </Button>
+                          </DialogFooter>
+                        </DialogContent>
+                      </DialogRoot>
                       <DialogRoot>
                         <DialogTrigger>
                           <Button>삭제</Button>

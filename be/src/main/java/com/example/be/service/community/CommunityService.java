@@ -162,8 +162,10 @@ public class CommunityService {
         mapper.deleteCommentByCommentId(id);
     }
 
-    public void updateComment(CommunityComment communityComment, Authentication auth) {
+    public void updateComment(CommunityComment communityComment, Integer id, Authentication auth) {
+        String comment = communityComment.getComment();
+        System.out.println(comment);
 //        TODO : 권한이 있을 경우 수정 가능, 권한이 없을 경우 toaster 로 수정 불가
-        mapper.updateCommunityComment(communityComment);
+        mapper.updateCommunityComment(comment, id);
     }
 }

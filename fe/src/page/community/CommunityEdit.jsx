@@ -45,7 +45,6 @@ function CommunityEdit(props) {
   const handleDeleteFileClick = (file) => {
     setRemoveFiles([...removeFiles, file.fileName]);
   };
-  console.log(removeFiles);
 
   return (
     <div>
