@@ -97,6 +97,10 @@
     display: flex;
 }
 
+.cs .cs-wrap .inquiry-container ul .secret {
+    color: var(--font-gray-color);
+}
+
 .cs .cs-wrap .inquiry-container ul .secret .icon {
     margin-right: 5px;
     margin-top: 11px
