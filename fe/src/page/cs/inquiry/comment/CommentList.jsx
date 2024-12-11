@@ -1,6 +1,7 @@
 import "./Comment.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { toaster } from "../../../../components/ui/toaster.jsx";
 
 export function CommentList({ inquiryId }) {
   const [commentList, setCommentList] = useState([]);
@@ -23,17 +24,21 @@ export function CommentList({ inquiryId }) {
     setNewComment(currentComment);
   }
 
-  function handleSaveButton(commentId) {
+  function handleSaveButton(id) {
     setProcessing(true);
     axios
       .put(`/api/cs/inquiry/comment/edit`, {
-        id: commentId,
+        id: id,
         comment: newComment,
       })
       .then((res) => {
         res.data;
         setEditingCommentID(null);
         setNewComment("");
+        toaster.create({
+          type: res.data.message.type,
+          description: res.data.message.text,
+        });
       })
       .catch((error) => {
         console.error("댓글 수정 실패:", error);
@@ -45,9 +50,17 @@ export function CommentList({ inquiryId }) {
 
   function handleDeleteButton(id) {
     setProcessing(true);
-    axios.delete(`/api/cs/inquiry/comment/delete/${id}`).finally(() => {
-      setProcessing(false);
-    });
+    axios
+      .delete(`/api/cs/inquiry/comment/delete/${id}`)
+      .then((res) => {
+        toaster.create({
+          type: res.data.message.type,
+          description: res.data.message.text,
+        });
+      })
+      .finally(() => {
+        setProcessing(false);
+      });
   }
 
   return (
