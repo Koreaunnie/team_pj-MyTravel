@@ -3,7 +3,7 @@ USE teamPrj1126;
 CREATE TABLE inquiry
 (
     id              INT AUTO_INCREMENT PRIMARY KEY,
-    writer          VARCHAR(30)  NOT NULL REFERENCES member (email),
+    writer          VARCHAR(30)  NOT NULL REFERENCES member (email) ON DELETE CASCADE,
     writer_nickname VARCHAR(20)  NOT NULL,
     category        VARCHAR(20)  NOT NULL,
     title           VARCHAR(50)  NOT NULL,
@@ -18,10 +18,12 @@ DROP TABLE inquiry;
 SHOW CREATE TABLE inquiry;
 
 ALTER TABLE `inquiry`
-    DROP COLUMN `writer`;
+    DROP FOREIGN KEY `inquiry_ibfk_1`;
 
 ALTER TABLE inquiry
-    ADD COLUMN writer VARCHAR(30) NOT NULL REFERENCES member (email);
+    MODIFY writer VARCHAR(30) NOT NULL,
+    ADD CONSTRAINT inquiry_ibfk_1
+        FOREIGN KEY (writer) REFERENCES member (email) ON DELETE CASCADE;
 
 ALTER TABLE inquiry
-    ADD COLUMN writer_nickname VARCHAR(20) NOT NULL AFTER writer;
+    MODIFY COLUMN writer VARCHAR(30) NOT NULL;
