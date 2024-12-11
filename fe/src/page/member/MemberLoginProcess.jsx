@@ -24,13 +24,16 @@ export function MemberLoginProcess() {
             "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
           },
         })
-        .then((tokenData) => {
+        .then((response) => {
+          const tokenData = response.data;
+          console.log(tokenData.access_token);
           if (tokenData.access_token) {
-            //accessToken 저장
+            //accessToken storage에 저장 => 고쳐야 함. 이거말고 로그인 정보 token을 보내야지
             localStorage.setItem("accessToken", tokenData.access_token);
 
+            //사용자 정보 가져오기
             axios
-              .get("https://kapi.kakao.com/v2/user/me", {
+              .post("https://kapi.kakao.com/v2/user/me", {
                 headers: {
                   Authorization: `Bearer ${tokenData.access_token}`,
                   "Content-Type":
