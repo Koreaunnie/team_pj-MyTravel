@@ -12,7 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommentService {
     final CommentMapper mapper;
 
-    public void add(Comment comment) {
-        mapper.insert(comment);
+    public boolean add(Comment comment) {
+        int cnt = mapper.insert(comment);
+        return cnt == 1;
     }
 }

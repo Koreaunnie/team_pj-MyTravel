@@ -1,6 +1,7 @@
 import "./Comment.css";
 import axios from "axios";
 import { useState } from "react";
+import { toaster } from "../../../../components/ui/toaster.jsx";
 
 export function Comment(props) {
   const { inquiryId } = props;
@@ -13,10 +14,17 @@ export function Comment(props) {
         comment,
       })
       .then((res) => {
-        console.log("댓글 저장 성공:", res);
+        toaster.create({
+          type: res.data.message.type,
+          description: res.data.message.text,
+        });
+        setComment("");
       })
-      .catch((error) => {
-        console.error("댓글 저장 실패:", error);
+      .catch((e) => {
+        toaster.create({
+          type: e.response.data.message.type,
+          description: e.response.data.message.text,
+        });
       });
   }
 

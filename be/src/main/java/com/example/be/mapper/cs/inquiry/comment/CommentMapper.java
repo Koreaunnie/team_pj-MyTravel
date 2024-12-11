@@ -13,5 +13,5 @@ public interface CommentMapper {
             VALUES (#{inquiryId}, #{memberEmail}, #{memberNickname}, #{comment}, NOW())
             """)
     @Options(keyProperty = "id", useGeneratedKeys = true)
-    void insert(Comment comment);
+    int insert(Comment comment);
 }
