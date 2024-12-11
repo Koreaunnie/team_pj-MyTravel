@@ -16,7 +16,7 @@ function InquiryView(props) {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const { nickname } = useContext(AuthenticationContext);
+  const { hasAccess } = useContext(AuthenticationContext);
 
   useEffect(() => {
     axios.get(`/api/cs/inquiry/view/${id}`).then((res) => {
@@ -69,7 +69,7 @@ function InquiryView(props) {
             목록
           </button>
 
-          {nickname === inquiry.writer && (
+          {hasAccess(inquiry.writer) && (
             <button
               type={"button"}
               className={"btn btn-dark"}
@@ -79,7 +79,7 @@ function InquiryView(props) {
             </button>
           )}
 
-          {nickname === inquiry.writer && (
+          {hasAccess(inquiry.writer) && (
             <button
               type={"button"}
               className={"btn btn-warning"}
