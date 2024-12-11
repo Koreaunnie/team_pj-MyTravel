@@ -68,19 +68,6 @@ function CommunityView(props) {
     ///community/edit/18
   };
 
-  const handleCommentSaveClick = () => {
-    axios
-      .post(`/api/community/comment/write`, {
-        comment,
-        communityId: community.id,
-      })
-      .then(navigate(`/community/view/${id}/`));
-  };
-
-  const handleCommentDeleteClick = (id) => {
-    axios.delete(`/api/community/comment/delete/${id}`);
-  };
-
   const fetchComments = () => {
     axios
       .get(`/api/community/view/${id}`)
@@ -89,6 +76,21 @@ function CommunityView(props) {
       })
       .catch((err) => console.error(err));
   };
+
+  const handleCommentSaveClick = () => {
+    axios
+      .post(`/api/community/comment/write`, {
+        comment,
+        communityId: community.id,
+      })
+      .then(() => fetchComments())
+      .finally(() => setComment(""));
+  };
+
+  const handleCommentDeleteClick = (id) => {
+    axios.delete(`/api/community/comment/delete/${id}`);
+  };
+
   const handleCommentChange = (id, value) => {
     setCommentContent((prev) => ({ ...prev, [id]: value }));
   };
