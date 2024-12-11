@@ -88,7 +88,9 @@ function CommunityView(props) {
   };
 
   const handleCommentDeleteClick = (id) => {
-    axios.delete(`/api/community/comment/delete/${id}`);
+    axios.delete(`/api/community/comment/delete/${id}`).then(() => {
+      fetchComments();
+    });
   };
 
   const handleCommentChange = (id, value) => {
@@ -222,11 +224,15 @@ function CommunityView(props) {
                             <DialogActionTrigger asChild>
                               <Button variant="outline">취소</Button>
                             </DialogActionTrigger>
-                            <Button
-                              onClick={() => handleCommentUpdateClick(list.id)}
-                            >
-                              수정
-                            </Button>
+                            <DialogActionTrigger>
+                              <Button
+                                onClick={() =>
+                                  handleCommentUpdateClick(list.id)
+                                }
+                              >
+                                수정
+                              </Button>
+                            </DialogActionTrigger>
                           </DialogFooter>
                         </DialogContent>
                       </DialogRoot>
@@ -240,15 +246,13 @@ function CommunityView(props) {
                             </DialogBody>
                             <DialogFooter>
                               <Button>취소</Button>
-                              <DialogActionTrigger>
-                                <Button
-                                  onClick={() =>
-                                    handleCommentDeleteClick(list.id)
-                                  }
-                                >
-                                  삭제
-                                </Button>
-                              </DialogActionTrigger>
+                              <Button
+                                onClick={() =>
+                                  handleCommentDeleteClick(list.id)
+                                }
+                              >
+                                삭제
+                              </Button>
                             </DialogFooter>
                           </DialogContent>
                         </DialogTrigger>
