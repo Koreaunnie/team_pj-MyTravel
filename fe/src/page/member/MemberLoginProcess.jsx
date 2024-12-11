@@ -31,22 +31,28 @@ export function MemberLoginProcess() {
             //accessToken storage에 저장 => 고쳐야 함. 이거말고 로그인 정보 token을 보내야지
             localStorage.setItem("accessToken", tokenData.access_token);
 
-            //사용자 정보 가져오기
+            //사용자 정보 요청
             axios
-              .post("https://kapi.kakao.com/v2/user/me", {
-                headers: {
-                  Authorization: `Bearer ${tokenData.access_token}`,
-                  "Content-Type":
-                    "application/x-www-form-urlencoded;charset=utf-8",
+              .post(
+                "https://kapi.kakao.com/v2/user/me",
+                {},
+                {
+                  headers: {
+                    Authorization: `Bearer ${tokenData.access_token}`,
+                    "Content-Type":
+                      "application/x-www-form-urlencoded;charset=utf-8",
+                  },
                 },
-              })
-              .then((userInfo) => {
-                const nickname = userInfo.kakao_account.profile.nickname;
-                const imageSrc =
-                  userInfo.kakao_account.profile.profile_image_url;
+              )
+              .then((userResponse) => {
+                //사용자 정보 읽기
+                const userInfo = userResponse.data;
+                const nickname = userInfo.properties.nickname;
+                // const imageSrc =
+                //   userInfo.kakao_account.profile.profile_image_url;
 
                 console.log("Nickname:", nickname);
-                console.log("Profile Image URL:", imageSrc);
+                // console.log("Profile Image URL:", imageSrc);
 
                 //백엔드 전달
                 axios
@@ -55,8 +61,8 @@ export function MemberLoginProcess() {
                     refreshToken: tokenData.refresh_token,
                     expiresIn: tokenData.expires_in,
                     nickname,
-                    imageSrc,
-                    tokenType: tokenData.brearer,
+                    // imageSrc,
+                    tokenType: tokenData.token_type,
                   })
                   .then((r) => {
                     if (!r.ok) {
