@@ -32,8 +32,8 @@ function PaymentHistory(props) {
               <th>상품</th>
               <th>위치</th>
               <th>가격</th>
-              <th>통화</th>
               <th>여행 날짜</th>
+              <th>리뷰</th>
             </tr>
           </thead>
           <tbody>
@@ -44,11 +44,16 @@ function PaymentHistory(props) {
                   <td>{tour.paymentId}</td>
                   <td>{tour.product}</td>
                   <td>{tour.location}</td>
-                  <td>{tour.price}</td>
-                  <td>{tour.currency}</td>
+                  <td>
+                    {tour.price}{" "}
+                    {tour.currency === "CURRENCY_KRW" ? "원" : tour.currency}
+                  </td>
                   <td>
                     {tour.startDate}
                     <br />~{tour.endDate}
+                  </td>
+                  <td>
+                    <button className={"btn btn-dark"}>후기 작성</button>
                   </td>
                 </tr>
               </React.Fragment>
