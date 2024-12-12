@@ -16,7 +16,7 @@ import {
 } from "../../components/ui/dialog.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { ProfileImageView } from "../../Image/ProfileImageView.jsx";
-import AuthenticationProvider from "../../components/context/AuthenticationProvider.jsx";
+import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 
 function MemberInfo(props) {
   const [member, setMember] = useState(null);
@@ -24,7 +24,7 @@ function MemberInfo(props) {
   const [open, setOpen] = useState(false);
   const { email } = useParams();
   const navigate = useNavigate();
-  const { logout } = useContext(AuthenticationProvider);
+  const { logout } = useContext(AuthenticationContext);
 
   useEffect(() => {
     axios.get(`/api/member/${email}`).then((res) => setMember(res.data));
