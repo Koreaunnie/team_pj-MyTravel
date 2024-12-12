@@ -196,6 +196,12 @@ public interface CommunityMapper {
             """)
     Integer countLikesByCommunityId(Integer id);
 
+    @Delete("""
+            DELETE FROM community_like
+            WHERE community_id=#{id}
+            """)
+    int deleteLikeByCommunityId(Integer id);
+
 
 //    @Select("""
 //            SELECT views

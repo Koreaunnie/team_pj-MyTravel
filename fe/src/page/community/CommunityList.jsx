@@ -34,8 +34,6 @@ function CommunityList(props) {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [countCommunity, setCountCommunity] = useState("");
-  const [numberOfFiles, setNumberOfFiles] = useState("");
-  const [numberOfComments, setNumberOfComments] = useState("");
 
   useEffect(() => {
     axios.get(`/api/community/list?${searchParams.toString()}`).then((res) => {

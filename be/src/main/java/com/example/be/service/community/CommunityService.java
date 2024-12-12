@@ -180,6 +180,8 @@ public class CommunityService {
         // 댓글 지우기
         mapper.deleteCommentByCommunityId(id);
         // 좋아요 지우기
+        mapper.deleteLikeByCommunityId(id);
+
         mapper.deleteCommunity(id);
     }
 
