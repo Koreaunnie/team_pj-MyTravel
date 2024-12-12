@@ -1,5 +1,8 @@
 import React from "react";
 
+// google personal api key
+const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+
 function GoogleMapsNotUse(props) {
   // let map;
   // async function initMap() {
@@ -24,7 +27,7 @@ function GoogleMapsNotUse(props) {
   //     title: "Uluru",
   //   });
   // }
-  // initMap();
+  // initMap();initMap
 
   // const autoCompleteHandler = () => {
   //   // data는 검색결과에 대한 간략한 정보
@@ -33,18 +36,17 @@ function GoogleMapsNotUse(props) {
   //   // ex) setPlace(data.블라블라)
   // };
 
-  // service.getPlacePredictions(
-  //   {
-  //     input: "pizza near Syd",
-  //     sessionToken: sessionToken,
-  //   },
-  //   handlePredictions,
-  // );
-
   // window.initAutocomplete = initAutocomplete;
 
   return (
-    <div>
+    <div style={{ border: "1px solid red", width: "100%", height: "500px" }}>
+      {/*<GoogleMap*/}
+      {/*  mapContainerStyle={mapContainerStyle}*/}
+      {/*  zoom={10}*/}
+      {/*  center={center}*/}
+      {/*>*/}
+      {/*  <Marker position={center} />*/}
+      {/*</GoogleMap>*/}
       {/*<GooglePlacesAutocomplete*/}
       {/*  minLength={2} //최소 검색 글자 수*/}
       {/*  placeholder="장소를 입력해주세요." // input 표시 값*/}

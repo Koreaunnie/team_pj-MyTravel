@@ -1,20 +1,12 @@
 import React, { useEffect } from "react";
 import { GoogleMapsSearchBox } from "./GoogleMapsSearchBox.jsx";
 import { Loader } from "@googlemaps/js-api-loader";
+import { GoogleMapsSearchedPlace } from "./GoogleMapsSearchedPlace.jsx";
 
 // google personal api key
 const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
 
 function GoogleMapsContainer(props) {
-  let mapObject;
-  mapObject = {
-    center: {
-      lat: 37,
-      lng: 128,
-    },
-    zoom: 7,
-  };
-
   useEffect(() => {
     const loader = new Loader({
       apiKey: apiKey,
@@ -33,10 +25,20 @@ function GoogleMapsContainer(props) {
       });
   });
 
+  let mapObject;
+  mapObject = {
+    center: {
+      lat: 37,
+      lng: 128,
+    },
+    zoom: 7,
+  };
+
   return (
     <div>
       <GoogleMapsSearchBox />
       <div id="map" className={"google-maps"} />
+      <GoogleMapsSearchedPlace value={mapObject} />
     </div>
   );
 }

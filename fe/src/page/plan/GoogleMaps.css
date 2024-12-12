@@ -1,4 +1,4 @@
-.google-maps {
+.google-maps, .map-container {
     width: 500px;
     height: 300px;
 }

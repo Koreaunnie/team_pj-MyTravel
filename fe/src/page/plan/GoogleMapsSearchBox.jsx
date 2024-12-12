@@ -1,13 +1,17 @@
 import "./GoogleMaps.css";
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { useCombobox } from "downshift";
+import { PlaceIdContext } from "./GoogleMapsPlaceIdContext.jsx";
 
-export function GoogleMapsSearchBox() {
+export function GoogleMapsSearchBox(props) {
+  const [placeId, setPlaceId] = useContext(PlaceIdContext);
+
   const [searchResult, setSearchResult] = useState({
     autocompleteSuggestions: [], // 구글맵이 제안하는 정보들을 배열로 저장
     status: "", // 구글맵의 status 저장
   });
 
+  const google = window.google;
   const service = new google.maps.places.AutocompleteService();
 
   // 구글 비용 발생 줄이는 세션 토큰 (1 clicks 0.017 USD)
@@ -19,7 +23,7 @@ export function GoogleMapsSearchBox() {
   const { getInputProps, getItemProps, getMenuProps } = useCombobox({
     items: searchResult.autocompleteSuggestions,
     onInputValueChange: ({ inputValue }) => {
-      // 검색 중인 내역 한번에 지우기
+      // 검색창에 내역 지우면 아래 주소 사라지게
       if (inputValue === "") {
         setSearchResult({
           autocompleteSuggestions: [],
@@ -53,7 +57,6 @@ export function GoogleMapsSearchBox() {
               },
               address: {
                 string: prediction.structured_formatting.secondary_text,
-                // section 7.3
                 // length:
                 //   prediction.structured_formatting
                 //     .secondary_text_matched_substrings[0]["length"],
@@ -129,29 +132,33 @@ export function GoogleMapsSearchBox() {
     <div>
       <input type="search" {...getInputProps()} />
 
-      <div {...getMenuProps()}>
+      <ul {...getMenuProps()}>
         {searchResult.autocompleteSuggestions.length > 0
           ? searchResult.autocompleteSuggestions.map((item, index) => (
-              <ul
+              <li
                 key={item.id}
                 {...getItemProps({
                   item,
                   index,
+                  onClick: (event) => {
+                    setPlaceId(item.id);
+                    console.log(item.id);
+                    console.log(setPlaceId());
+                  },
                 })}
               >
-                <li
+                <p
                   dangerouslySetInnerHTML={{ __html: boldUserText(item.name) }}
-                />
-                <li
+                ></p>
+                <p
                   dangerouslySetInnerHTML={{
                     __html: boldUserText(item.address),
                   }}
-                />
-                <SearchErrorMessage status={searchResult.status} />
-              </ul>
+                ></p>
+              </li>
             ))
           : null}
-      </div>
+      </ul>
     </div>
   );
 }
