@@ -31,11 +31,15 @@ public class KakaoController {
       files = kakaoService.convertUrlToMultipartFile(kakaoImageSrc);
     }
 
-    System.out.println("카카오 변환 파일:" + files);
-
+    //회원가입
     if (kakaoService.add(member, files)) {
-      return ResponseEntity.ok().body(Map.of("message",
-              Map.of("type", "success", "text", "회원 가입 완료")));
+
+      //성공 시 토큰 생성
+      String token = kakaoService.token(member.getEmail());
+      System.out.println("내 따끈따끈 토큰" + token);
+
+      //프런트에 전달
+      return ResponseEntity.ok(Map.of("token", token));
     } else {
       return ResponseEntity.internalServerError().body(Map.of("message",
               Map.of("type", "error", "text", "회원 가입 중 문제가 발생하였습니다.")));
@@ -45,9 +49,10 @@ public class KakaoController {
   @PostMapping("/login/kakao")
   public ResponseEntity<Map<String, Object>> kakaoLogin(@RequestBody KakaoInfo request) {
 //    System.out.println("받은 정보:" + request);
+    String email = request.getKakaoId();
 
     //토큰 생성해옴
-    String token = kakaoService.token(request);
+    String token = kakaoService.token(email);
 
     if (token != null) {
       //토큰 있으면 토큰 반환

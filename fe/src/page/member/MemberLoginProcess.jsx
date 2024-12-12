@@ -68,6 +68,7 @@ export function MemberLoginProcess() {
                   })
                   .then((r) => r.data)
                   .then((data) => {
+                    //데이터 존재할 시 로그인 처리 및 홈페이지로 이동
                     console.log("사용자 데이터", data);
                     navigate("/");
                     login(data.token);

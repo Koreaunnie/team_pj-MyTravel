@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { toaster } from "../../components/ui/toaster.jsx";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./Member.css";
 import { Image } from "@chakra-ui/react";
 import randomString from "../../components/login/RandomString.jsx";
+import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 
 function MemberSignupKakao() {
   const [phone, setPhone] = useState("");
@@ -16,6 +17,7 @@ function MemberSignupKakao() {
   const [nickname, setNickname] = useState(kakaoNickname);
   const [name, setName] = useState(kakaoNickname);
   const [files, setFiles] = useState([]);
+  const { login } = useContext(AuthenticationContext);
 
   function handleKakaoSignupClick() {
     axios
@@ -28,13 +30,12 @@ function MemberSignupKakao() {
         files,
         kakaoImageSrc,
       })
-      .then((res) => {
-        const message = res.data.message;
-        toaster.create({
-          type: message.type,
-          description: message.text,
-        });
+      .then((res) => res.data)
+      .then((data) => {
         //로그인 처리
+        console.log("사용자 데이터", data);
+        login(data.token);
+        navigate("/");
       })
       .catch((e) => {
         const message = e.response.data.message;

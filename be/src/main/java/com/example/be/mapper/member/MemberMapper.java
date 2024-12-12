@@ -113,5 +113,5 @@ public interface MemberMapper {
           UPDATE member
           SET kakao=TRUE
           WHERE email=#{email}""")
-  int setKakaoAccount(String email);
+  int setAsKakaoAccount(String email);
 }
