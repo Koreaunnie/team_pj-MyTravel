@@ -194,7 +194,8 @@ public interface CommunityMapper {
             FROM community_like
             WHERE community_id=#{id}
             """)
-    Integer countLikeCommunity(Integer id);
+    Integer countLikesByCommunityId(Integer id);
+
 
 //    @Select("""
 //            SELECT views

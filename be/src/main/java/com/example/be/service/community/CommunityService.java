@@ -57,12 +57,17 @@ public class CommunityService {
             }
             Integer countComments = mapper.countCommentsByCommunityId(community.getId());
             if (countComments != null) {
-                community.setNumberOfComments(countComments + "개");
+                community.setNumberOfComments(countComments + "");
+            }
+            Integer countLikes = mapper.countLikesByCommunityId(community.getId());
+            if (countLikes != null) {
+                community.setNumberOfLikes(countLikes);
+            } else {
+                community.setNumberOfLikes(0);
             }
         }
 
         Integer countCommunity = mapper.countAllCommunity();
-
 
         return Map.of("list", list, "countCommunity", countCommunity);
     }
@@ -97,7 +102,7 @@ public class CommunityService {
 
 
         Map<String, Object> viewer = mapper.viewCommunity(id);
-        Integer countLike = mapper.countLikeCommunity(id);
+        Integer countLike = mapper.countLikesByCommunityId(id);
         viewer.put("like", countLike);
         // 게시글 좋아요 수 추가
 
