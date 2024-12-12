@@ -74,7 +74,7 @@ function MemberSignupKakao() {
     <div className={"body-narrow"}>
       <h1>카카오 회원 가입</h1>
 
-      <form className={"member-form"}>
+      <div className={"member-form"}>
         <fieldset>
           <ul>
             <li>
@@ -154,7 +154,7 @@ function MemberSignupKakao() {
             가입
           </button>
         </div>
-      </form>
+      </div>
     </div>
   );
 }
