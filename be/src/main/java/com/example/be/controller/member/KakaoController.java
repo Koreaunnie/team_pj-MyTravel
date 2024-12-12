@@ -33,13 +33,12 @@ public class KakaoController {
 
     //회원가입
     if (kakaoService.add(member, files)) {
-
       //성공 시 토큰 생성
       String token = kakaoService.token(member.getEmail());
-      System.out.println("내 따끈따끈 토큰" + token);
 
       //프런트에 전달
-      return ResponseEntity.ok(Map.of("token", token));
+      return ResponseEntity.ok(Map.of("token", token, "message",
+              Map.of("type", "success", "text", "카카오 연동에 성공했습니다.")));
     } else {
       return ResponseEntity.internalServerError().body(Map.of("message",
               Map.of("type", "error", "text", "회원 가입 중 문제가 발생하였습니다.")));
@@ -56,7 +55,8 @@ public class KakaoController {
 
     if (token != null) {
       //토큰 있으면 토큰 반환
-      return ResponseEntity.ok(Map.of("token", token));
+      return ResponseEntity.ok(Map.of("token", token, "message",
+              Map.of("type", "success", "text", "로그인 되었습니다.")));
     } else {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }

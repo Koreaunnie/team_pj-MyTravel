@@ -9,7 +9,7 @@ import { AuthenticationContext } from "../../components/context/AuthenticationPr
 
 function MemberSignupKakao() {
   const [phone, setPhone] = useState("");
-  const [nicknameCheck, setNicknameCheck] = useState(true);
+  const [nicknameCheck, setNicknameCheck] = useState(false);
   const navigate = useNavigate();
   const password = randomString();
   const location = useLocation();
@@ -20,6 +20,15 @@ function MemberSignupKakao() {
   const { login } = useContext(AuthenticationContext);
 
   function handleKakaoSignupClick() {
+    // 닉네임 중복 확인 여부를 체크
+    if (!nicknameCheck) {
+      toaster.create({
+        type: "warning",
+        description: "닉네임 중복 확인이 필요합니다.",
+      });
+      return; // 백엔드 요청 중단
+    }
+
     axios
       .postForm("/api/member/signup/kakao", {
         email: kakaoId,
@@ -32,13 +41,21 @@ function MemberSignupKakao() {
       })
       .then((res) => res.data)
       .then((data) => {
+        const message = data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
         //로그인 처리
         console.log("사용자 데이터", data);
         login(data.token);
         navigate("/");
       })
       .catch((e) => {
-        const message = e.response.data.message;
+        const message = e.response?.data || {
+          type: "error",
+          text: "서버에서 에러가 발생했습니다.",
+        };
         toaster.create({
           type: message.type,
           description: message.text,
@@ -62,7 +79,7 @@ function MemberSignupKakao() {
       });
   };
 
-  let nicknameCheckButtonDisabled = nickname == null;
+  const nicknameCheckButtonDisabled = !nickname;
 
   let disabled = true;
 

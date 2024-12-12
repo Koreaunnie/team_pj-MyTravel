@@ -2,6 +2,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import axios from "axios";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
+import { toaster } from "../../components/ui/toaster.jsx";
 
 export function MemberLoginProcess() {
   const [searchParams] = useSearchParams();
@@ -64,10 +65,14 @@ export function MemberLoginProcess() {
                   })
                   .then((r) => r.data)
                   .then((data) => {
+                    const message = data.message;
+                    toaster.create({
+                      type: message.type,
+                      description: message.text,
+                    });
                     //데이터 존재할 시 로그인 처리 및 홈페이지로 이동
-                    console.log("사용자 데이터", data);
-                    navigate("/");
                     login(data.token);
+                    navigate("/");
                   })
                   .catch(() => {
                     //기존 정보 없으면 kakao 회원 가입 추가
