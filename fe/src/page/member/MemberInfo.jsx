@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Box, Input, Stack } from "@chakra-ui/react";
 import { Field } from "../../components/ui/field.jsx";
 import axios from "axios";
@@ -16,6 +16,7 @@ import {
 } from "../../components/ui/dialog.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { ProfileImageView } from "../../Image/ProfileImageView.jsx";
+import AuthenticationProvider from "../../components/context/AuthenticationProvider.jsx";
 
 function MemberInfo(props) {
   const [member, setMember] = useState(null);
@@ -23,6 +24,7 @@ function MemberInfo(props) {
   const [open, setOpen] = useState(false);
   const { email } = useParams();
   const navigate = useNavigate();
+  const { logout } = useContext(AuthenticationProvider);
 
   useEffect(() => {
     axios.get(`/api/member/${email}`).then((res) => setMember(res.data));
@@ -43,7 +45,7 @@ function MemberInfo(props) {
           type: message.type,
           description: message.text,
         });
-        localStorage.removeItem("token");
+        logout();
         navigate(`/member/signup`);
       })
       .catch((e) => {
