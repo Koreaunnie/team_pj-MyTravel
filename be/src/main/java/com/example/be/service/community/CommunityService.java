@@ -36,6 +36,11 @@ public class CommunityService {
     @Value("${bucket.name}")
     String bucketName;
 
+
+    public List<Map<String, Object>> wholeList(String email) {
+        return mapper.wholeListUp(email);
+    }
+
     public Map<String, Object> list(Integer page, String searchType, String searchKeyword) {
 
         Integer pageList = (page - 1) * 10;
@@ -190,4 +195,5 @@ public class CommunityService {
 //        TODO : 권한이 있을 경우 수정 가능, 권한이 없을 경우 toaster 로 수정 불가
         mapper.updateCommunityComment(comment, id);
     }
+
 }

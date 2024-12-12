@@ -27,6 +27,11 @@ public class CommunityController {
         return service.list(page, searchType, searchKeyword);
     }
 
+    @GetMapping("wholeList/{email}")
+    public List<Map<String, Object>> wholeList(@PathVariable String email) {
+        return service.wholeList(email);
+    }
+
 
     @PostMapping("write")
     public void write(Community community, @RequestParam(value = "files[]", required = false) MultipartFile[] files, Authentication auth) {

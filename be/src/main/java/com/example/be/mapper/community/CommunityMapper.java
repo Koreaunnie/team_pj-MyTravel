@@ -181,6 +181,14 @@ public interface CommunityMapper {
             """)
     String findFileNameByFileNumber(Integer fileNumber);
 
+    @Select("""
+            SELECT c.id id, c.title title, c.inserted creationDate
+            FROM community c LEFT JOIN member m ON c.writer=m.nickname
+            WHERE m.email=#{email}
+            ORDER BY creationDate DESC
+            """)
+    List<Map<String, Object>> wholeListUp(String email);
+
 //    @Select("""
 //            SELECT views
 //            FROM community
