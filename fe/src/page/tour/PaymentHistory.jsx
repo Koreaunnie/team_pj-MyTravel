@@ -10,8 +10,13 @@ function PaymentHistory(props) {
   useEffect(() => {
     axios.get(`/api/payment/list/${email}`).then((res) => {
       setPaidList(res.data);
+      console.log(paidList);
     });
   }, []);
+
+  function handleRowClick(tourId) {
+    navigate(`/tour/view/${tourId}`);
+  }
 
   return (
     <div>
@@ -34,7 +39,7 @@ function PaymentHistory(props) {
           <tbody>
             {paidList.map((tour, index) => (
               <React.Fragment key={index}>
-                <tr key={tour.id}>
+                <tr key={tour.id} onClick={() => handleRowClick(tour.tourId)}>
                   <td>{tour.paidAt}</td>
                   <td>{tour.paymentId}</td>
                   <td>{tour.product}</td>
