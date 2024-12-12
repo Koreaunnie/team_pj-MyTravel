@@ -3,7 +3,7 @@ import { toaster } from "../../components/ui/toaster.jsx";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./Member.css";
-import { Image } from "@chakra-ui/react";
+import { Box, Image } from "@chakra-ui/react";
 import randomString from "../../components/login/RandomString.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 
@@ -78,7 +78,14 @@ function MemberSignupKakao() {
         <fieldset>
           <ul>
             <li>
-              <Image src={kakaoImageSrc} alt="프로필 사진" borderRadius="50%" />
+              <Box display={"flex"} justifyContent={"center"}>
+                <Image
+                  src={kakaoImageSrc}
+                  alt="프로필 사진"
+                  borderRadius="50%"
+                  boxSize="200px"
+                />
+              </Box>
               <label>프로필 사진 변경</label>
               <input
                 type={"file"}
