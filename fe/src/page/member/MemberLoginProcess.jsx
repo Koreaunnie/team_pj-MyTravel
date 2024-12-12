@@ -30,9 +30,6 @@ export function MemberLoginProcess() {
           const tokenData = response.data;
           console.log(tokenData.access_token);
           if (tokenData.access_token) {
-            //accessToken storage에 저장 => 고쳐야 함. 이거말고 로그인 정보 token을 보내야지
-            localStorage.setItem("accessToken", tokenData.access_token);
-
             //사용자 정보 요청
             axios
               .post(
