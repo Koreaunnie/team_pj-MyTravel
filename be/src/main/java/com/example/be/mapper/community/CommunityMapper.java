@@ -71,12 +71,12 @@ public interface CommunityMapper {
     List<String> selectFilesByCommunityId(int id);
 
     @Select("""
-            SELECT file_name
+            SELECT id
             FROM community_file
             WHERE community_id = #{id}
             ORDER BY id ASC
             """)
-    List<String> callCommunityFile(Integer id);
+    List<Integer> callCommunityFile(Integer id);
 
     @Select("""
             SELECT COUNT(*)
@@ -135,9 +135,9 @@ public interface CommunityMapper {
 
     @Delete("""
             DELETE FROM community_file
-            WHERE community_id=#{id} AND file_name=#{removeFile}
+            WHERE id=#{id}
             """)
-    int deleteFileByFileName(Integer id, String removeFiles);
+    int deleteFileById(Integer id);
 
     @Select("""
             SELECT id, comment, writer , inserted creationDate
@@ -173,6 +173,13 @@ public interface CommunityMapper {
             WHERE email = #{email}
             """)
     String findNickname(String email);
+
+    @Select("""
+            SELECT file_name
+            FROM community_file
+            WHERE id=#{fileNumber}
+            """)
+    String findFileNameByFileNumber(Integer fileNumber);
 
 //    @Select("""
 //            SELECT views

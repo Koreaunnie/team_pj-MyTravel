@@ -98,14 +98,16 @@ public class CommunityService {
 //        조회수가 안돼
 
         Map<String, Object> viewer = mapper.viewCommunity(id);
-        List<String> fileList = mapper.callCommunityFile(id);
+        List<Integer> fileList = mapper.callCommunityFile(id);
         List<Map<String, Object>> commentList = mapper.callCommunityComment(id);
         viewer.put("commentList", commentList);
         if (fileList.size() != 0) {
             List<Object> files = new ArrayList();
-            for (String fileName : fileList) {
+            for (Integer fileNumber : fileList) {
                 Map<String, Object> file = new HashMap<>();
+                String fileName = mapper.findFileNameByFileNumber(fileNumber);
                 String filePath = STR."\{imageSrcPrefix}/community/\{viewer.get("id").toString()}/\{fileName}";
+                file.put("id", fileNumber);
                 file.put("fileName", fileName);
                 file.put("filePath", filePath);
                 files.add(file);
@@ -117,12 +119,12 @@ public class CommunityService {
         }
     }
 
-    public void edit(Community community, List<String> removeFiles, MultipartFile[] uploadFiles, Authentication auth) {
+    public void edit(Community community, List<Integer> removeFiles, MultipartFile[] uploadFiles, Authentication auth) {
         mapper.editCommunity(community);
-        Integer id = community.getId();
 
-        for (String removeFile : removeFiles) {
-            mapper.deleteFileByFileName(id, removeFile);
+
+        for (Integer id : removeFiles) {
+            mapper.deleteFileById(id);
         }
     }
 
