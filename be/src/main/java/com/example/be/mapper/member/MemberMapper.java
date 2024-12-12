@@ -108,4 +108,10 @@ public interface MemberMapper {
           WHERE email=#{kakaoId};      
           """)
   int checkKakaoAccount(String kakaoId);
+
+  @Update("""
+          UPDATE member
+          SET kakao=TRUE
+          WHERE email=#{email}""")
+  int setKakaoAccount(String email);
 }

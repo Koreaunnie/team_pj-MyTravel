@@ -3,32 +3,49 @@ import { toaster } from "../../components/ui/toaster.jsx";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./Member.css";
+import { Image } from "@chakra-ui/react";
+import randomString from "../../components/login/RandomString.jsx";
 
 function MemberSignupKakao() {
-  const [nickname, setNickname] = useState("");
-  const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [emailCheck, setEmailCheck] = useState(false);
   const [nicknameCheck, setNicknameCheck] = useState(true);
   const navigate = useNavigate();
+  const password = randomString();
   const location = useLocation();
   const { kakaoId, kakaoNickname, kakaoImageSrc } = location.state || {};
-  const [files, setFiles] = useState([kakaoImageSrc]);
+  const [nickname, setNickname] = useState(kakaoNickname);
+  const [name, setName] = useState(kakaoNickname);
+  const [files, setFiles] = useState([]);
 
   function handleKakaoSignupClick() {
     axios
       .postForm("/api/member/signup/kakao", {
         email: kakaoId,
         nickname,
+        password,
         name,
         phone,
         files,
+        kakaoImageSrc,
       })
-      .then((res) => {})
-      .catch((e) => {});
+      .then((res) => {
+        const message = res.data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+        //로그인 처리
+      })
+      .catch((e) => {
+        const message = e.response.data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+      });
   }
 
-  const handleKakaoNicknameCheckClick = () => {
+  const handleKakaoNicknameCheck = () => {
     axios
       .get(`/api/member/check`, {
         params: { nickname },
@@ -44,14 +61,12 @@ function MemberSignupKakao() {
       });
   };
 
-  let nicknameCheckButtonDisabled = nickname.length === 0;
+  let nicknameCheckButtonDisabled = nickname == null;
 
   let disabled = true;
 
-  if (emailCheck) {
-    if (nicknameCheck && nickname != "") {
-      disabled = false;
-    }
+  if (nicknameCheck && nickname != "") {
+    disabled = false;
   }
 
   return (
@@ -62,8 +77,8 @@ function MemberSignupKakao() {
         <fieldset>
           <ul>
             <li>
-              <img src={kakaoImageSrc} alt="프로필 사진" />
-              <label>프로필 사진</label>
+              <Image src={kakaoImageSrc} alt="프로필 사진" borderRadius="50%" />
+              <label>프로필 사진 변경</label>
               <input
                 type={"file"}
                 onChange={(e) => setFiles(e.target.files)}
@@ -76,7 +91,6 @@ function MemberSignupKakao() {
                 닉네임
                 <span className={"required"}>&#42;</span>
               </label>
-
               <input
                 id={"nickname"}
                 type={"text"}
@@ -90,7 +104,7 @@ function MemberSignupKakao() {
               />
               <button
                 className={"btn-search btn-dark"}
-                onClick={handleKakaoNicknameCheckClick}
+                onClick={handleKakaoNicknameCheck}
                 disabled={nicknameCheckButtonDisabled}
               >
                 중복 확인
@@ -108,7 +122,7 @@ function MemberSignupKakao() {
                 id={"name"}
                 type="text"
                 required
-                value={kakaoNickname}
+                defaultValue={kakaoNickname}
                 onChange={(e) => setName(e.target.value)}
               />
             </li>
