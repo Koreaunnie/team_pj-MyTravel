@@ -1,6 +1,5 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useContext, useEffect } from "react";
-import { KakaoLogout } from "../../components/login/KakaoLogout.jsx";
 import axios from "axios";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 
@@ -92,10 +91,5 @@ export function MemberLoginProcess() {
     }
   }, [window.location.search]);
 
-  return (
-    <>
-      로그인 진행중...
-      <KakaoLogout />
-    </>
-  );
+  return <>로그인 진행중...</>;
 }
