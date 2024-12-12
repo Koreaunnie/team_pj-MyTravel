@@ -4,7 +4,7 @@ CREATE TABLE tour_review
     tour_id         INT          NOT NULL REFERENCES tour (id),
     writer_email    VARCHAR(30) DEFAULT 'left',
     writer_nickname VARCHAR(20) DEFAULT '탈퇴한 회원',
-    comment         VARCHAR(500) NOT NULL,
+    review         VARCHAR(500) NOT NULL,
     inserted        DATETIME     NOT NULL DEFAULT NOW(),
     CONSTRAINT fk_writer_email FOREIGN KEY (writer_email)
         REFERENCES member (email)
@@ -17,5 +17,6 @@ CREATE TABLE tour_review
 );
 
 INSERT INTO tour_review
-    (tour_id, writer_email, writer_nickname, comment)
+    (tour_id, writer_email, writer_nickname, review)
 VALUES (1, 'jm@jm', 'mj', '너무 좋다');
+

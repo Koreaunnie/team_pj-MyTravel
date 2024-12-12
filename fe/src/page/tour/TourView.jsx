@@ -20,6 +20,7 @@ import { AuthenticationContext } from "../../components/context/AuthenticationPr
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import "./Tour.css";
 import { Modal } from "../../components/root/Modal.jsx";
+import ReviewContainer from "../../components/review/ReviewContainer.jsx";
 
 function TourView() {
   const { id } = useParams();
@@ -182,6 +183,8 @@ function TourView() {
             </Box>
           )}
         </Stack>
+        <hr />
+        <ReviewContainer tourId={tour.id} />
 
         {/*장바구니 추가 modal*/}
         <Modal
