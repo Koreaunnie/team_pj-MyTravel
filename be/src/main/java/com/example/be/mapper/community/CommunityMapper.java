@@ -135,9 +135,9 @@ public interface CommunityMapper {
 
     @Delete("""
             DELETE FROM community_file
-            WHERE id=#{id}
+            WHERE id=#{fileNumber}
             """)
-    int deleteFileById(Integer id);
+    int deleteFileByFileNumber(Integer fileNumber);
 
     @Select("""
             SELECT id, comment, writer , inserted creationDate

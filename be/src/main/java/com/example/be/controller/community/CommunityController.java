@@ -41,10 +41,9 @@ public class CommunityController {
 
     @PutMapping("edit")
     public void edit(Community community,
-                     @RequestParam(value = "removeFiles[]", required = false) List<Integer> removeFiles,
+                     @RequestParam(defaultValue = "0", value = "removeFiles[]", required = false) List<Integer> removeFiles,
                      @RequestParam(value = "uploadFiles[]", required = false) MultipartFile[] uploadFiles,
                      Authentication auth) {
-        System.out.println(uploadFiles);
         service.edit(community, removeFiles, uploadFiles, auth);
     }
 

@@ -70,8 +70,6 @@ public class CommunityService {
 
         if (files != null && files.length > 0) {
 
-            // 파일 업로드
-            // TODO: local -> aws
             for (MultipartFile file : files) {
                 String fileName = file.getOriginalFilename();
                 String objectKey = STR."teamPrj1126/community/\{id}/\{fileName}";
@@ -91,11 +89,7 @@ public class CommunityService {
     }
 
     public Map<String, Object> view(Integer id) {
-//        Integer views = mapper.checkViews(id);
-//        Integer plusViews = views + 1;
-//        mapper.updateViews(plusViews, id);
-//        System.out.println("plusViews = " + plusViews);
-//        조회수가 안돼
+
 
         Map<String, Object> viewer = mapper.viewCommunity(id);
         List<Integer> fileList = mapper.callCommunityFile(id);
@@ -121,10 +115,36 @@ public class CommunityService {
 
     public void edit(Community community, List<Integer> removeFiles, MultipartFile[] uploadFiles, Authentication auth) {
         mapper.editCommunity(community);
+        Integer id = community.getId();
 
+        for (Integer fileNumber : removeFiles) {
+            String fileName = mapper.findFileNameByFileNumber(fileNumber);
+            String key = STR."teamPrj1126/community/\{id}/\{fileName}";
+            DeleteObjectRequest dor = DeleteObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(key)
+                    .build();
+            s3.deleteObject(dor);
+            mapper.deleteFileByFileNumber(fileNumber);
+        }
 
-        for (Integer id : removeFiles) {
-            mapper.deleteFileById(id);
+        if (uploadFiles != null && uploadFiles.length > 0) {
+
+            for (MultipartFile file : uploadFiles) {
+                String fileName = file.getOriginalFilename();
+                String objectKey = STR."teamPrj1126/community/\{id}/\{fileName}";
+                PutObjectRequest por = PutObjectRequest.builder()
+                        .bucket(bucketName)
+                        .key(objectKey)
+                        .acl(ObjectCannedACL.PUBLIC_READ)
+                        .build();
+                try {
+                    s3.putObject(por, RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
+                } catch (IOException e) {
+                    throw new RuntimeException(e.getMessage(), e);
+                }
+                mapper.addFile(fileName, id);
+            }
         }
     }
 

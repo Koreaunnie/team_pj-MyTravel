@@ -33,22 +33,21 @@ function CommunityEdit(props) {
         id: community.id,
         title: community.title,
         content: community.content,
+        removeFiles,
         uploadFiles: files,
         // creationDate: community.creationDate.toString().substring(0, 19),
       })
-      .then(navigate(`/community/list`));
+      .finally(navigate(`/community/list`));
   };
 
   const handleCancelClick = () => {
-    navigate(`/community/view/${community.id}`);
+    navigate(`/community/view/${id}`);
   };
 
   const handleDeleteFileClick = (file) => {
-    setRemoveFiles([...removeFiles, file]);
+    setRemoveFiles([...removeFiles, file.id]);
     setFileList(() => fileList.filter((item) => item !== file));
   };
-  console.log(removeFiles);
-  console.log(fileList);
 
   return (
     <div>
