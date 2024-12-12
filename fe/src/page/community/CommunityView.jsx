@@ -5,6 +5,7 @@ import {
   Box,
   DialogTitle,
   HStack,
+  Icon,
   Image,
   Input,
   Stack,
@@ -25,6 +26,7 @@ import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import CommunityList from "./CommunityList.jsx";
 import { FiMessageSquare } from "react-icons/fi";
 import { LuPencilLine } from "react-icons/lu";
+import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 
 function ImageFileView({ files }) {
   return (
@@ -48,8 +50,8 @@ function CommunityView(props) {
   const [comment, setComment] = useState("");
   const [commentList, setCommentList] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [commentId, setCommentId] = useState("");
   const [commentContent, setCommentContent] = useState("");
+  const [communityLike, setCommunityLike] = useState(false);
 
   useEffect(() => {
     axios.get(`/api/community/view/${id}`, { id }).then((e) => {
@@ -129,6 +131,15 @@ function CommunityView(props) {
             </Field>
             <Field label={"파일"} readOnly>
               <ImageFileView files={community.files} />
+            </Field>
+            <Field>
+              <Icon
+                fontSize="8xl"
+                color="red.600"
+                onClick={() => setCommunityLike(!communityLike)}
+              >
+                {communityLike ? <IoMdHeart /> : <IoMdHeartEmpty />}
+              </Icon>
             </Field>
             <Field label={"작성자"} readOnly>
               <Input value={community.writer} />

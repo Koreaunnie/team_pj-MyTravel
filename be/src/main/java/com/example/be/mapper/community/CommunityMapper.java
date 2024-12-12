@@ -183,7 +183,7 @@ public interface CommunityMapper {
 
     @Select("""
             SELECT c.id id, c.title title, c.inserted creationDate
-            FROM community c LEFT JOIN member m ON c.writer=m.nickname
+            FROM community c JOIN member m ON c.writer=m.nickname
             WHERE m.email=#{email}
             ORDER BY creationDate DESC
             """)
