@@ -189,6 +189,13 @@ public interface CommunityMapper {
             """)
     List<Map<String, Object>> wholeListUp(String email);
 
+    @Select("""
+            SELECT COUNT(*)
+            FROM community_like
+            WHERE community_id=#{id}
+            """)
+    Integer countLikeCommunity(Integer id);
+
 //    @Select("""
 //            SELECT views
 //            FROM community

@@ -51,7 +51,7 @@ function CommunityView(props) {
   const [commentList, setCommentList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [commentContent, setCommentContent] = useState("");
-  const [communityLike, setCommunityLike] = useState(false);
+  const [myCommunityLike, setMyCommunityLike] = useState(false);
 
   useEffect(() => {
     axios.get(`/api/community/view/${id}`, { id }).then((e) => {
@@ -59,6 +59,7 @@ function CommunityView(props) {
       setCommentList(e.data.commentList);
     });
   }, []);
+
   const handleDeleteClick = () => {
     axios
       .delete(`/api/community/delete/${id}`)
@@ -133,13 +134,16 @@ function CommunityView(props) {
               <ImageFileView files={community.files} />
             </Field>
             <Field>
-              <Icon
-                fontSize="8xl"
-                color="red.600"
-                onClick={() => setCommunityLike(!communityLike)}
-              >
-                {communityLike ? <IoMdHeart /> : <IoMdHeartEmpty />}
-              </Icon>
+              <Stack>
+                <Icon
+                  fontSize="8xl"
+                  color="red.600"
+                  onClick={() => setMyCommunityLike(!myCommunityLike)}
+                >
+                  {myCommunityLike ? <IoMdHeart /> : <IoMdHeartEmpty />}
+                </Icon>
+                <h5>{community.like}</h5>
+              </Stack>
             </Field>
             <Field label={"작성자"} readOnly>
               <Input value={community.writer} />

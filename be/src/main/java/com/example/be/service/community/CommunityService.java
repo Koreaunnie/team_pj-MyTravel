@@ -97,6 +97,10 @@ public class CommunityService {
 
 
         Map<String, Object> viewer = mapper.viewCommunity(id);
+        Integer countLike = mapper.countLikeCommunity(id);
+        viewer.put("like", countLike);
+        // 게시글 좋아요 수 추가
+
         List<Integer> fileList = mapper.callCommunityFile(id);
         List<Map<String, Object>> commentList = mapper.callCommunityComment(id);
         viewer.put("commentList", commentList);
