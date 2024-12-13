@@ -3,13 +3,17 @@ package com.example.be.controller.plan;
 import com.example.be.dto.plan.Plan;
 import com.example.be.service.member.MemberService;
 import com.example.be.service.plan.PlanService;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.Map;
 
 @RestController
@@ -96,4 +100,36 @@ public class PlanController {
             ));
         }
     }
+
+    // 내 여행 엑셀 파일 다운로드
+    @PostMapping("view/saveExcel/{id}")
+    public void saveExcel(@PathVariable("id") int id,
+                          Authentication authentication,
+                          HttpServletResponse response) {
+        String writer = authentication.getName();
+        Workbook workbook = service.getPlanToSaveExcel(id, writer);  // Excel 워크북 생성
+
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename=\"my_plan.xlsx\"");
+
+        try (ServletOutputStream outputStream = response.getOutputStream()) {
+            // Excel 파일을 직접 스트리밍 방식으로 전송
+            workbook.write(outputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+            try {
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "파일 생성 중 오류가 발생했습니다.");
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        } finally {
+            try {
+                workbook.close();  // Workbook 자원 해제
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
 }

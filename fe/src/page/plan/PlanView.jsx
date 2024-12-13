@@ -64,6 +64,23 @@ function PlanView(props) {
       .finally();
   };
 
+  const handleExcelDownload = () => {
+    axios
+      .post(`/api/plan/view/saveExcel/${id}`, { id })
+      .then((res) => {
+        const blob = new Blob([res.data], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "my_plan.xlsx"; // 파일 이름 설정
+        link.click(); // 링크 클릭으로 다운로드
+      })
+      .catch((e) => {
+        console.error("엑셀 다운로드 중 오류가 발생했습니다.", e);
+      });
+  };
+
   return (
     <div className={"plan"}>
       <Breadcrumb
@@ -103,6 +120,10 @@ function PlanView(props) {
                 onClick={() => setDeleteModalOpen(true)}
               >
                 삭제
+              </button>
+
+              <button type={"button"} onClick={handleExcelDownload}>
+                엑셀로 저장
               </button>
             </div>
 
