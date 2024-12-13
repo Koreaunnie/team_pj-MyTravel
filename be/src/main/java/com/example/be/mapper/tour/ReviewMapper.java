@@ -15,7 +15,7 @@ public interface ReviewMapper {
           (tour_id, writer_email, writer_nickname, review) 
           VALUES (#{tourId}, #{writerEmail}, #{writerNickname}, #{review}) 
           """)
-  @Options(keyProperty = "tour_id", useGeneratedKeys = true)
+  @Options(keyProperty = "reviewId", useGeneratedKeys = true)
   int insert(Review review);
 
   @Select("""
