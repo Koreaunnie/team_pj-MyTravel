@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 public class Review {
   private Integer reviewId;
   private Integer tourId;
+  private String paymentId;
   private String writerEmail;
   private String writerNickname;
   private String review;
