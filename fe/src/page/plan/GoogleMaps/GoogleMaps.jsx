@@ -39,11 +39,12 @@ export function GoogleMaps({ onPlaceSelected }) {
 
   // 장소 선택
   const handlePlaceSelected = (location) => {
+    // 이미 선택된 장소와 다를 때
     if (location !== selected) {
-      // 이미 선택된 위치와 다를 때만 상태 변경
       setSelected(location);
       if (mapInstanceRef.current) {
-        mapInstanceRef.current.panTo(location); // 지도 중심 이동
+        // 지도 중심 이동
+        mapInstanceRef.current.panTo(location);
       }
       onPlaceSelected(location);
     }
@@ -53,7 +54,7 @@ export function GoogleMaps({ onPlaceSelected }) {
     <div>
       <div className="places-container">
         <GoogleMapsPlaceAutocomplete
-          setSelected={handlePlaceSelected}
+          setSelected={(location) => handlePlaceSelected(location)}
           setMapCenter={(latLng) => {
             if (mapInstanceRef.current) {
               mapInstanceRef.current.panTo(latLng);

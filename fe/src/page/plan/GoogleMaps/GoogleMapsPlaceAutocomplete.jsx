@@ -42,12 +42,19 @@ export function GoogleMapsPlaceAutocomplete({ setSelected, setMapCenter }) {
       // Geocoding을 통해 Lat/Lng 좌표 얻기
       const result = await getGeocode({ address: description });
       const { lat, lng } = await getLatLng(result[0]);
-      const latLng = { lat, lng };
+
+      // 장소 정보를 setSelected로 전달
+      const location = {
+        placeId: result[0].place_id,
+        address: description,
+        lat,
+        lng,
+      };
 
       // 선택된 위치를 setSelected로 설정하여 마커 위치 업데이트
-      setSelected(latLng);
+      setSelected(location);
       setMapCenter(latLng);
-      console.log(latLng);
+      console.log(location);
     } catch (e) {
       console.error("Error getting geocode or setting marker:", e);
     }
