@@ -8,6 +8,7 @@ import { toaster } from "../../components/ui/toaster.jsx";
 function ReviewContainer({ tourId }) {
   const [reviewList, setReviewList] = useState([]);
   const [processing, setProcessing] = useState(false);
+  const [paymentCheck, setPaymentCheck] = useState(false);
 
   useEffect(() => {
     if (!processing) {
@@ -74,17 +75,35 @@ function ReviewContainer({ tourId }) {
       });
   }
 
+  const paymentHistoryCheck = () => {
+    axios
+      .get("/api/review/check", {
+        params: { tourId },
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        setPaymentCheck(data.available);
+      });
+    return paymentCheck;
+  };
+
   return (
     <div>
       <Stack>
         <h2>후기</h2>
-        <ReviewAdd tourId={tourId} onSaveClick={handleSaveReviewClick} />
-        <ReviewList
-          tourId={tourId}
-          reviewList={reviewList}
-          onDeleteClick={handleDeleteReviewClick}
-          onEditClick={handleEditReviewClick}
-        />
+        {paymentHistoryCheck() && (
+          <ReviewAdd tourId={tourId} onSaveClick={handleSaveReviewClick} />
+        )}
+        {reviewList.length === 0 ? (
+          <p>아직 작성된 후기가 없습니다.</p>
+        ) : (
+          <ReviewList
+            tourId={tourId}
+            reviewList={reviewList}
+            onDeleteClick={handleDeleteReviewClick}
+            onEditClick={handleEditReviewClick}
+          />
+        )}
       </Stack>
     </div>
   );

@@ -17,6 +17,16 @@ import java.util.Map;
 public class ReviewController {
   final ReviewService service;
 
+  @GetMapping(value = "check", params = "tourId")
+  public ResponseEntity<Map<String, Object>> checkPayment(@RequestParam Integer tourId, Authentication auth) {
+    if (service.canWriteReview(tourId, auth)) {
+      return ResponseEntity.ok().body(Map.of("available", true));
+    } else {
+      return ResponseEntity.ok().body(Map.of("available", false));
+    }
+  }
+
+
   @PutMapping("edit")
   @PreAuthorize("isAuthenticated()")
   public ResponseEntity<Map<String, Object>> edit(@RequestBody Review review) {
@@ -43,7 +53,9 @@ public class ReviewController {
   @PreAuthorize("isAuthenticated()")
   public ResponseEntity<Map<String, Object>> add(
           @RequestBody Review review, Authentication auth) {
-    if (service.canWriteReview(review, auth)) {
+    Integer currentTour = review.getTourId();
+
+    if (service.canWriteReview(currentTour, auth)) {
       service.add(review, auth);
       return ResponseEntity.ok().body(Map.of("message",
               Map.of("type", "success", "text", "후기가 등록되었습니다.")));
