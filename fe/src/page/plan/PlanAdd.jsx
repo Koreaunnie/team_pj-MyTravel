@@ -27,13 +27,19 @@ function PlanAdd(props) {
 
   const navigate = useNavigate();
 
-  const position = { lat: 37, lng: 128 };
-
   // div 입력값을 상태로 업데이트하는 함수
   const handleFieldChange = (index, field, value) => {
     const updatedFields = [...fields];
     updatedFields[index][field] = value;
     setFields(updatedFields);
+  };
+
+  const handlePlaceSelected = (index, location) => {
+    // location 객체에서 필요한 정보만 추출
+    const { lat, lng, address } = location;
+    console.log(lat, lng, address);
+    // 필요한 정보만 저장
+    handleFieldChange(index, "place", `${address}, ${lat}, ${lng}`);
   };
 
   // + 버튼 클릭 시 새로운 필드 추가
@@ -212,18 +218,16 @@ function PlanAdd(props) {
                 />
 
                 <label htmlFor="place">장소</label>
-                <GoogleMaps />
-
-                <input
-                  type="text"
+                <GoogleMaps
                   id="place"
-                  placeholder="장소를 입력하세요"
-                  value={field.place}
-                  onChange={(e) =>
-                    handleFieldChange(index, "place", e.target.value)
+                  onPlaceSelected={(location) =>
+                    handlePlaceSelected(index, location)
                   }
+                  // value={field.place}
+                  // onChange={(e) =>
+                  //   handleFieldChange(index, "place", e.target.value)
+                  // }
                 />
-                <button type="button">검색</button>
 
                 <label htmlFor="memo">메모</label>
                 <textarea

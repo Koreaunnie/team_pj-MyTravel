@@ -82,7 +82,7 @@ export function GoogleMapsPlaceAutocomplete({ setSelected, setMapCenter }) {
                   className: highlightedIndex === index ? "highlighted" : "",
                 })}
               >
-                <strong>{main_text}</strong>
+                <b>{main_text}</b>
                 <div>{secondary_text}</div>
               </li>
             );

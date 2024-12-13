@@ -1,73 +1,80 @@
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Spinner } from "@chakra-ui/react";
 import "./GoogleMaps.css";
 import { GoogleMapsPlaceAutocomplete } from "./GoogleMapsPlaceAutocomplete.jsx";
 
 const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
 
-export function GoogleMaps() {
+export function GoogleMaps({ onPlaceSelected }) {
   const [selected, setSelected] = useState(null);
-  const [mapInstance, setMapInstance] = useState(null);
+  const mapInstanceRef = useRef(null);
+
+  const libraries = ["places"];
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: apiKey,
-    libraries: ["places"],
+    libraries,
     version: "weekly",
   });
 
   if (!isLoaded) return <Spinner />;
 
-  function Map() {
-    const [selected, setSelected] = useState(null);
-    const [mapInstance, setMapInstance] = useState(null);
+  const center = {
+    lat: 37.5665, // 위도
+    lng: 126.978, // 경도
+  };
 
-    const center = {
-      lat: 37.5665, // 위도
-      lng: 126.978, // 경도
-    };
+  // 지도 인스턴스 저장
+  const handleMapLoad = (map) => {
+    mapInstanceRef.current = map;
+  };
 
-    // 지도 인스턴스 저장
-    const handleMapLoad = (map) => {
-      setMapInstance(map);
-    };
+  // 마커 클릭 시 장소 이동
+  const handleMarkerClick = (latLng) => {
+    if (mapInstanceRef.current) {
+      mapInstanceRef.current.panTo(latLng);
+    }
+  };
 
-    // 마커 클릭 시 지도 이동
-    const handleMarkerClick = (latLng) => {
-      if (mapInstance) {
-        mapInstance.panTo(latLng);
+  // 장소 선택
+  const handlePlaceSelected = (location) => {
+    if (location !== selected) {
+      // 이미 선택된 위치와 다를 때만 상태 변경
+      setSelected(location);
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.panTo(location); // 지도 중심 이동
       }
-    };
+      onPlaceSelected(location);
+    }
+  };
 
-    return (
-      <div>
-        <div className="places-container">
-          <GoogleMapsPlaceAutocomplete
-            setSelected={setSelected}
-            setMapCenter={(latLng) => {
-              if (mapInstance) {
-                mapInstance.panTo(latLng);
-              }
-            }}
-          />
-        </div>
-
-        <GoogleMap
-          zoom={13}
-          center={selected || center}
-          mapContainerClassName="map-container"
-          onLoad={handleMapLoad}
-        >
-          {selected && (
-            <Marker
-              position={selected}
-              onClick={() => handleMarkerClick(selected)}
-            />
-          )}
-        </GoogleMap>
+  return (
+    <div>
+      <div className="places-container">
+        <GoogleMapsPlaceAutocomplete
+          setSelected={handlePlaceSelected}
+          setMapCenter={(latLng) => {
+            if (mapInstanceRef.current) {
+              mapInstanceRef.current.panTo(latLng);
+            }
+          }}
+        />
       </div>
-    );
-  }
 
-  return <Map />;
+      <GoogleMap
+        zoom={15}
+        center={selected || center}
+        mapContainerClassName="map-container"
+        onLoad={handleMapLoad}
+      >
+        {selected && (
+          <Marker
+            position={selected}
+            onClick={() => handleMarkerClick(selected)}
+          />
+        )}
+      </GoogleMap>
+    </div>
+  );
 }
