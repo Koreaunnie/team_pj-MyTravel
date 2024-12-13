@@ -20,3 +20,7 @@ INSERT INTO tour_review
     (tour_id, writer_email, writer_nickname, review)
 VALUES (1, 'jm@jm', 'mj', '너무 좋다');
 
+SELECT COUNT(*)
+FROM payment_detail pd LEFT JOIN payment p ON pd.payment_id=p.payment_id
+WHERE p.buyer_email='2'
+  AND pd.tour_id='68';

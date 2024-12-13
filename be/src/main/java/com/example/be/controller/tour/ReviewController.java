@@ -43,9 +43,12 @@ public class ReviewController {
   @PreAuthorize("isAuthenticated()")
   public ResponseEntity<Map<String, Object>> add(
           @RequestBody Review review, Authentication auth) {
-    //TODO: 로그인 권한이 아닌 구매자 권한으로 변경
-    service.add(review, auth);
-    return ResponseEntity.ok().body(Map.of("message",
-            Map.of("type", "success", "text", "새 댓글이 등록되었습니다.")));
+    if (service.canWriteReview(review, auth)) {
+      service.add(review, auth);
+      return ResponseEntity.ok().body(Map.of("message",
+              Map.of("type", "success", "text", "후기가 등록되었습니다.")));
+    } else {
+      return ResponseEntity.notFound().build();
+    }
   }
 }

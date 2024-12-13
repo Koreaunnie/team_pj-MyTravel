@@ -35,4 +35,20 @@ public interface ReviewMapper {
           WHERE review_id=#{reviewId}
           """)
   int update(Review review);
+
+  @Select("""
+          SELECT COUNT(*) 
+           FROM payment_detail pd LEFT JOIN payment p ON pd.payment_id=p.payment_id 
+          WHERE p.buyer_email=#{name}
+            AND pd.tour_id=#{tourId}
+          """)
+  int purchaseHistory(Integer tourId, String name);
+
+  @Select("""
+          SELECT COUNT(*)
+          FROM tour_review
+          WHERE tour_id=#{tourId}
+            AND writer_email=#{name}
+          """)
+  int reviewCount(Integer tourId, String name);
 }

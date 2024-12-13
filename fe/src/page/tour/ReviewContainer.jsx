@@ -32,6 +32,12 @@ function ReviewContainer({ tourId }) {
           description: message.text,
         });
       })
+      .catch((error) => {
+        toaster.create({
+          type: "error",
+          description: "후기를 작성할 수 없습니다.",
+        });
+      })
       .finally(() => {
         setProcessing(false);
       });
@@ -51,6 +57,13 @@ function ReviewContainer({ tourId }) {
       .put(`/api/review/edit`, { reviewId, review })
       .then((res) => res.data.message)
       .then((message) => {
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+      })
+      .catch((e) => {
+        const message = e.response.data.message;
         toaster.create({
           type: message.type,
           description: message.text,

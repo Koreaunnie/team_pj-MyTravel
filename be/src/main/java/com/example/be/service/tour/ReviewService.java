@@ -37,4 +37,16 @@ public class ReviewService {
     int cnt = mapper.update(review);
     return cnt == 1;
   }
+
+  public boolean canWriteReview(Review review, Authentication auth) {
+    //1. 구매 횟수가 0이 아닐 것
+    int purchaseCount = mapper.purchaseHistory(review.getTourId(), auth.getName());
+
+    if (purchaseCount != 0) {
+      //2. 구매 회수가 작성 이력보다 클 것
+      return purchaseCount > mapper.reviewCount(review.getTourId(), auth.getName());
+    } else {
+      return false;
+    }
+  }
 }
