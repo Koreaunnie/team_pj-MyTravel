@@ -53,12 +53,12 @@
     color: var(--font-gray-color);
 }
 
-.main-section-wrap .section-body .section-body-list {
+.main-section-wrap .section-body .section-body-card {
     display: flex;
     justify-content: space-between;
 }
 
-.main-section-wrap .section-body .section-body-list > li {
+.main-section-wrap .section-body .section-body-card > li {
     height: 230px;
     margin: 10px;
     padding: 23px;
@@ -69,7 +69,7 @@
     cursor: pointer;
 }
 
-.main-section-wrap .section-body .section-body-list h3 {
+.main-section-wrap .section-body .section-body-card h3 {
     font-weight: bold;
     font-size: 1.1rem;
     width: 100%;
@@ -79,7 +79,7 @@
 }
 
 /*------------------- section -------------------*/
-.main-section-wrap .section-body .section-body-list .list-item .description {
+.main-section-wrap .section-body .section-body-card .list-item .description {
     height: 88px;
     color: var(--font-gray-color);
     margin: 15px 10px 10px 10px;
@@ -89,16 +89,32 @@
     font-size: 0.9rem;
 }
 
-.main-section-wrap .section-body .section-body-list .list-item .location {
+.main-section-wrap .section-body .section-body-card .list-item .location {
     font-weight: bold;
     font-size: 0.9rem;
 }
 
-.main-section-wrap .section-body .section-body-list .list-item .period,
-.main-section-wrap .section-body .section-body-list .list-item .price {
+.main-section-wrap .section-body .section-body-card .list-item .period,
+.main-section-wrap .section-body .section-body-card .list-item .price {
     font-weight: bold;
     font-size: 0.9rem;
 
+}
+
+.notice-section-wrap .notice-section-body {
+    border: 1px solid red;
+
+}
+
+.notice-section-wrap .notice-section-body .notice-section-list {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.notice-section-wrap .notice-section-body .notice-section-list .link-box {
+    background: var(--bg-gray-color);
+    border: 1px solid;
 }
 
 
@@ -108,7 +124,7 @@
         height: auto
     }
 
-    .main-section-wrap .section-body .section-body-list {
+    .main-section-wrap .section-body .section-body-card {
         width: 100%;
         display: flex;
         justify-content: space-between;

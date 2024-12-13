@@ -7,8 +7,9 @@ import { IoSearch } from "react-icons/io5";
 export function Index() {
   const [search, setSearch] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
-  const [planList, setPlanList] = useState([]); // Plan 리스트 상태
-  const [tourList, setTourList] = useState([]); // Tour 리스트 상태
+  const [planList, setPlanList] = useState([]);
+  const [tourList, setTourList] = useState([]);
+  const [communityList, setCommunityList] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,6 +21,7 @@ export function Index() {
         console.log("Response data:", res.data);
         setPlanList(res.data.plans);
         setTourList(res.data.tours);
+        setCommunityList(res.data.community);
       })
       .catch((error) => {
         console.error("Error fetching index data:", error);
@@ -87,7 +89,7 @@ export function Index() {
               </p>
             </div>
           ) : (
-            <ul className={"section-body-list"}>
+            <ul className={"section-body-card"}>
               {planList.map((plan) => (
                 <li
                   key={plan.id}
@@ -126,7 +128,7 @@ export function Index() {
               </p>
             </div>
           ) : (
-            <ul className={"section-body-list"}>
+            <ul className={"section-body-card"}>
               {tourList.map((tour) => (
                 <li
                   key={tour.id}
@@ -145,42 +147,42 @@ export function Index() {
         </div>
       </section>
 
+      <div>광고 슬라이드</div>
+
       {/* 커뮤니티 섹션 */}
-      <section className={"main-section-wrap"}>
-        <div className={"section-header"}>
+      <section className={"notice-section-wrap"}>
+        <div className={"notice-section-header"}>
           <h2>커뮤니티</h2>
           <button className={"more-btn"} onClick={() => navigate(`/plan/list`)}>
             더보기
           </button>
         </div>
 
-        <div className={"section-body"}>
-          {isEmpty(planList) ? (
+        <div className={"notice-section-body"}>
+          {isEmpty(communityList) ? (
             <div className={"empty-container"}>
-              <p className={"empty-container-title"}>여행 계획이 없습니다.</p>
+              <p className={"empty-container-title"}>작성된 글이 없습니다.</p>
               <p className={"empty-container-description"}>
-                새로운 계획을 추가해보세요!
+                로그인 후 커뮤니티에서 다양한 이야기를 들려주세요!
               </p>
             </div>
           ) : (
-            <ul className={"section-body-list"}>
-              {planList.map((plan) => (
-                <li
-                  key={plan.id}
-                  onClick={() => navigate(`/plan/view/${plan.id}`)}
-                >
-                  <h3>{plan.title}</h3>
-                  <ul className={"list-item"}>
-                    <li className={"description"}>{plan.description}</li>
-                    <li className={"location"}>{plan.destination}</li>
-                    <li className={"period"}>
-                      {plan.startDate} ~ {plan.endDate}
-                    </li>
-                  </ul>
-                </li>
-              ))}
-            </ul>
+            communityList.map((community) => (
+              <ul
+                className={"notice-section-list"}
+                key={community.id}
+                onClick={() => navigate(`/community/view/${community.id}`)}
+              >
+                <li>{community.title}</li>
+                <li>{community.writer}</li>
+                <li>{community.inserted}</li>
+              </ul>
+            ))
           )}
+
+          <div className={"link-box"}>
+            커뮤니티에서 다양한 여행 이야기를 들려주세요!
+          </div>
         </div>
       </section>
     </div>
