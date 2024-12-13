@@ -162,7 +162,7 @@ public class CommunityService {
         }
     }
 
-    public void delete(Integer id) {
+    public void delete(Integer id, Authentication auth) {
 
         List<String> fileName = mapper.selectFilesByCommunityId(id);
 
@@ -196,7 +196,7 @@ public class CommunityService {
         mapper.writeCommunityComment(communityComment);
     }
 
-    public void commentDelete(Integer id) {
+    public void commentDelete(Integer id, Authentication auth) {
         mapper.deleteCommentByCommentId(id);
     }
 

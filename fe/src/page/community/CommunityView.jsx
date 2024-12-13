@@ -157,7 +157,14 @@ function CommunityView(props) {
             </Field>
             <Field>
               <Stack>
-                <Icon fontSize="8xl" color="red.600" onClick={handleLikeClick}>
+                <Icon
+                  fontSize="8xl"
+                  color="red.600"
+                  onClick={
+                    // handleLikeClick
+                    () => setMyCommunityLike(!myCommunityLike)
+                  }
+                >
                   {myCommunityLike ? <IoMdHeart /> : <IoMdHeartEmpty />}
                 </Icon>
                 <h5>{community.like}</h5>
