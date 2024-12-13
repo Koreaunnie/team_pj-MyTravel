@@ -1,5 +1,6 @@
 package com.example.be.controller.tour;
 
+import com.example.be.dto.tour.PaymentHistory;
 import com.example.be.dto.tour.Review;
 import com.example.be.service.tour.ReviewService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,22 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ReviewController {
   final ReviewService service;
+
+  @GetMapping("payment/{tourId}")
+  public List<PaymentHistory> paymentList(@PathVariable Integer tourId, Authentication auth) {
+    List<PaymentHistory> paidList = service.paymentList(tourId, auth);
+    System.out.println(paidList);
+    return paidList;
+  }
+
+  @GetMapping(value = "check", params = "tourId")
+  public ResponseEntity<Map<String, Object>> checkPayment(@RequestParam Integer tourId, Authentication auth) {
+    if (service.canWriteReview(tourId, auth)) {
+      return ResponseEntity.ok().body(Map.of("available", true));
+    } else {
+      return ResponseEntity.ok().body(Map.of("available", false));
+    }
+  }
 
   @PutMapping("edit")
   @PreAuthorize("isAuthenticated()")
@@ -43,9 +60,14 @@ public class ReviewController {
   @PreAuthorize("isAuthenticated()")
   public ResponseEntity<Map<String, Object>> add(
           @RequestBody Review review, Authentication auth) {
-    //TODO: 로그인 권한이 아닌 구매자 권한으로 변경
-    service.add(review, auth);
-    return ResponseEntity.ok().body(Map.of("message",
-            Map.of("type", "success", "text", "새 댓글이 등록되었습니다.")));
+    Integer currentTour = review.getTourId();
+
+    if (service.canWriteReview(currentTour, auth)) {
+      service.add(review, auth);
+      return ResponseEntity.ok().body(Map.of("message",
+              Map.of("type", "success", "text", "후기가 등록되었습니다.")));
+    } else {
+      return ResponseEntity.notFound().build();
+    }
   }
 }

@@ -32,10 +32,11 @@ public interface PaymentMapper {
   int deleteFromCart(Integer id, String buyer);
 
   @Select("""
-          SELECT payment.payment_id, product, location, currency, paid_at, tour_id, startDate, endDate, tour.price
+          SELECT payment.payment_id, product, location, currency, paid_at, payment_detail.tour_id, startDate, endDate, tour.price, review
           FROM payment RIGHT JOIN payment_detail
           ON payment.payment_id=payment_detail.payment_id
           LEFT JOIN tour ON tour.id=payment_detail.tour_id    
+          LEFT JOIN tour_review tr ON tr.payment_id = payment.payment_id AND tr.tour_id = tour.id
           WHERE buyer_email = #{email}
           ORDER BY paid_at DESC;    
           """)
