@@ -80,6 +80,12 @@ function CommunityView(props) {
       .catch((err) => console.error(err));
   };
 
+  const fetchLike = () => {
+    axios.get(`api/community/view/${id}`).then((res) => {
+      setMyCommunityLike();
+    });
+  };
+
   const handleCommentSaveClick = () => {
     axios
       .post(`/api/community/comment/write`, {
@@ -111,6 +117,22 @@ function CommunityView(props) {
       .catch((err) => console.error(err));
   };
 
+  // TODO: 로그인에 대한 권한 완료 후 좋아요 즉시 반영 시도하기
+  // const handleLikeClick = () => {
+  //   setMyCommunityLike(!myCommunityLike);
+  //   if (myCommunityLike) {
+  //     axios
+  //       .post(`/api/community/like/${id}`, {
+  //         like: myCommunityLike,
+  //       })
+  //       .then(() => fetchComments());
+  //   } else {
+  //     axios
+  //       .delete(`/api/community/like/delete?id=${id}&nickName=${}`)
+  //       .then(() => fetchLike());
+  //   }
+  // };
+
   return (
     <div>
       <Breadcrumb
@@ -135,11 +157,7 @@ function CommunityView(props) {
             </Field>
             <Field>
               <Stack>
-                <Icon
-                  fontSize="8xl"
-                  color="red.600"
-                  onClick={() => setMyCommunityLike(!myCommunityLike)}
-                >
+                <Icon fontSize="8xl" color="red.600" onClick={handleLikeClick}>
                   {myCommunityLike ? <IoMdHeart /> : <IoMdHeartEmpty />}
                 </Icon>
                 <h5>{community.like}</h5>
