@@ -4,11 +4,16 @@ import PropTypes from "prop-types";
 
 ReviewItem.prototype = { review: PropTypes.any };
 
-function ReviewList({ tourId, reviewList }) {
+function ReviewList({ tourId, reviewList, onDeleteClick, onEditClick }) {
   return (
     <div>
       {reviewList.map((review) => (
-        <ReviewItem key={review.reviewId} review={review} />
+        <ReviewItem
+          key={review.reviewId}
+          review={review}
+          onDeleteClick={onDeleteClick}
+          onEditClick={onEditClick}
+        />
       ))}
     </div>
   );

@@ -1,10 +1,7 @@
 package com.example.be.mapper.tour;
 
 import com.example.be.dto.tour.Review;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -25,4 +22,17 @@ public interface ReviewMapper {
           ORDER BY review_id DESC
           """)
   List<Review> selectReviewByTourId(Integer tourId);
+
+  @Delete("""
+          DELETE FROM tour_review
+          WHERE review_id=#{reviewId}
+          """)
+  int deleteByReviewId(Integer reviewId);
+
+  @Update("""
+          UPDATE tour_review
+          SET review=#{review}
+          WHERE review_id=#{reviewId}
+          """)
+  int update(Review review);
 }

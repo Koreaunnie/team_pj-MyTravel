@@ -17,6 +17,23 @@ import java.util.Map;
 public class ReviewController {
   final ReviewService service;
 
+  @PutMapping("edit")
+  @PreAuthorize("isAuthenticated()")
+  public ResponseEntity<Map<String, Object>> edit(@RequestBody Review review) {
+    if (service.edit(review)) {
+      return ResponseEntity.ok().body(Map.of("message",
+              Map.of("type", "success", "text", "후기 수정 완료")));
+    } else {
+      return ResponseEntity.notFound().build();
+    }
+  }
+
+  @DeleteMapping("delete/{reviewId}")
+  @PreAuthorize("isAuthenticated()")
+  public void remove(@PathVariable Integer reviewId, Authentication auth) {
+    service.delete(reviewId);
+  }
+
   @GetMapping("list/{tourId}")
   public List<Review> list(@PathVariable Integer tourId) {
     return service.list(tourId);

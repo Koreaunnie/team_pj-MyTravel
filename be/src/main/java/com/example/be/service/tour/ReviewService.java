@@ -28,4 +28,13 @@ public class ReviewService {
   public List<Review> list(Integer tourId) {
     return mapper.selectReviewByTourId(tourId);
   }
+
+  public void delete(Integer reviewId) {
+    mapper.deleteByReviewId(reviewId);
+  }
+
+  public boolean edit(Review review) {
+    int cnt = mapper.update(review);
+    return cnt == 1;
+  }
 }

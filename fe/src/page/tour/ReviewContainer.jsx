@@ -37,21 +37,41 @@ function ReviewContainer({ tourId }) {
       });
   }
 
-  // function handleDeleteReviewClick(reviewId){
-  //   setProcessing(true)
-  //   axios
-  //     .delete(`/api/review/delete/${reviewId}`)
-  //     .finally(()=>{
-  //       setProcessing(false);
-  //     })
-  // }
+  function handleDeleteReviewClick(reviewId) {
+    setProcessing(true);
+    axios.delete(`/api/review/delete/${reviewId}`).finally(() => {
+      setProcessing(false);
+    });
+  }
+
+  function handleEditReviewClick(reviewId, review) {
+    setProcessing(true);
+
+    axios
+      .put(`/api/review/edit`, { reviewId, review })
+      .then((res) => res.data.message)
+      .then((message) => {
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+      })
+      .finally(() => {
+        setProcessing(false);
+      });
+  }
 
   return (
     <div>
       <Stack>
         <h2>후기</h2>
         <ReviewAdd tourId={tourId} onSaveClick={handleSaveReviewClick} />
-        <ReviewList tourId={tourId} reviewList={reviewList} />
+        <ReviewList
+          tourId={tourId}
+          reviewList={reviewList}
+          onDeleteClick={handleDeleteReviewClick}
+          onEditClick={handleEditReviewClick}
+        />
       </Stack>
     </div>
   );

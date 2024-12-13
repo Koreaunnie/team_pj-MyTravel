@@ -183,6 +183,7 @@ function TourView() {
             </Box>
           )}
         </Stack>
+        <br />
         <hr />
         <ReviewContainer tourId={tour.id} />
 
