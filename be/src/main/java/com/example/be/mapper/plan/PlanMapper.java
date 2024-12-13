@@ -23,9 +23,9 @@ public interface PlanMapper {
     // 2. plan body 항목 추가
     @Insert("""
             INSERT INTO plan_field
-                (plan_id, date, time, schedule, place, memo)
+                (plan_id, date, time, schedule, place, place_id, memo)
             VALUES 
-                (#{planId}, #{date}, #{time}, #{schedule}, #{place}, #{memo})
+                (#{planId}, #{date}, #{time}, #{schedule}, #{place}, #{placeId}, #{memo})
             """)
     @Options(keyProperty = "id", useGeneratedKeys = true)
     int insertPlanField(PlanField field);

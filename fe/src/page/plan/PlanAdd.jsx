@@ -21,6 +21,7 @@ function PlanAdd(props) {
       time: "",
       schedule: "",
       place: "",
+      placeId: "",
       memo: "",
     },
   ]);
@@ -37,11 +38,9 @@ function PlanAdd(props) {
   const handlePlaceSelected = (index, location) => {
     // location 객체에서 필요한 정보만 추출
     const { placeId, address, lat, lng } = location;
-    console.log(placeId);
-    console.log(address);
-    console.log(lat, lng);
     // 필요한 정보만 저장
-    handleFieldChange(index, "place", `${placeId}, ${address}, ${lat}, ${lng}`);
+    handleFieldChange(index, "place", `${address}`);
+    handleFieldChange(index, "placeId", `${placeId}`);
   };
 
   // + 버튼 클릭 시 새로운 필드 추가
