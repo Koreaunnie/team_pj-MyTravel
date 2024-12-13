@@ -5,15 +5,10 @@ import { Image } from "@chakra-ui/react";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import * as PortOne from "/libs/browser-sdk";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
+import RandomString from "../../components/login/RandomString.jsx";
 
 const { VITE_STORE_ID, VITE_KAKAOPAY_CHANNEL_KEY, VITE_TOSSPAY_CHANNEL_KEY } =
   import.meta.env;
-
-function randomId() {
-  return Array.from(crypto.getRandomValues(new Uint32Array(2)))
-    .map((word) => word.toString(16).padStart(8, "0"))
-    .join("");
-}
 
 function Payment() {
   const location = useLocation();
@@ -24,7 +19,7 @@ function Payment() {
   });
   const { email } = useContext(AuthenticationContext);
   const navigate = useNavigate();
-  const paymentId = randomId();
+  const paymentId = RandomString();
   const currency = "CURRENCY_KRW";
   const payMethod = "EASY_PAY";
 

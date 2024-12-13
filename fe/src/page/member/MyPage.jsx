@@ -7,6 +7,7 @@ import TourMyList from "../tour/TourMyList.jsx";
 import PaymentHistory from "../tour/PaymentHistory.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import "./Member.css";
+import CommunityMyList from "../community/CommunityMyList.jsx";
 
 function MyPage(props) {
   const [selectedMenu, setSelectedMenu] = useState("profile");
@@ -41,6 +42,9 @@ function MyPage(props) {
               {email}의 상품
             </button>
           )}
+          <button onClick={() => handleMenuClick("myCommunity")}>
+            내가 쓴 글
+          </button>
         </VStack>
       </Box>
       <Box flex="1" padding="20px">
@@ -48,6 +52,7 @@ function MyPage(props) {
         {selectedMenu === "cart" && <CartList />}
         {selectedMenu === "paymentHistory" && <PaymentHistory />}
         {selectedMenu === "myTour" && <TourMyList />}
+        {selectedMenu === "myCommunity" && <CommunityMyList />}
       </Box>
     </div>
   );

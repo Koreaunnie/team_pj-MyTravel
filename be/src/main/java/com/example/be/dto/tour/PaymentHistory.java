@@ -17,4 +17,5 @@ public class PaymentHistory {
   private LocalDate endDate;
   private Integer price;
   private String buyerEmail;
+  private boolean review;
 }

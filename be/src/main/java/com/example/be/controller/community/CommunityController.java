@@ -27,6 +27,11 @@ public class CommunityController {
         return service.list(page, searchType, searchKeyword);
     }
 
+    @GetMapping("wholeList/{email}")
+    public List<Map<String, Object>> wholeList(@PathVariable String email) {
+        return service.wholeList(email);
+    }
+
 
     @PostMapping("write")
     public void write(Community community, @RequestParam(value = "files[]", required = false) MultipartFile[] files, Authentication auth) {
@@ -40,8 +45,8 @@ public class CommunityController {
     }
 
     @PutMapping("edit")
-    public void edit(@RequestBody Community community,
-                     @RequestParam(value = "removeFiles[]", required = false) List<String> removeFiles,
+    public void edit(Community community,
+                     @RequestParam(defaultValue = "0", value = "removeFiles[]", required = false) List<Integer> removeFiles,
                      @RequestParam(value = "uploadFiles[]", required = false) MultipartFile[] uploadFiles,
                      Authentication auth) {
         service.edit(community, removeFiles, uploadFiles, auth);
@@ -51,11 +56,6 @@ public class CommunityController {
     public void delete(@PathVariable Integer id) {
         service.delete(id);
     }
-
-    // TODO : UPDATE 기능 추가
-
-//    TODO: 조회수 기능 (기존 테이블에 있어도 되겠는데)
-
 
 //    TODO :  게시판 댓글 기능
 
@@ -75,4 +75,8 @@ public class CommunityController {
     public void commentEdit(@RequestBody CommunityComment communityComment, @PathVariable Integer id, Authentication auth) {
         service.updateComment(communityComment, id, auth);
     }
+
+//    TODO : 게시판 좋아요 기능
+
+
 }

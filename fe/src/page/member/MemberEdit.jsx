@@ -15,6 +15,7 @@ import {
   DialogTrigger,
 } from "../../components/ui/dialog.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
+import { ProfileImageView } from "../../Image/ProfileImageView.jsx";
 
 export function MemberEdit() {
   const [member, setMember] = useState(null);
@@ -97,15 +98,19 @@ export function MemberEdit() {
       <h1>회원 정보 수정</h1>
       <Stack>
         <Box>
+          <ProfileImageView files={member.profile} />
+          <br />
           <Input
             onChange={(e) => setUploadFiles(e.target.files[0])}
             type={"file"}
             accept={"image/*"}
           />
         </Box>
-        <Field label={"이메일"} readOnly>
-          <Input defaultValue={member.email} />
-        </Field>
+        {member.kakao || (
+          <Field label={"이메일"} readOnly>
+            <Input defaultValue={member.email} />
+          </Field>
+        )}
         <Field label={"닉네임"}>
           <Group attached w={"100%"}>
             <Input
@@ -127,47 +132,86 @@ export function MemberEdit() {
             </Button>
           </Group>
         </Field>
-        <Field label={"비밀번호"}>
-          <Input
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </Field>
+        {member.kakao || (
+          <Field label={"비밀번호"}>
+            <Input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </Field>
+        )}
         <Field label={"이름"} readOnly>
           <Input defaultValue={member.name} />
         </Field>
         <Field label={"전화번호"}>
           <Input defaultValue={member.phone} />
         </Field>
-        <Box>
-          <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
-            <DialogTrigger>
-              <Button disabled={saveButtonDisabled}>저장</Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>회원 정보 변경</DialogTitle>
-              </DialogHeader>
-              <DialogBody>
-                <Stack>
-                  <Field>
-                    <Input
-                      placeholder={"기존 비밀번호 입력"}
-                      value={oldPassword}
-                      onChange={(e) => setOldPassword(e.target.value)}
-                    />
-                  </Field>
-                </Stack>
-              </DialogBody>
-              <DialogFooter>
-                <DialogActionTrigger>
-                  <Button>취소</Button>
-                </DialogActionTrigger>
-                <Button onClick={handleSaveClick}>저장</Button>
-              </DialogFooter>
-            </DialogContent>
-          </DialogRoot>
-        </Box>
+        {member.kakao || (
+          <Box>
+            <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
+              <DialogTrigger>
+                <Button disabled={saveButtonDisabled}>저장</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>회원 정보 변경</DialogTitle>
+                </DialogHeader>
+                <DialogBody>
+                  <Stack>
+                    <Field>
+                      <Input
+                        placeholder={"기존 비밀번호 입력"}
+                        value={oldPassword}
+                        onChange={(e) => setOldPassword(e.target.value)}
+                      />
+                    </Field>
+                  </Stack>
+                </DialogBody>
+                <DialogFooter>
+                  <DialogActionTrigger>
+                    <Button>취소</Button>
+                  </DialogActionTrigger>
+                  <Button onClick={handleSaveClick}>저장</Button>
+                </DialogFooter>
+              </DialogContent>
+            </DialogRoot>
+          </Box>
+        )}
+        {member.kakao && (
+          <Box>
+            <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
+              <DialogTrigger>
+                <Button disabled={saveButtonDisabled}>저장</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>회원 정보 변경 확인</DialogTitle>
+                </DialogHeader>
+                <DialogBody>
+                  <Stack>
+                    <p>
+                      수정을 확인하려면 텍스트 입력 필드에 {member.password}을
+                      따라 입력해 주십시오
+                    </p>
+                    <Field>
+                      <Input
+                        placeholder={member.password}
+                        value={oldPassword}
+                        onChange={(e) => setOldPassword(e.target.value)}
+                      />
+                    </Field>
+                  </Stack>
+                </DialogBody>
+                <DialogFooter>
+                  <DialogActionTrigger>
+                    <Button>취소</Button>
+                  </DialogActionTrigger>
+                  <Button onClick={handleSaveClick}>저장</Button>
+                </DialogFooter>
+              </DialogContent>
+            </DialogRoot>
+          </Box>
+        )}
       </Stack>
     </Box>
   );
