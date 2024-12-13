@@ -25,6 +25,8 @@ import {
 } from "../../components/ui/select.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import { IoMdPhotos } from "react-icons/io";
+import { AiOutlineComment } from "react-icons/ai";
+import { GoHeart } from "react-icons/go";
 
 function CommunityList(props) {
   const [communityList, setCommunityList] = useState([]);
@@ -32,8 +34,6 @@ function CommunityList(props) {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [countCommunity, setCountCommunity] = useState("");
-  const [numberOfFiles, setNumberOfFiles] = useState("");
-  const [numberOfComments, setNumberOfComments] = useState("");
 
   useEffect(() => {
     axios.get(`/api/community/list?${searchParams.toString()}`).then((res) => {
@@ -104,7 +104,12 @@ function CommunityList(props) {
                           <h3>{c.title}</h3>
                           {c.existOfFiles ? <IoMdPhotos /> : " "}
                         </HStack>
-                        <h4>댓글: {c.numberOfComments}</h4>
+                        <h4>
+                          <HStack>
+                            <GoHeart /> {c.numberOfLikes} | <AiOutlineComment />{" "}
+                            {c.numberOfComments}
+                          </HStack>
+                        </h4>
                       </Stack>
                     </Table.Cell>
                     <Table.Cell>{c.writer}</Table.Cell>

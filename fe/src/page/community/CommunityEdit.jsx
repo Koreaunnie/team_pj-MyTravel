@@ -18,11 +18,12 @@ function CommunityEdit(props) {
   const navigate = useNavigate();
   const [files, setFiles] = useState([]);
   const [removeFiles, setRemoveFiles] = useState([]);
+  const [fileList, setFileList] = useState([]);
 
   useEffect(() => {
     axios.get(`/api/community/view/${id}`).then((res) => {
       setCommunity(res.data);
-      setFiles(res.data);
+      setFileList(res.data.files);
     });
   }, []);
 
@@ -32,20 +33,21 @@ function CommunityEdit(props) {
         id: community.id,
         title: community.title,
         content: community.content,
-        communityFileList: community.communityFileList,
+        removeFiles,
+        uploadFiles: files,
         // creationDate: community.creationDate.toString().substring(0, 19),
       })
-      .then(navigate(`/community/list`));
+      .finally(navigate(`/community/list`));
   };
 
   const handleCancelClick = () => {
-    navigate(`/community/view/${community.id}`);
+    navigate(`/community/view/${id}`);
   };
 
   const handleDeleteFileClick = (file) => {
-    setRemoveFiles([...removeFiles, file.fileName]);
+    setRemoveFiles([...removeFiles, file.id]);
+    setFileList(() => fileList.filter((item) => item !== file));
   };
-  console.log(removeFiles);
 
   return (
     <div>
@@ -74,7 +76,7 @@ function CommunityEdit(props) {
           />
         </Field>
         <Field>
-          {community.files?.map((file) => (
+          {fileList?.map((file) => (
             <HStack key={file.fileName}>
               <Image src={file.filePath} border={"1px solid black"} m={3} />
               <CloseButton

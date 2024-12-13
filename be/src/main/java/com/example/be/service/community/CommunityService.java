@@ -36,6 +36,11 @@ public class CommunityService {
     @Value("${bucket.name}")
     String bucketName;
 
+
+    public List<Map<String, Object>> wholeList(String email) {
+        return mapper.wholeListUp(email);
+    }
+
     public Map<String, Object> list(Integer page, String searchType, String searchKeyword) {
 
         Integer pageList = (page - 1) * 10;
@@ -52,12 +57,17 @@ public class CommunityService {
             }
             Integer countComments = mapper.countCommentsByCommunityId(community.getId());
             if (countComments != null) {
-                community.setNumberOfComments(countComments + "개");
+                community.setNumberOfComments(countComments + "");
+            }
+            Integer countLikes = mapper.countLikesByCommunityId(community.getId());
+            if (countLikes != null) {
+                community.setNumberOfLikes(countLikes);
+            } else {
+                community.setNumberOfLikes(0);
             }
         }
 
         Integer countCommunity = mapper.countAllCommunity();
-
 
         return Map.of("list", list, "countCommunity", countCommunity);
     }
@@ -70,8 +80,6 @@ public class CommunityService {
 
         if (files != null && files.length > 0) {
 
-            // 파일 업로드
-            // TODO: local -> aws
             for (MultipartFile file : files) {
                 String fileName = file.getOriginalFilename();
                 String objectKey = STR."teamPrj1126/community/\{id}/\{fileName}";
@@ -91,21 +99,23 @@ public class CommunityService {
     }
 
     public Map<String, Object> view(Integer id) {
-//        Integer views = mapper.checkViews(id);
-//        Integer plusViews = views + 1;
-//        mapper.updateViews(plusViews, id);
-//        System.out.println("plusViews = " + plusViews);
-//        조회수가 안돼
+
 
         Map<String, Object> viewer = mapper.viewCommunity(id);
-        List<String> fileList = mapper.callCommunityFile(id);
+        Integer countLike = mapper.countLikesByCommunityId(id);
+        viewer.put("like", countLike);
+        // 게시글 좋아요 수 추가
+
+        List<Integer> fileList = mapper.callCommunityFile(id);
         List<Map<String, Object>> commentList = mapper.callCommunityComment(id);
         viewer.put("commentList", commentList);
         if (fileList.size() != 0) {
             List<Object> files = new ArrayList();
-            for (String fileName : fileList) {
+            for (Integer fileNumber : fileList) {
                 Map<String, Object> file = new HashMap<>();
+                String fileName = mapper.findFileNameByFileNumber(fileNumber);
                 String filePath = STR."\{imageSrcPrefix}/community/\{viewer.get("id").toString()}/\{fileName}";
+                file.put("id", fileNumber);
                 file.put("fileName", fileName);
                 file.put("filePath", filePath);
                 files.add(file);
@@ -117,12 +127,38 @@ public class CommunityService {
         }
     }
 
-    public void edit(Community community, List<String> removeFiles, MultipartFile[] uploadFiles, Authentication auth) {
+    public void edit(Community community, List<Integer> removeFiles, MultipartFile[] uploadFiles, Authentication auth) {
         mapper.editCommunity(community);
         Integer id = community.getId();
 
-        for (String removeFile : removeFiles) {
-            mapper.deleteFileByFileName(id, removeFile);
+        for (Integer fileNumber : removeFiles) {
+            String fileName = mapper.findFileNameByFileNumber(fileNumber);
+            String key = STR."teamPrj1126/community/\{id}/\{fileName}";
+            DeleteObjectRequest dor = DeleteObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(key)
+                    .build();
+            s3.deleteObject(dor);
+            mapper.deleteFileByFileNumber(fileNumber);
+        }
+
+        if (uploadFiles != null && uploadFiles.length > 0) {
+
+            for (MultipartFile file : uploadFiles) {
+                String fileName = file.getOriginalFilename();
+                String objectKey = STR."teamPrj1126/community/\{id}/\{fileName}";
+                PutObjectRequest por = PutObjectRequest.builder()
+                        .bucket(bucketName)
+                        .key(objectKey)
+                        .acl(ObjectCannedACL.PUBLIC_READ)
+                        .build();
+                try {
+                    s3.putObject(por, RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
+                } catch (IOException e) {
+                    throw new RuntimeException(e.getMessage(), e);
+                }
+                mapper.addFile(fileName, id);
+            }
         }
     }
 
@@ -144,6 +180,8 @@ public class CommunityService {
         // 댓글 지우기
         mapper.deleteCommentByCommunityId(id);
         // 좋아요 지우기
+        mapper.deleteLikeByCommunityId(id);
+
         mapper.deleteCommunity(id);
     }
 
@@ -168,4 +206,5 @@ public class CommunityService {
 //        TODO : 권한이 있을 경우 수정 가능, 권한이 없을 경우 toaster 로 수정 불가
         mapper.updateCommunityComment(comment, id);
     }
+
 }
