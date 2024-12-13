@@ -1,7 +1,7 @@
 import {
   GoogleMap,
   InfoWindow,
-  Marker,
+  MarkerF,
   useLoadScript,
 } from "@react-google-maps/api";
 import React, { useEffect, useRef, useState } from "react";
@@ -22,30 +22,42 @@ export function GoogleMapsView({ placeIds }) {
     version: "weekly",
   });
 
+  // useRef로 이전 placeIds를 추적하여 중복 호출을 방지
+  const prevPlaceIdsRef = useRef();
+
   useEffect(() => {
-    if (placeIds && isLoaded && mapInstanceRef.current) {
-      const service = new google.maps.places.PlacesService(
-        mapInstanceRef.current,
-      );
+    // placeIds가 변경될 때만 실행되도록
+    if (prevPlaceIdsRef.current !== placeIds) {
+      console.log("placeIds updated", placeIds);
 
-      const promises = placeIds.map(
-        (id) =>
-          new Promise((resolve) => {
-            service.getDetails({ placeId: id }, (result, status) => {
-              if (status === google.maps.places.PlacesServiceStatus.OK) {
-                resolve(result);
-              } else {
-                resolve(null);
-              }
-            });
-          }),
-      );
+      if (placeIds && isLoaded && mapInstanceRef.current) {
+        const service = new google.maps.places.PlacesService(
+          mapInstanceRef.current,
+        );
 
-      Promise.all(promises).then((details) => {
-        setPlacesDetails(details.filter(Boolean));
-      });
+        const promises = placeIds.map(
+          (id) =>
+            new Promise((resolve) => {
+              service.getDetails({ placeId: id }, (result, status) => {
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                  resolve(result);
+                } else {
+                  resolve(null);
+                }
+              });
+            }),
+        );
+
+        // API 요청 완료 후 placesDetails 상태를 갱신
+        Promise.all(promises).then((details) => {
+          setPlacesDetails(details.filter(Boolean)); // null 값 제외
+        });
+      }
+
+      // 이전 placeIds를 현재 placeIds로 업데이트
+      prevPlaceIdsRef.current = placeIds;
     }
-  }, [placeIds, isLoaded]); // placeIds 또는 isLoaded가 변경될 때마다 다시 실행
+  }, [placeIds, isLoaded]); // placeIds와 isLoaded 값이 변경될 때마다 실행
 
   const handleMapLoad = (map) => {
     mapInstanceRef.current = map;
@@ -59,7 +71,7 @@ export function GoogleMapsView({ placeIds }) {
           lat: placesDetails[0].geometry.location.lat(),
           lng: placesDetails[0].geometry.location.lng(),
         }
-      : { lat: 37.5665, lng: 126.978 };
+      : { lat: 37.5665, lng: 126.978 }; // 기본 서울 위치
 
   return (
     <div>
@@ -76,7 +88,7 @@ export function GoogleMapsView({ placeIds }) {
           };
 
           return (
-            <Marker
+            <MarkerF
               key={index}
               position={position}
               onClick={() => {
