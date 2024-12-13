@@ -147,7 +147,7 @@ export function Index() {
         </div>
       </section>
 
-      <div>광고 슬라이드</div>
+      <div>광고 슬라이드 (마이리얼트립 st)</div>
 
       {/* 커뮤니티 섹션 */}
       <section className={"notice-section-wrap"}>
@@ -181,7 +181,7 @@ export function Index() {
           )}
 
           <div className={"link-box"}>
-            커뮤니티에서 다양한 여행 이야기를 들려주세요!
+            커뮤니티에서 다양한 여행 이야기를 들려주세요! (서대문구 st)
           </div>
         </div>
       </section>
