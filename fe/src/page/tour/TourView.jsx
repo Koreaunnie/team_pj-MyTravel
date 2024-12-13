@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Box, Input, Stack, Textarea } from "@chakra-ui/react";
 import { Field } from "../../components/ui/field.jsx";
 import { useNavigate, useParams } from "react-router-dom";
@@ -31,11 +31,23 @@ function TourView() {
   const [saveModalOpen, setSaveModalOpen] = useState(false);
   const [endDate, setEndDate] = useState("");
   const [loginModalOpen, setLoginModalOpen] = useState(false);
+  const reviewRef = useRef(null);
 
   const { hasAccess, isAuthenticated, isAdmin } = useContext(
     AuthenticationContext,
   );
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash === "#review") {
+      setTimeout(() => {
+        if (reviewRef.current) {
+          reviewRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 100); // 100ms 지연
+    }
+  }, []);
 
   useEffect(() => {
     if (!id) return; // id가 없으면 실행하지 않음
@@ -185,7 +197,9 @@ function TourView() {
         </Stack>
         <br />
         <hr />
-        <ReviewContainer tourId={tour.id} />
+        <div ref={reviewRef}>
+          <ReviewContainer tourId={tour.id} />
+        </div>
 
         {/*장바구니 추가 modal*/}
         <Modal

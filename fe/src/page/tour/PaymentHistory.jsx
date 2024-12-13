@@ -10,12 +10,15 @@ function PaymentHistory(props) {
   useEffect(() => {
     axios.get(`/api/payment/list/${email}`).then((res) => {
       setPaidList(res.data);
-      console.log(paidList);
     });
   }, []);
 
   function handleRowClick(tourId) {
     navigate(`/tour/view/${tourId}`);
+  }
+
+  function handleWriteReviewClick(tourId) {
+    navigate(`/tour/view/${tourId}#review`);
   }
 
   return (
@@ -53,7 +56,15 @@ function PaymentHistory(props) {
                     <br />~{tour.endDate}
                   </td>
                   <td>
-                    <button className={"btn btn-dark"}>후기 작성</button>
+                    <button
+                      className={"btn btn-dark"}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleWriteReviewClick(tour.tourId);
+                      }}
+                    >
+                      후기 작성
+                    </button>
                   </td>
                 </tr>
               </React.Fragment>
