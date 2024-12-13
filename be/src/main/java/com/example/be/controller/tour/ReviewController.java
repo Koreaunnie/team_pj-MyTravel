@@ -1,5 +1,6 @@
 package com.example.be.controller.tour;
 
+import com.example.be.dto.tour.PaymentHistory;
 import com.example.be.dto.tour.Review;
 import com.example.be.service.tour.ReviewService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,11 @@ import java.util.Map;
 public class ReviewController {
   final ReviewService service;
 
+  @GetMapping("payment/{tourId}")
+  public List<PaymentHistory> paymentList(@PathVariable Integer tourId, Authentication auth) {
+    return service.paymentList(tourId, auth);
+  }
+
   @GetMapping(value = "check", params = "tourId")
   public ResponseEntity<Map<String, Object>> checkPayment(@RequestParam Integer tourId, Authentication auth) {
     if (service.canWriteReview(tourId, auth)) {
@@ -25,7 +31,6 @@ public class ReviewController {
       return ResponseEntity.ok().body(Map.of("available", false));
     }
   }
-
 
   @PutMapping("edit")
   @PreAuthorize("isAuthenticated()")

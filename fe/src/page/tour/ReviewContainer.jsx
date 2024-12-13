@@ -9,6 +9,8 @@ function ReviewContainer({ tourId }) {
   const [reviewList, setReviewList] = useState([]);
   const [processing, setProcessing] = useState(false);
   const [paymentCheck, setPaymentCheck] = useState(false);
+  const [paidList, setPaidList] = useState([]);
+  const [selectedPayment, setSelectedPayment] = useState(null);
 
   useEffect(() => {
     if (!processing) {
@@ -19,12 +21,19 @@ function ReviewContainer({ tourId }) {
     }
   }, [processing]);
 
+  useEffect(() => {
+    axios
+      .get(`/api/review/payment/${tourId}`)
+      .then((res) => setPaidList(res.data));
+  }, []);
+
   function handleSaveReviewClick(review) {
     setProcessing(true);
     axios
       .post("/api/review/add", {
         tourId: tourId,
         review: review,
+        paymentId: selectedPayment,
       })
       .then((res) => res.data.message)
       .then((message) => {
@@ -32,6 +41,7 @@ function ReviewContainer({ tourId }) {
           type: message.type,
           description: message.text,
         });
+        setSelectedPayment(null);
       })
       .catch((error) => {
         toaster.create({
@@ -91,9 +101,50 @@ function ReviewContainer({ tourId }) {
     <div>
       <Stack>
         <h2>후기</h2>
-        {paymentHistoryCheck() && (
+
+        {/*내역에서 후기 작성할 상품 선택: payment_id 전달*/}
+        {paymentHistoryCheck() ? (
+          <div>
+            <h3>내 구매 이력</h3>
+            <table className={"table-list"}>
+              <thead>
+                <tr>
+                  <th>결제일</th>
+                  <th>결제번호</th>
+                  <th>여행 일정</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paidList.map((tour) => (
+                  <tr
+                    key={tour.paymentId}
+                    onClick={() => setSelectedPayment(tour.paymentId)}
+                    style={{
+                      backgroundColor:
+                        selectedPayment === tour.paymentId
+                          ? "#cdddff"
+                          : "transparent",
+                    }}
+                  >
+                    <td>{tour.paidAt}</td>
+                    <td>{tour.paymentId}</td>
+                    <td>
+                      {tour.startDate}
+                      <br />~{tour.endDate}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : null}
+
+        {/*TODO: 후기 작성 버튼을 내역 고른 후로 옮겨야 함*/}
+        {selectedPayment && (
           <ReviewAdd tourId={tourId} onSaveClick={handleSaveReviewClick} />
         )}
+
+        {/*목록*/}
         {reviewList.length === 0 ? (
           <p>아직 작성된 후기가 없습니다.</p>
         ) : (

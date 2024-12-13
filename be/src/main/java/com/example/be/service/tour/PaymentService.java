@@ -43,8 +43,6 @@ public class PaymentService {
   public List<PaymentHistory> myPaymentHistory(String email) {
     List<PaymentHistory> paidList = mapper.myPaymentHistory(email);
 
-
-    System.out.println(paidList);
     return paidList;
   }
 

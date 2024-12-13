@@ -1,5 +1,6 @@
 package com.example.be.mapper.tour;
 
+import com.example.be.dto.tour.PaymentHistory;
 import com.example.be.dto.tour.Review;
 import org.apache.ibatis.annotations.*;
 
@@ -9,8 +10,8 @@ import java.util.List;
 public interface ReviewMapper {
   @Insert("""
           INSERT INTO tour_review
-          (tour_id, writer_email, writer_nickname, review) 
-          VALUES (#{tourId}, #{writerEmail}, #{writerNickname}, #{review}) 
+          (tour_id, writer_email, writer_nickname, review, payment_id) 
+          VALUES (#{tourId}, #{writerEmail}, #{writerNickname}, #{review}, #{paymentId}) 
           """)
   @Options(keyProperty = "reviewId", useGeneratedKeys = true)
   int insert(Review review);
@@ -51,4 +52,17 @@ public interface ReviewMapper {
             AND writer_email=#{name}
           """)
   int reviewCount(Integer tourId, String name);
+
+  @Select("""
+          SELECT p.payment_id, paid_at, pd.tour_id, startDate, endDate, review
+          FROM payment p 
+              RIGHT JOIN payment_detail pd ON p.payment_id=pd.payment_id
+              LEFT JOIN tour ON tour.id=pd.tour_id    
+              LEFT JOIN tour_review tr ON tr.payment_id = p.payment_id AND tr.tour_id = tour.id
+          WHERE buyer_email = #{email}
+            AND pd.tour_id = #{tourId}
+            AND review IS NULL    
+          ORDER BY paid_at DESC;    
+          """)
+  List<PaymentHistory> paymentList(Integer tourId, String email);
 }

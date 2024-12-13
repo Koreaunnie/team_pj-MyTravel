@@ -4,6 +4,7 @@ import axios from "axios";
 
 function PaymentHistory(props) {
   const [paidList, setPaidList] = useState([]);
+  const [reviewCheck, setReviewCheck] = useState(true);
   const { email } = useParams();
   const navigate = useNavigate();
 
@@ -20,6 +21,18 @@ function PaymentHistory(props) {
   function handleWriteReviewClick(tourId) {
     navigate(`/tour/view/${tourId}#review`);
   }
+
+  // const reviewAndPaymentCheck = (tourId) => {
+  //   axios
+  //     .get(`/api/review/check`, {
+  //       params: { tourId },
+  //     })
+  //     .then((res) => res.data)
+  //     .then((data) => {
+  //       // setReviewCheck(data.available);
+  //     });
+  //   return reviewCheck;
+  // };
 
   return (
     <div>
@@ -40,22 +53,34 @@ function PaymentHistory(props) {
             </tr>
           </thead>
           <tbody>
-            {paidList.map((tour, index) => (
-              <React.Fragment key={index}>
-                <tr key={tour.id} onClick={() => handleRowClick(tour.tourId)}>
-                  <td>{tour.paidAt}</td>
-                  <td>{tour.paymentId}</td>
-                  <td>{tour.product}</td>
-                  <td>{tour.location}</td>
-                  <td>
-                    {tour.price}{" "}
-                    {tour.currency === "CURRENCY_KRW" ? "원" : tour.currency}
-                  </td>
-                  <td>
-                    {tour.startDate}
-                    <br />~{tour.endDate}
-                  </td>
-                  <td>
+            {paidList.map((tour) => (
+              <tr key={tour.id} onClick={() => handleRowClick(tour.tourId)}>
+                <td>{tour.paidAt}</td>
+                <td>{tour.paymentId}</td>
+                <td>{tour.product}</td>
+                <td>{tour.location}</td>
+                <td>
+                  {tour.price}
+                  {tour.currency === "CURRENCY_KRW" ? "원" : tour.currency}
+                </td>
+                <td>
+                  {tour.startDate}
+                  <br />~{tour.endDate}
+                </td>
+
+                {/*후기 버튼: 이 tour.id의 후기 작성 경험이 있으면 '확인', 없으면 '작성'*/}
+                <td>
+                  {tour.review ? (
+                    <button
+                      className={"btn btn-dark"}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleWriteReviewClick(tour.tourId);
+                      }}
+                    >
+                      후기 확인
+                    </button>
+                  ) : (
                     <button
                       className={"btn btn-dark"}
                       onClick={(e) => {
@@ -65,9 +90,9 @@ function PaymentHistory(props) {
                     >
                       후기 작성
                     </button>
-                  </td>
-                </tr>
-              </React.Fragment>
+                  )}
+                </td>
+              </tr>
             ))}
           </tbody>
         </table>

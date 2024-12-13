@@ -24,3 +24,36 @@ SELECT COUNT(*)
 FROM payment_detail pd LEFT JOIN payment p ON pd.payment_id=p.payment_id
 WHERE p.buyer_email='2'
   AND pd.tour_id='68';
+
+SELECT p.payment_id, product, location, currency, paid_at, pd.tour_id, startDate, endDate, tour.price, review, writer_email
+FROM payment p
+    RIGHT JOIN payment_detail pd
+    ON p.payment_id=pd.payment_id
+    LEFT JOIN tour ON tour.id=pd.tour_id
+    LEFT JOIN tour_review tr ON tr.payment_id = p.payment_id
+WHERE buyer_email = 'a'
+ORDER BY paid_at DESC;
+
+SELECT payment.payment_id, product, location, currency, paid_at, tour.id, startDate, endDate, tour.price, review
+FROM payment RIGHT JOIN payment_detail
+                        ON payment.payment_id=payment_detail.payment_id
+             LEFT JOIN tour ON tour.id=payment_detail.tour_id
+             LEFT JOIN tour_review tr ON tr.payment_id = payment.payment_id
+WHERE buyer_email = 'jm@jm'
+ORDER BY paid_at DESC;
+
+
+ALTER TABLE tour_review
+ADD COLUMN payment_id VARCHAR(30) REFERENCES payment(payment_id);
+
+SHOW CREATE TABLE tour_review;
+
+SELECT p.payment_id, paid_at, pd.tour_id, startDate, endDate
+FROM payment p
+         RIGHT JOIN payment_detail pd ON p.payment_id=pd.payment_id
+         LEFT JOIN tour ON tour.id=pd.tour_id
+         LEFT JOIN tour_review tr ON tr.payment_id = p.payment_id AND tr.tour_id = tour.id
+WHERE buyer_email = 'jm@jm'
+  AND pd.tour_id = 69
+  AND review IS NULL
+ORDER BY paid_at DESC;
