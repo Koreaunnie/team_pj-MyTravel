@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { Modal } from "/src/components/root/Modal.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
-import { GoogleMaps } from "./GoogleMaps.jsx";
+import { GoogleMaps } from "./GoogleMaps/GoogleMaps.jsx";
 
 function PlanAdd(props) {
   const [backToListModalOpen, setBackToListModalOpen] = useState(false);
@@ -212,6 +212,8 @@ function PlanAdd(props) {
                 />
 
                 <label htmlFor="place">장소</label>
+                <GoogleMaps />
+
                 <input
                   type="text"
                   id="place"
@@ -222,8 +224,6 @@ function PlanAdd(props) {
                   }
                 />
                 <button type="button">검색</button>
-
-                <GoogleMaps />
 
                 <label htmlFor="memo">메모</label>
                 <textarea
