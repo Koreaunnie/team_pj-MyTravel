@@ -3,6 +3,7 @@ package com.example.be.service.member;
 import com.example.be.dto.member.Member;
 import com.example.be.dto.member.MemberEdit;
 import com.example.be.dto.member.MemberPicture;
+import com.example.be.mapper.community.CommunityMapper;
 import com.example.be.mapper.member.MemberMapper;
 import com.example.be.mapper.tour.TourMapper;
 import com.example.be.service.tour.TourService;
@@ -37,6 +38,7 @@ public class MemberService {
 
     private final TourService tourService;
     private final TourMapper tourMapper;
+    private final CommunityMapper communityMapper;
     private final MemberMapper memberMapper;
 
     @Value("${image.src.prefix}")
@@ -134,6 +136,10 @@ public class MemberService {
             }
 
             //community writer 탈퇴한 회원으로 변경
+            List<Integer> wholeCommunityId = communityMapper.selectWholeCommunityIdByWriter(db.getNickname());
+            for (Integer communityId : wholeCommunityId) {
+                mapper.updateWriterToLeft(communityId);
+            }
 
 
         }

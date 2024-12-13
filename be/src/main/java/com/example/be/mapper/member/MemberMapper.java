@@ -83,6 +83,13 @@ public interface MemberMapper {
             """)
     int updatePartnerToLeft(Integer tourId);
 
+    @Update("""
+            UPDATE community
+            SET writer = '탈퇴한 회원'
+            WHERE id = #{communityId}
+            """)
+    int updateWriterToLeft(Integer communityId);
+
     @Delete("""
             DELETE FROM auth
             WHERE member_email=#{email}""")
@@ -102,4 +109,5 @@ public interface MemberMapper {
             WHERE email = #{email}
             """)
     String selectNicknameByEmail(String email);
+
 }
