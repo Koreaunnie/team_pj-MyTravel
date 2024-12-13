@@ -165,16 +165,16 @@ public interface TourMapper {
                  AND (
                 <trim prefixOverrides="OR">
                 <if test="searchType == 'all' or searchType == 'title'">
-                t.title LIKE CONCAT('%', #{keyword}, '%')
+                title LIKE CONCAT('%', #{keyword}, '%')
                 </if>
                 <if test="searchType == 'all' or searchType == 'product'">
-                OR t.product LIKE CONCAT('%', #{keyword}, '%')
+                OR product LIKE CONCAT('%', #{keyword}, '%')
                 </if>
                 <if test="searchType == 'all' or searchType == 'location'">
-                OR t.location LIKE CONCAT('%', #{keyword}, '%')
+                OR location LIKE CONCAT('%', #{keyword}, '%')
                 </if>
                 <if test="searchType == 'all' or searchType == 'partner'">
-                OR t.partner LIKE CONCAT('%', #{keyword}, '%')
+                OR partner LIKE CONCAT('%', #{keyword}, '%')
                 </if>
                 </trim>
                 )

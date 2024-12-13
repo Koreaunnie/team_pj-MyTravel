@@ -19,4 +19,21 @@ SELECT picture
 FROM member
 WHERE email = 'fire';
 
+SELECT *
+FROM member
+WHERE name = '2';
 
+ALTER TABLE member
+    ADD kakao BOOLEAN DEFAULT FALSE;
+
+INSERT INTO member
+    (email, nickname, password, name, member.phone, kakao)
+VALUES ('3829160102', '아로', 'a', '아로', '0', TRUE);
+
+SELECT *
+FROM member
+WHERE nickname = '아로';
+
+DELETE
+FROM member
+WHERE nickname = '아로';

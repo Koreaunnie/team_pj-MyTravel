@@ -13,5 +13,6 @@ public class Member {
   private String name;
   private String phone;
   private LocalDateTime inserted;
+  private Boolean kakao;
   private List<MemberPicture> profile;
 }
