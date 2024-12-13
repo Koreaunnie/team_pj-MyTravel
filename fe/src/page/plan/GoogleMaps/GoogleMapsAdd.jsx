@@ -5,12 +5,11 @@ import "./GoogleMaps.css";
 import { GoogleMapsPlaceAutocomplete } from "./GoogleMapsPlaceAutocomplete.jsx";
 
 const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+const libraries = ["places"];
 
 export function GoogleMapsAdd({ onPlaceSelected }) {
   const [selected, setSelected] = useState(null);
   const mapInstanceRef = useRef(null);
-
-  const libraries = ["places"];
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: apiKey,

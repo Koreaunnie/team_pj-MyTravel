@@ -5,16 +5,16 @@ import {
   useLoadScript,
 } from "@react-google-maps/api";
 import React, { useEffect, useRef, useState } from "react";
-import "./GoogleMaps.css";
 import { Spinner } from "@chakra-ui/react";
+import "./GoogleMaps.css";
 
 const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+const libraries = ["places"];
 
 export function GoogleMapsView({ placeIds }) {
-  const [placesDetails, setPlacesDetails] = useState([]); // 여러 개의 장소 정보
-  const [selectedPlaceId, setSelectedPlaceId] = useState(null); // 선택된 마커의 placeId
+  const [placesDetails, setPlacesDetails] = useState([]);
+  const [selectedPlaceId, setSelectedPlaceId] = useState(null);
   const mapInstanceRef = useRef(null);
-  const libraries = ["places"];
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: apiKey,
@@ -23,12 +23,11 @@ export function GoogleMapsView({ placeIds }) {
   });
 
   useEffect(() => {
-    if (placeIds && isLoaded) {
+    if (placeIds && isLoaded && mapInstanceRef.current) {
       const service = new google.maps.places.PlacesService(
         mapInstanceRef.current,
       );
 
-      // 모든 placeId에 대해 상세 정보를 가져오기
       const promises = placeIds.map(
         (id) =>
           new Promise((resolve) => {
@@ -42,25 +41,25 @@ export function GoogleMapsView({ placeIds }) {
           }),
       );
 
-      // 모든 장소 정보 받아오기
       Promise.all(promises).then((details) => {
-        setPlacesDetails(details.filter(Boolean)); // 유효한 장소 정보만 필터링
+        setPlacesDetails(details.filter(Boolean));
       });
     }
-  }, [placeIds, isLoaded]);
+  }, [placeIds, isLoaded]); // placeIds 또는 isLoaded가 변경될 때마다 다시 실행
+
+  const handleMapLoad = (map) => {
+    mapInstanceRef.current = map;
+  };
 
   if (!isLoaded) return <Spinner />;
 
-  const center = {
-    lat: 37.5665, // 기본 중심 위치 (서울)
-    lng: 126.978, // 기본 경도
-  };
-
-  // 지도 인스턴스
-  const handleMapLoad = (map) => {
-    console.log("Map loaded:", map);
-    mapInstanceRef.current = map;
-  };
+  const center =
+    placesDetails.length > 0
+      ? {
+          lat: placesDetails[0].geometry.location.lat(),
+          lng: placesDetails[0].geometry.location.lng(),
+        }
+      : { lat: 37.5665, lng: 126.978 };
 
   return (
     <div>
@@ -76,18 +75,16 @@ export function GoogleMapsView({ placeIds }) {
             lng: place.geometry.location.lng(),
           };
 
-          console.log(`Marker ${index}:`, position); // 마커 위치 확인
-
-          // 지도 중심을 마커 위치로 이동
-          if (mapInstanceRef.current) {
-            mapInstanceRef.current.panTo(position);
-          }
-
           return (
             <Marker
               key={index}
               position={position}
-              onClick={() => setSelectedPlaceId(place.place_id)} // 클릭 시 선택된 placeId로 상태 변경
+              onClick={() => {
+                setSelectedPlaceId(place.place_id);
+                if (mapInstanceRef.current) {
+                  mapInstanceRef.current.panTo(position);
+                }
+              }}
             />
           );
         })}
@@ -102,16 +99,22 @@ export function GoogleMapsView({ placeIds }) {
                 .find((place) => place.place_id === selectedPlaceId)
                 .geometry.location.lng(),
             }}
+            onCloseClick={() => setSelectedPlaceId(null)}
+            options={{
+              maxWidth: 300,
+              disableAutoPan: false,
+              pixelOffset: new google.maps.Size(0, -30), // 창을 약간 위로 이동
+            }}
           >
-            <div>
-              <h3>
+            <div style={{ padding: "10px" }}>
+              <h3 style={{ margin: "0", fontWeight: "bold" }}>
                 {
                   placesDetails.find(
                     (place) => place.place_id === selectedPlaceId,
                   )?.name
                 }
               </h3>
-              <p>
+              <p style={{ margin: "5px 0", color: "#757575" }}>
                 {
                   placesDetails.find(
                     (place) => place.place_id === selectedPlaceId,
