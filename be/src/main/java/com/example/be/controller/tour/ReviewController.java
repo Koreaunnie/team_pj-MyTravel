@@ -20,7 +20,9 @@ public class ReviewController {
 
   @GetMapping("payment/{tourId}")
   public List<PaymentHistory> paymentList(@PathVariable Integer tourId, Authentication auth) {
-    return service.paymentList(tourId, auth);
+    List<PaymentHistory> paidList = service.paymentList(tourId, auth);
+    System.out.println(paidList);
+    return paidList;
   }
 
   @GetMapping(value = "check", params = "tourId")

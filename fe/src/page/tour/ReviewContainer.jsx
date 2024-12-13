@@ -35,8 +35,9 @@ function ReviewContainer({ tourId }) {
         review: review,
         paymentId: selectedPayment,
       })
-      .then((res) => res.data.message)
-      .then((message) => {
+      .then((res) => res.data)
+      .then((data) => {
+        const message = data.message;
         toaster.create({
           type: message.type,
           description: message.text,
@@ -139,7 +140,6 @@ function ReviewContainer({ tourId }) {
           </div>
         ) : null}
 
-        {/*TODO: 후기 작성 버튼을 내역 고른 후로 옮겨야 함*/}
         {selectedPayment && (
           <ReviewAdd tourId={tourId} onSaveClick={handleSaveReviewClick} />
         )}
