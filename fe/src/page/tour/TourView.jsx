@@ -20,7 +20,7 @@ import { AuthenticationContext } from "../../components/context/AuthenticationPr
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import "./Tour.css";
 import { Modal } from "../../components/root/Modal.jsx";
-import ReviewContainer from "../../components/review/ReviewContainer.jsx";
+import ReviewContainer from "./ReviewContainer.jsx";
 
 function TourView() {
   const { id } = useParams();

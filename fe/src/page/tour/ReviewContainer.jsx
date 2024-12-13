@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import ReviewAdd from "../../page/tour/ReviewAdd.jsx";
 import { Stack } from "@chakra-ui/react";
-import ReviewList from "../../page/tour/ReviewList.jsx";
 import axios from "axios";
-import { toaster } from "../ui/toaster.jsx";
+import ReviewAdd from "./ReviewAdd.jsx";
+import ReviewList from "./ReviewList.jsx";
+import { toaster } from "../../components/ui/toaster.jsx";
 
 function ReviewContainer({ tourId }) {
   const [reviewList, setReviewList] = useState([]);
