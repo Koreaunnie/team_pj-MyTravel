@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
+import SocialKakao from "../../components/login/SocialKakao.jsx";
 
 function MemberLogin(props) {
   const [email, setEmail] = useState("");
@@ -63,7 +64,7 @@ function MemberLogin(props) {
         <button className={"btn-wide btn-dark"} onClick={handleLoginClick}>
           로그인
         </button>
-
+        <SocialKakao />
         <div className={"move-to-button"}>
           <p>가입하고 더 많은 여행을 함께 하시겠어요?</p>
           <p className={"link"} onClick={() => navigate(`/member/signup`)}>
