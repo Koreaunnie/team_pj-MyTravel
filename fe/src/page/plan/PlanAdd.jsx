@@ -6,7 +6,6 @@ import { toaster } from "../../components/ui/toaster.jsx";
 import { Modal } from "/src/components/root/Modal.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import { GoogleMaps } from "./GoogleMaps.jsx";
-import GoogleMapsContainer from "./GoogleMapsContainer.jsx";
 
 function PlanAdd(props) {
   const [backToListModalOpen, setBackToListModalOpen] = useState(false);
@@ -224,8 +223,6 @@ function PlanAdd(props) {
                 />
                 <button type="button">검색</button>
 
-                <GoogleMapsContainer />
-                {/*<GoogleMapsNotUse />*/}
                 <GoogleMaps />
 
                 <label htmlFor="memo">메모</label>

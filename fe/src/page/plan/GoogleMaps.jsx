@@ -14,19 +14,18 @@ export function GoogleMaps() {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: apiKey,
     libraries: ["places"],
+    version: "weekly",
   });
 
-  if (!isLoaded) {
-    return <Spinner />;
-  }
+  if (!isLoaded) return <Spinner />;
 
   function Map() {
     const [selected, setSelected] = useState(null);
     const [mapInstance, setMapInstance] = useState(null);
 
     const center = {
-      lat: 7.2905715, // default latitude
-      lng: 80.6337262, // default longitude
+      lat: 37.5665, // default latitude
+      lng: 126.978, // default longitude
     };
 
     // 지도 인스턴스 저장
@@ -57,7 +56,7 @@ export function GoogleMaps() {
 
         <GoogleMap
           zoom={10}
-          center={center}
+          center={selected || center}
           mapContainerClassName={"map-container"}
           onLoad={handleMapLoad}
         >
@@ -101,17 +100,22 @@ export function GoogleMaps() {
     });
 
     const handleSelect = async (description) => {
-      // 검색 결과 항목을 선택했을 때 실행
-      setValue(description, false);
-      clearSuggestions();
+      try {
+        // 검색 결과 항목을 선택했을 때 실행
+        setValue(description, false);
+        clearSuggestions();
 
-      // Geocoding을 통해 Lat/Lng 좌표 얻기
-      const result = await getGeocode({ address: description });
-      const { lat, lng } = await getLatLng(result[0]);
+        // Geocoding을 통해 Lat/Lng 좌표 얻기
+        const result = await getGeocode({ address: description });
+        const { lat, lng } = await getLatLng(result[0]);
 
-      // 선택된 위치를 setSelected로 설정하여 마커 위치 업데이트
-      setSelected({ lat, lng });
-      console.log(setSelected(lat, lng));
+        // 선택된 위치를 setSelected로 설정하여 마커 위치 업데이트
+        const latLng = { lat, lng };
+        setSelected(latLng);
+        console.log(latLng);
+      } catch (e) {
+        console.error("Error getting geocode or setting marker:", e);
+      }
     };
 
     return (
@@ -139,7 +143,10 @@ export function GoogleMaps() {
                       index,
                       className:
                         highlightedIndex === index ? "highlighted" : "",
-                      onClick: () => handleSelect(description),
+                      onClick: () => {
+                        handleSelect(description);
+                        console.log(description);
+                      },
                     })}
                   >
                     <li>
