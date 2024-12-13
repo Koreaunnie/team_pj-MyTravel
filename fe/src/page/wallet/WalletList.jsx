@@ -63,7 +63,7 @@ function WalletList(props) {
       });
       setFilteredWallet(filtered); // currentMonth에 맞는 지갑 리스트 필터링
     }
-  }, [currentMonth, walletList]); // currentMonth나 walletList가 변경될 때마다 실행
+  }, [currentMonth, walletList, currentYear]); // currentMonth나 walletList가 변경될 때마다 실행
 
   // 선택된 날짜가 변경될 때 필터링
   useEffect(() => {
@@ -203,9 +203,12 @@ function WalletList(props) {
   }, [checkedItems, walletList]);
 
   // 3자리마다 쉼표 추가
-  const formatNumberWithCommas = (number) => {
-    return number.toLocaleString(); // 3자리마다 쉼표 추가
-  };
+  function formatNumberWithCommas(number) {
+    if (number == null) {
+      return "0"; // 또는 적절한 기본값 반환
+    }
+    return number.toLocaleString();
+  }
 
   // tileContent 데이터 캐싱
   const tileContentData = useMemo(() => {
@@ -392,9 +395,11 @@ function WalletList(props) {
 
           <button
             className={"btn btn-warning"}
-            style={{ marginLeft: "15px" }}
             onClick={() => setDeleteModalOpen(true)}
-            style={{ display: checkedItems.size > 0 ? "inline-block" : "none" }}
+            style={{
+              marginLeft: "15px",
+              display: checkedItems.size > 0 ? "inline-block" : "none",
+            }}
           >
             선택 항목 삭제
           </button>
