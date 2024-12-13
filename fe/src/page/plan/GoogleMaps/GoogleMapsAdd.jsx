@@ -6,7 +6,7 @@ import { GoogleMapsPlaceAutocomplete } from "./GoogleMapsPlaceAutocomplete.jsx";
 
 const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
 
-export function GoogleMaps({ onPlaceSelected }) {
+export function GoogleMapsAdd({ onPlaceSelected }) {
   const [selected, setSelected] = useState(null);
   const mapInstanceRef = useRef(null);
 

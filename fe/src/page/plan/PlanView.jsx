@@ -6,6 +6,7 @@ import "/src/components/root/common.css";
 import { Modal } from "../../components/root/Modal.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
+import { GoogleMapsView } from "./GoogleMaps/GoogleMapsView.jsx";
 
 function PlanView(props) {
   const { id } = useParams();
@@ -22,8 +23,6 @@ function PlanView(props) {
       setPlan(res.data.plan);
       // planFields 배열 (응답이 없으면 빈 배열)
       setPlanFields(res.data.planFields || []);
-      // 네이버 공유할 때 title
-      setTitle(res.data.plan.title);
     });
   }, []);
 
@@ -74,92 +73,98 @@ function PlanView(props) {
         navigateToDepth2={() => navigate(`/plan/view/${id}`)}
       />
 
-      <div className={"body body-normal"}>
-        <div className={"position-fixed"}>
-          <div className={"btn-warp bg-gray"}>
-            <button
-              className={"btn btn-dark-outline"}
-              onClick={() => navigate(`/plan/list`)}
-            >
-              목록
-            </button>
+      <div className={"body"}>
+        <div className={"plan-view-container"}>
+          <div className={"plan-view-header"}>
+            <div className={"btn-warp"}>
+              <button
+                className={"btn btn-dark-outline"}
+                onClick={() => navigate(`/plan/list`)}
+              >
+                목록
+              </button>
 
-            <button
-              className={"btn btn-dark"}
-              onClick={() => setAddModalOpen(true)}
-            >
-              새 여행 작성
-            </button>
+              <button
+                className={"btn btn-dark"}
+                onClick={() => setAddModalOpen(true)}
+              >
+                새 여행 작성
+              </button>
 
-            <button
-              className={"btn btn-dark"}
-              onClick={() => setEditModalOpen(true)}
-            >
-              수정
-            </button>
+              <button
+                className={"btn btn-dark"}
+                onClick={() => setEditModalOpen(true)}
+              >
+                수정
+              </button>
 
-            <button
-              className={"btn btn-warning"}
-              onClick={() => setDeleteModalOpen(true)}
-            >
-              삭제
-            </button>
+              <button
+                className={"btn btn-warning"}
+                onClick={() => setDeleteModalOpen(true)}
+              >
+                삭제
+              </button>
+            </div>
+
+            <div>
+              <h3>{plan.title}</h3>
+              <h5>{plan.description}</h5>
+            </div>
+
+            <div className={"plan-view-header-right"}>
+              <ul>
+                <li>
+                  <ul>
+                    <li className={"font-bold"}>Destination</li>
+                    <li>{plan.destination}</li>
+                  </ul>
+                </li>
+                <li>
+                  <ul>
+                    <li className={"font-bold"}>Date</li>
+                    <li>
+                      {plan.startDate} ~ {plan.endDate}
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
 
-        <div className={"plan-view-header"}>
-          <div>
-            <h3>{plan.title}</h3>
-            <h5>{plan.description}</h5>
+          <div className={"plan-view-map"}>
+            <GoogleMapsView
+              placeIds={planFields.map((field) => field.placeId)}
+            />
           </div>
 
-          <div className={"plan-view-header-right"}>
-            <ul>
-              <li>
-                <ul>
-                  <li className={"font-bold"}>Destination</li>
-                  <li>{plan.destination}</li>
-                </ul>
-              </li>
-              <li>
-                <ul>
-                  <li className={"font-bold"}>Date</li>
-                  <li>
-                    {plan.startDate} ~ {plan.endDate}
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div className={"plan-view-table"}>
-          {Object.entries(groupedPlanFields).map(([date, fields]) => (
-            <table key={date} className="table-group">
-              <thead>
-                <tr className="table-group-date">
-                  <th colSpan="4">{date}</th>
-                </tr>
-                <tr className="table-group-header">
-                  <th>시간</th>
-                  <th>일정</th>
-                  <th>장소</th>
-                  <th>메모</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {fields.map((field) => (
-                  <tr key={field.id} className="data-row">
-                    <td>{field.time}</td>
-                    <td>{field.schedule}</td>
-                    <td>{field.place}</td>
-                    <td>{field.memo}</td>
+          <div className={"plan-view-table"}>
+            {Object.entries(groupedPlanFields).map(([date, fields]) => (
+              <table key={date} className="table-group">
+                <thead>
+                  <tr className="table-group-date">
+                    <th colSpan="4">{date}</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          ))}
+                  <tr className="table-group-header">
+                    <th>시간</th>
+                    <th>일정</th>
+                    <th>장소</th>
+                    <th>메모</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {fields.map((field) => (
+                    <tr key={field.id} className="data-row">
+                      <td>{field.time}</td>
+                      <td>{field.schedule}</td>
+                      <td>{field.place}</td>
+                      <td>{field.memo}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ))}
+          </div>
         </div>
 
         {/* 추가 modal */}

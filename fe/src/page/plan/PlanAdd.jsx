@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { Modal } from "/src/components/root/Modal.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
-import { GoogleMaps } from "./GoogleMaps/GoogleMaps.jsx";
+import { GoogleMapsAdd } from "./GoogleMaps/GoogleMapsAdd.jsx";
 
 function PlanAdd(props) {
   const [backToListModalOpen, setBackToListModalOpen] = useState(false);
@@ -219,7 +219,7 @@ function PlanAdd(props) {
                 />
 
                 <label htmlFor="place">장소</label>
-                <GoogleMaps
+                <GoogleMapsAdd
                   id="place"
                   onPlaceSelected={(location) =>
                     handlePlaceSelected(index, location)
