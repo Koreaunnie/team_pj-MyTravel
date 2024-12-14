@@ -10,8 +10,8 @@ import java.util.List;
 public interface ReviewMapper {
   @Insert("""
           INSERT INTO tour_review
-          (tour_id, writer_email, writer_nickname, review, payment_id) 
-          VALUES (#{tourId}, #{writerEmail}, #{writerNickname}, #{review}, #{paymentId}) 
+          (tour_id, writer_email, writer_nickname, review, payment_id, rating) 
+          VALUES (#{tourId}, #{writerEmail}, #{writerNickname}, #{review}, #{paymentId}, #{rating}) 
           """)
   @Options(keyProperty = "reviewId", useGeneratedKeys = true)
   int insert(Review review);
@@ -32,7 +32,7 @@ public interface ReviewMapper {
 
   @Update("""
           UPDATE tour_review
-          SET review=#{review}
+          SET review=#{review}, rating=#{rating}
           WHERE review_id=#{reviewId}
           """)
   int update(Review review);

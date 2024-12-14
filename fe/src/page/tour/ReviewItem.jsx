@@ -10,10 +10,12 @@ import {
   DialogTrigger,
 } from "../../components/ui/dialog.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
+import { Rating } from "../../components/ui/rating.jsx";
 
 function EditButton({ review, onEditClick }) {
   const [open, setOpen] = useState(false);
   const [newReview, setNewReview] = useState(review.review);
+  const [newRating, setNewRating] = useState(review.rating);
 
   return (
     <>
@@ -26,6 +28,12 @@ function EditButton({ review, onEditClick }) {
             <DialogTitle>후기 수정</DialogTitle>
           </DialogHeader>
           <DialogBody>
+            <Rating
+              value={newRating}
+              onChange={(value) => {
+                setNewRating(value); // 올바른 상태 설정
+              }}
+            />
             <textarea
               value={newReview}
               onChange={(e) => setNewReview(e.target.value)}
@@ -39,7 +47,10 @@ function EditButton({ review, onEditClick }) {
               className={"btn btn-blue"}
               onClick={() => {
                 setOpen(false);
-                onEditClick(review.reviewId, newReview);
+                onEditClick(review.reviewId, {
+                  review: newReview,
+                  rating: newRating,
+                }); // 새로운 리뷰와 별점을 함께 전달
               }}
             >
               저장
@@ -58,6 +69,9 @@ function ReviewItem({ review, onDeleteClick, onEditClick }) {
     <div>
       <h3>{review.writerNickname}</h3>
       <h3>{review.inserted}</h3>
+      <p>
+        <Rating value={review.rating} readOnly />
+      </p>
       <p>{review.review}</p>
       <div>
         {/*후기 작성자만 버튼 확인 가능: 지금 email 확인 불가*/}

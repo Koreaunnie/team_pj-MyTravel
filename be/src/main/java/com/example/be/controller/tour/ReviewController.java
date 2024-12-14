@@ -37,6 +37,7 @@ public class ReviewController {
   @PutMapping("edit")
   @PreAuthorize("isAuthenticated()")
   public ResponseEntity<Map<String, Object>> edit(@RequestBody Review review) {
+    System.out.println("수정 내용" + review);
     if (service.edit(review)) {
       return ResponseEntity.ok().body(Map.of("message",
               Map.of("type", "success", "text", "후기 수정 완료")));

@@ -27,12 +27,13 @@ function ReviewContainer({ tourId }) {
       .then((res) => setPaidList(res.data));
   }, []);
 
-  function handleSaveReviewClick(review) {
+  function handleSaveReviewClick({ review, rating }) {
     setProcessing(true);
     axios
       .post("/api/review/add", {
         tourId: tourId,
         review: review,
+        rating: rating,
         paymentId: selectedPayment,
       })
       .then((res) => res.data)
@@ -74,11 +75,11 @@ function ReviewContainer({ tourId }) {
       });
   }
 
-  function handleEditReviewClick(reviewId, review) {
+  function handleEditReviewClick(reviewId, { review, rating }) {
     setProcessing(true);
 
     axios
-      .put(`/api/review/edit`, { reviewId, review })
+      .put(`/api/review/edit`, { reviewId, review, rating })
       .then((res) => res.data.message)
       .then((message) => {
         toaster.create({
@@ -118,7 +119,7 @@ function ReviewContainer({ tourId }) {
         {/*내역에서 후기 작성할 상품 선택: payment_id 전달*/}
         {paymentHistoryCheck() ? (
           <div>
-            <h3>내 구매 이력</h3>
+            <h3>후기를 작성할 이력 선택</h3>
             <table className={"table-list"}>
               <thead>
                 <tr>

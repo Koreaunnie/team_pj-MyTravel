@@ -12,5 +12,6 @@ public class Review {
   private String writerEmail;
   private String writerNickname;
   private String review;
+  private Integer rating;
   private LocalDateTime inserted;
 }
