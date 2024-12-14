@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   DialogActionTrigger,
   DialogBody,
@@ -9,6 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../components/ui/dialog.jsx";
+import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 
 function EditButton({ review, onEditClick }) {
   const [open, setOpen] = useState(false);
@@ -51,20 +52,26 @@ function EditButton({ review, onEditClick }) {
 }
 
 function ReviewItem({ review, onDeleteClick, onEditClick }) {
+  const { email, isAdmin } = useContext(AuthenticationContext);
+
   return (
     <div>
       <h3>{review.writerNickname}</h3>
       <h3>{review.inserted}</h3>
       <p>{review.review}</p>
       <div>
-        <EditButton review={review} onEditClick={onEditClick} />
-
-        <button
-          className={"btn btn-warning"}
-          onClick={() => onDeleteClick(review.reviewId)}
-        >
-          삭제
-        </button>
+        {/*후기 작성자만 버튼 확인 가능: 지금 email 확인 불가*/}
+        {(email === review.writerEmail || isAdmin) && (
+          <>
+            <EditButton review={review} onEditClick={onEditClick} />
+            <button
+              className={"btn btn-warning"}
+              onClick={() => onDeleteClick(review.reviewId)}
+            >
+              삭제
+            </button>
+          </>
+        )}
       </div>
     </div>
   );

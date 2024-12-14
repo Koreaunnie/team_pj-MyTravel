@@ -7,7 +7,7 @@ function ReviewAdd({ tourId, onSaveClick }) {
     <div>
       <textarea value={review} onChange={(e) => setReview(e.target.value)} />
       <button
-        className={"btn btn-dark"}
+        className={"btn btn-blue"}
         onClick={() => {
           setReview("");
           onSaveClick(review);
