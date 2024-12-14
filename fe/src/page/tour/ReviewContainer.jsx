@@ -42,6 +42,11 @@ function ReviewContainer({ tourId }) {
           type: message.type,
           description: message.text,
         });
+
+        axios
+          .get(`/api/review/payment/${tourId}`)
+          .then((res) => setPaidList(res.data));
+
         setSelectedPayment(null);
       })
       .catch((error) => {
@@ -57,9 +62,16 @@ function ReviewContainer({ tourId }) {
 
   function handleDeleteReviewClick(reviewId) {
     setProcessing(true);
-    axios.delete(`/api/review/delete/${reviewId}`).finally(() => {
-      setProcessing(false);
-    });
+    axios
+      .delete(`/api/review/delete/${reviewId}`)
+      .then(() => {
+        axios
+          .get(`/api/review/payment/${tourId}`)
+          .then((res) => setPaidList(res.data));
+      })
+      .finally(() => {
+        setProcessing(false);
+      });
   }
 
   function handleEditReviewClick(reviewId, review) {
