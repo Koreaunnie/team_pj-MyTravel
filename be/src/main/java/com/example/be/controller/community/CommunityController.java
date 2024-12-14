@@ -21,6 +21,16 @@ public class CommunityController {
 
     final CommunityService service;
 
+    // 권한 확인
+    @GetMapping("access")
+    public Integer access(Authentication auth) {
+        if (auth != null) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
     @GetMapping("list")
     public Map<String, Object> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                     @RequestParam(value = "type", defaultValue = "all") String searchType,

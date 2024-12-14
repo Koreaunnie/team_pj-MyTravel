@@ -123,8 +123,6 @@ public class MemberService {
             //멤버의 장바구니 삭제
             mapper.deleteCartByMemberEmail(member.getEmail());
 
-            //member 삭제
-            cnt = mapper.deleteByEmail(member.getEmail());
 
             //멤버의 구매 이력 관리
 //      for (Integer tourBoard : tourBoards) {
@@ -153,6 +151,8 @@ public class MemberService {
                 communityMapper.deleteLikeByInformation(likeCommunityId, db.getNickname());
             }
 
+            //member 삭제
+            cnt = mapper.deleteByEmail(member.getEmail());
 
         }
 
