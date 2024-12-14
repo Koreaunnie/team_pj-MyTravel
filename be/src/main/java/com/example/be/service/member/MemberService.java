@@ -23,7 +23,6 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
 import java.time.Instant;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -81,14 +80,16 @@ public class MemberService {
     Member member = mapper.selectByEmail(email);
     String profileName = mapper.selectPictureByEmail(email);
 
-    if (profileName != null) {
+    if (profileName == null || profileName.endsWith("kakaocdn.net/account_images/default_profile.jpeg")) {
+      MemberPicture PicSrc = new MemberPicture(
+              "카톡 기본.jpeg", imageSrcPrefix + "/74/%EC%B9%B4%ED%86%A1%20%EA%B8%B0%EB%B3%B8.jpeg"
+      );
+      member.setProfile(List.of(PicSrc));
+    } else {
       MemberPicture PicSrc = new MemberPicture(
               profileName, imageSrcPrefix + "/member/" + email + "/" + profileName);
       member.setProfile(List.of(PicSrc));
-    } else {
-      member.setProfile(Collections.emptyList());
     }
-
     return member;
   }
 

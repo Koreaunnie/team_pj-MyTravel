@@ -10,7 +10,6 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
@@ -39,8 +38,6 @@ public class KakaoService {
   private String kakaoRedirectUri;
   @Value("${kakao.client.id}")
   private String kakaoClientId;
-
-  RestTemplate restTemplate = new RestTemplate();
 
   public String token(String email) {
     List<String> auths = mapper.selectAuthByMemberEmail(email);
