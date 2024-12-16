@@ -275,6 +275,11 @@ function WalletList(props) {
     return ""; // 필터링된 리스트가 없으면 빈 문자열 반환
   };
 
+  // 해당 하는 날짜의 일별 수입 계산
+  const getOneDayIncome = () => {
+    return filteredWallet.reduce((total, wallet) => total + wallet.income, 0);
+  };
+
   // 해당 하는 날짜의 일별 지출 계산
   const getOneDayExpense = () => {
     return filteredWallet.reduce((total, wallet) => total + wallet.expense, 0);
@@ -439,6 +444,15 @@ function WalletList(props) {
         </table>
 
         <table className={"table-list wallet-list"}>
+          <colgroup>
+            <col style={{ width: "30px" }} />
+            <col style={{ width: "130px" }} />
+            <col style={{ width: "140px" }} />
+            <col style={{ width: "230px" }} />
+            <col style={{ width: "120px" }} />
+            <col style={{ width: "120px" }} />
+          </colgroup>
+
           <thead>
             <tr>
               <th>
@@ -498,9 +512,11 @@ function WalletList(props) {
             <tfoot>
               <tr>
                 <th colSpan={4}>{getFilteredDate()}의 지출</th>
-                <td colSpan={4}>
+                <td colSpan={1}>{formatNumberWithCommas(getOneDayIncome())}</td>
+                <td colSpan={1}>
                   {formatNumberWithCommas(getOneDayExpense())}
                 </td>
+                <td></td>
               </tr>
             </tfoot>
           )}
