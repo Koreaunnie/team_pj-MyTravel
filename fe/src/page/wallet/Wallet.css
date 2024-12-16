@@ -98,8 +98,15 @@ section {
     text-align: right;
 }
 
-.right-section h1 {
+.right-section .month-wrap ul {
     margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.right-section .month-wrap ul li button {
+    margin: 30px;
+    cursor: pointer;
 }
 
 .right-section .category-tab {
@@ -119,7 +126,6 @@ section {
 .right-section .category-tab ul li {
     margin: 5px;
     font-weight: bold;
-    width: 20%;
     text-align: center;
     height: 40px;
     line-height: 40px;
@@ -163,6 +169,17 @@ section {
 .right-section .table-total-wrap tr td {
     background: #fff;
 }
+
+.right-section .wallet-list {
+    font-size: 0.9rem;
+}
+
+.right-section .wallet-list tr td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 
 @media (max-width: 768px) {
 

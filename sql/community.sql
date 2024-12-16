@@ -59,3 +59,7 @@ FROM community;
 SELECT COUNT(*)
 FROM community
 WHERE title LIKE '%1%';
+
+SELECT *
+FROM community
+ORDER BY inserted DESC;

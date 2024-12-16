@@ -10,14 +10,14 @@ public interface InquiryMapper {
 
     @Insert("""
             INSERT INTO inquiry
-                (category, writer, title, content, secret)
-            VALUES (#{category}, #{writer}, #{title}, #{content}, #{secret})
+                (category, writer, writer_nickname, title, content, secret, inserted)
+            VALUES (#{category}, #{writer}, #{writerNickname}, #{title}, #{content}, #{secret}, NOW())
             """)
     @Options(keyProperty = "id", useGeneratedKeys = true)
     int insertInquiry(Inquiry inquiry);
 
     @Select("""
-            SELECT id, title, writer, updated
+            SELECT *
             FROM inquiry
             ORDER BY updated DESC
             """)
@@ -37,21 +37,29 @@ public interface InquiryMapper {
                 content = #{content},
                 secret = #{secret},
                 updated = NOW()
-            WHERE id = #{id}
+            WHERE id = #{id} AND writer = #{writer}
             """)
     int updateById(Inquiry inquiry);
 
     @Delete("""
             DELETE FROM inquiry
-            WHERE id = #{id}
+            WHERE id = #{id} AND writer = #{writer}
             """)
-    int deleteById(int id);
+    int deleteById(int id, String writer);
 
     @Select("""
-            SELECT id, title, writer, updated
+            SELECT *
             FROM inquiry
             ORDER BY updated DESC
             LIMIT 5
             """)
     List<Inquiry> selectInquiryForIndex();
+
+    // 회원 닉네임 변경 시 문의글 닉네임도 변경
+    @Update("""
+            UPDATE inquiry 
+                SET writer_nickname = #{writerNickname}
+            WHERE writer = #{writer}
+            """)
+    int updateWriterNickname(Inquiry inquiry);
 }

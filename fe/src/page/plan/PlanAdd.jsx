@@ -3,33 +3,9 @@ import axios from "axios";
 import "./Plan.css";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "../../components/ui/toaster.jsx";
-// import {
-//   APIProvider,
-//   Map,
-//   useAdvancedMarkerRef,
-//   useMapsLibrary,
-// } from "@vis.gl/react-google-maps";
 import { Modal } from "/src/components/root/Modal.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
-
-// const MyComponent = () => {
-//   // useMapsLibrary loads the geocoding library, it might initially return `null`
-//   // if the library hasn't been loaded. Once loaded, it will return the library
-//   // object as it would be returned by `await google.maps.importLibrary()`
-//   const geocodingLib = useMapsLibrary("geocoding");
-//   const geocoder = useMemo(
-//     () => geocodingLib && new geocodingLib.Geocoder(),
-//     [geocodingLib],
-//   );
-//
-//   useEffect(() => {
-//     if (!geocoder) return;
-//
-//     // now you can use `geocoder.geocode(...)` here
-//   }, [geocoder]);
-//
-//   return <></>;
-// };
+import { GoogleMapsAdd } from "./GoogleMaps/GoogleMapsAdd.jsx";
 
 function PlanAdd(props) {
   const [backToListModalOpen, setBackToListModalOpen] = useState(false);
@@ -45,20 +21,26 @@ function PlanAdd(props) {
       time: "",
       schedule: "",
       place: "",
+      placeId: "",
       memo: "",
     },
   ]);
-  // const [selectedPlace, setSelectedPlace] = useState(null);
-  // const [markerRef, marker] = useAdvancedMarkerRef();
-  const navigate = useNavigate();
 
-  const position = { lat: 37, lng: 128 };
+  const navigate = useNavigate();
 
   // div 입력값을 상태로 업데이트하는 함수
   const handleFieldChange = (index, field, value) => {
     const updatedFields = [...fields];
     updatedFields[index][field] = value;
     setFields(updatedFields);
+  };
+
+  const handlePlaceSelected = (index, location) => {
+    // location 객체에서 필요한 정보만 추출
+    const { placeId, address, lat, lng } = location;
+    // 필요한 정보만 저장
+    handleFieldChange(index, "place", `${address}`);
+    handleFieldChange(index, "placeId", `${placeId}`);
   };
 
   // + 버튼 클릭 시 새로운 필드 추가
@@ -113,9 +95,6 @@ function PlanAdd(props) {
         }
       });
   }
-
-  // google personal api key
-  // const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
 
   return (
     <div className={"plan"}>
@@ -240,54 +219,12 @@ function PlanAdd(props) {
                 />
 
                 <label htmlFor="place">장소</label>
-                <input
-                  type="text"
+                <GoogleMapsAdd
                   id="place"
-                  placeholder="장소를 입력하세요"
-                  value={field.place}
-                  onChange={(e) =>
-                    handleFieldChange(index, "place", e.target.value)
+                  onPlaceSelected={(location) =>
+                    handlePlaceSelected(index, location)
                   }
                 />
-                <button type="button">검색</button>
-
-                {/*<APIProvider apiKey={apiKey}>*/}
-                {/*  <Map*/}
-                {/*    onLoad={(mapInstance) => setMap(mapInstance)}*/}
-                {/*    style={{ width: "500px", height: "250px" }}*/}
-                {/*    initialCenter={{ lat: 37, lng: 128 }}*/}
-                {/*  ></Map>*/}
-
-                {/*  <gmp-map*/}
-                {/*    center="40.749933,-73.98633"*/}
-                {/*    zoom="13"*/}
-                {/*    map-id="DEMO_MAP_ID"*/}
-                {/*  >*/}
-                {/*    <div*/}
-                {/*      slot="control-block-start-inline-start"*/}
-                {/*      className="place-picker-container"*/}
-                {/*    >*/}
-                {/*      <gmpx-place-picker*/}
-                {/*        placeholder="장소를 입력하세요."*/}
-                {/*        value={field.place}*/}
-                {/*        onPlaceChanged={() => {*/}
-                {/*          const place = document*/}
-                {/*            .querySelector("gmpx-place-picker")*/}
-                {/*            .getPlace();*/}
-                {/*          if (place && place.formatted_address) {*/}
-                {/*            handleFieldChange(*/}
-                {/*              index,*/}
-                {/*              "place",*/}
-                {/*              place.formatted_address,*/}
-                {/*            );*/}
-                {/*          }*/}
-                {/*        }}*/}
-                {/*      ></gmpx-place-picker>*/}
-                {/*    </div>*/}
-
-                {/*    <gmp-advanced-marker></gmp-advanced-marker>*/}
-                {/*  </gmp-map>*/}
-                {/*</APIProvider>*/}
 
                 <label htmlFor="memo">메모</label>
                 <textarea
