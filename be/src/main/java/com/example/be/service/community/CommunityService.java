@@ -208,4 +208,7 @@ public class CommunityService {
         mapper.updateCommunityComment(comment, id);
     }
 
+    public List<Community> getMainPageCommunity(String keyword) {
+        return mapper.getTop5ByOrderByUpdated(keyword);
+    }
 }

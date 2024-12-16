@@ -23,9 +23,9 @@ public interface PlanMapper {
     // 2. plan body 항목 추가
     @Insert("""
             INSERT INTO plan_field
-                (plan_id, date, time, schedule, place, memo)
+                (plan_id, date, time, schedule, place, place_id, memo)
             VALUES 
-                (#{planId}, #{date}, #{time}, #{schedule}, #{place}, #{memo})
+                (#{planId}, #{date}, #{time}, #{schedule}, #{place}, #{placeId}, #{memo})
             """)
     @Options(keyProperty = "id", useGeneratedKeys = true)
     int insertPlanField(PlanField field);
@@ -36,7 +36,7 @@ public interface PlanMapper {
             <script>
                 SELECT * 
                 FROM plan p 
-                    JOIN plan_field pf 
+                    JOIN plan_field pf
                     ON p.id = pf.plan_id
                WHERE p.writer = #{writer}
                    <if test="searchKeyword != null and searchKeyword != ''">
@@ -52,7 +52,7 @@ public interface PlanMapper {
                          )
                      </if>
                 GROUP BY p.id
-                ORDER BY p.updated DESC, p.inserted DESC
+                ORDER BY p.pinned DESC, p.updated DESC, p.inserted DESC
                 LIMIT #{offset}, 10;
             </script>
             """)
@@ -62,16 +62,16 @@ public interface PlanMapper {
     @Select("""
             <script>
                 SELECT COUNT(*)
-                FROM plan 
+                FROM plan
                 WHERE writer = #{writer}
                     <if test="searchKeyword != null and searchKeyword != ''">
                          AND (
                              <trim prefixOverrides="OR">
                                  <if test="searchType == 'all' or searchType == 'title'">
-                                     p.title LIKE CONCAT('%', #{searchKeyword}, '%')
+                                     title LIKE CONCAT('%', #{searchKeyword}, '%')
                                  </if>
                                  <if test="searchType == 'all' or searchType == 'destination'">
-                                     OR p.destination LIKE CONCAT('%', #{searchKeyword}, '%')
+                                     OR destination LIKE CONCAT('%', #{searchKeyword}, '%')
                                  </if>
                              </trim>
                          )
@@ -140,26 +140,36 @@ public interface PlanMapper {
     // 메인 화면에 필요한 일부 plan 리스트 가져오기
     @Select("""
             <script>
-                SELECT *
-                FROM plan p JOIN plan_field pf
+                SELECT DISTINCT p.* 
+                FROM plan p
+                    LEFT JOIN plan_field pf
                     ON p.id = pf.plan_id
-                WHERE
-                    <trim prefixOverrides="OR">
-                        p.title LIKE CONCAT('%', #{keyword}, '%')
-                        OR p.description LIKE CONCAT('%', #{keyword}, '%')
-                        OR p.destination LIKE CONCAT('%', #{keyword}, '%')
-                        OR p.startDate LIKE CONCAT('%', #{keyword}, '%')
-                        OR p.endDate LIKE CONCAT('%', #{keyword}, '%')
-                        OR pf.date LIKE CONCAT('%', #{keyword}, '%')
-                        OR pf.time LIKE CONCAT('%', #{keyword}, '%')
-                        OR pf.schedule LIKE CONCAT('%', #{keyword}, '%')
-                        OR pf.place LIKE CONCAT('%', #{keyword}, '%')
-                        OR pf.memo LIKE CONCAT('%', #{keyword}, '%')  
-                    </trim>
-                GROUP BY p.id
+                WHERE writer = #{writer}
+                    AND (
+                        <trim prefixOverrides="OR">
+                            p.title LIKE CONCAT('%', #{keyword}, '%')
+                            OR p.description LIKE CONCAT('%', #{keyword}, '%')
+                            OR p.destination LIKE CONCAT('%', #{keyword}, '%')
+                            OR p.startDate LIKE CONCAT('%', #{keyword}, '%')
+                            OR p.endDate LIKE CONCAT('%', #{keyword}, '%')
+                            OR pf.date LIKE CONCAT('%', #{keyword}, '%')
+                            OR pf.time LIKE CONCAT('%', #{keyword}, '%')
+                            OR pf.schedule LIKE CONCAT('%', #{keyword}, '%')
+                            OR pf.place LIKE CONCAT('%', #{keyword}, '%')
+                            OR pf.memo LIKE CONCAT('%', #{keyword}, '%')  
+                        </trim>
+                    )
                 ORDER BY updated DESC
                 LIMIT 4
             </script>
             """)
-    List<Plan> getTop4ByOrderByUpdated(String keyword);
+    List<Plan> getTop4ByOrderByUpdated(String keyword, String writer);
+
+    // 달력에 표시하기 위한 모든 일정 (페이지네이션 상관 없이)
+    @Select("""
+            SELECT *
+            FROM plan
+            WHERE writer = #{writer}
+            """)
+    List<Plan> selectAll(String writer);
 }

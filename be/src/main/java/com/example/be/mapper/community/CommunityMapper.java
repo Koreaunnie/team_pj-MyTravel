@@ -227,6 +227,23 @@ public interface CommunityMapper {
             """)
     int deleteLikeByCommunityId(Integer id);
 
+    // 메인 화면에 필요한 일부 community 리스트 가져오기
+    @Select("""
+            <script>
+            SELECT *
+            FROM community
+            WHERE 
+                <trim prefixOverrides="OR">
+                    title LIKE CONCAT('%', #{keyword}, '%')
+                    OR content LIKE CONCAT('%', #{keyword}, '%')
+                    OR writer LIKE CONCAT('%', #{keyword}, '%')
+                </trim>
+            ORDER BY inserted DESC
+            LIMIT 5
+            </script>
+            """)
+    List<Community> getTop5ByOrderByUpdated(String keyword);
+
     @Select("""
             SELECT id
             FROM community

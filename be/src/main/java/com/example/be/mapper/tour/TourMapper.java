@@ -136,14 +136,6 @@ public interface TourMapper {
   @Select("""
           SELECT *
           FROM tour
-          ORDER BY inserted DESC 
-          LIMIT 4
-          """)
-  List<Tour> getTop4ByOrderByInserted();
-
-  @Select("""
-          SELECT *
-          FROM tour
           WHERE partnerEmail=#{email}
           ORDER BY id DESC;    
           """)
@@ -182,4 +174,24 @@ public interface TourMapper {
           </script>
           """)
   Integer countAll(String searchType, String keyword);
+
+    // 메인 화면에 필요한 일부 tour 리스트 가져오기
+    @Select("""
+            <script>
+            SELECT *
+            FROM tour
+            WHERE
+                <trim prefixOverrides="OR">
+                    title LIKE CONCAT('%', #{keyword}, '%')
+                    OR product LIKE CONCAT('%', #{keyword}, '%')
+                    OR price LIKE CONCAT('%', #{keyword}, '%')
+                    OR location LIKE CONCAT('%', #{keyword}, '%')
+                    OR content LIKE CONCAT('%', #{keyword}, '%')
+                    OR partner LIKE CONCAT('%', #{keyword}, '%')
+                </trim>
+            ORDER BY id DESC
+            LIMIT 4
+            </script>
+            """)
+    List<Tour> getTop4ByOrderById(String keyword);
 }
