@@ -21,7 +21,7 @@ public class ReviewController {
   @GetMapping("payment/{tourId}")
   public List<PaymentHistory> paymentList(@PathVariable Integer tourId, Authentication auth) {
     List<PaymentHistory> paidList = service.paymentList(tourId, auth);
-    System.out.println(paidList);
+//    System.out.println(paidList);
     return paidList;
   }
 
@@ -62,6 +62,7 @@ public class ReviewController {
   public ResponseEntity<Map<String, Object>> add(
           @RequestBody Review review, Authentication auth) {
     Integer currentTour = review.getTourId();
+    System.out.println(review);
 
     if (service.canWriteReview(currentTour, auth)) {
       service.add(review, auth);

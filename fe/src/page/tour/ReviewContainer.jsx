@@ -28,8 +28,7 @@ function ReviewContainer({ tourId }) {
   }, []);
 
   function handleSaveReviewClick({ review, rating }) {
-    console.log("reviewContainer", review, rating);
-
+    // console.log("reviewContainer", review, rating);
     setProcessing(true);
     axios
       .post("/api/review/add", {
@@ -104,7 +103,7 @@ function ReviewContainer({ tourId }) {
 
   const handleRateChange = (e, setRating) => {
     const value = e.target ? e.target.value : e;
-    console.log("새 별점", value);
+    // console.log("새 별점", value);
     setRating(Number(value));
   };
 
@@ -126,41 +125,41 @@ function ReviewContainer({ tourId }) {
         <h2>후기</h2>
 
         {/*내역에서 후기 작성할 상품 선택: payment_id 전달*/}
-        {/*{paymentHistoryCheck() ? (*/}
-        <div>
-          <h3>후기를 작성할 이력 선택</h3>
-          <table className={"table-list"}>
-            <thead>
-              <tr>
-                <th>결제일</th>
-                <th>결제번호</th>
-                <th>여행 일정</th>
-              </tr>
-            </thead>
-            <tbody>
-              {paidList.map((tour) => (
-                <tr
-                  key={tour.paymentId}
-                  onClick={() => setSelectedPayment(tour.paymentId)}
-                  style={{
-                    backgroundColor:
-                      selectedPayment === tour.paymentId
-                        ? "#cdddff"
-                        : "transparent",
-                  }}
-                >
-                  <td>{tour.paidAt}</td>
-                  <td>{tour.paymentId}</td>
-                  <td>
-                    {tour.startDate}
-                    <br />~{tour.endDate}
-                  </td>
+        {paymentHistoryCheck() ? (
+          <div>
+            <h3>후기를 작성할 이력 선택</h3>
+            <table className={"table-list"}>
+              <thead>
+                <tr>
+                  <th>결제일</th>
+                  <th>결제번호</th>
+                  <th>여행 일정</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        {/*) : null}*/}
+              </thead>
+              <tbody>
+                {paidList.map((tour) => (
+                  <tr
+                    key={tour.paymentId}
+                    onClick={() => setSelectedPayment(tour.paymentId)}
+                    style={{
+                      backgroundColor:
+                        selectedPayment === tour.paymentId
+                          ? "#cdddff"
+                          : "transparent",
+                    }}
+                  >
+                    <td>{tour.paidAt}</td>
+                    <td>{tour.paymentId}</td>
+                    <td>
+                      {tour.startDate}
+                      <br />~{tour.endDate}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : null}
 
         {selectedPayment && (
           <ReviewAdd
@@ -179,6 +178,7 @@ function ReviewContainer({ tourId }) {
             reviewList={reviewList}
             onDeleteClick={handleDeleteReviewClick}
             onEditClick={handleEditReviewClick}
+            onRateChange={handleRateChange}
           />
         )}
       </Stack>

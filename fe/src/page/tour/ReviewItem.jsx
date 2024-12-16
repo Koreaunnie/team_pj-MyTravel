@@ -12,7 +12,7 @@ import {
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { Rating } from "../../components/ui/rating.jsx";
 
-function EditButton({ review, onEditClick }) {
+function EditButton({ review, onEditClick, onRateChange }) {
   const [open, setOpen] = useState(false);
   const [newReview, setNewReview] = useState(review.review);
   const [newRating, setNewRating] = useState(review.rating);
@@ -30,8 +30,9 @@ function EditButton({ review, onEditClick }) {
           <DialogBody>
             <Rating
               value={newRating}
-              onChange={(value) => {
-                setNewRating(value); // 올바른 상태 설정
+              onChange={(e) => {
+                // console.log(newRating);
+                onRateChange(e, setNewRating); // 올바른 상태 설정
               }}
             />
             <textarea
@@ -62,7 +63,7 @@ function EditButton({ review, onEditClick }) {
   );
 }
 
-function ReviewItem({ review, onDeleteClick, onEditClick }) {
+function ReviewItem({ review, onDeleteClick, onEditClick, onRateChange }) {
   const { email, isAdmin } = useContext(AuthenticationContext);
 
   return (
@@ -77,7 +78,11 @@ function ReviewItem({ review, onDeleteClick, onEditClick }) {
         {/*후기 작성자만 버튼 확인 가능: 지금 email 확인 불가*/}
         {(email === review.writerEmail || isAdmin) && (
           <>
-            <EditButton review={review} onEditClick={onEditClick} />
+            <EditButton
+              review={review}
+              onEditClick={onEditClick}
+              onRateChange={onRateChange}
+            />
             <button
               className={"btn btn-warning"}
               onClick={() => onDeleteClick(review.reviewId)}
