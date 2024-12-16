@@ -83,14 +83,16 @@ public class MemberService {
     Member member = mapper.selectByEmail(email);
     String profileName = mapper.selectPictureByEmail(email);
 
-    if (profileName != null) {
+    if (profileName == null || profileName.endsWith("kakaocdn.net/account_images/default_profile.jpeg")) {
+      MemberPicture PicSrc = new MemberPicture(
+              "카톡 기본.jpeg", imageSrcPrefix + "/74/%EC%B9%B4%ED%86%A1%20%EA%B8%B0%EB%B3%B8.jpeg"
+      );
+      member.setProfile(List.of(PicSrc));
+    } else {
       MemberPicture PicSrc = new MemberPicture(
               profileName, imageSrcPrefix + "/member/" + email + "/" + profileName);
       member.setProfile(List.of(PicSrc));
-    } else {
-      member.setProfile(Collections.emptyList());
     }
-
     return member;
   }
 
@@ -123,8 +125,6 @@ public class MemberService {
       //멤버의 장바구니 삭제
       mapper.deleteCartByMemberEmail(member.getEmail());
 
-      //member 삭제
-      cnt = mapper.deleteByEmail(member.getEmail());
 
       //멤버의 구매 이력 관리
 //      for (Integer tourBoard : tourBoards) {

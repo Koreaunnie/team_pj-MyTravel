@@ -15,8 +15,8 @@ import {
   DialogTrigger,
 } from "../../components/ui/dialog.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
-import { ProfileImageView } from "../../Image/ProfileImageView.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
+import { ProfileImageView } from "../../components/Image/ProfileImageView.jsx";
 
 function MemberInfo(props) {
   const [member, setMember] = useState(null);
@@ -31,7 +31,12 @@ function MemberInfo(props) {
   }, []);
 
   if (!member) {
-    return <p>존재하지 않는 계정입니다.</p>;
+    return (
+      <div>
+        <p>접근 권한이 없습니다.</p>
+        <a href="/">홈페이지로 이동</a>
+      </div>
+    );
   }
 
   function handleDeleteClick() {

@@ -1,7 +1,7 @@
 import { RatingGroup } from '@chakra-ui/react'
-import { forwardRef } from 'react'
+import * as React from 'react'
 
-export const Rating = forwardRef(function Rating(props, ref) {
+export const Rating = React.forwardRef(function Rating(props, ref) {
   const { icon, count = 5, label, ...rest } = props
   return (
     <RatingGroup.Root ref={ref} count={count} {...rest}>

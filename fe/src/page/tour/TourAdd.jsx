@@ -48,9 +48,23 @@ export function TourAdd() {
   };
 
   const filesList = [];
-
+  let sumOfFileSize = 0;
+  let invalidOneFileSize = false;
   for (const file of files) {
-    filesList.push(<li>{file.name}</li>);
+    sumOfFileSize += file.size;
+    if (file.size > 1024 * 1024) {
+      invalidOneFileSize = true;
+    }
+    filesList.push(
+      <li style={{ color: file.size > 1024 * 1024 ? "red" : "black" }}>
+        {file.name} ({Math.floor(file.size / 1024)}kb)
+      </li>,
+    );
+  }
+
+  let fileInputInvalid = false;
+  if (sumOfFileSize > 10 * 1024 * 1024 || invalidOneFileSize) {
+    fileInputInvalid = true;
   }
 
   if (!userToken || (!isPartner && !isAdmin)) {
@@ -100,7 +114,14 @@ export function TourAdd() {
           />
         </Field>
         <Box>
-          <Field label={"파일"}>
+          <Field
+            label={"파일"}
+            helperText={
+              "총 10MB, 한 파일은 1MB 이내의 이미지만 업로드 가능합니다."
+            }
+            invalid={fileInputInvalid}
+            errorText={"선택한 파일이 업로드 가능한 용량을 초과하였습니다."}
+          >
             <Input
               type={"file"}
               accept={"image/*"}

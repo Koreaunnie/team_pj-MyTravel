@@ -21,7 +21,7 @@ public class ReviewService {
   public boolean add(Review review, Authentication auth) {
     review.setWriterEmail(auth.getName());
     review.setWriterNickname(memberMapper.selectNicknameByEmail(auth.getName()));
-    System.out.println("작성 정보" + review);
+//    System.out.println("작성 정보" + review);
     int cnt = mapper.insert(review);
     return cnt == 1;
   }
