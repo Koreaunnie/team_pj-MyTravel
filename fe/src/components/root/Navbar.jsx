@@ -74,7 +74,7 @@ function Navbar(props) {
           </li>
           {isAdmin && (
             <li
-              className={isActive("/admin") ? "active" : ""}
+              className={`admin ${isActive("/admin") ? "active" : ""}`}
               onClick={() => navigate("/admin")}
             >
               관리자
@@ -96,7 +96,12 @@ function Navbar(props) {
             {dropdownOpen && (
               <div className={"mypage-toggle-container"}>
                 <ul>
-                  <li onClick={() => navigate(`/mypage/${email}`)}>회원정보</li>
+                  <li onClick={() => navigate(`/mypage/${email}`)}>
+                    회원 정보
+                  </li>
+                  <li onClick={() => navigate(`/payment/history/${email}`)}>
+                    결제 내역
+                  </li>
                   <li onClick={() => navigate("/cart")}>장바구니</li>
                   <li
                     onClick={() => {
