@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
-import Calendar from "react-calendar";
 import { useNavigate } from "react-router-dom";
 import "./Wallet.css";
 import { Modal } from "../../components/root/Modal.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
 import moment from "moment";
+import { WalletCalendar } from "./WalletCalendar.jsx";
 
 function WalletList(props) {
   const [walletList, setWalletList] = useState([]); // 전체 지갑 리스트
@@ -88,12 +88,6 @@ function WalletList(props) {
       setSelectedDate(date);
     }
   }, [currentMonth]);
-
-  const getCurrentMonth = (activeStartDate) => {
-    const newCurrentMonth = moment(activeStartDate).format("YYYY년 M월");
-    setCurrentMonth(newCurrentMonth);
-    setCurrentYear(activeStartDate.getFullYear());
-  };
 
   const prevMonth = () => {
     const newDate = moment(currentMonth, "YYYY년 M월").subtract(1, "month");
@@ -237,6 +231,7 @@ function WalletList(props) {
 
   // 카테고리 탭 활성화
   const handleTabClick = (index) => {
+    setSelectedDate(null);
     setActiveTab(index);
     if (index === 0) {
       // "전체"
@@ -299,30 +294,13 @@ function WalletList(props) {
         navigateToDepth1={() => navigate(`/wallet/list`)}
       />
 
-      <aside className={"calendar"}>
-        <Calendar
-          formatDay={(locale, date) =>
-            date.toLocaleString("en", { day: "numeric" })
-          }
-          showNeighboringMonth={false}
-          next2Label={null}
-          prev2Label={null}
-          onChange={setSelectedDate}
-          value={selectedDate}
-          onActiveStartDateChange={({ activeStartDate }) =>
-            getCurrentMonth(activeStartDate)
-          }
-          tileContent={({ date }) => {
-            const formattedDate = date.toLocaleDateString("en-CA");
-            const totalExpense = tileContentData[formattedDate] || 0;
-            return totalExpense > 0 ? (
-              <div className={"calendar-badge"}>
-                {totalExpense.toLocaleString()}
-              </div>
-            ) : null;
-          }}
-        />
-      </aside>
+      <WalletCalendar
+        selectedDate={selectedDate}
+        setSelectedDate={setSelectedDate}
+        setCurrentMonth={setCurrentMonth}
+        setCurrentYear={setCurrentYear}
+        tileContentData={tileContentData}
+      />
 
       <div className={"middle-section"}>
         <h1>내 지갑</h1>
@@ -331,21 +309,13 @@ function WalletList(props) {
           <table>
             <caption>
               <p className={"highlight"}>{currentMonth}</p>
-              <br />
-              지출 항목별 합계
             </caption>
 
-            {categories.map((category) => (
-              <tr key={category}>
-                <th>{category}</th>
-                <td>
-                  {formatNumberWithCommas(
-                    calculateCategoryTotalExpense(category),
-                  )}
-                </td>
-                <td>원</td>
-              </tr>
-            ))}
+            <tr>
+              <th>총 지출</th>
+              <td>{formatNumberWithCommas(getTotalExpense())}</td>
+              <td>원</td>
+            </tr>
           </table>
         </div>
 
@@ -356,14 +326,20 @@ function WalletList(props) {
                 <caption>
                   <p className={"highlight"}>{getFilteredDate()}</p>
                   <br />
-                  하루 지출
+                  지출 항목별 합계
                 </caption>
 
-                <tr>
-                  <th>합계</th>
-                  <td>{formatNumberWithCommas(getOneDayExpense())}</td>
-                  <td>원</td>
-                </tr>
+                {categories.map((category) => (
+                  <tr key={category}>
+                    <th>{category}</th>
+                    <td>
+                      {formatNumberWithCommas(
+                        calculateCategoryTotalExpense(category),
+                      )}
+                    </td>
+                    <td>원</td>
+                  </tr>
+                ))}
               </table>
             </div>
           )}
@@ -445,7 +421,9 @@ function WalletList(props) {
               <li
                 key={index}
                 className={`category-tab ${activeTab === index ? "on" : ""}`}
-                onClick={() => handleTabClick(index)} // 탭 클릭 시 해당 인덱스를 설정
+                onClick={() => {
+                  handleTabClick(index);
+                }} // 탭 클릭 시 해당 인덱스를 설정
               >
                 {category}
               </li>
@@ -483,35 +461,44 @@ function WalletList(props) {
               <th>수입</th>
               <th>지출</th>
               <th>지출 방식</th>
-              <th>메모</th>
             </tr>
           </thead>
-          <tbody>
-            {filteredWallet.map((wallet) => (
-              <tr
-                key={wallet.id}
-                onClick={() => navigate(`/wallet/view/${wallet.id}`)}
-                className={checkedItems.has(wallet.id) ? "checked-row" : ""}
+          {filteredWallet.length === 0 ? (
+            <td colSpan={8} className={"empty-container"}>
+              <p
+                className={"empty-container-description"}
+                style={{ margin: "40px 0" }}
               >
-                <td>
-                  <input
-                    type="checkbox"
-                    checked={checkedItems.has(wallet.id)}
-                    onChange={() => handleCheckboxChange(wallet.id)}
-                    onClick={(e) => e.stopPropagation()}
-                    className={checkedItems.has(wallet.id)}
-                  />
-                </td>
-                <td>{wallet.date}</td>
-                <td>{wallet.category}</td>
-                <td>{wallet.title}</td>
-                <td>{formatNumberWithCommas(wallet.income)}</td>
-                <td>{formatNumberWithCommas(wallet.expense)}</td>
-                <td>{wallet.paymentMethod}</td>
-                <td>{wallet.memo}</td>
-              </tr>
-            ))}
-          </tbody>
+                해당하는 날짜에는 내역이 없습니다.
+              </p>
+            </td>
+          ) : (
+            <tbody>
+              {filteredWallet.map((wallet) => (
+                <tr
+                  key={wallet.id}
+                  onClick={() => navigate(`/wallet/view/${wallet.id}`)}
+                  className={checkedItems.has(wallet.id) ? "checked-row" : ""}
+                >
+                  <td>
+                    <input
+                      type="checkbox"
+                      checked={checkedItems.has(wallet.id)}
+                      onChange={() => handleCheckboxChange(wallet.id)}
+                      onClick={(e) => e.stopPropagation()}
+                      className={checkedItems.has(wallet.id)}
+                    />
+                  </td>
+                  <td>{wallet.date}</td>
+                  <td>{wallet.category}</td>
+                  <td>{wallet.title}</td>
+                  <td>{formatNumberWithCommas(wallet.income)}</td>
+                  <td>{formatNumberWithCommas(wallet.expense)}</td>
+                  <td>{wallet.paymentMethod}</td>
+                </tr>
+              ))}
+            </tbody>
+          )}
 
           {/* 전체 보기 상태가 아닐 때만 tfoot 렌더링 */}
           {filteredWallet.length !== walletList.length && (

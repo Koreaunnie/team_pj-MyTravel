@@ -158,10 +158,6 @@ section {
     background: var(--table-hover-color);
 }
 
-.right-section .wallet-list {
-    font-size: 0.9rem;
-}
-
 .right-section .table-total-wrap {
     margin-bottom: 20px;
 }
@@ -173,6 +169,46 @@ section {
 .right-section .table-total-wrap tr td {
     background: #fff;
 }
+
+.right-section .wallet-list {
+    font-size: 0.9rem;
+}
+
+.right-section .wallet-list tr td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border: 1px solid red;
+}
+
+.right-section .wallet-list tr td:nth-child(1) {
+    width: 30px;
+}
+
+.right-section .wallet-list tr td:nth-child(2) {
+    width: 110px;
+}
+
+.right-section .wallet-list tr td:nth-child(3) {
+    width: 110px;
+}
+
+.right-section .wallet-list tr td:nth-child(4) {
+    width: 180px;
+}
+
+.right-section .wallet-list tr td:nth-child(5) {
+    width: 100px;
+}
+
+.right-section .wallet-list tr td:nth-child(6) {
+    width: 100px;
+}
+
+.right-section .wallet-list tr td:nth-child(7) {
+    width: 60px;
+}
+
 
 @media (max-width: 768px) {
 
