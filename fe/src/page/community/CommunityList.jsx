@@ -170,7 +170,7 @@ function CommunityList(props) {
             {authentication.isAuthenticated || (
               <Box>
                 <HStack>
-                  로그인을 한 회원만 글쓰기가 가능합니다.
+                  로그인을 한 회원만 게시글 작성이 가능합니다.
                   <Button onClick={handleLoginClick}>로그인</Button>
                 </HStack>
               </Box>

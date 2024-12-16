@@ -254,13 +254,17 @@ function CommunityView(props) {
                   <DialogRoot>
                     <DialogTrigger>
                       <HStack>
-                        <Textarea h={100} w={700} placeholder="댓글 쓰기" />
+                        <Textarea
+                          h={100}
+                          w={700}
+                          placeholder="로그인 후 댓글 작성 가능"
+                        />
                         <Button h={100}>댓글 등록</Button>
                       </HStack>
                       <DialogContent>
                         <DialogHeader>MyTravel</DialogHeader>
                         <DialogBody>
-                          로그인을 한 회원만 댓글 쓰기가 가능합니다.
+                          로그인을 한 회원만 댓글 작성이 가능합니다.
                         </DialogBody>
                         <DialogFooter>
                           <DialogActionTrigger>
