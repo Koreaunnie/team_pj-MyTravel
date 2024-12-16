@@ -29,6 +29,10 @@ function AuthenticationProvider({ children }) {
     return email === userToken.sub;
   }
 
+  function hasAccessByNickName(nickname) {
+    return nickname === userToken.nickname;
+  }
+
   const isAuthenticated = Date.now() < userToken.exp * 1000;
 
   let isAdmin = false;
@@ -55,6 +59,7 @@ function AuthenticationProvider({ children }) {
         isPartner,
         hasAccess,
         userToken,
+        hasAccessByNickName,
       }}
     >
       {children}

@@ -54,6 +54,7 @@ function CommunityView(props) {
   const [commentContent, setCommentContent] = useState("");
   const [myCommunityLike, setMyCommunityLike] = useState(false);
   const authentication = useContext(AuthenticationContext);
+  const { hasAccessByNickName } = useContext(AuthenticationContext);
 
   useEffect(() => {
     axios.get(`/api/community/view/${id}`, { id }).then((e) => {
@@ -208,26 +209,28 @@ function CommunityView(props) {
               <Input value={community.creationDate} />
             </Field>
           </Box>
-          <Box>
-            <HStack>
-              <DialogRoot>
-                <DialogTrigger>
-                  <Button>삭제</Button>
-                  <DialogContent>
-                    <DialogHeader>글 삭제</DialogHeader>
-                    <DialogBody>{id}번 게시물을 삭제하시겠습니까?</DialogBody>
-                    <DialogFooter>
-                      <Button>취소</Button>
-                      <DialogActionTrigger>
-                        <Button onClick={handleDeleteClick}>삭제</Button>
-                      </DialogActionTrigger>
-                    </DialogFooter>
-                  </DialogContent>
-                </DialogTrigger>
-              </DialogRoot>
-              <Button onClick={handleEditClick}>수정</Button>
-            </HStack>
-          </Box>
+          {hasAccessByNickName(community.writer) && (
+            <Box>
+              <HStack>
+                <DialogRoot>
+                  <DialogTrigger>
+                    <Button>삭제</Button>
+                    <DialogContent>
+                      <DialogHeader>글 삭제</DialogHeader>
+                      <DialogBody>{id}번 게시물을 삭제하시겠습니까?</DialogBody>
+                      <DialogFooter>
+                        <Button>취소</Button>
+                        <DialogActionTrigger>
+                          <Button onClick={handleDeleteClick}>삭제</Button>
+                        </DialogActionTrigger>
+                      </DialogFooter>
+                    </DialogContent>
+                  </DialogTrigger>
+                </DialogRoot>
+                <Button onClick={handleEditClick}>수정</Button>
+              </HStack>
+            </Box>
+          )}
           <br />
           {/*  TODO: 코멘트 작성, 코멘트 리스트 추가 */}
           <Box>
@@ -282,77 +285,85 @@ function CommunityView(props) {
                     <HStack>
                       <Stack>
                         <HStack>
-                          <Field>{list.writer}</Field>
+                          <Field w={300}>{list.writer}</Field>
                           <Field>{list.creationDate}</Field>
                         </HStack>
-                        <Input value={list.comment} readOnly />
+                        <HStack>
+                          <Input value={list.comment} readOnly w={450} />
+                          {/* TODO : 권한받은 유저만 보이게 */}
+                          {hasAccessByNickName(list.writer) && (
+                            <Box>
+                              <HStack>
+                                <DialogRoot>
+                                  <DialogTrigger asChild>
+                                    <Button variant="outline">수정</Button>
+                                  </DialogTrigger>
+                                  <DialogContent>
+                                    <DialogHeader>
+                                      <DialogTitle>댓글 수정</DialogTitle>
+                                    </DialogHeader>
+                                    <DialogBody pb="4">
+                                      <Stack gap="4">
+                                        <Field>
+                                          <HStack>
+                                            <LuPencilLine /> 수정하기
+                                          </HStack>
+                                          <Textarea
+                                            defaultValue={list.comment} // 기존 댓글 내용 표시
+                                            onChange={
+                                              (e) =>
+                                                handleCommentChange(
+                                                  list.id,
+                                                  e.target.value,
+                                                ) // 변경 이벤트 핸들러
+                                            }
+                                            placeholder="내용을 입력해주세요."
+                                          />
+                                        </Field>
+                                      </Stack>
+                                    </DialogBody>
+                                    <DialogFooter>
+                                      <DialogActionTrigger asChild>
+                                        <Button variant="outline">취소</Button>
+                                      </DialogActionTrigger>
+                                      <DialogActionTrigger>
+                                        <Button
+                                          onClick={() =>
+                                            handleCommentUpdateClick(list.id)
+                                          }
+                                        >
+                                          수정
+                                        </Button>
+                                      </DialogActionTrigger>
+                                    </DialogFooter>
+                                  </DialogContent>
+                                </DialogRoot>
+                                <DialogRoot>
+                                  <DialogTrigger>
+                                    <Button>삭제</Button>
+                                    <DialogContent>
+                                      <DialogHeader>글 삭제</DialogHeader>
+                                      <DialogBody>
+                                        해당 댓글을 정말 삭제하시겠습니까?
+                                      </DialogBody>
+                                      <DialogFooter>
+                                        <Button>취소</Button>
+                                        <Button
+                                          onClick={() =>
+                                            handleCommentDeleteClick(list.id)
+                                          }
+                                        >
+                                          삭제
+                                        </Button>
+                                      </DialogFooter>
+                                    </DialogContent>
+                                  </DialogTrigger>
+                                </DialogRoot>
+                              </HStack>
+                            </Box>
+                          )}
+                        </HStack>
                       </Stack>
-                      {/* TODO : 권한받은 유저만 보이게 */}
-                      <DialogRoot>
-                        <DialogTrigger asChild>
-                          <Button variant="outline">수정</Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                          <DialogHeader>
-                            <DialogTitle>댓글 수정</DialogTitle>
-                          </DialogHeader>
-                          <DialogBody pb="4">
-                            <Stack gap="4">
-                              <Field>
-                                <HStack>
-                                  <LuPencilLine /> 수정하기
-                                </HStack>
-                                <Textarea
-                                  defaultValue={list.comment} // 기존 댓글 내용 표시
-                                  onChange={
-                                    (e) =>
-                                      handleCommentChange(
-                                        list.id,
-                                        e.target.value,
-                                      ) // 변경 이벤트 핸들러
-                                  }
-                                  placeholder="내용을 입력해주세요."
-                                />
-                              </Field>
-                            </Stack>
-                          </DialogBody>
-                          <DialogFooter>
-                            <DialogActionTrigger asChild>
-                              <Button variant="outline">취소</Button>
-                            </DialogActionTrigger>
-                            <DialogActionTrigger>
-                              <Button
-                                onClick={() =>
-                                  handleCommentUpdateClick(list.id)
-                                }
-                              >
-                                수정
-                              </Button>
-                            </DialogActionTrigger>
-                          </DialogFooter>
-                        </DialogContent>
-                      </DialogRoot>
-                      <DialogRoot>
-                        <DialogTrigger>
-                          <Button>삭제</Button>
-                          <DialogContent>
-                            <DialogHeader>글 삭제</DialogHeader>
-                            <DialogBody>
-                              해당 댓글을 정말 삭제하시겠습니까?
-                            </DialogBody>
-                            <DialogFooter>
-                              <Button>취소</Button>
-                              <Button
-                                onClick={() =>
-                                  handleCommentDeleteClick(list.id)
-                                }
-                              >
-                                삭제
-                              </Button>
-                            </DialogFooter>
-                          </DialogContent>
-                        </DialogTrigger>
-                      </DialogRoot>
                     </HStack>
                   </Box>
                 ))}
