@@ -55,3 +55,7 @@ WHERE c.id = 40;
 
 SELECT COUNT(*)
 FROM community;
+
+SELECT COUNT(*)
+FROM community
+WHERE title LIKE '%1%';
