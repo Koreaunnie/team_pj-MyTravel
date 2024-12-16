@@ -654,8 +654,8 @@ form .required {
 }
 
 /* 주말 */
-react-calendar__month-view__days__day--weekend {
-    color: #000;
+.react-calendar__month-view__days__day--weekend {
+    color: #d10000;
 }
 
 /* 날짜 타일 한개 */
@@ -724,14 +724,15 @@ react-calendar__month-view__days__day--weekend {
 
 /* 표시 뱃지 */
 .calendar-badge {
-    width: 100%;
+    width: 120%;
     background: var(--bg-gray-color);
     border-radius: 5px;
     font-size: 0.75rem;
-    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    padding: 0 3px;
+    /*white-space: nowrap;*/
+    padding: 0 2px;
+    color: #000;
 }
 
 /*------------------- 화면 크기가 768px 이하 (태블릿 화면) -------------------*/
