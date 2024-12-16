@@ -116,6 +116,7 @@ function TourUpdate() {
             onChange={(e) => setUploadFiles(e.target.files)}
             type={"file"}
             accept={"image/*"}
+            multiple
           />
         </Box>
         <Box>

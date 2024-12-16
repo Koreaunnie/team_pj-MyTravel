@@ -22,6 +22,18 @@ function MyPage(props) {
       <Breadcrumb
         depth1={"마이페이지"}
         navigateToDepth1={() => navigate(`/mypage/${id}`)}
+        depth2={
+          selectedMenu === "profile"
+            ? "내 프로필"
+            : selectedMenu === "cart"
+              ? "내 장바구니"
+              : selectedMenu === "paymentHistory"
+                ? "결제 내역"
+                : selectedMenu === "myTour"
+                  ? `${email}의 상품`
+                  : "내가 쓴 글"
+        }
+        navigateToDepth2={() => {}}
       />
       <h1>마이페이지</h1>
       <Box>

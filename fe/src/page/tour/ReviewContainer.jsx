@@ -171,7 +171,7 @@ function ReviewContainer({ tourId }) {
 
         {/*목록*/}
         {reviewList.length === 0 ? (
-          <p>아직 작성된 후기가 없습니다.</p>
+          <p>작성된 후기가 없습니다.</p>
         ) : (
           <ReviewList
             tourId={tourId}
