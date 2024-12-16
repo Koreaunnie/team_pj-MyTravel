@@ -68,7 +68,6 @@ public class CommunityService {
         }
 
         Integer countCommunity = mapper.countAllCommunity(searchType, searchKeyword);
-        System.out.println(countCommunity);
 
         return Map.of("list", list, "countCommunity", countCommunity);
     }

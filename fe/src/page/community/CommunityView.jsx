@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -27,6 +27,7 @@ import CommunityList from "./CommunityList.jsx";
 import { FiMessageSquare } from "react-icons/fi";
 import { LuPencilLine } from "react-icons/lu";
 import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
+import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 
 function ImageFileView({ files }) {
   return (
@@ -52,6 +53,7 @@ function CommunityView(props) {
   const [loading, setLoading] = useState(true);
   const [commentContent, setCommentContent] = useState("");
   const [myCommunityLike, setMyCommunityLike] = useState(false);
+  const authentication = useContext(AuthenticationContext);
 
   useEffect(() => {
     axios.get(`/api/community/view/${id}`, { id }).then((e) => {
@@ -117,6 +119,10 @@ function CommunityView(props) {
       .catch((err) => console.error(err));
   };
 
+  function handleLoginClick() {
+    navigate(`/member/login`);
+  }
+
   // TODO: 로그인에 대한 권한 완료 후 좋아요 즉시 반영 시도하기
   // const handleLikeClick = () => {
   //   setMyCommunityLike(!myCommunityLike);
@@ -156,19 +162,44 @@ function CommunityView(props) {
               <ImageFileView files={community.files} />
             </Field>
             <Field>
-              <Stack>
-                <Icon
-                  fontSize="8xl"
-                  color="red.600"
-                  onClick={
-                    // handleLikeClick
-                    () => setMyCommunityLike(!myCommunityLike)
-                  }
-                >
-                  {myCommunityLike ? <IoMdHeart /> : <IoMdHeartEmpty />}
-                </Icon>
-                <h5>{community.like}</h5>
-              </Stack>
+              {authentication.isAuthenticated && (
+                <Stack>
+                  <Icon
+                    fontSize="8xl"
+                    color="red.600"
+                    onClick={
+                      // handleLikeClick
+                      () => setMyCommunityLike(!myCommunityLike)
+                    }
+                  >
+                    {myCommunityLike ? <IoMdHeart /> : <IoMdHeartEmpty />}
+                  </Icon>
+                  <h5>{community.like}</h5>
+                </Stack>
+              )}
+              {authentication.isAuthenticated || (
+                <Stack>
+                  <DialogRoot>
+                    <DialogTrigger>
+                      <Icon fontSize="8xl" color="red.600">
+                        <IoMdHeartEmpty />
+                      </Icon>
+                      <DialogContent>
+                        <DialogHeader>MyTravel</DialogHeader>
+                        <DialogBody>
+                          로그인을 한 회원만 게시글 추천이 가능합니다.
+                        </DialogBody>
+                        <DialogFooter>
+                          <DialogActionTrigger>
+                            <Button onClick={handleLoginClick}>확인</Button>
+                          </DialogActionTrigger>
+                        </DialogFooter>
+                      </DialogContent>
+                    </DialogTrigger>
+                  </DialogRoot>
+                  <h5>{community.like}</h5>
+                </Stack>
+              )}
             </Field>
             <Field label={"작성자"} readOnly>
               <Input value={community.writer} />
@@ -202,17 +233,41 @@ function CommunityView(props) {
           <Box>
             <Stack>
               <Field label={community.writer + " 님에게 댓글 작성"}>
-                <HStack>
-                  <Textarea
-                    h={100}
-                    w={700}
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                  />
-                  <Button h={100} onClick={handleCommentSaveClick}>
-                    댓글 등록
-                  </Button>
-                </HStack>
+                {authentication.isAuthenticated && (
+                  <HStack>
+                    <Textarea
+                      h={100}
+                      w={700}
+                      placeholder="댓글 쓰기"
+                      value={comment}
+                      onChange={(e) => setComment(e.target.value)}
+                    />
+                    <Button h={100} onClick={handleCommentSaveClick}>
+                      댓글 등록
+                    </Button>
+                  </HStack>
+                )}
+                {authentication.isAuthenticated || (
+                  <DialogRoot>
+                    <DialogTrigger>
+                      <HStack>
+                        <Textarea h={100} w={700} placeholder="댓글 쓰기" />
+                        <Button h={100}>댓글 등록</Button>
+                      </HStack>
+                      <DialogContent>
+                        <DialogHeader>MyTravel</DialogHeader>
+                        <DialogBody>
+                          로그인을 한 회원만 댓글 쓰기가 가능합니다.
+                        </DialogBody>
+                        <DialogFooter>
+                          <DialogActionTrigger>
+                            <Button onClick={handleLoginClick}>확인</Button>
+                          </DialogActionTrigger>
+                        </DialogFooter>
+                      </DialogContent>
+                    </DialogTrigger>
+                  </DialogRoot>
+                )}
               </Field>
               <br />
               <Field>
