@@ -15,8 +15,8 @@ import {
   DialogTrigger,
 } from "../../components/ui/dialog.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
-import { ProfileImageView } from "../../Image/ProfileImageView.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
+import { ProfileImageView } from "../../components/Image/ProfileImageView.jsx";
 
 function MemberInfo(props) {
   const [member, setMember] = useState(null);

@@ -15,9 +15,9 @@ import {
   DialogTrigger,
 } from "../../components/ui/dialog.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
-import { ImageView } from "../../Image/ImageView.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
+import { ImageView } from "../../components/Image/ImageView.jsx";
 
 function TourUpdate() {
   const { id } = useParams();

@@ -15,12 +15,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../components/ui/dialog.jsx";
-import { ImageFileView } from "../../Image/ImageFileView.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import "./Tour.css";
 import { Modal } from "../../components/root/Modal.jsx";
 import ReviewContainer from "./ReviewContainer.jsx";
+import { ImageFileView } from "../../components/Image/ImageFileView.jsx";
 
 function TourView() {
   const { id } = useParams();
