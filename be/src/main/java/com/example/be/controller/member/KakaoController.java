@@ -22,9 +22,9 @@ public class KakaoController {
   public ResponseEntity<Map<String, Object>> signup(
           Member member, String kakaoImageSrc,
           @RequestParam(value = "files[]", required = false) MultipartFile[] files) throws IOException {
-    System.out.println("가입 정보:" + member);
-    System.out.println("파일" + files);
-    System.out.println("kakao" + kakaoImageSrc);
+//    System.out.println("가입 정보:" + member);
+//    System.out.println("파일" + files);
+//    System.out.println("kakao파일: " + kakaoImageSrc);
 
     //새 프로필을 설정하지 않았다면 카카오 프로필=>multipart 변환해서 넘김
     if (files == null) {

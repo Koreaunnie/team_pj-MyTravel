@@ -92,6 +92,11 @@ function MemberSignup(props) {
     filesList.push(<li>{file.name}</li>);
   }
 
+  let passwordInvalid = false;
+  if (password != passwordCheck) {
+    passwordInvalid = true;
+  }
+
   return (
     <div className={"body-narrow"}>
       <h1>회원 가입</h1>
@@ -192,6 +197,12 @@ function MemberSignup(props) {
                 value={passwordCheck}
                 onChange={(e) => setPasswordCheck(e.target.value)}
               />
+              {/* 비밀번호가 일치하지 않을 경우 에러 메시지 표시 */}
+              {password && passwordCheck && password !== passwordCheck && (
+                <p style={{ color: "red", fontSize: "14px" }}>
+                  비밀번호가 일치하지 않습니다.
+                </p>
+              )}
             </li>
 
             <li>

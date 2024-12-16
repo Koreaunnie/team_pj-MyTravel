@@ -112,10 +112,12 @@ function MemberSignupKakao() {
             </li>
 
             <li className={"check-form"}>
-              <label htmlFor="nickname">
-                닉네임
-                <span className={"required"}>&#42;</span>
-              </label>
+              <form>
+                <label htmlFor="nickname">
+                  닉네임
+                  <span className={"required"}>&#42;</span>
+                </label>
+              </form>
               <input
                 id={"nickname"}
                 type={"text"}
@@ -137,10 +139,12 @@ function MemberSignupKakao() {
             </li>
 
             <li>
-              <label htmlFor="name">
-                이름
-                <span className={"required"}>&#42;</span>
-              </label>
+              <form>
+                <label htmlFor="name">
+                  이름
+                  <span className={"required"}>&#42;</span>
+                </label>
+              </form>
               <input
                 placeholder={"20자 이내"}
                 maxLength="20"
@@ -152,10 +156,12 @@ function MemberSignupKakao() {
               />
             </li>
             <li>
-              <label htmlFor="phone">
-                전화번호
-                <span className={"required"}>&#42;</span>
-              </label>
+              <form>
+                <label htmlFor="phone">
+                  전화번호
+                  <span className={"required"}>&#42;</span>
+                </label>
+              </form>
               <input
                 placeholder={"숫자만 입력해주세요."}
                 maxLength="20"

@@ -4,10 +4,15 @@ import com.example.be.dto.plan.Plan;
 import com.example.be.dto.plan.PlanField;
 import com.example.be.mapper.plan.PlanMapper;
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -137,9 +142,64 @@ public class PlanService {
         mapper.deleteById(id);
     }
 
-    // 메인 화면에 필요한 일부 plan 리스트 가져오기
-    public List<Plan> getMainPagePlans(String keyword) {
-        // 최신 4개의 계획만
-        return mapper.getTop4ByOrderByUpdated(keyword);
+    // 메인 화면에 필요한 일부 plan 리스트 가져오기 (최신 4개)
+    public List<Plan> getMainPagePlans(String keyword, String writer) {
+        List<Plan> plans = mapper.getTop4ByOrderByUpdated(keyword, writer);
+        return plans != null ? plans : new ArrayList<>();
+    }
+
+    // 내 여행 엑셀로 저장
+    public Workbook getPlanToSaveExcel(int id, String writer) {
+        Plan plan = mapper.selectPlanById(id, writer);
+        List<PlanField> planFields = mapper.selectPlanFieldsByPlanId(id);
+
+        // 새 Excel 워크북 생성
+        Workbook workbook = new XSSFWorkbook();
+        // 새 시트 생성
+        Sheet sheet = workbook.createSheet("My Plan");
+
+        // 헤더 행
+        Row headerRow = sheet.createRow(0);
+        headerRow.createCell(0).setCellValue("여행명");
+        headerRow.createCell(1).setCellValue("설명");
+        headerRow.createCell(2).setCellValue("목적지");
+        headerRow.createCell(3).setCellValue("출발일");
+        headerRow.createCell(4).setCellValue("도착일");
+        headerRow.createCell(5).setCellValue("작성일");
+        headerRow.createCell(6).setCellValue("수정일");
+        headerRow.createCell(7).setCellValue("날짜");
+        headerRow.createCell(8).setCellValue("시간");
+        headerRow.createCell(9).setCellValue("일정");
+        headerRow.createCell(10).setCellValue("장소");
+        headerRow.createCell(11).setCellValue("메모");
+
+        // 데이터
+        int rowNum = 1;
+        for (PlanField field : planFields) {
+            Row dataRow = sheet.createRow(rowNum++);
+            dataRow.createCell(0).setCellValue(plan.getTitle());
+            dataRow.createCell(1).setCellValue(plan.getDescription());
+            dataRow.createCell(2).setCellValue(plan.getDestination());
+
+            // LocalDateTime을 문자열로 변환
+            dataRow.createCell(3).setCellValue(plan.getStartDate() != null ? plan.getStartDate().toString() : "");
+            dataRow.createCell(4).setCellValue(plan.getEndDate() != null ? plan.getEndDate().toString() : "");
+            dataRow.createCell(5).setCellValue(plan.getInserted() != null ? plan.getInserted().toString() : "");
+            dataRow.createCell(6).setCellValue(plan.getUpdated() != null ? plan.getUpdated().toString() : "");
+
+            // PlanField에 대한 필드 값 처리
+            dataRow.createCell(7).setCellValue(field.getDate() != null ? field.getDate().toString() : "");
+            dataRow.createCell(8).setCellValue(field.getTime() != null ? field.getTime().toString() : "");
+            dataRow.createCell(9).setCellValue(field.getSchedule());
+            dataRow.createCell(10).setCellValue(field.getPlace());
+            dataRow.createCell(11).setCellValue(field.getMemo());
+        }
+
+        return workbook;
+    }
+
+    // 달력에 표시하기 위한 모든 일정 (페이지네이션 상관 없이)
+    public List<Plan> all(String writer) {
+        return mapper.selectAll(writer);
     }
 }

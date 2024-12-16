@@ -21,7 +21,7 @@ public class ReviewController {
   @GetMapping("payment/{tourId}")
   public List<PaymentHistory> paymentList(@PathVariable Integer tourId, Authentication auth) {
     List<PaymentHistory> paidList = service.paymentList(tourId, auth);
-    System.out.println(paidList);
+//    System.out.println(paidList);
     return paidList;
   }
 
@@ -37,6 +37,7 @@ public class ReviewController {
   @PutMapping("edit")
   @PreAuthorize("isAuthenticated()")
   public ResponseEntity<Map<String, Object>> edit(@RequestBody Review review) {
+    System.out.println("수정 내용" + review);
     if (service.edit(review)) {
       return ResponseEntity.ok().body(Map.of("message",
               Map.of("type", "success", "text", "후기 수정 완료")));
@@ -61,6 +62,7 @@ public class ReviewController {
   public ResponseEntity<Map<String, Object>> add(
           @RequestBody Review review, Authentication auth) {
     Integer currentTour = review.getTourId();
+    System.out.println(review);
 
     if (service.canWriteReview(currentTour, auth)) {
       service.add(review, auth);

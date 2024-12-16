@@ -62,8 +62,8 @@ public class WalletController {
     public ResponseEntity<Map<String, Object>> update(@PathVariable int id,
                                                       @RequestBody Wallet wallet,
                                                       Authentication authentication) {
-        String writer = authentication.getName();
-        boolean isUpdated = service.update(id, wallet, writer);
+        wallet.setWriter(authentication.getName());
+        boolean isUpdated = service.update(id, wallet);
 
         if (isUpdated) {
             // 성공
@@ -91,5 +91,21 @@ public class WalletController {
     public ResponseEntity<List<String>> getCategories() {
         List<String> categories = service.getCategories();
         return ResponseEntity.ok(categories);
+    }
+
+    @DeleteMapping("delete")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, Object>> delete(@RequestBody List<Integer> id,
+                                                      Authentication authentication) {
+        String writer = authentication.getName();
+        if (service.deleteSelectedItems(id, writer)) {
+            // 성공
+            return ResponseEntity.ok(Map.of("message", Map.of(
+                    "type", "success", "text", "삭제되었습니다.")));
+        } else {
+            // 실패
+            return ResponseEntity.badRequest().body(Map.of("message", Map.of(
+                    "type", "warning", "text", "삭제 중 오류가 생겼습니다.")));
+        }
     }
 }

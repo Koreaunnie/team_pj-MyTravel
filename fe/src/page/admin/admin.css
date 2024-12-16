@@ -1,0 +1,39 @@
+.admin-aside {
+    position: absolute;
+    width: 300px;
+    height: 100vh;
+    background: var(--bg-gray-color);
+    border-right: 1px solid var(--font-light-gray-color);
+    padding: 100px 0;
+}
+
+.admin-aside h1 {
+    margin-top: 20px;
+}
+
+.admin-aside .nickname {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: normal;
+    margin: 5px 0 40px 0;
+}
+
+.admin-aside ul {
+    width: 300px;
+}
+
+.admin-aside ul li {
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 10px 50px;
+    border-top: 1px solid var(--table-border-color);
+    border-right: 1px solid var(--font-light-gray-color);
+}
+
+.admin-aside ul li:last-child {
+    border-bottom: 1px solid var(--table-border-color);
+}
+
+.admin-aside .active {
+    background: #fff;
+}

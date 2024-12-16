@@ -1,6 +1,6 @@
 import { Box, HStack, Image } from "@chakra-ui/react";
 import React from "react";
-import { Checkbox } from "../components/ui/checkbox.jsx";
+import { Checkbox } from "../ui/checkbox.jsx";
 
 export function ImageView({ files, onRemoveCheckClick }) {
   return (

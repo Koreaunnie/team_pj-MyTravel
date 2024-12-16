@@ -57,3 +57,6 @@ WHERE buyer_email = 'jm@jm'
   AND pd.tour_id = 69
   AND review IS NULL
 ORDER BY paid_at DESC;
+
+ALTER TABLE tour_review
+ADD COLUMN rating INT ;

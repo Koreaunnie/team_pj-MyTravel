@@ -31,7 +31,7 @@ public class WalletService {
     }
 
     // 내 지갑 내역 상세 보기 화면에서 수정
-    public boolean update(int id, Wallet wallet, String writer) {
+    public boolean update(int id, Wallet wallet) {
         wallet.setId(id);
 
         // 수입 / 지출이 null 일 경우 0
@@ -42,7 +42,7 @@ public class WalletService {
             wallet.setExpense(0);
         }
 
-        int cnt = mapper.update(wallet, writer);
+        int cnt = mapper.update(wallet);
         return cnt == 1;
     }
 
@@ -57,4 +57,9 @@ public class WalletService {
         return mapper.getAllCategories();
     }
 
+    // 내 지갑 내역에서 선택한 항목만 삭제
+    public boolean deleteSelectedItems(List<Integer> id, String writer) {
+        int cnt = mapper.deleteSelectedItemsById(id, writer);
+        return cnt == 1;
+    }
 }

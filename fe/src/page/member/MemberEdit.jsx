@@ -15,7 +15,7 @@ import {
   DialogTrigger,
 } from "../../components/ui/dialog.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
-import { ProfileImageView } from "../../Image/ProfileImageView.jsx";
+import { ProfileImageView } from "../../components/Image/ProfileImageView.jsx";
 
 export function MemberEdit() {
   const [member, setMember] = useState(null);

@@ -2,9 +2,9 @@ import React, { useContext, useState } from "react";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { Box, VStack } from "@chakra-ui/react";
 import MemberInfo from "./MemberInfo.jsx";
-import CartList from "../tour/CartList.jsx";
+import CartList from "../payment/CartList.jsx";
 import TourMyList from "../tour/TourMyList.jsx";
-import PaymentHistory from "../tour/PaymentHistory.jsx";
+import PaymentHistory from "../payment/PaymentHistory.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import "./Member.css";
 import CommunityMyList from "../community/CommunityMyList.jsx";
@@ -22,6 +22,18 @@ function MyPage(props) {
       <Breadcrumb
         depth1={"마이페이지"}
         navigateToDepth1={() => navigate(`/mypage/${id}`)}
+        depth2={
+          selectedMenu === "profile"
+            ? "내 프로필"
+            : selectedMenu === "cart"
+              ? "내 장바구니"
+              : selectedMenu === "paymentHistory"
+                ? "결제 내역"
+                : selectedMenu === "myTour"
+                  ? `${email}의 상품`
+                  : "내가 쓴 글"
+        }
+        navigateToDepth2={() => {}}
       />
       <h1>마이페이지</h1>
       <Box>

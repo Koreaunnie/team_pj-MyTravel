@@ -354,7 +354,7 @@ function WalletEdit(props) {
         <Modal
           isOpen={backToListModalOpen}
           onClose={() => setBackToListModalOpen(false)}
-          onConfirm={() => navigate(`/plan/list`)}
+          onConfirm={() => navigate(`/wallet/list`)}
           message="목록으로 돌아가면 작성한 내용이 사라집니다."
           buttonMessage="목록"
         />

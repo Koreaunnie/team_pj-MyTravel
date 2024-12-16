@@ -13,5 +13,6 @@ public class PlanField {
     private LocalTime time;
     private String schedule;
     private String place;
+    private String placeId;
     private String memo;
 }

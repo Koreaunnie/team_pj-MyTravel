@@ -27,12 +27,14 @@ function ReviewContainer({ tourId }) {
       .then((res) => setPaidList(res.data));
   }, []);
 
-  function handleSaveReviewClick(review) {
+  function handleSaveReviewClick({ review, rating }) {
+    // console.log("reviewContainer", review, rating);
     setProcessing(true);
     axios
       .post("/api/review/add", {
         tourId: tourId,
         review: review,
+        rating: rating,
         paymentId: selectedPayment,
       })
       .then((res) => res.data)
@@ -42,9 +44,15 @@ function ReviewContainer({ tourId }) {
           type: message.type,
           description: message.text,
         });
+
+        axios
+          .get(`/api/review/payment/${tourId}`)
+          .then((res) => setPaidList(res.data));
+
         setSelectedPayment(null);
       })
       .catch((error) => {
+        console.error("오류 코드", error);
         toaster.create({
           type: "error",
           description: "후기를 작성할 수 없습니다.",
@@ -57,16 +65,23 @@ function ReviewContainer({ tourId }) {
 
   function handleDeleteReviewClick(reviewId) {
     setProcessing(true);
-    axios.delete(`/api/review/delete/${reviewId}`).finally(() => {
-      setProcessing(false);
-    });
+    axios
+      .delete(`/api/review/delete/${reviewId}`)
+      .then(() => {
+        axios
+          .get(`/api/review/payment/${tourId}`)
+          .then((res) => setPaidList(res.data));
+      })
+      .finally(() => {
+        setProcessing(false);
+      });
   }
 
-  function handleEditReviewClick(reviewId, review) {
+  function handleEditReviewClick(reviewId, { review, rating }) {
     setProcessing(true);
 
     axios
-      .put(`/api/review/edit`, { reviewId, review })
+      .put(`/api/review/edit`, { reviewId, review, rating })
       .then((res) => res.data.message)
       .then((message) => {
         toaster.create({
@@ -85,6 +100,12 @@ function ReviewContainer({ tourId }) {
         setProcessing(false);
       });
   }
+
+  const handleRateChange = (e, setRating) => {
+    const value = e.target ? e.target.value : e;
+    // console.log("새 별점", value);
+    setRating(Number(value));
+  };
 
   const paymentHistoryCheck = () => {
     axios
@@ -106,7 +127,7 @@ function ReviewContainer({ tourId }) {
         {/*내역에서 후기 작성할 상품 선택: payment_id 전달*/}
         {paymentHistoryCheck() ? (
           <div>
-            <h3>내 구매 이력</h3>
+            <h3>후기를 작성할 이력 선택</h3>
             <table className={"table-list"}>
               <thead>
                 <tr>
@@ -141,18 +162,23 @@ function ReviewContainer({ tourId }) {
         ) : null}
 
         {selectedPayment && (
-          <ReviewAdd tourId={tourId} onSaveClick={handleSaveReviewClick} />
+          <ReviewAdd
+            tourId={tourId}
+            onSaveClick={handleSaveReviewClick}
+            onRateChange={handleRateChange}
+          />
         )}
 
         {/*목록*/}
         {reviewList.length === 0 ? (
-          <p>아직 작성된 후기가 없습니다.</p>
+          <p>작성된 후기가 없습니다.</p>
         ) : (
           <ReviewList
             tourId={tourId}
             reviewList={reviewList}
             onDeleteClick={handleDeleteReviewClick}
             onEditClick={handleEditReviewClick}
+            onRateChange={handleRateChange}
           />
         )}
       </Stack>

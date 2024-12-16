@@ -15,9 +15,9 @@ import {
   DialogTrigger,
 } from "../../components/ui/dialog.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
-import { ImageView } from "../../Image/ImageView.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
+import { ImageView } from "../../components/Image/ImageView.jsx";
 
 function TourUpdate() {
   const { id } = useParams();
@@ -87,6 +87,26 @@ function TourUpdate() {
       });
   };
 
+  const uploadFilesList = [];
+  let sumOfUploadFileSize = 0;
+  let invalidOneFileSize = false;
+  for (const file of uploadFiles) {
+    sumOfUploadFileSize += file.size;
+    if (file.size > 1024 * 1024) {
+      invalidOneFileSize = true;
+    }
+    uploadFilesList.push(
+      <li style={{ color: file.size > 1024 * 1024 ? "red" : "black" }}>
+        {file.name} ({Math.floor(file.size / 1024)}kb)
+      </li>,
+    );
+  }
+
+  let fileInputInvalid = false;
+  if (sumOfUploadFileSize > 10 * 1024 * 1024 || invalidOneFileSize) {
+    fileInputInvalid = true;
+  }
+
   if (tour === null) {
     return <p>존재하지 않는 상품입니다.</p>;
   }
@@ -112,16 +132,24 @@ function TourUpdate() {
           onRemoveCheckClick={handleDeleteCheck}
         />
         <Box>
-          <Input
-            onChange={(e) => setUploadFiles(e.target.files)}
-            type={"file"}
-            accept={"image/*"}
-          />
+          <Field
+            label={"파일"}
+            helperText={
+              "총 10MB, 한 파일은 1MB 이내의 이미지만 업로드 가능합니다."
+            }
+            invalid={fileInputInvalid}
+            errorText={"선택한 파일이 업로드 가능한 용량을 초과하였습니다."}
+          >
+            <Input
+              onChange={(e) => setUploadFiles(e.target.files)}
+              type={"file"}
+              accept={"image/*"}
+              multiple
+            />
+          </Field>
         </Box>
         <Box>
-          {Array.from(uploadFiles).map((file) => (
-            <li key={file.name}>{file.name}</li>
-          ))}
+          <Box>{uploadFilesList}</Box>
         </Box>
         <Field label={"상품"}>
           <Input
