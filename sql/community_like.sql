@@ -9,7 +9,16 @@ CREATE TABLE community_like
 
 
 INSERT INTO community_like (community_id, person)
-VALUES (79, '마르키시오');
+VALUES (40, '마르키시오');
+
+SELECT community_id communityId, person nickName
+FROM community_like
+WHERE person = '마르키시오';
+
+DELETE
+FROM community_like
+WHERE community_id = 40
+  AND person = '마르키시오';
 
 SELECT *
 FROM community_like;

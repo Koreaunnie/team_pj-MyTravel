@@ -15,7 +15,6 @@ function CommunityWrite(props) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [files, setFiles] = useState([]);
-
   const navigate = useNavigate();
 
   const handleSaveClick = () => {
