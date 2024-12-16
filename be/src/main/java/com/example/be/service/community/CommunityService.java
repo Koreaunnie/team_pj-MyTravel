@@ -67,7 +67,8 @@ public class CommunityService {
             }
         }
 
-        Integer countCommunity = mapper.countAllCommunity();
+        Integer countCommunity = mapper.countAllCommunity(searchType, searchKeyword);
+        System.out.println(countCommunity);
 
         return Map.of("list", list, "countCommunity", countCommunity);
     }
@@ -162,7 +163,7 @@ public class CommunityService {
         }
     }
 
-    public void delete(Integer id) {
+    public void delete(Integer id, Authentication auth) {
 
         List<String> fileName = mapper.selectFilesByCommunityId(id);
 
@@ -196,7 +197,7 @@ public class CommunityService {
         mapper.writeCommunityComment(communityComment);
     }
 
-    public void commentDelete(Integer id) {
+    public void commentDelete(Integer id, Authentication auth) {
         mapper.deleteCommentByCommentId(id);
     }
 

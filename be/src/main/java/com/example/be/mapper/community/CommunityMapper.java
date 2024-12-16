@@ -44,10 +44,35 @@ public interface CommunityMapper {
     List<Community> listUp(Integer pageList, String searchType, String searchKeyword);
 
     @Select("""
-            SELECT COUNT(*)
-            FROM community
+                        <script>
+                        SELECT COUNT(*)
+                        FROM community
+            WHERE 
+                                            <if test="searchType == 'all'">
+                                                title LIKE CONCAT('%',#{searchKeyword},'%')
+                                             OR writer LIKE CONCAT('%',#{searchKeyword},'%')
+                                             OR content LIKE CONCAT('%',#{searchKeyword},'%')
+                                            </if>
+                                            <if test="searchType != 'all'">
+                                                 <choose>
+                                                     <when test="searchType == 'title'">
+                                                         title LIKE CONCAT('%', #{searchKeyword}, '%')
+                                                     </when>
+                                                     <when test="searchType == 'writer'">
+                                                         writer LIKE CONCAT('%', #{searchKeyword}, '%')
+                                                     </when>
+                                                     <when test="searchType == 'content'">
+                                                         content LIKE CONCAT('%', #{searchKeyword}, '%')
+                                                     </when>
+                                                     <otherwise>
+                                                         1 = 0 
+                        <!-- 허용되지 않은 searchType이면 빈 결과 반환 -->
+                                                     </otherwise>
+                                                 </choose>
+                                             </if>
+                </script>
             """)
-    Integer countAllCommunity();
+    Integer countAllCommunity(String searchType, String searchKeyword);
 
     @Select("""
             SELECT COUNT(*)
@@ -217,6 +242,33 @@ public interface CommunityMapper {
             </script>
             """)
     List<Community> getTop5ByOrderByUpdated(String keyword);
+
+    @Select("""
+            SELECT id
+            FROM community
+            WHERE writer=#{nickname}
+            """)
+    List<Integer> selectWholeCommunityIdByWriter(String nickname);
+
+    @Select("""
+            SELECT id
+            FROM community_comment
+            WHERE writer=#{nickname}
+            """)
+    List<Integer> selectWholeCommunityCommentIdByWriter(String nickname);
+
+    @Select("""
+            SELECT community_id communityId
+            FROM community_like
+            WHERE person=#{nickname}
+            """)
+    List<Integer> selectWholeCommunityLikeByNickName(String nickname);
+
+    @Delete("""
+            DELETE FROM community_like
+            WHERE community_id=#{likeCommunityId} AND person=#{likeUser}
+            """)
+    int deleteLikeByInformation(Integer likeCommunityId, String likeUser);
 
 
 //    @Select("""
