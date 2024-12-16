@@ -38,7 +38,6 @@ import FaqEdit from "./page/cs/faq/FaqEdit.jsx";
 import FaqView from "./page/cs/faq/FaqView.jsx";
 import Payment from "./page/payment/Payment.jsx";
 import PaymentComplete from "./page/payment/PaymentComplete.jsx";
-import PaymentHistory from "./page/payment/PaymentHistory.jsx";
 import PaymentHistoryAll from "./page/payment/PaymentHistoryAll.jsx";
 import AdminPage from "./page/admin/AdminPage.jsx";
 import { MemberLoginProcess } from "./page/member/MemberLoginProcess.jsx";
@@ -46,6 +45,7 @@ import MemberSignupKakao from "./page/member/MemberSignupKakao.jsx";
 import TourMyList from "./page/tour/TourMyList.jsx";
 import { Footer } from "./components/root/Footer.jsx";
 import { CartCombined } from "./page/payment/CartCombined.jsx";
+import PaymentHistoryCombined from "./page/payment/PaymentHistoryCombined.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -142,7 +142,7 @@ const router = createBrowserRouter([
       },
       {
         path: "payment/history/:email",
-        element: <PaymentHistory />,
+        element: <PaymentHistoryCombined />,
       },
       {
         path: "payment/history",

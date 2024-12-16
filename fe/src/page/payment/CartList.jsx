@@ -105,7 +105,7 @@ function CartList() {
   const isCartEmpty = !cartList || cartList.length === 0;
 
   return (
-    <div className={"tour"}>
+    <div>
       <h1>장바구니 목록</h1>
       {isCartEmpty ? (
         <p>장바구니가 비어 있습니다.</p>

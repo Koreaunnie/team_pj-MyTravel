@@ -4,7 +4,7 @@ import CartList from "./CartList.jsx";
 
 export function CartCombined() {
   return (
-    <div>
+    <div className={"tour"}>
       <CartBreadcrumb />
       <CartList />
     </div>
