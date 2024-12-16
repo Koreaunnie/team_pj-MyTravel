@@ -38,13 +38,32 @@ function PaymentHistory(props) {
   // 내 지갑에 추가
   const handleAddToWallet = (tour) => {
     axios
-      .post(`/api/wallet/add`, {
+      .post("/api/wallet/add", {
         date: tour.paidAt,
         category: "여행",
         title: tour.product,
         income: 0,
         expense: tour.price,
         memo: tour.location,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+      });
+  };
+
+  // 내 여행에 추가
+  const handleAddToPlan = (tour) => {
+    axios
+      .post("/api/plan/add", {
+        title: tour.product,
+        description: `결제번호: ${tour.paymentId}`,
+        destination: tour.location,
+        startDate: tour.startDate,
+        endDate: tour.endDate,
       })
       .then((res) => res.data)
       .then((data) => {
@@ -71,7 +90,7 @@ function PaymentHistory(props) {
               <th>가격</th>
               <th>여행 날짜</th>
               <th>리뷰</th>
-              <th></th>
+              <th colSpan={2}>추가</th>
             </tr>
           </thead>
           <tbody>
@@ -124,6 +143,18 @@ function PaymentHistory(props) {
                     }}
                   >
                     내 지갑에 추가
+                  </button>
+                </td>
+
+                <td>
+                  <button
+                    className={"btn btn-dark"}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleAddToPlan(tour);
+                    }}
+                  >
+                    내 여행에 추가
                   </button>
                 </td>
               </tr>

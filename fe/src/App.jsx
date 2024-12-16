@@ -22,10 +22,10 @@ import PlanEdit from "./page/plan/PlanEdit.jsx";
 import WalletAdd from "./page/wallet/WalletAdd.jsx";
 import WalletList from "./page/wallet/WalletList.jsx";
 import WalletEdit from "./page/wallet/WalletEdit.jsx";
-import CartList from "./page/tour/CartList.jsx";
+
 import AuthenticationProvider from "./components/context/AuthenticationProvider.jsx";
 import React from "react";
-import Payment from "./page/tour/Payment.jsx";
+
 import MyPage from "./page/member/MyPage.jsx";
 import InquiryAdd from "./page/cs/inquiry/InquiryAdd.jsx";
 import InquiryList from "./page/cs/inquiry/InquiryList.jsx";
@@ -36,13 +36,15 @@ import FaqAdd from "./page/cs/faq/FaqAdd.jsx";
 import FaqList from "./page/cs/faq/FaqList.jsx";
 import FaqEdit from "./page/cs/faq/FaqEdit.jsx";
 import FaqView from "./page/cs/faq/FaqView.jsx";
-import PaymentComplete from "./page/tour/PaymentComplete.jsx";
-import TourMyList from "./page/tour/TourMyList.jsx";
-import PaymentHistory from "./page/tour/PaymentHistory.jsx";
-import PaymentHistoryAll from "./page/tour/PaymentHistoryAll.jsx";
+import CartList from "./page/payment/CartList.jsx";
+import Payment from "./page/payment/Payment.jsx";
+import PaymentComplete from "./page/payment/PaymentComplete.jsx";
+import PaymentHistory from "./page/payment/PaymentHistory.jsx";
+import PaymentHistoryAll from "./page/payment/PaymentHistoryAll.jsx";
 import AdminPage from "./page/admin/AdminPage.jsx";
 import { MemberLoginProcess } from "./page/member/MemberLoginProcess.jsx";
 import MemberSignupKakao from "./page/member/MemberSignupKakao.jsx";
+import TourMyList from "./page/tour/TourMyList.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'

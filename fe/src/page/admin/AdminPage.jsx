@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { Box } from "@chakra-ui/react";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
-import PaymentHistoryAll from "../tour/PaymentHistoryAll.jsx";
+import PaymentHistoryAll from "../payment/PaymentHistoryAll.jsx";
 import MemberList from "../member/MemberList.jsx";
 import PartnerList from "../member/PartnerList.jsx";
 import CsIndex from "../cs/CsIndex.jsx";
