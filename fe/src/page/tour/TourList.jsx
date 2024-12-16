@@ -10,6 +10,7 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../components/ui/pagination.jsx";
+import { IoIosRefresh } from "react-icons/io";
 
 function TourList() {
   const [tourList, setTourList] = useState([]);
@@ -96,6 +97,21 @@ function TourList() {
           <Center>
             {/*검색*/}
             <div className={"search-form"}>
+              <button
+                onClick={() => {
+                  // 1. 검색 상태 초기화
+                  setSearch({ type: "all", keyword: "" });
+
+                  // 2. URL 검색 파라미터 초기화
+                  const nextSearchParam = new URLSearchParams();
+                  nextSearchParam.set("type", "all");
+                  nextSearchParam.set("key", "");
+
+                  setSearchParams(nextSearchParam);
+                }}
+              >
+                <IoIosRefresh />
+              </button>
               <select
                 value={search.type}
                 onChange={(e) => setSearch({ ...search, type: e.target.value })}
@@ -115,6 +131,7 @@ function TourList() {
                     setSearch({ ...search, keyword: e.target.value.trim() })
                   }
                 />
+
                 <button
                   className={"btn-search btn-dark"}
                   onClick={handleSearchClick}
