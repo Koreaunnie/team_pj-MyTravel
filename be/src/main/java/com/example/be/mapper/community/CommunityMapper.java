@@ -227,6 +227,7 @@ public interface CommunityMapper {
             """)
     int deleteLikeByCommunityId(Integer id);
 
+    // 메인 화면에 필요한 일부 community 리스트 가져오기
     @Select("""
             <script>
             SELECT *

@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import "./Index.css";
 import { IoSearch } from "react-icons/io5";
+import { FaPlus } from "react-icons/fa6";
 
 export function Index() {
   const [search, setSearch] = useState("");
@@ -22,6 +23,7 @@ export function Index() {
         setPlanList(res.data.plans);
         setTourList(res.data.tours);
         setCommunityList(res.data.community);
+        console.log(communityList);
       })
       .catch((error) => {
         console.error("Error fetching index data:", error);
@@ -56,7 +58,7 @@ export function Index() {
   const isEmpty = (list) => list.length === 0;
 
   return (
-    <div className={"body-wide"}>
+    <div>
       {/* 검색 영역 */}
       <section className={"main-search-wrap"}>
         <input
@@ -69,6 +71,43 @@ export function Index() {
         <button className={"main-search-wrap-btn"} onClick={handleSearchButton}>
           <IoSearch />
         </button>
+      </section>
+
+      {/* 투어 섹션 */}
+      <section className={"main-section-wrap"}>
+        <div className={"section-header"}>
+          <h2>지금 당장 떠나보세요!</h2>
+          <button className={"more-btn"} onClick={() => navigate(`/tour/list`)}>
+            더보기
+          </button>
+        </div>
+
+        <div className={"section-body"}>
+          {isEmpty(tourList) ? (
+            <div className={"empty-container"}>
+              <p className={"empty-container-title"}>투어가 없습니다.</p>
+              <p className={"empty-container-description"}>
+                새로운 투어를 추가해보세요!
+              </p>
+            </div>
+          ) : (
+            <ul className={"section-body-card"}>
+              {tourList.map((tour) => (
+                <li
+                  key={tour.id}
+                  onClick={() => navigate(`/tour/view/${tour.id}`)}
+                >
+                  <h3>{tour.product}</h3>
+                  <ul className={"list-item"}>
+                    <li className={"description"}>{tour.title}</li>
+                    <li className={"location"}>{tour.location}</li>
+                    <li className={"price"}>{tour.price}</li>
+                  </ul>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </section>
 
       {/* 내 여행 섹션 */}
@@ -110,81 +149,62 @@ export function Index() {
         </div>
       </section>
 
-      {/* 투어 섹션 */}
-      <section className={"main-section-wrap"}>
-        <div className={"section-header"}>
-          <h2>투어 목록</h2>
-          <button className={"more-btn"} onClick={() => navigate(`/tour/list`)}>
-            더보기
-          </button>
-        </div>
-
-        <div className={"section-body"}>
-          {isEmpty(tourList) ? (
-            <div className={"empty-container"}>
-              <p className={"empty-container-title"}>투어가 없습니다.</p>
-              <p className={"empty-container-description"}>
-                새로운 투어를 추가해보세요!
-              </p>
-            </div>
-          ) : (
-            <ul className={"section-body-card"}>
-              {tourList.map((tour) => (
-                <li
-                  key={tour.id}
-                  onClick={() => navigate(`/tour/view/${tour.id}`)}
-                >
-                  <h3>{tour.product}</h3>
-                  <ul className={"list-item"}>
-                    <li className={"description"}>{tour.title}</li>
-                    <li className={"location"}>{tour.location}</li>
-                    <li className={"price"}>{tour.price}</li>
-                  </ul>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      </section>
-
-      <div>광고 슬라이드 (마이리얼트립 st)</div>
+      <div className={"ad"}>광고 슬라이드 (마이리얼트립 st)</div>
 
       {/* 커뮤니티 섹션 */}
-      <section className={"notice-section-wrap"}>
-        <div className={"notice-section-header"}>
-          <h2>커뮤니티</h2>
-          <button className={"more-btn"} onClick={() => navigate(`/plan/list`)}>
-            더보기
-          </button>
-        </div>
+      <div className={"divided-section"}>
+        <div className={"main-section-wrap"}>
+          <section className={"tel-container"}>
+            <h3>마이트래블 고객센터</h3>
+            <h5>1588-1111</h5>
 
-        <div className={"notice-section-body"}>
-          {isEmpty(communityList) ? (
-            <div className={"empty-container"}>
-              <p className={"empty-container-title"}>작성된 글이 없습니다.</p>
-              <p className={"empty-container-description"}>
-                로그인 후 커뮤니티에서 다양한 이야기를 들려주세요!
+            <ul>
+              <li>&#10023; 평일: 09:00 ~ 18:00</li>
+              <li>&#10023; 주말 / 공휴일 휴무</li>
+            </ul>
+          </section>
+
+          <section className={"notice-section-wrap"}>
+            <div className={"notice-section-header"}>
+              <h2>커뮤니티</h2>
+              <p className={"link-box"}>
+                여러분의 다양한 여행 이야기를 들려주세요!
               </p>
-            </div>
-          ) : (
-            communityList.map((community) => (
-              <ul
-                className={"notice-section-list"}
-                key={community.id}
-                onClick={() => navigate(`/community/view/${community.id}`)}
+              <button
+                className={"more-btn"}
+                onClick={() => navigate(`/community/list`)}
               >
-                <li>{community.title}</li>
-                <li>{community.writer}</li>
-                <li>{community.inserted}</li>
-              </ul>
-            ))
-          )}
+                <FaPlus className={"pointer"} />
+              </button>
+            </div>
 
-          <div className={"link-box"}>
-            커뮤니티에서 다양한 여행 이야기를 들려주세요! (서대문구 st)
-          </div>
+            <div className={"notice-section-body"}>
+              {isEmpty(communityList) ? (
+                <div className={"empty-container"}>
+                  <p className={"empty-container-title"}>
+                    작성된 글이 없습니다.
+                  </p>
+                  <p className={"empty-container-description"}>
+                    로그인 후 커뮤니티에서 다양한 이야기를 들려주세요!
+                  </p>
+                </div>
+              ) : (
+                communityList.map((community) => (
+                  <ul
+                    className={"notice-section-list"}
+                    key={community.id}
+                    onClick={() => navigate(`/community/view/${community.id}`)}
+                  >
+                    <li>{community.title}</li>
+                    <li>{community.writer}</li>
+                    <li>{community.inserted}</li>
+                  </ul>
+                ))
+              )}
+            </div>
+          </section>
         </div>
-      </section>
+      </div>
     </div>
   );
 }

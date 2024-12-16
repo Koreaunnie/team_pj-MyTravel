@@ -29,9 +29,9 @@
 }
 
 .main-section-wrap {
-    width: 100%;
+    width: 1000px;
     height: 310px;
-    margin: 50px 0;
+    margin: 50px auto;
     box-sizing: border-box;
 }
 
@@ -101,26 +101,96 @@
 
 }
 
-.notice-section-wrap .notice-section-body {
+/*------------------- 광고 슬라이드 -------------------*/
+.ad {
+    width: 1000px;
+    height: 250px;
+    margin: 100px auto;
     border: 1px solid red;
+}
 
+
+/*------------------- divided section -------------------*/
+.divided-section {
+    background: var(--bg-gray-color);
+}
+
+.divided-section .main-section-wrap {
+    display: flex;
+    height: 400px;
+    background: var(--bg-gray-color);
+    padding: 50px 0;
+}
+
+/*------------------- 고객센터 -------------------*/
+.tel-container {
+    width: 400px;
+    margin-top: 50px;
+}
+
+.divided-section .tel-container h3 {
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.divided-section .tel-container h5 {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    color: var(--main-blue);
+}
+
+.divided-section .tel-container ul {
+    margin: 45px 100px;
+}
+
+.divided-section .tel-container ul li {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+/*------------------- 커뮤니티 -------------------*/
+.divided-section .notice-section-wrap {
+    width: calc(100% - 400px);;
+    border: 1px solid var(--table-border-color);
+    border-radius: 15px;
+    background: #fff;
+}
+
+.notice-section-wrap .notice-section-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 30px;
+    border-bottom: 1px solid var(--table-border-color);
+}
+
+.notice-section-wrap .notice-section-header .link-box {
+    margin-top: 16px;
+    font-size: 0.9rem;
+    color: var(--font-gray-color);
+}
+
+.notice-section-wrap .notice-section-body {
+    padding: 20px 40px;
 }
 
 .notice-section-wrap .notice-section-body .notice-section-list {
     display: flex;
     justify-content: space-between;
-
 }
 
-.notice-section-wrap .notice-section-body .notice-section-list .link-box {
-    background: var(--bg-gray-color);
-    border: 1px solid;
+.notice-section-wrap .notice-section-body .notice-section-list li {
+    margin: 6px 0;
+    cursor: pointer;
 }
 
 
 /*------------------- 화면 크기가 768px 이하 (태블릿 화면) -------------------*/
 @media (max-width: 768px) {
     .main-section-wrap {
+        width: 80%;
         height: auto
     }
 
@@ -134,11 +204,21 @@
     .main-section-wrap .section-body .section-body-list li {
         width: 100%;
     }
+
+    .ad {
+        width: 80%;
+    }
 }
 
 /*------------------- 화면 크기가 480px 이하 (모바일 화면) -------------------*/
 @media (max-width: 480px) {
+    .main-section-wrap {
+        width: 95%;
+    }
 
+    .ad {
+        width: 95%;
+    }
 }
 
 

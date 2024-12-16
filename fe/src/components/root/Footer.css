@@ -1,0 +1,27 @@
+.footer {
+    position: relative;
+    width: 100%;
+    height: 100px;
+    padding: 30px 50px;
+    border-top: 1px solid var(--table-border-color);
+}
+
+.footer .logo {
+    position: absolute;
+    top: 25px;
+    right: 20px;
+    cursor: pointer;
+    width: 200px;
+    height: 45px;
+    margin: 0;
+    text-align: left;
+    font-size: 30px;
+    font-weight: normal;
+    font-family: "Playwrite HR Lijeva", cursive;
+    color: var(--font-light-gray-color);
+}
+
+.footer p {
+    font-size: 0.9rem;
+    color: var(--font-gray-color);
+}

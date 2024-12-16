@@ -45,6 +45,7 @@ import AdminPage from "./page/admin/AdminPage.jsx";
 import { MemberLoginProcess } from "./page/member/MemberLoginProcess.jsx";
 import MemberSignupKakao from "./page/member/MemberSignupKakao.jsx";
 import TourMyList from "./page/tour/TourMyList.jsx";
+import { Footer } from "./components/root/Footer.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -251,6 +252,7 @@ function App() {
   return (
     <AuthenticationProvider>
       <RouterProvider router={router} />
+      <Footer />
     </AuthenticationProvider>
   );
 }
