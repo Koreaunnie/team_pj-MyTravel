@@ -6,6 +6,7 @@ import "./Wallet.css";
 import { Modal } from "../../components/root/Modal.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
+import moment from "moment";
 
 function WalletList(props) {
   const [walletList, setWalletList] = useState([]); // 전체 지갑 리스트
@@ -39,7 +40,6 @@ function WalletList(props) {
           walletDate.getMonth() === month && walletDate.getFullYear() === year
         );
       });
-
       setFilteredWallet(filtered);
     });
   }, []);
@@ -47,23 +47,24 @@ function WalletList(props) {
   // 월별 필터링
   useEffect(() => {
     if (walletList.length > 0 && currentMonth) {
-      const now = new Date(); // 현재 날짜 가져오기
-      const month = now.getMonth(); // 현재 월 (0부터 시작)
-      const year = now.getFullYear(); // 현재 연도
-      const formattedMonth = `${year}년 ${now.toLocaleString("default", {
-        month: "long",
-      })}`;
+      const [year, month] = currentMonth
+        .split("년 ")
+        .map((str) => str.replace("월", ""));
+      const date = new Date(year, month - 1, 1); // currentMonth에서 년도와 월을 파싱하여 Date 객체 생성
 
-      setCurrentMonth(formattedMonth);
+      // 선택된 날짜를 해당 월의 첫째 날로 설정
+      setSelectedDate(date);
 
       const filtered = walletList.filter((wallet) => {
         const walletDate = new Date(wallet.date);
-        const walletMonthFormatted = `${walletDate.getFullYear()}년 ${walletDate.toLocaleString("default", { month: "long" })}`;
-        return walletMonthFormatted === month && walletMonthFormatted === year;
+        return (
+          walletDate.getMonth() === date.getMonth() &&
+          walletDate.getFullYear() === date.getFullYear()
+        );
       });
-      setFilteredWallet(filtered); // currentMonth에 맞는 지갑 리스트 필터링
+      setFilteredWallet(filtered);
     }
-  }, [currentMonth, walletList, currentYear]); // currentMonth나 walletList가 변경될 때마다 실행
+  }, [currentMonth, walletList]); // currentMonth나 walletList가 변경될 때마다 실행
 
   // 선택된 날짜가 변경될 때 필터링
   useEffect(() => {
@@ -79,21 +80,29 @@ function WalletList(props) {
   }, [selectedDate, walletList]);
 
   useEffect(() => {
-    console.log("Current Month updated:", currentMonth);
+    if (currentMonth) {
+      const [year, month] = currentMonth
+        .split("년 ")
+        .map((str) => str.replace("월", ""));
+      const date = new Date(year, month - 1, 1); // currentMonth에서 년도와 월을 파싱하여 Date 객체 생성
+      setSelectedDate(date);
+    }
   }, [currentMonth]);
 
+  const getCurrentMonth = (activeStartDate) => {
+    const newCurrentMonth = moment(activeStartDate).format("YYYY년 M월");
+    setCurrentMonth(newCurrentMonth);
+    setCurrentYear(activeStartDate.getFullYear());
+  };
+
   const prevMonth = () => {
-    const newDate = new Date();
-    newDate.setMonth(newDate.getMonth() - 1);
-    setCurrentMonth(newDate.toLocaleString("default", { month: "long" }));
-    handleMonthView();
+    const newDate = moment(currentMonth, "YYYY년 M월").subtract(1, "month");
+    setCurrentMonth(newDate.format("YYYY년 M월"));
   };
 
   const nextMonth = () => {
-    const newDate = new Date();
-    newDate.setMonth(newDate.getMonth() + 1);
-    setCurrentMonth(newDate.toLocaleString("default", { month: "long" }));
-    handleMonthView();
+    const newDate = moment(currentMonth, "YYYY년 M월").add(1, "month");
+    setCurrentMonth(newDate.format("YYYY년 M월"));
   };
 
   // 이번 달 보기
@@ -120,6 +129,7 @@ function WalletList(props) {
     setFilteredWallet(filtered);
   };
 
+  // 전체 보기
   const handleAllView = () => {
     setFilteredWallet(walletList);
   };
@@ -204,7 +214,7 @@ function WalletList(props) {
 
   // 3자리마다 쉼표 추가
   function formatNumberWithCommas(number) {
-    if (number == null) {
+    if (isNaN(number)) {
       return "0"; // 또는 적절한 기본값 반환
     }
     return number.toLocaleString();
@@ -239,6 +249,8 @@ function WalletList(props) {
     }
   };
 
+  const isCategoryFiltered = activeTab !== 0; // "전체"가 아닌 카테고리가 선택되었을 때만 tfoot 표시
+
   // 카테고리별 지출 합계 계산
   const calculateCategoryTotalExpense = (category) => {
     if (category === "전체") {
@@ -253,20 +265,14 @@ function WalletList(props) {
     }
   };
 
-  const isCategoryFiltered = activeTab !== 0; // "전체"가 아닌 카테고리가 선택되었을 때만 tfoot 표시
-
   // 총 지출 계산
   const getTotalExpense = () => {
-    return formatNumberWithCommas(
-      walletList.reduce((total, wallet) => total + wallet.expense, 0),
-    );
+    return walletList.reduce((total, wallet) => total + wallet.expense, 0);
   };
 
   // 총 수입 계산
   const getTotalIncome = () => {
-    return formatNumberWithCommas(
-      walletList.reduce((total, wallet) => total + wallet.income, 0),
-    );
+    return walletList.reduce((total, wallet) => total + wallet.income, 0);
   };
 
   // 해당 하는 날짜
@@ -303,6 +309,9 @@ function WalletList(props) {
           prev2Label={null}
           onChange={setSelectedDate}
           value={selectedDate}
+          onActiveStartDateChange={({ activeStartDate }) =>
+            getCurrentMonth(activeStartDate)
+          }
           tileContent={({ date }) => {
             const formattedDate = date.toLocaleDateString("en-CA");
             const totalExpense = tileContentData[formattedDate] || 0;
