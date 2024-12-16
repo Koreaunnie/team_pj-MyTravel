@@ -60,10 +60,15 @@ function PaymentHistory(props) {
     axios
       .post("/api/plan/add", {
         title: tour.product,
-        description: `결제번호: ${tour.paymentId}`,
+        description: "마이트래블에서 결제한 여행 상품",
         destination: tour.location,
         startDate: tour.startDate,
         endDate: tour.endDate,
+        planFieldList: [
+          {
+            memo: `결제번호: ${tour.paymentId}`,
+          },
+        ],
       })
       .then((res) => res.data)
       .then((data) => {
