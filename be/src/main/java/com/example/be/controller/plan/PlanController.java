@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -131,5 +132,10 @@ public class PlanController {
         }
     }
 
-
+    // 달력에 표시하기 위한 모든 일정 (페이지네이션 상관 없이)
+    @GetMapping("all")
+    public List<Plan> all(Authentication authentication) {
+        String writer = authentication.getName();
+        return service.all(writer);
+    }
 }

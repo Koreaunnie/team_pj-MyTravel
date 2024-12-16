@@ -17,6 +17,7 @@ import { Breadcrumb } from "/src/components/root/Breadcrumb.jsx";
 import { GoHeart, GoHeartFill } from "react-icons/go";
 
 function PlanList(props) {
+  const [allPlans, setAllPlans] = useState([]);
   const [filteredPlans, setFilteredPlans] = useState([]); // 필터링된 일정
   const [selectedDate, setSelectedDate] = useState(null); // 선택된 날짜
   const [planList, setPlanList] = useState([]);
@@ -25,6 +26,16 @@ function PlanList(props) {
   const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
+
+  // 달력에 표시 될 모든 일정 가져오기
+  useEffect(() => {
+    axios
+      .get("/api/plan/all")
+      .then((res) => res.data)
+      .then((data) => {
+        setAllPlans(data);
+      });
+  }, []);
 
   useEffect(() => {
     axios
@@ -38,25 +49,29 @@ function PlanList(props) {
       });
   }, [searchParams]);
 
-  // 선택된 날짜가 변경될 때 필터링
+  // 선택된 날짜 필터링
   useEffect(() => {
     if (selectedDate) {
       const formattedDate = selectedDate.toISOString().split("T")[0]; // yyyy-MM-dd 형식
-      const filtered = planList.filter(
-        (plan) =>
-          formattedDate >= plan.startDate && formattedDate <= plan.endDate,
-      );
+      const filtered = allPlans.filter((plan) => {
+        if (!plan.startDate || !plan.endDate) return false; // 데이터 무결성 검증
+        const startDate = new Date(plan.startDate);
+        const endDate = new Date(plan.endDate);
+        const targetDate = new Date(formattedDate);
+        return targetDate >= startDate && targetDate <= endDate;
+      });
       setFilteredPlans(filtered);
-      // setCount(filtered.length); // 필터링된 일정 수
+      setCount(filtered.length);
     } else {
-      // 날짜 선택 안 했을 때
+      // 선택된 날짜가 없으면 페이지네이션 결과 보여줌
       setFilteredPlans(planList);
-      // setCount(planList.length); // 전체 일정 수
+      setCount(allPlans.length);
     }
-  }, [selectedDate, planList]);
+  }, [selectedDate, allPlans, planList]);
 
+  // 선택된 날짜 업데이트
   const handleDateChange = (date) => {
-    setSelectedDate(date); // 선택된 날짜 업데이트
+    setSelectedDate(date);
   };
 
   useEffect(() => {
@@ -106,23 +121,19 @@ function PlanList(props) {
   };
 
   // search
-  function handleSearchButton(e) {
+  const handleSearchButton = () => {
     const nextSearchParam = new URLSearchParams(searchParams);
 
     if (search.keyword.trim().length > 0) {
-      // 검색 (검색 파라미터 추가)
-      const nextSearchParam = new URLSearchParams(searchParams);
       nextSearchParam.set("st", search.type);
       nextSearchParam.set("sk", search.keyword);
-      setSearchParams(nextSearchParam);
     } else {
-      // 검색 안함 (검색 파라미터 삭제)
-      const nextSearchParam = new URLSearchParams(searchParams);
       nextSearchParam.delete("st");
       nextSearchParam.delete("sk");
-      setSearchParams(nextSearchParam);
     }
-  }
+
+    setSearchParams(nextSearchParam);
+  };
 
   // pagination
   // page 번호 (searchParams : URL 쿼리 파라미터 관리)
@@ -137,8 +148,11 @@ function PlanList(props) {
     setSearchParams(nextSearchParams);
   }
 
+  // 전체보기 버튼
   const handleShowAllPlans = () => {
-    setFilteredPlans(planList);
+    setFilteredPlans(filteredPlans);
+    setSelectedDate(null);
+    setSearchParams("");
   };
 
   return (
@@ -164,7 +178,7 @@ function PlanList(props) {
               const formattedDate = date.toISOString().split("T")[0];
 
               // 선택된 날짜에 해당하는 여행의 title을 찾아서 표시
-              const matchingPlan = planList.find(
+              const matchingPlan = allPlans.find(
                 (plan) =>
                   formattedDate >= plan.startDate &&
                   formattedDate <= plan.endDate,

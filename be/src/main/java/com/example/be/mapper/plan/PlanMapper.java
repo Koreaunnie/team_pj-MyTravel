@@ -164,4 +164,12 @@ public interface PlanMapper {
             </script>
             """)
     List<Plan> getTop4ByOrderByUpdated(String keyword, String writer);
+
+    // 달력에 표시하기 위한 모든 일정 (페이지네이션 상관 없이)
+    @Select("""
+            SELECT *
+            FROM plan
+            WHERE writer = #{writer}
+            """)
+    List<Plan> selectAll(String writer);
 }

@@ -197,4 +197,9 @@ public class PlanService {
 
         return workbook;
     }
+
+    // 달력에 표시하기 위한 모든 일정 (페이지네이션 상관 없이)
+    public List<Plan> all(String writer) {
+        return mapper.selectAll(writer);
+    }
 }
