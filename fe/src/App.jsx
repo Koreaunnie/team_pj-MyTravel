@@ -36,7 +36,6 @@ import FaqAdd from "./page/cs/faq/FaqAdd.jsx";
 import FaqList from "./page/cs/faq/FaqList.jsx";
 import FaqEdit from "./page/cs/faq/FaqEdit.jsx";
 import FaqView from "./page/cs/faq/FaqView.jsx";
-import CartList from "./page/payment/CartList.jsx";
 import Payment from "./page/payment/Payment.jsx";
 import PaymentComplete from "./page/payment/PaymentComplete.jsx";
 import PaymentHistory from "./page/payment/PaymentHistory.jsx";
@@ -46,6 +45,7 @@ import { MemberLoginProcess } from "./page/member/MemberLoginProcess.jsx";
 import MemberSignupKakao from "./page/member/MemberSignupKakao.jsx";
 import TourMyList from "./page/tour/TourMyList.jsx";
 import { Footer } from "./components/root/Footer.jsx";
+import { CartCombined } from "./page/payment/CartCombined.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -129,7 +129,7 @@ const router = createBrowserRouter([
       //장바구니
       {
         path: "cart",
-        element: <CartList />,
+        element: <CartCombined />,
       },
       //결제창
       {
