@@ -7,6 +7,7 @@ import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
 import moment from "moment";
 import { WalletCalendar } from "./WalletCalendar.jsx";
+import { formatNumberWithCommas } from "../../utils/formatNumberWithCommas.jsx";
 
 function WalletList(props) {
   const [walletList, setWalletList] = useState([]); // 전체 지갑 리스트
@@ -205,14 +206,6 @@ function WalletList(props) {
       return total + (wallet ? wallet.expense : 0);
     }, 0);
   }, [checkedItems, walletList]);
-
-  // 3자리마다 쉼표 추가
-  function formatNumberWithCommas(number) {
-    if (isNaN(number)) {
-      return "0"; // 또는 적절한 기본값 반환
-    }
-    return number.toLocaleString();
-  }
 
   // tileContent 데이터 캐싱
   const tileContentData = useMemo(() => {

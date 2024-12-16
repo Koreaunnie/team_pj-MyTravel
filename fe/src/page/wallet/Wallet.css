@@ -178,7 +178,6 @@ section {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    border: 1px solid red;
 }
 
 .right-section .wallet-list tr td:nth-child(1) {
