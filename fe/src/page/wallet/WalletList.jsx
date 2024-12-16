@@ -8,6 +8,7 @@ import { toaster } from "../../components/ui/toaster.jsx";
 import moment from "moment";
 import { WalletCalendar } from "./WalletCalendar.jsx";
 import { formatNumberWithCommas } from "../../utils/formatNumberWithCommas.jsx";
+import { WalletCategory } from "./WalletCategory.jsx";
 
 function WalletList(props) {
   const [walletList, setWalletList] = useState([]); // 전체 지갑 리스트
@@ -65,7 +66,7 @@ function WalletList(props) {
       });
       setFilteredWallet(filtered);
     }
-  }, [currentMonth, walletList]); // currentMonth나 walletList가 변경될 때마다 실행
+  }, [currentMonth, walletList]);
 
   // 선택된 날짜가 변경될 때 필터링
   useEffect(() => {
@@ -113,6 +114,7 @@ function WalletList(props) {
       );
     });
     setFilteredWallet(filtered);
+    setSelectedDate(null);
   };
 
   // 년도 별로 보기
@@ -129,6 +131,43 @@ function WalletList(props) {
     setFilteredWallet(walletList);
   };
 
+  // 서버에서 카테고리 받아오기
+  const categories = useMemo(() => {
+    const categories = walletList.map((wallet) => wallet.category);
+    return ["전체", ...new Set(categories)]; // "전체" 추가 및 중복 제거
+  }, [walletList]);
+
+  // 카테고리별 지출 합계 계산
+  const calculateCategoryTotalExpense = (category) => {
+    if (category === "전체") {
+      return filteredWallet.reduce(
+        (total, wallet) => total + wallet.expense,
+        0,
+      );
+    } else {
+      return filteredWallet
+        .filter((wallet) => wallet.category === category)
+        .reduce((total, wallet) => total + wallet.expense, 0);
+    }
+  };
+
+  // 카테고리 탭 활성화
+  const handleTabClick = (index) => {
+    setSelectedDate(null);
+    setActiveTab(index);
+    if (index === 0) {
+      // "전체"
+      setFilteredWallet(walletList);
+    } else {
+      const filtered = walletList.filter(
+        (wallet) => wallet.category === categories[index],
+      );
+      setFilteredWallet(filtered);
+    }
+  };
+
+  const isCategoryFiltered = activeTab !== 0; // "전체"가 아닌 카테고리가 선택되었을 때만 tfoot 표시
+
   const handleCheckboxChange = (id) => {
     setCheckedItems((prev) => {
       const newSet = new Set(prev);
@@ -139,19 +178,6 @@ function WalletList(props) {
       }
       return newSet;
     });
-  };
-
-  // 선택된 날짜에 해당하는 소비 금액 합산
-  const getTotalExpenseForDate = (date) => {
-    const formattedDate = date.toLocaleDateString("en-CA"); // 현지 시간대에 맞는 날짜 형식 (yyyy-MM-dd)
-    const matchingWallets = walletList.filter(
-      (wallet) => wallet.date === formattedDate,
-    );
-    const totalExpense = matchingWallets.reduce(
-      (total, wallet) => total + wallet.expense,
-      0,
-    );
-    return totalExpense;
   };
 
   // 전체 선택/해제
@@ -199,6 +225,43 @@ function WalletList(props) {
       });
   };
 
+  // 날짜에 따른 지출 합산 (selectedDate 변경 시 )
+  const calculateTotal = (type) => {
+    const filtered = selectedDate
+      ? walletList.filter((wallet) => {
+          const walletDate = new Date(wallet.date);
+          return (
+            walletDate.getMonth() === selectedDate.getMonth() &&
+            walletDate.getFullYear() === selectedDate.getFullYear()
+          );
+        })
+      : walletList;
+
+    return filtered.reduce((total, wallet) => total + wallet[type], 0);
+  };
+
+  // 총 지출 계산 (전체 지갑 리스트 기준)
+  const getTotalExpense = useMemo(
+    () => calculateTotal("expense"),
+    [walletList, selectedDate],
+  );
+
+  // 총 수입 계산 (전체 지갑 리스트 기준)
+  const getTotalIncome = useMemo(
+    () => calculateTotal("income"),
+    [walletList, selectedDate],
+  );
+
+  // 해당 하는 날짜의 일별 수입 계산
+  const getOneDayIncome = () => {
+    return filteredWallet.reduce((total, wallet) => total + wallet.income, 0);
+  };
+
+  // 해당 하는 날짜의 일별 지출 계산
+  const getOneDayExpense = () => {
+    return filteredWallet.reduce((total, wallet) => total + wallet.expense, 0);
+  };
+
   // 선택된 항목의 소비액 합계
   const getTotalSelectedExpense = useMemo(() => {
     return [...checkedItems].reduce((total, id) => {
@@ -206,62 +269,6 @@ function WalletList(props) {
       return total + (wallet ? wallet.expense : 0);
     }, 0);
   }, [checkedItems, walletList]);
-
-  // tileContent 데이터 캐싱
-  const tileContentData = useMemo(() => {
-    const expenseByDate = walletList.reduce((acc, wallet) => {
-      acc[wallet.date] = (acc[wallet.date] || 0) + wallet.expense;
-      return acc;
-    }, {});
-    return expenseByDate;
-  }, [walletList]);
-
-  // 서버에서 카테고리 받아오기
-  const categories = useMemo(() => {
-    const categories = walletList.map((wallet) => wallet.category);
-    return ["전체", ...new Set(categories)]; // "전체" 추가 및 중복 제거
-  }, [walletList]);
-
-  // 카테고리 탭 활성화
-  const handleTabClick = (index) => {
-    setSelectedDate(null);
-    setActiveTab(index);
-    if (index === 0) {
-      // "전체"
-      setFilteredWallet(walletList);
-    } else {
-      const filtered = walletList.filter(
-        (wallet) => wallet.category === categories[index],
-      );
-      setFilteredWallet(filtered);
-    }
-  };
-
-  const isCategoryFiltered = activeTab !== 0; // "전체"가 아닌 카테고리가 선택되었을 때만 tfoot 표시
-
-  // 카테고리별 지출 합계 계산
-  const calculateCategoryTotalExpense = (category) => {
-    if (category === "전체") {
-      return filteredWallet.reduce(
-        (total, wallet) => total + wallet.expense,
-        0,
-      );
-    } else {
-      return filteredWallet
-        .filter((wallet) => wallet.category === category)
-        .reduce((total, wallet) => total + wallet.expense, 0);
-    }
-  };
-
-  // 총 지출 계산
-  const getTotalExpense = () => {
-    return walletList.reduce((total, wallet) => total + wallet.expense, 0);
-  };
-
-  // 총 수입 계산
-  const getTotalIncome = () => {
-    return walletList.reduce((total, wallet) => total + wallet.income, 0);
-  };
 
   // 해당 하는 날짜
   const getFilteredDate = () => {
@@ -272,17 +279,16 @@ function WalletList(props) {
       const day = date.getDate(); // 일
       return `${year}년 ${month}월 ${day}일`; // 원하는 형식으로 반환
     }
-    return ""; // 필터링된 리스트가 없으면 빈 문자열 반환
-  };
 
-  // 해당 하는 날짜의 일별 수입 계산
-  const getOneDayIncome = () => {
-    return filteredWallet.reduce((total, wallet) => total + wallet.income, 0);
-  };
+    // filteredWallet이 비어 있을 경우, selectedDate를 사용해 날짜 출력
+    if (selectedDate) {
+      const year = selectedDate.getFullYear();
+      const month = selectedDate.getMonth() + 1;
+      const day = selectedDate.getDate();
+      return `${year}년 ${month}월 ${day}일`; // selectedDate를 기준으로 날짜 반환
+    }
 
-  // 해당 하는 날짜의 일별 지출 계산
-  const getOneDayExpense = () => {
-    return filteredWallet.reduce((total, wallet) => total + wallet.expense, 0);
+    return ""; // 필터링된 리스트가 없고 selectedDate도 없다면 빈 문자열 반환
   };
 
   return (
@@ -297,7 +303,7 @@ function WalletList(props) {
         setSelectedDate={setSelectedDate}
         setCurrentMonth={setCurrentMonth}
         setCurrentYear={setCurrentYear}
-        tileContentData={tileContentData}
+        walletList={walletList}
       />
 
       <div className={"middle-section"}>
@@ -311,36 +317,18 @@ function WalletList(props) {
 
             <tr>
               <th>총 지출</th>
-              <td>{formatNumberWithCommas(getTotalExpense())}</td>
+              <td>{formatNumberWithCommas(getTotalExpense)}</td>
               <td>원</td>
             </tr>
           </table>
         </div>
 
-        {filteredWallet.length > 0 &&
-          filteredWallet.length !== walletList.length && (
-            <div className={"category-table"}>
-              <table>
-                <caption>
-                  <p className={"highlight"}>{getFilteredDate()}</p>
-                  <br />
-                  지출 항목별 합계
-                </caption>
-
-                {categories.map((category) => (
-                  <tr key={category}>
-                    <th>{category}</th>
-                    <td>
-                      {formatNumberWithCommas(
-                        calculateCategoryTotalExpense(category),
-                      )}
-                    </td>
-                    <td>원</td>
-                  </tr>
-                ))}
-              </table>
-            </div>
-          )}
+        <WalletCategory
+          filteredWallet={filteredWallet}
+          walletList={walletList}
+          categories={categories}
+          getFilteredDate={getFilteredDate}
+        />
       </div>
 
       <div className={"right-section"}>
@@ -433,12 +421,12 @@ function WalletList(props) {
           <thead>
             <tr>
               <th>총 수입</th>
-              <td>{formatNumberWithCommas(getTotalIncome())}</td>
+              <td>{formatNumberWithCommas(getTotalIncome)}</td>
             </tr>
 
             <tr>
               <th>총 지출</th>
-              <td>{formatNumberWithCommas(getTotalExpense())}</td>
+              <td>{formatNumberWithCommas(getTotalExpense)}</td>
             </tr>
           </thead>
         </table>

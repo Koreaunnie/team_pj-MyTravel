@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import Calendar from "react-calendar";
 import moment from "moment/moment.js";
 
@@ -7,13 +7,22 @@ export function WalletCalendar({
   setSelectedDate,
   setCurrentMonth,
   setCurrentYear,
-  tileContentData,
+  walletList,
 }) {
   const getCurrentMonth = (activeStartDate) => {
     const newCurrentMonth = moment(activeStartDate).format("YYYY년 M월");
     setCurrentMonth(newCurrentMonth);
     setCurrentYear(activeStartDate.getFullYear());
   };
+
+  // tileContent 데이터 캐싱
+  const tileContentData = useMemo(() => {
+    const expenseByDate = walletList.reduce((acc, wallet) => {
+      acc[wallet.date] = (acc[wallet.date] || 0) + wallet.expense;
+      return acc;
+    }, {});
+    return expenseByDate;
+  }, [walletList]);
 
   return (
     <aside className={"calendar"}>
