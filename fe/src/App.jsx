@@ -40,7 +40,7 @@ import PaymentComplete from "./page/tour/PaymentComplete.jsx";
 import TourMyList from "./page/tour/TourMyList.jsx";
 import PaymentHistory from "./page/tour/PaymentHistory.jsx";
 import PaymentHistoryAll from "./page/tour/PaymentHistoryAll.jsx";
-import AdminPage from "./page/member/AdminPage.jsx";
+import AdminPage from "./page/admin/AdminPage.jsx";
 import { MemberLoginProcess } from "./page/member/MemberLoginProcess.jsx";
 import MemberSignupKakao from "./page/member/MemberSignupKakao.jsx";
 // import reactLogo from './assets/react.svg'
