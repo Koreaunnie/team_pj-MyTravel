@@ -1,0 +1,75 @@
+package com.example.be.service.notice;
+
+import com.example.be.dto.notice.Notice;
+import com.example.be.mapper.notice.NoticeMapper;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Service;
+import software.amazon.awssdk.services.s3.S3Client;
+
+import java.util.List;
+import java.util.Map;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class NoticeService {
+    final NoticeMapper mapper;
+    final S3Client s3;
+
+    public Map<String, Object> list(Integer page, String searchType, String searchKeyword) {
+
+        Integer pageList = (page - 1) * 10;
+
+//        모든 수를 세는 것을 만들어야 함
+
+        List<Notice> list = mapper.listUp(pageList, searchType, searchKeyword);
+        for (Notice notice : list) {
+            Integer countLikes = mapper.countLikesByNoticeId(notice.getId());
+            if (countLikes != null) {
+                notice.setNumberOfLikes(countLikes);
+            } else {
+                notice.setNumberOfLikes(0);
+            }
+            Integer countViews = mapper.checkViews(notice.getId());
+            notice.setNumberOfViews(countViews);
+        }
+
+        Integer countNotice = mapper.countAllNotice(searchType, searchKeyword);
+
+        return Map.of("list", list, "countNotice", countNotice);
+    }
+
+    public Map<String, Object> view(Integer id, Authentication auth) {
+
+        Map<String, Object> viewer = mapper.viewNotice(id);
+        Integer countLike = mapper.countLikesByNoticeId(id);
+        viewer.put("like", countLike);
+        // 공지사항 좋아요 수
+
+        boolean myNoticeLike;
+        if (auth != null) {
+            String person = mapper.findNickname(auth.getName());
+            if (mapper.findLikeByIdAndNickname(id, person) == 1) {
+                myNoticeLike = true;
+                viewer.put("myNoticeLike", myNoticeLike);
+            } else {
+                myNoticeLike = false;
+                viewer.put("myNoticeLike", myNoticeLike);
+            }
+        } else {
+            myNoticeLike = false;
+            viewer.put("myNoticeLike", myNoticeLike);
+        }
+        // 로그인 여부와 로그인한 회원 좋아요 여부
+
+        int oldViews = mapper.checkViews(id);
+        int views = oldViews + 1;
+        mapper.updateViews(views, id);
+        viewer.put("views", views);
+//        조회수
+
+        return viewer;
+    }
+}
