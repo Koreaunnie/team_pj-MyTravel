@@ -12,6 +12,7 @@ import {
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { Rating } from "../../components/ui/rating.jsx";
 import { ReviewImageView } from "../../components/Image/ReviewImageView.jsx";
+import { ReviewImageEdit } from "../../components/Image/ReviewImageEdit.jsx";
 
 function EditButton({ review, onEditClick, onRateChange }) {
   const [open, setOpen] = useState(false);
@@ -36,6 +37,7 @@ function EditButton({ review, onEditClick, onRateChange }) {
                 onRateChange(e, setNewRating); // 올바른 상태 설정
               }}
             />
+            <ReviewImageEdit files={review.imageList} />
             <textarea
               value={newReview}
               onChange={(e) => setNewReview(e.target.value)}

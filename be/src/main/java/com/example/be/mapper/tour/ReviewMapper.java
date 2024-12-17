@@ -93,4 +93,17 @@ public interface ReviewMapper {
         ORDER BY review_id DESC
         """)
     List<Integer> selectReviewIdByTourId(Integer tourId);
+
+    @Select("""
+        SELECT tour_id
+        FROM tour_review
+        WHERE review_id=#{reviewId}
+        """)
+    Integer selectTourByReview(Integer reviewId);
+
+    @Delete("""
+        DELETE FROM tour_review_img
+        WHERE review_id=#{reviewId}
+        """)
+    int deleteImageByReviewId(Integer reviewId);
 }

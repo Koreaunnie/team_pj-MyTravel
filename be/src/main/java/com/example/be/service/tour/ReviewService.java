@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
@@ -77,8 +78,25 @@ public class ReviewService {
         return reviewList;
     }
 
-    public void delete(Integer reviewId) {
-        mapper.deleteByReviewId(reviewId);
+    public Boolean delete(Integer reviewId) {
+        //첨부파일 삭제
+        List<String> imageName = mapper.selectImagesByReviewId(reviewId);
+        Integer tourId = mapper.selectTourByReview(reviewId);
+        for (String image : imageName) {
+            String key = "teamPrj1126/" + tourId + "/review/" + reviewId + "/" + image;
+            DeleteObjectRequest dor = DeleteObjectRequest.builder()
+                .bucket(bucketName)
+                .key(key)
+                .build();
+            s3.deleteObject(dor);
+        }
+
+        //DB tour_review_img 삭제
+        mapper.deleteImageByReviewId(reviewId);
+
+        int cnt = mapper.deleteByReviewId(reviewId);
+
+        return cnt == 1;
     }
 
     public boolean edit(Review review) {

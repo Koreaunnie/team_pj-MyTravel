@@ -54,8 +54,12 @@ public class ReviewController {
 
     @DeleteMapping("delete/{reviewId}")
     @PreAuthorize("isAuthenticated()")
-    public void remove(@PathVariable Integer reviewId, Authentication auth) {
-        service.delete(reviewId);
+    public ResponseEntity<Map<String, Object>> remove(@PathVariable Integer reviewId, Authentication auth) {
+        if (service.delete(reviewId)) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("list/{tourId}")
