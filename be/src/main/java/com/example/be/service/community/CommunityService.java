@@ -98,13 +98,21 @@ public class CommunityService {
         }
     }
 
-    public Map<String, Object> view(Integer id) {
+    public Map<String, Object> view(Integer id, Authentication auth) {
 
 
         Map<String, Object> viewer = mapper.viewCommunity(id);
         Integer countLike = mapper.countLikesByCommunityId(id);
         viewer.put("like", countLike);
         // 게시글 좋아요 수 추가
+        String person = mapper.findNickname(auth.getName());
+        boolean myCommunityLike;
+        if (mapper.findLikeByIdAndNickname(id, person) == 1) {
+            myCommunityLike = true;
+        } else {
+            myCommunityLike = false;
+        }
+        viewer.put("myCommunityLike", myCommunityLike);
 
         List<Integer> fileList = mapper.callCommunityFile(id);
         List<Map<String, Object>> commentList = mapper.callCommunityComment(id);

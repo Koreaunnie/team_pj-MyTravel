@@ -60,8 +60,10 @@ function CommunityView(props) {
     axios.get(`/api/community/view/${id}`, { id }).then((e) => {
       setCommunity(e.data);
       setCommentList(e.data.commentList);
+      setMyCommunityLike(e.data.myCommunityLike);
     });
   }, []);
+  console.log(community);
 
   const handleDeleteClick = () => {
     axios

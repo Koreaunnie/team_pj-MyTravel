@@ -57,8 +57,8 @@ public class CommunityController {
     }
 
     @GetMapping("view/{id}")
-    public Map<String, Object> view(@PathVariable Integer id) {
-        return service.view(id);
+    public Map<String, Object> view(@PathVariable Integer id, Authentication auth) {
+        return service.view(id, auth);
     }
 
     @PutMapping("edit")
