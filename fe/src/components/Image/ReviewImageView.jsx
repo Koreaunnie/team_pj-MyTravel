@@ -1,58 +1,169 @@
-import { Box, Image } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { Box, Button, Image } from "@chakra-ui/react";
+import { MdCancel } from "react-icons/md";
 
 export function ReviewImageView({ files }) {
-  const [showAll, setShowAll] = useState(false); // 모든 이미지를 표시할지 여부
-  const MAX_IMAGES = 4; // 최대 표시할 이미지 수
+  const [showAll, setShowAll] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(null);
+  const MAX_IMAGES = 4;
   const displayedFiles = showAll ? files : files?.slice(0, MAX_IMAGES) || [];
   const remainingCount =
     files?.length > MAX_IMAGES ? files.length - MAX_IMAGES : 0;
 
-  return (
-    <Box display="flex" alignItems="center" flexWrap="wrap">
-      {displayedFiles.map((file, index) => (
-        <Box key={file.name} position="relative" m={2}>
-          <Image
-            src={file.src}
-            boxSize="100px"
-            objectFit="cover"
-            border="1px solid black"
-          />
-          {/* +N 회색 상자 */}
-          {index === MAX_IMAGES - 1 && remainingCount > 0 && !showAll && (
-            <Box
-              position="absolute"
-              top="0"
-              left="0"
-              width="100px"
-              height="100px"
-              bg="rgba(0, 0, 0, 0.6)"
-              color="white"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              fontSize="lg"
-              fontWeight="bold"
-              cursor="pointer"
-              onClick={() => setShowAll(true)} // 모든 이미지 보기
-            >
-              +{remainingCount}
-            </Box>
-          )}
-        </Box>
-      ))}
+  const handleImageClick = (index) => {
+    setSelectedImageIndex(index);
+  };
 
-      {/* 줄이기 버튼 */}
-      {showAll && files?.length > MAX_IMAGES && (
-        <button
-          className={"btn btn-dark-outline"}
-          style={{ cursor: "pointer" }}
-          mt={2}
-          onClick={() => setShowAll(false)}
+  const handleModalClose = () => {
+    setSelectedImageIndex(null);
+  };
+
+  const handlePrev = () => {
+    setSelectedImageIndex((prev) => (prev > 0 ? prev - 1 : files.length - 1));
+  };
+
+  const handleNext = () => {
+    setSelectedImageIndex((prev) => (prev < files.length - 1 ? prev + 1 : 0));
+  };
+
+  return (
+    <>
+      <Box display="flex" alignItems="center" flexWrap="wrap">
+        {displayedFiles.map((file, index) => (
+          <Box
+            key={file.name}
+            position="relative"
+            m={2}
+            cursor="pointer"
+            onClick={() => handleImageClick(index)}
+          >
+            <Image
+              src={file.src}
+              boxSize="100px"
+              objectFit="cover"
+              border="1px solid black"
+            />
+            {index === MAX_IMAGES - 1 && remainingCount > 0 && !showAll && (
+              <Box
+                position="absolute"
+                top="0"
+                left="0"
+                width="100px"
+                height="100px"
+                bg="rgba(0, 0, 0, 0.6)"
+                color="white"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                fontSize="lg"
+                fontWeight="bold"
+                cursor="pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowAll(true);
+                }}
+              >
+                +{remainingCount}
+              </Box>
+            )}
+          </Box>
+        ))}
+        {showAll && files?.length > MAX_IMAGES && (
+          <Button mt={2} onClick={() => setShowAll(false)}>
+            줄이기
+          </Button>
+        )}
+      </Box>
+
+      {/* Modal for displaying the large image */}
+      {selectedImageIndex !== null && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(0, 0, 0, 0.8)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 1000,
+          }}
         >
-          줄이기
-        </button>
+          {/* Close button */}
+          <button
+            onClick={handleModalClose}
+            style={{
+              position: "absolute",
+              top: "20px",
+              right: "20px",
+              backgroundColor: "rgba(255, 255, 255, 0.8)",
+              border: "none",
+              padding: "10px 15px",
+              cursor: "pointer",
+              borderRadius: "5px",
+              fontSize: "16px",
+            }}
+          >
+            <MdCancel />
+          </button>
+
+          {/* Previous button */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handlePrev();
+            }}
+            style={{
+              position: "absolute",
+              left: "20px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              backgroundColor: "rgba(255, 255, 255, 0.8)",
+              border: "none",
+              padding: "10px 20px",
+              cursor: "pointer",
+              borderRadius: "50%",
+            }}
+          >
+            ❮
+          </button>
+
+          {/* Displayed image */}
+          <img
+            src={files[selectedImageIndex].src}
+            alt="Large View"
+            style={{
+              maxWidth: "80vw",
+              maxHeight: "80vh",
+              objectFit: "contain",
+              cursor: "default",
+            }}
+          />
+
+          {/* Next button */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleNext();
+            }}
+            style={{
+              position: "absolute",
+              right: "20px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              backgroundColor: "rgba(255, 255, 255, 0.8)",
+              border: "none",
+              padding: "10px 20px",
+              cursor: "pointer",
+              borderRadius: "50%",
+            }}
+          >
+            ❯
+          </button>
+        </div>
       )}
-    </Box>
+    </>
   );
 }
