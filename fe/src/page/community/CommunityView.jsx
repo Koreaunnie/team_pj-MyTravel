@@ -86,9 +86,9 @@ function CommunityView(props) {
 
   const fetchLike = () => {
     axios
-      .get(`api/community/view/${id}`)
+      .get(`/api/community/view/${id}`)
       .then((res) => {
-        setMyCommunityLike(res.data.like);
+        setCommunity(res.data);
       })
       .catch((err) => console.error(err));
   };
@@ -131,10 +131,13 @@ function CommunityView(props) {
   // TODO: 로그인에 대한 권한 완료 후 좋아요 즉시 반영 시도하기
   const handleLikeClick = () => {
     axios
-      .post(`/api/community/like/add/${id}`, {
+      .post(`/api/community/like/${id}`, {
         like: myCommunityLike,
       })
-      .then(setMyCommunityLike(!myCommunityLike));
+      .then(() => {
+        fetchLike();
+      })
+      .finally(() => setMyCommunityLike(!myCommunityLike));
   };
 
   return (

@@ -159,7 +159,7 @@ public class CommunityController {
 
     @PostMapping("like/{id}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Map<String, Object>> likeAdd(@PathVariable Integer id, Authentication auth) {
+    public ResponseEntity<Map<String, Object>> like(@PathVariable Integer id, Authentication auth) {
         if (service.checkMember(auth)) {
             if (service.updateLikeInCommunity(id, auth)) {
                 return ResponseEntity.ok().body(Map.of("message", "success",
