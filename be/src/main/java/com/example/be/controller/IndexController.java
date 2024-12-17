@@ -30,6 +30,7 @@ public class IndexController {
 
         String writer = authentication.getName();
 
+        result.put("allPlans", planService.all(writer));
         result.put("plans", planService.getMainPagePlans(keyword, writer));
         result.put("tours", tourService.getMainPageTours(keyword));
         result.put("community", communityService.getMainPageCommunity(keyword));
