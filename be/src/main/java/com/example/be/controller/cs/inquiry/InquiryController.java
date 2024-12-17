@@ -10,7 +10,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -35,8 +34,10 @@ public class InquiryController {
     }
 
     @GetMapping("list")
-    public List<Inquiry> list() {
-        return service.list();
+    public Map<String, Object> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                                    @RequestParam(value = "st", defaultValue = "all") String searchType,
+                                    @RequestParam(value = "sk", defaultValue = "") String searchKeyword) {
+        return service.list(page, searchType, searchKeyword);
     }
 
     @GetMapping("view/{id}")

@@ -17,11 +17,46 @@ public interface InquiryMapper {
     int insertInquiry(Inquiry inquiry);
 
     @Select("""
+            <script>
             SELECT *
             FROM inquiry
-            ORDER BY updated DESC
+            WHERE
+                <trim prefixOverrides="OR">
+                    <if test="searchType == 'all' or searchType == 'title'">
+                        title LIKE CONCAT('%', #{searchKeyword}, '%')
+                    </if>
+                    <if test="searchType == 'all' or searchType == 'content'">
+                            OR content LIKE CONCAT('%', #{searchKeyword}, '%')
+                    </if>
+                    <if test="searchType == 'all' or searchType == 'writer'">
+                            OR writer_nickname LIKE CONCAT('%', #{searchKeyword}, '%')
+                    </if>
+                </trim>
+            ORDER BY updated DESC, inserted DESC
+            LIMIT #{offset}, 10;
+            </script>
             """)
-    List<Inquiry> selectAll();
+    List<Inquiry> selectInquiryByPageOffset(Integer offset, String searchType, String searchKeyword);
+
+    @Select("""
+            <script>
+            SELECT COUNT(*)
+            FROM inquiry
+            WHERE
+                <trim prefixOverrides="OR">
+                    <if test="searchType == 'all' or searchType == 'title'">
+                        title LIKE CONCAT('%', #{searchKeyword}, '%')
+                    </if>
+                    <if test="searchType == 'all' or searchType == 'content'">
+                        OR content LIKE CONCAT('%', #{searchKeyword}, '%')
+                    </if>
+                    <if test="searchType == 'all' or searchType == 'writer'">
+                         OR writer_nickname LIKE CONCAT('%', #{searchKeyword}, '%')
+                    </if>
+                </trim>
+            </script>
+            """)
+    Integer countAll(String searchType, String searchKeyword);
 
     @Select("""
             SELECT *

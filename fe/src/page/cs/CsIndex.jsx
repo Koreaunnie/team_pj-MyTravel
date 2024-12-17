@@ -6,6 +6,7 @@ import axios from "axios";
 import { CiLock } from "react-icons/ci";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
+import "react-calendar/dist/Calendar.css";
 
 function CsIndex(props) {
   const [faqList, setFaqList] = useState([]);
@@ -54,7 +55,7 @@ function CsIndex(props) {
         <h1>무엇을 도와드릴까요?</h1>
 
         <section className={"faq-container body-normal"}>
-          <h3>자주 하는 질문</h3>
+          <h3>자주 묻는 질문</h3>
 
           <button
             className={"more-btn"}

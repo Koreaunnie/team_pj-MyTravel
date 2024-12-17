@@ -1,4 +1,4 @@
-import { formatNumberWithCommas } from "../../utils/formatNumberWithCommas.jsx";
+import { formatNumberWithCommas } from "../../components/utils/FormatNumberWithCommas.jsx";
 import React from "react";
 
 export function WalletCategory({
