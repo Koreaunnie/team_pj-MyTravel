@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Image } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
-import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
+import { Image } from "@chakra-ui/react";
 
 function CartList() {
   const [cartList, setCartList] = useState([]);
@@ -103,17 +102,12 @@ function CartList() {
       });
   }
 
-  return (
-    <div className={"tour"}>
-      <Breadcrumb
-        depth1={"Tour 목록"}
-        navigateToDepth1={() => navigate(`/tour/list`)}
-        depth2={"장바구니"}
-        navigateToDepth2={() => navigate(`/cart`)}
-      />
-      <h1>장바구니 목록</h1>
+  const isCartEmpty = !cartList || cartList.length === 0;
 
-      {cartList.length === 0 ? (
+  return (
+    <div>
+      <h1>장바구니 목록</h1>
+      {isCartEmpty ? (
         <p>장바구니가 비어 있습니다.</p>
       ) : (
         <div>

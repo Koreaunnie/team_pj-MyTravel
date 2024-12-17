@@ -6,6 +6,7 @@ import "/src/components/root/common.css";
 import { Modal } from "../../components/root/Modal.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
+
 import { GoogleMapsView } from "./GoogleMaps/GoogleMapsView.jsx";
 
 function PlanView(props) {

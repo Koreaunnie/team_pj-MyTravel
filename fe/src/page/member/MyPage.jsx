@@ -2,12 +2,12 @@ import React, { useContext, useState } from "react";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { Box, VStack } from "@chakra-ui/react";
 import MemberInfo from "./MemberInfo.jsx";
-import CartList from "../payment/CartList.jsx";
 import TourMyList from "../tour/TourMyList.jsx";
 import PaymentHistory from "../payment/PaymentHistory.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import "./Member.css";
 import CommunityMyList from "../community/CommunityMyList.jsx";
+import CartList from "../payment/CartList.jsx";
 
 function MyPage(props) {
   const [selectedMenu, setSelectedMenu] = useState("profile");
