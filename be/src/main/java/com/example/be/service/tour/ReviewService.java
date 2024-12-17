@@ -74,7 +74,7 @@ public class ReviewService {
             reviewList.add(review);
         }
 
-        System.out.println(reviewList);
+//        System.out.println(reviewList);
         return reviewList;
     }
 
@@ -100,8 +100,8 @@ public class ReviewService {
     }
 
     public boolean edit(Review review, List<String> removeFiles, MultipartFile[] uploadFiles) {
-        System.out.println("review 추적" + review);
-        
+//        System.out.println("review 추적" + review);
+
         //삭제 파일
         if (removeFiles != null) {
             for (String file : removeFiles) {
@@ -118,7 +118,7 @@ public class ReviewService {
         //추가 파일
         if (uploadFiles != null && uploadFiles.length > 0) {
             for (MultipartFile file : uploadFiles) {
-                System.out.println(file.getOriginalFilename());
+//                System.out.println(file.getOriginalFilename());
                 String objectKey = "teamPrj1126/" + review.getTourId() + "/review/" + review.getReviewId() + "/" + file.getOriginalFilename();
                 PutObjectRequest por = PutObjectRequest.builder()
                     .bucket(bucketName)

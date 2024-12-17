@@ -47,7 +47,7 @@ public class ReviewController {
         @RequestParam(value = "removeFiles[]", required = false) List<String> removeFiles,
         @RequestParam(value = "uploadFiles[]", required = false) MultipartFile[] uploadFiles
     ) {
-        System.out.println("추가 내용" + uploadFiles);
+//        System.out.println("추가 내용" + uploadFiles);
         if (service.edit(review, removeFiles, uploadFiles)) {
             return ResponseEntity.ok().body(Map.of("message",
                 Map.of("type", "success", "text", "후기 수정 완료")));
