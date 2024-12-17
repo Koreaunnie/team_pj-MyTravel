@@ -72,4 +72,27 @@ public class NoticeService {
 
         return viewer;
     }
+
+    public boolean checkAdmin(Authentication auth) {
+        String myAuth = mapper.findAuth(auth.getName());
+        if (myAuth.equals("admin")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean checkNotice(Notice notice) {
+        if (notice.getTitle().length() > 0 && notice.getContent().length() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void write(Notice notice, Authentication auth) {
+        String nickname = mapper.findNickname(auth.getName());
+        notice.setWriter(nickname);
+        mapper.writeNotice(notice);
+    }
 }

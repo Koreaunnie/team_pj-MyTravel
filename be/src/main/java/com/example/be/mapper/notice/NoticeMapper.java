@@ -1,9 +1,7 @@
 package com.example.be.mapper.notice;
 
 import com.example.be.dto.notice.Notice;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 import java.util.Map;
@@ -115,5 +113,19 @@ public interface NoticeMapper {
             SET views=#{views}
             WHERE id=#{id}
             """)
-    void updateViews(int views, Integer id);
+    int updateViews(int views, Integer id);
+
+    @Select("""
+                        SELECT auth
+            FROM auth
+                        WHERE member_email=#{email}
+            """)
+    String findAuth(String email);
+
+    @Insert("""
+            INSERT INTO notice (title, content, writer)
+            VALUES (#{title}, #{content}, #{writer})
+            """)
+    @Options(keyProperty = "id", useGeneratedKeys = true)
+    int writeNotice(Notice notice);
 }
