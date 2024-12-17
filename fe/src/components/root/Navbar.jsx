@@ -7,6 +7,7 @@ import { AuthenticationContext } from "../context/AuthenticationProvider.jsx";
 function Navbar(props) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null); // 드롭다운 영역 참조
+  const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { email, nickname, isAdmin, isPartner, isAuthenticated, logout } =
@@ -16,6 +17,10 @@ function Navbar(props) {
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
+  };
+
+  const toggleHamburgerMenu = () => {
+    setMenuOpen((prev) => !prev);
   };
 
   useEffect(() => {
@@ -38,8 +43,28 @@ function Navbar(props) {
         My Travel
       </h1>
 
-      <div className={"nav-container"}>
+      <div className={`nav-container ${menuOpen ? "show" : ""}`}>
         <ul>
+          {isAuthenticated && (
+            <div className={"mobile-user-container"}>
+              <ul>
+                <li onClick={() => navigate(`/mypage/${email}`)}>회원 정보</li>
+                <li onClick={() => navigate(`/payment/history/${email}`)}>
+                  결제 내역
+                </li>
+                <li onClick={() => navigate("/cart")}>장바구니</li>
+                <li
+                  onClick={() => {
+                    logout();
+                    navigate("/member/login");
+                  }}
+                >
+                  로그아웃
+                </li>
+              </ul>
+            </div>
+          )}
+
           <li
             className={isActive("/tour") ? "active" : ""}
             onClick={() => navigate("/tour/list")}
@@ -83,7 +108,7 @@ function Navbar(props) {
         </ul>
       </div>
 
-      <div className={"user-container"}>
+      <div className={"pc-user-container"}>
         {isAuthenticated && (
           <div ref={dropdownRef}>
             <p className={"user-info"}>
@@ -128,6 +153,12 @@ function Navbar(props) {
           </div>
         )}
       </div>
+
+      <button className="hamburger" onClick={toggleHamburgerMenu}>
+        <span className="bar"></span>
+        <span className="bar"></span>
+        <span className="bar"></span>
+      </button>
     </nav>
   );
 }

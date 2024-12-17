@@ -37,10 +37,13 @@ font-family: "Inter", serif;
     --btn-warning-hover-border: #b02a37;
 
     --bg-gray-color: #f9f9f9;
+    --bg-light-blue-color: #f2faff;
+    --bg-dark-blue-color: #0a223f;
 
     --font-gray-color: #787878;
     --font-light-gray-color: #dcdcdc;
     --font-red-color: #ef4444;
+    --font-dark-blue-color: #0e4487;
 
     --small-font-size: 14px;
     --normal-font-size: 16px;
@@ -468,54 +471,6 @@ form .required {
     height: 400px;
 }
 
-/* -------------------------- card design --------------------------- */
-.card-wrap {
-    width: 90%;
-    height: 180px;
-    margin: 30px 0;
-    border: 1px solid var(--table-border-color);
-    border-radius: 10px;
-    cursor: pointer;
-    box-shadow: var(--box-shadow);
-    position: relative;
-}
-
-.card-wrap:hover {
-    background: var(--bg-gray-color);
-    box-shadow: var(--box-shadow-hover);
-}
-
-.card-wrap:hover .card-header p {
-    background: #f1f0f0;
-}
-
-.card-wrap .card-header p {
-    font-weight: bold;
-    font-size: 1.1rem;
-    padding: 13px 25px;
-    background: var(--bg-gray-color);
-    border-radius: 10px 10px 0 0;
-}
-
-.card-wrap .card-header .pinned {
-    position: absolute;
-    top: 5px;
-    right: 0;
-}
-
-.card-wrap .card-body {
-    margin: 15px 25px 10px 25px;
-    height: 60px;
-    font-size: 0.9rem;
-}
-
-.card-wrap .card-footer {
-    font-size: 0.9rem;
-    font-weight: bold;
-    color: var(--font-gray-color);
-    margin-left: 30px;
-}
-
 /*------------------- pagination -------------------*/
 .pagination {
     width: 100%;
@@ -619,7 +574,6 @@ form .required {
 /* 년-월 */
 .react-calendar__navigation__label > span {
     font-size: 1.2rem;
-    font-weight: bold;
     font-weight: bold;
 }
 

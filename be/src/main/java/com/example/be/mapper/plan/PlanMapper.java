@@ -126,6 +126,7 @@ public interface PlanMapper {
                 time=#{time}, 
                 schedule=#{schedule}, 
                 place=#{place}, 
+                place_id=#{placeId}, 
                 memo=#{memo}
             WHERE id = #{id};
             """)

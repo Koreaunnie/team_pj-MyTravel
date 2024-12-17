@@ -4,6 +4,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Spinner } from "@chakra-ui/react";
 import { Modal } from "/src/components/root/Modal.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
+import * as PropTypes from "prop-types";
+import { GoogleMapsEdit } from "./GoogleMaps/GoogleMapsEdit.jsx";
+
+GoogleMapsEdit.propTypes = {
+  id: PropTypes.string,
+  onPlaceSelected: PropTypes.func,
+};
 
 function PlanEdit(props) {
   const { id } = useParams();
@@ -22,6 +29,7 @@ function PlanEdit(props) {
       time: "",
       schedule: "",
       place: "",
+      placeId: "",
       memo: "",
     },
   ]);
@@ -43,6 +51,14 @@ function PlanEdit(props) {
     const updatedFields = [...planFields];
     updatedFields[index][field] = value;
     setPlanFields(updatedFields);
+  };
+
+  const handlePlaceSelected = (index, location) => {
+    // location 객체에서 필요한 정보만 추출
+    const { placeId, address, lat, lng } = location;
+    // 필요한 정보만 저장
+    handleFieldChange(index, "place", `${address}`);
+    handleFieldChange(index, "placeId", `${placeId}`);
   };
 
   // + 버튼 클릭 시 새로운 필드 추가
@@ -210,12 +226,12 @@ function PlanEdit(props) {
                   }
                 />
 
-                <label htmlFor="location">장소</label>
-                <input
-                  name="location"
-                  value={field.place}
-                  onChange={(e) =>
-                    handleFieldChange(index, "place", e.target.value)
+                <label htmlFor="place">장소</label>
+                <GoogleMapsEdit
+                  id="place"
+                  initialPlaceIds={[field.placeId]}
+                  onPlaceSelected={(location) =>
+                    handlePlaceSelected(index, location)
                   }
                 />
 

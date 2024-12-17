@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -18,8 +19,17 @@ public class InquiryService {
         mapper.insertInquiry(inquiry);
     }
 
-    public List<Inquiry> list() {
-        return mapper.selectAll();
+    public Map<String, Object> list(Integer page, String searchType, String searchKeyword) {
+        // SQL 의 LIMIT 키워드에서 사용되는 offset
+        Integer offset = (page - 1) * 10;
+
+        // 조회되는 게시물
+        List<Inquiry> list = mapper.selectInquiryByPageOffset(offset, searchType, searchKeyword);
+
+        // 전체 게시물 수
+        Integer count = mapper.countAll(searchType, searchKeyword);
+
+        return Map.of("list", list, "count", count);
     }
 
     public Inquiry get(int id) {
