@@ -85,3 +85,8 @@ GROUP BY p.id
 ORDER BY p.updated DESC, p.inserted DESC;
 
 
+ALTER TABLE `tour`
+    ADD CONSTRAINT `tour_ibfk_1`
+        FOREIGN KEY (`partner`) REFERENCES `member` (`nickname`)
+            ON DELETE SET NULL
+            ON UPDATE CASCADE;
