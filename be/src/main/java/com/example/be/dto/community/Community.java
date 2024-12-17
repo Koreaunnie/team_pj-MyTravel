@@ -16,6 +16,7 @@ public class Community {
     private boolean existOfFiles;
     private String numberOfComments;
     private Integer numberOfLikes;
+    private Integer numberOfViews;
 
     private List<CommunityFile> communityFileList;
 }

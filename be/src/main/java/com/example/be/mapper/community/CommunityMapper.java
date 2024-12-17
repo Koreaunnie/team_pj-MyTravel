@@ -271,18 +271,51 @@ public interface CommunityMapper {
             """)
     int deleteLikeByInformation(Integer likeCommunityId, String likeUser);
 
+    @Select("""
+            SELECT writer
+            FROM community
+            WHERE id=#{id}
+            """)
+    String findNicknameByCommunityId(Integer id);
 
-//    @Select("""
-//            SELECT views
-//            FROM community
-//            WHERE id=#{id}
-//            """)
-//    Integer checkViews(Integer id);
-//
-//    @Update("""
-//            UPDATE community
-//            SET views=#{plusViews}
-//            WHERE id=#{id}
-//            """)
-//    int updateViews(Integer plusViews, Integer id);
+    @Select("""
+            SELECT writer
+            FROM community_comment
+            WHERE id=#{id}
+            """)
+    String findNicknameByCommunityCommentId(Integer id);
+
+    @Insert("""
+            INSERT INTO community_like (community_id, person)
+            VALUES (#{id}, #{person})
+            """)
+    int InputLikeInCommunity(Integer id, String person);
+
+    @Select("""
+            SELECT COUNT(*)
+            FROM community_like
+            WHERE community_id=#{id} AND person=#{person}
+            """)
+    int findLikeByIdAndNickname(Integer id, String person);
+
+    @Delete("""
+            DELETE FROM community_like
+            WHERE community_id=#{id} AND person=#{person}
+            """)
+    int deleteLikeInCommunity(Integer id, String person);
+
+
+    @Select("""
+            SELECT views
+            FROM community
+            WHERE id=#{id}
+            """)
+    int checkViews(Integer id);
+
+    @Update("""
+            UPDATE community
+            SET views=#{plusViews}
+            WHERE id=#{id}
+            """)
+    int updateViews(Integer plusViews, Integer id);
 }
