@@ -43,7 +43,6 @@ import AdminPage from "./page/admin/AdminPage.jsx";
 import { MemberLoginProcess } from "./page/member/MemberLoginProcess.jsx";
 import MemberSignupKakao from "./page/member/MemberSignupKakao.jsx";
 import TourMyList from "./page/tour/TourMyList.jsx";
-import { Footer } from "./components/root/Footer.jsx";
 import { CartCombined } from "./page/payment/CartCombined.jsx";
 import PaymentHistoryCombined from "./page/payment/PaymentHistoryCombined.jsx";
 // import reactLogo from './assets/react.svg'
@@ -252,7 +251,6 @@ function App() {
   return (
     <AuthenticationProvider>
       <RouterProvider router={router} />
-      <Footer />
     </AuthenticationProvider>
   );
 }
