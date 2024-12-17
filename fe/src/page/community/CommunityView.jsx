@@ -152,7 +152,8 @@ function CommunityView(props) {
       />
       <div>
         <br />
-        <h1>{id}번 게시물</h1>
+        <br />
+        <h1>{community.title}</h1>
         <Stack>
           <Box>
             <Field readOnly>
@@ -160,13 +161,11 @@ function CommunityView(props) {
                 <Icon fontSize="2xl">
                   <HiOutlineBookOpen />
                 </Icon>{" "}
-                : {community.views}
+                : {community.views} | {community.creationDate}
               </HStack>
             </Field>
-            <Field label={"제목"} readOnly>
-              <Input value={community.title} />
-            </Field>
-            <Field label={"본문"} readOnly>
+            <br />
+            <Field readOnly>
               <Textarea value={community.content} />
             </Field>
             <Field label={"파일"} readOnly>
@@ -213,9 +212,6 @@ function CommunityView(props) {
             </Field>
             <Field label={"작성자"} readOnly>
               <Input value={community.writer} />
-            </Field>
-            <Field label={"작성일시"} readOnly>
-              <Input value={community.creationDate} />
             </Field>
           </Box>
           {hasAccessByNickName(community.writer) && (
