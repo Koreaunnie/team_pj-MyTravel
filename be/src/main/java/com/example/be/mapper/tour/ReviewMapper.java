@@ -71,4 +71,26 @@ public interface ReviewMapper {
         VALUES (#{reviewId}, #{fileName})
         """)
     int insertFile(Integer reviewId, String fileName);
+
+    @Select("""
+        SELECT *
+        FROM tour_review
+        WHERE review_id=#{reviewId}
+        """)
+    Review selectByReviewId(int reviewId);
+
+    @Select("""
+        SELECT name
+        FROM tour_review_img
+        WHERE review_id=#{reviewId}
+        """)
+    List<String> selectImagesByReviewId(int reviewId);
+
+    @Select("""
+        SELECT review_id
+        FROM tour_review
+        WHERE tour_id=#{tourId}
+        ORDER BY review_id DESC
+        """)
+    List<Integer> selectReviewIdByTourId(Integer tourId);
 }

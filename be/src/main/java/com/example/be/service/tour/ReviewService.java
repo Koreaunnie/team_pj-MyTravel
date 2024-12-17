@@ -2,6 +2,7 @@ package com.example.be.service.tour;
 
 import com.example.be.dto.tour.PaymentHistory;
 import com.example.be.dto.tour.Review;
+import com.example.be.dto.tour.TourImg;
 import com.example.be.mapper.member.MemberMapper;
 import com.example.be.mapper.tour.ReviewMapper;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -61,7 +63,18 @@ public class ReviewService {
     }
 
     public List<Review> list(Integer tourId) {
-        return mapper.selectReviewByTourId(tourId);
+//        List<Review> reviewList = mapper.selectReviewByTourId(tourId);
+        List<Integer> reviews = mapper.selectReviewIdByTourId(tourId);
+
+        List<Review> reviewList = new ArrayList<>();
+
+        for (int reviewId : reviews) {
+            Review review = get(reviewId);
+            reviewList.add(review);
+        }
+
+//        System.out.println(reviewList);
+        return reviewList;
     }
 
     public void delete(Integer reviewId) {
@@ -87,5 +100,16 @@ public class ReviewService {
 
     public List<PaymentHistory> paymentList(Integer tourId, Authentication auth) {
         return mapper.paymentList(tourId, auth.getName());
+    }
+
+    public Review get(int reviewId) {
+        Review review = mapper.selectByReviewId(reviewId);
+        List<String> imageNames = mapper.selectImagesByReviewId(reviewId);
+        List<TourImg> imageSrcList = imageNames.stream()
+            .map(name -> new TourImg(reviewId, name, imageSrcPrefix + "/" + review.getTourId() + "/review/" + reviewId + "/" + name))
+            .toList();
+        review.setImageList(imageSrcList);
+
+        return review;
     }
 }

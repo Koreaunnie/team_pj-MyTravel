@@ -19,6 +19,11 @@ import java.util.Map;
 public class ReviewController {
     final ReviewService service;
 
+    @GetMapping("view/{reviewId}")
+    public Review view(@PathVariable int reviewId) {
+        return service.get(reviewId);
+    }
+
     @GetMapping("payment/{tourId}")
     public List<PaymentHistory> paymentList(@PathVariable Integer tourId, Authentication auth) {
         List<PaymentHistory> paidList = service.paymentList(tourId, auth);

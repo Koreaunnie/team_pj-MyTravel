@@ -10,4 +10,10 @@ CREATE TABLE tour_review_img
         ON DELETE CASCADE
 );
 
-DROP TABLE tour_review_img;
+# DROP TABLE tour_review_img;
+
+SELECT *
+FROM tour_review tr
+         LEFT JOIN tour_review_img tri ON tr.review_id = tri.review_id
+WHERE tour_id = 73
+ORDER BY tr.review_id DESC;
