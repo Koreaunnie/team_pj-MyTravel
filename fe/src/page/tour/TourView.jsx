@@ -20,7 +20,7 @@ import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import "./Tour.css";
 import { Modal } from "../../components/root/Modal.jsx";
 import ReviewContainer from "./ReviewContainer.jsx";
-import { ImageFileView } from "../../components/Image/ImageFileView.jsx";
+import { ImageSwipeView } from "../../components/Image/ImageSwipeView.jsx";
 
 function TourView() {
   const { id } = useParams();
@@ -166,7 +166,7 @@ function TourView() {
             <Input value={tour.product} />
           </Field>
 
-          <ImageFileView files={tour.fileList} />
+          <ImageSwipeView files={tour.fileList} />
           <Field label={"위치"} readOnly>
             <Input value={tour.location} />
           </Field>

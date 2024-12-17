@@ -73,7 +73,7 @@ public class ReviewService {
             reviewList.add(review);
         }
 
-//        System.out.println(reviewList);
+        System.out.println(reviewList);
         return reviewList;
     }
 

@@ -11,6 +11,7 @@ import {
 } from "../../components/ui/dialog.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { Rating } from "../../components/ui/rating.jsx";
+import { ReviewImageView } from "../../components/Image/ReviewImageView.jsx";
 
 function EditButton({ review, onEditClick, onRateChange }) {
   const [open, setOpen] = useState(false);
@@ -74,6 +75,7 @@ function ReviewItem({ review, onDeleteClick, onEditClick, onRateChange }) {
         <Rating value={review.rating} readOnly />
       </p>
       <p>{review.review}</p>
+      <ReviewImageView files={review.imageList} />
       <div>
         {/*후기 작성자만 버튼 확인 가능: 지금 email 확인 불가*/}
         {(email === review.writerEmail || isAdmin) && (
