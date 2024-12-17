@@ -4,6 +4,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import "./Index.css";
 import { IoSearch } from "react-icons/io5";
 import { FaPlus } from "react-icons/fa6";
+import { IndexSlider } from "./IndexSlider.jsx";
 
 export function Index() {
   const [search, setSearch] = useState("");
@@ -149,7 +150,9 @@ export function Index() {
         </div>
       </section>
 
-      <div className={"ad"}>광고 슬라이드 (마이리얼트립 st)</div>
+      <section className={"ad"}>
+        <IndexSlider />
+      </section>
 
       {/* 커뮤니티 섹션 */}
       <div className={"divided-section"}>

@@ -104,9 +104,11 @@
 /*------------------- 광고 슬라이드 -------------------*/
 .ad {
     width: 1000px;
-    height: 250px;
     margin: 100px auto;
-    border: 1px solid red;
+}
+
+.slider-container {
+    width: 100%;
 }
 
 
