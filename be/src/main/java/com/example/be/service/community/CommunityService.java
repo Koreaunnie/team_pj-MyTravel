@@ -245,10 +245,22 @@ public class CommunityService {
         return writer.equals(nicknameByAuth);
     }
 
-    public boolean updateLikeInCommunity(Integer id, Authentication auth) {
-        String nicknameByAuth = mapper.findNickname(auth.getName());
-        mapper.InputLikeInCommunity(id, nicknameByAuth);
+//    TODO : 좋아요 작업 중
 
-        return true;
+    public void addLikeInCommunity(Integer id, Authentication auth) {
+        String person = mapper.findNickname(auth.getName());
+        mapper.InputLikeInCommunity(id, person);
+    }
+
+    public boolean checkLikeInCommunity(Integer id, Authentication auth) {
+        String person = mapper.findNickname(auth.getName());
+        int cnt = mapper.findLikeByIdAndNickname(id, person);
+
+        return cnt == 1;
+    }
+
+    public void removeLikeInCommunity(Integer id, Authentication auth) {
+        String person = mapper.findNickname(auth.getName());
+        mapper.deleteLikeInCommunity(id, person);
     }
 }

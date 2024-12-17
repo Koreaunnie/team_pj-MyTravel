@@ -26,3 +26,8 @@ FROM community_like;
 SELECT COUNT(*)
 FROM community_like
 WHERE community_id = 80;
+
+SELECT COUNT(*)
+FROM community_like
+WHERE community_id = 78
+  AND person = '부폰';

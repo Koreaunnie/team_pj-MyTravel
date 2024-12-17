@@ -161,12 +161,14 @@ public class CommunityController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> like(@PathVariable Integer id, Authentication auth) {
         if (service.checkMember(auth)) {
-            if (service.updateLikeInCommunity(id, auth)) {
+            if (service.checkLikeInCommunity(id, auth)) {
+                service.removeLikeInCommunity(id, auth);
+                return ResponseEntity.ok().body(Map.of("message", "success",
+                        "text", "추천을 취소하였습니다"));
+            } else {
+                service.addLikeInCommunity(id, auth);
                 return ResponseEntity.ok().body(Map.of("message", "success",
                         "text", "게시글을 추천하였습니다"));
-            } else {
-                return ResponseEntity.ok().body(Map.of("message", "success",
-                        "text", "게시글을 추천을 취소하였습니다"));
             }
         } else {
             return ResponseEntity.status(403)
@@ -174,4 +176,5 @@ public class CommunityController {
                             "text", "권한이 없습니다.")));
         }
     }
+
 }

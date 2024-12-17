@@ -62,7 +62,6 @@ function CommunityView(props) {
       setCommentList(e.data.commentList);
     });
   }, []);
-  console.log(community);
 
   const handleDeleteClick = () => {
     axios

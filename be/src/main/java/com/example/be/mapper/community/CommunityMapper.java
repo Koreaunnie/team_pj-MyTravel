@@ -287,9 +287,22 @@ public interface CommunityMapper {
 
     @Insert("""
             INSERT INTO community_like (community_id, person)
-            VALUES (#{id}, #{nicknameByAuth})
+            VALUES (#{id}, #{person})
             """)
-    int InputLikeInCommunity(Integer id, String nicknameByAuth);
+    int InputLikeInCommunity(Integer id, String person);
+
+    @Select("""
+            SELECT COUNT(*)
+            FROM community_like
+            WHERE community_id=#{id} AND person=#{person}
+            """)
+    int findLikeByIdAndNickname(Integer id, String person);
+
+    @Delete("""
+            DELETE FROM community_like
+            WHERE community_id=#{id} AND person=#{person}
+            """)
+    int deleteLikeInCommunity(Integer id, String person);
 
 
 //    @Select("""
