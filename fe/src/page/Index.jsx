@@ -6,6 +6,7 @@ import { IoSearch } from "react-icons/io5";
 import { FaArrowRight, FaPlus } from "react-icons/fa6";
 import { IndexSlider } from "./IndexSlider.jsx";
 import Calendar from "react-calendar";
+import { formatNumberWithCommas } from "../components/utils/FormatNumberWithCommas.jsx";
 
 export function Index() {
   const [search, setSearch] = useState("");
@@ -62,17 +63,22 @@ export function Index() {
   return (
     <div>
       {/* 검색 영역 */}
-      <section className={"main-search-wrap"}>
-        <input
-          type="search"
-          placeholder={"어디로 떠나고 싶은가요?"}
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          onKeyPress={handleKeyPress}
-        />
-        <button className={"main-search-wrap-btn"} onClick={handleSearchButton}>
-          <IoSearch />
-        </button>
+      <section className={"main-search-container"}>
+        <div className={"main-search-wrap"}>
+          <input
+            type="search"
+            placeholder={"어디로 떠나고 싶은가요?"}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onKeyPress={handleKeyPress}
+          />
+          <button
+            className={"main-search-wrap-btn"}
+            onClick={handleSearchButton}
+          >
+            <IoSearch />
+          </button>
+        </div>
       </section>
 
       {/* 달력 */}
@@ -90,19 +96,29 @@ export function Index() {
         </div>
 
         <div className={"section-right"}>
-          <p>로그인 후 이용 가능합니다.</p>
-          <button
-            className={"index-calendar-btn"}
-            onClick={() => navigate(`/plan/list`)}
-          >
-            내 여행 일정 보기
-          </button>
-          <button
-            className={"index-calendar-btn"}
-            onClick={() => navigate(`/wallet/list`)}
-          >
-            내 지갑 내역 보기
-          </button>
+          <div className={"index-calendar-btn-wrap"}>
+            <button
+              className={"index-calendar-btn"}
+              onClick={() => navigate(`/plan/list`)}
+            >
+              내 여행 일정 보기
+            </button>
+
+            <button
+              className={"index-calendar-btn"}
+              onClick={() => navigate(`/wallet/list`)}
+            >
+              내 지갑 내역 보기
+            </button>
+          </div>
+
+          <div>
+            <ul>
+              <li>2024년 12월 24일의 일정</li>
+              <li>한강에서 라면먹기</li>
+              <li>친구랑</li>
+            </ul>
+          </div>
         </div>
       </section>
 
@@ -196,7 +212,7 @@ export function Index() {
                     <li className={"title"}>{tour.product}</li>
                     <li>{tour.title}</li>
                     <li>{tour.location}</li>
-                    <li>{tour.price}</li>
+                    <li>{formatNumberWithCommas(tour.price)}원</li>
                   </div>
                 </ul>
               ))}
@@ -207,8 +223,8 @@ export function Index() {
 
       {/* 커뮤니티 */}
       <section className={"community-container"}>
-        <div className={"main-section-wrap"}>
-          <div className={"section-header"}>
+        <div className={"community-container-wrap"}>
+          <div className={"community-container-header"}>
             <h2>커뮤니티</h2>
             <button
               className={"more-btn"}
@@ -218,7 +234,7 @@ export function Index() {
             </button>
           </div>
 
-          <div className={"section-body"}>
+          <div className={"community-container-body"}>
             {isEmpty(communityList) ? (
               <div className={"empty-container"}>
                 <p className={"empty-container-title"}>작성된 글이 없습니다.</p>
@@ -227,7 +243,7 @@ export function Index() {
                 </p>
               </div>
             ) : (
-              <div className={"section-body-card"}>
+              <div className={"community-container-list"}>
                 {communityList.map((community) => (
                   <ul
                     className={"list-item"}
@@ -250,8 +266,8 @@ export function Index() {
       </section>
 
       {/* 고객센터 */}
-      <div className={"divided-section"}>
-        <div className={"main-section-wrap"}>
+      <div className={"divided-container"}>
+        <div className={"divided-container-wrap"}>
           <section className={"tel-container"}>
             <h3>마이트래블 고객센터</h3>
             <h5>1588-1111</h5>
@@ -265,9 +281,6 @@ export function Index() {
           <section className={"notice-section-wrap"}>
             <div className={"notice-section-header"}>
               <h2>공지사항</h2>
-              <p className={"link-box"}>
-                여러분의 다양한 여행 이야기를 들려주세요!
-              </p>
               <button
                 className={"more-btn"}
                 onClick={() => navigate(`/community/list`)}

@@ -1,12 +1,22 @@
+.main-search-container {
+    top: 0;
+    background-image: url('../assets/main.jpg');
+    background-size: cover;
+    background-position: center 50%;
+    height: 250px;
+    padding: 60px 0;
+}
+
 .main-search-wrap {
     width: 500px;
-    margin: 50px auto;
+    margin: 0 auto;
+    padding: 0 20px;
     display: flex;
     border: 1px solid #dee2e6;
     box-sizing: border-box;
     border-radius: 50px;
     height: 60px;
-    padding: 0 20px;
+    background: #fff;
 }
 
 .main-search-wrap input[type=search] {
@@ -33,7 +43,7 @@
     display: flex;
     position: relative;
     width: 1000px;
-    height: 400px;
+    height: 380px;
     margin: 50px auto;
     box-sizing: border-box;
     border: 1px solid red;
@@ -42,7 +52,7 @@
 .main-calendar-section-wrap .calendar {
     position: inherit;
     width: 300px;
-    height: 410px;
+    height: 400px;
     top: 0;
     border: 1px solid var(--table-border-color);
     box-shadow: 3px 0px 10px rgba(0, 0, 0, 0.1);
@@ -50,6 +60,7 @@
 
 .main-calendar-section-wrap .react-calendar {
     width: 430px !important;
+    height: 400px;
     padding: 20px 10px;
     line-height: 1rem;
     border-radius: 10px;
@@ -64,7 +75,7 @@
 }
 
 .main-calendar-section-wrap .react-calendar__navigation {
-    margin: 10px;
+    margin: 0 0 10px 0;
 }
 
 
@@ -76,23 +87,18 @@
 /* 날짜 타일 한개 */
 .main-calendar-section-wrap .react-calendar__tile {
     width: 40px;
-    height: 45px;
+    height: 47px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.main-calendar-section-wrap .react-calendar__tile:enabled:hover,
-.main-calendar-section-wrap .react-calendar__tile:enabled:focus {
-
+.main-calendar-section-wrap .react-calendar__tile:enabled:hover {
+    background: none;
 }
 
 .main-calendar-section-wrap .react-calendar__tile--active {
     font-weight: bold;
-}
-
-.main-calendar-section-wrap .react-calendar__tile--active .calendar-badge {
-    color: var(--main-blue);
 }
 
 /* 오늘 날짜 */
@@ -122,15 +128,19 @@
 }
 
 .main-calendar-section-wrap .section-right {
-    width: 250px;
     margin-left: 30px;
 }
 
-.main-calendar-section-wrap .section-right .index-calendar-btn {
+.main-calendar-section-wrap .section-right .index-calendar-btn-wrap {
+    display: flex;
+}
+
+.main-calendar-section-wrap .section-right .index-calendar-btn-wrap .index-calendar-btn {
+    width: 200px;
     cursor: pointer;
     color: #fff;
     font-weight: bold;
-    margin: 20px 0;
+    margin: 20px;
     padding: 15px 20px;
     background: var(--bg-dark-blue-color);
     border-radius: 10px;
@@ -285,7 +295,7 @@ section.plan-container {
 .tour-container .tour-container-body .tour-container-card {
     display: flex;
     justify-content: space-between;
-    gap: 20px;
+    gap: 10px;
 }
 
 .tour-container .tour-container-body .tour-container-card ul {
@@ -317,7 +327,7 @@ section.plan-container {
 
 .tour-container .tour-container-body .tour-container-card .title {
     font-weight: bold;
-    font-size: 1.1rem;
+    font-size: 1rem;
     width: 100%;
     white-space: nowrap;
     overflow: hidden;
@@ -331,7 +341,7 @@ section.plan-container {
 .tour-container .tour-container-body .tour-container-card li:nth-child(3) {
     font-weight: bold;
     position: absolute;
-    bottom: 50px;
+    bottom: 45px;
 }
 
 .tour-container .tour-container-body .tour-container-card li:nth-child(4) {
@@ -339,7 +349,7 @@ section.plan-container {
     font-weight: bold;
     color: var(--font-gray-color);
     position: absolute;
-    bottom: 25px;
+    bottom: 20px;
 }
 
 
@@ -383,12 +393,30 @@ section.plan-container {
     margin: 0 auto;
 }
 
+.community-container .community-container-wrap {
+
+}
+
+.community-container .community-container-wrap .community-container-header {
+
+}
+
+.community-container .community-container-wrap .community-container-body {
+
+}
+
+.community-container .community-container-wrap .community-container-list {
+
+}
+
 /*------------------- 고객센터 -------------------*/
-.divided-section {
+.divided-container {
     background: var(--bg-gray-color);
 }
 
-.divided-section .main-section-wrap {
+.divided-container .divided-container-wrap {
+    width: 1000px;
+    margin: 0 auto;
     display: flex;
     height: 400px;
     background: var(--bg-gray-color);
@@ -396,36 +424,36 @@ section.plan-container {
 }
 
 /*------------------- 연락처 -------------------*/
-.tel-container {
+.divided-container .tel-container {
     width: 400px;
     margin-top: 50px;
 }
 
-.divided-section .tel-container h3 {
+.divided-container .tel-container h3 {
     text-align: center;
     font-size: 25px;
     font-weight: bold;
 }
 
-.divided-section .tel-container h5 {
+.divided-container .tel-container h5 {
     text-align: center;
     font-size: 30px;
     font-weight: bold;
     color: var(--main-blue);
 }
 
-.divided-section .tel-container ul {
+.divided-container .tel-container ul {
     margin: 45px 100px;
 }
 
-.divided-section .tel-container ul li {
+.divided-container .tel-container ul li {
     font-size: 1.2rem;
     font-weight: bold;
     margin: 10px 0;
 }
 
 /*------------------- 공지사항 -------------------*/
-.divided-section .notice-section-wrap {
+.notice-section-wrap {
     width: calc(100% - 400px);;
     border: 1px solid var(--table-border-color);
     border-radius: 15px;
@@ -437,12 +465,6 @@ section.plan-container {
     justify-content: space-between;
     padding: 10px 30px;
     border-bottom: 1px solid var(--table-border-color);
-}
-
-.notice-section-wrap .notice-section-header .link-box {
-    margin-top: 16px;
-    font-size: 0.9rem;
-    color: var(--font-gray-color);
 }
 
 .notice-section-wrap .notice-section-body {
@@ -573,6 +595,64 @@ section.plan-container {
         font-size: 1rem;
     }
 
+    /*------------------- 고객센터 -------------------*/
+    .divided-container {
+        background: var(--bg-gray-color);
+        border: 1px solid green;
+    }
+
+    .divided-container .divided-container-wrap {
+        height: auto;
+        padding: 30px;
+        display: block;
+        border: 1px solid red;
+    }
+
+    /*------------------- 연락처 -------------------*/
+    .divided-container .tel-container {
+        width: 400px;
+        margin-top: 10px;
+    }
+
+    .divided-container .tel-container h3 {
+        font-size: 1.2rem;
+    }
+
+    .divided-container .tel-container h5 {
+        font-size: 1.5rem;
+    }
+
+    .divided-container .tel-container ul {
+        margin: 30px 100px;
+    }
+
+    .divided-container .tel-container ul li {
+        font-size: 1.1rem;
+    }
+
+    /*------------------- 공지사항 -------------------*/
+    .notice-section-wrap {
+        width: 80%;
+    }
+
+    .notice-section-wrap .notice-section-header {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px 20px;
+    }
+
+    .notice-section-wrap .notice-section-header h2 {
+        font-size: 1.2rem;
+    }
+
+    .notice-section-wrap .notice-section-body {
+        padding: 10px 20px;
+    }
+
+    .notice-section-wrap .notice-section-body .notice-section-list li {
+        margin: 4px 0;
+        font-size: 0.9rem;
+    }
 }
 
 /*------------------- 화면 크기가 480px 이하 (모바일 화면) -------------------*/
@@ -582,7 +662,7 @@ section.plan-container {
     }
 
     .ad {
-        width: 95%;
+        width: 100%;
     }
 
     /*------------------- banner -------------------*/
