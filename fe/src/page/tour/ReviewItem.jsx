@@ -32,6 +32,32 @@ function EditButton({ review, onEditClick, onRateChange }) {
     setFileList(updatedFileList);
   };
 
+  const handleUploadFilesChange = (e) => {
+    const uploaded = Array.from(e.target.files).map((file) => ({
+      id: file.name,
+      src: URL.createObjectURL(file), // 업로드된 파일의 미리보기 URL 생성
+    }));
+    setUploadFiles(e.target.files);
+    setFileList((prev) => [...prev, ...uploaded]); // 파일 리스트에 추가
+  };
+
+  const handleSave = () => {
+    // 저장 시 상태 업데이트
+    const updatedFileList = fileList.filter(
+      (file) => !removeFiles.includes(file.id),
+    );
+    setFileList(updatedFileList); // 상태 업데이트로 새로고침 없이 반영
+    setOpen(false);
+
+    // 외부에 업데이트된 데이터 전달 (필요 시)
+    onEditClick(review.reviewId, {
+      review: newReview,
+      rating: newRating,
+      removeFiles,
+      uploadFiles,
+    });
+  };
+
   return (
     <>
       <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
@@ -61,7 +87,7 @@ function EditButton({ review, onEditClick, onRateChange }) {
                 type="file"
                 accept={"image/*"}
                 multiple
-                onChange={(e) => setUploadFiles(e.target.files)}
+                onChange={handleUploadFilesChange}
               />
             </Field>
             <textarea
@@ -73,18 +99,7 @@ function EditButton({ review, onEditClick, onRateChange }) {
             <DialogActionTrigger>
               <button className={"btn btn-dark-outline"}>취소</button>
             </DialogActionTrigger>
-            <button
-              className={"btn btn-blue"}
-              onClick={() => {
-                setOpen(false);
-                onEditClick(review.reviewId, {
-                  review: newReview,
-                  rating: newRating,
-                  removeFiles,
-                  uploadFiles,
-                }); // 새로운 리뷰와 별점을 함께 전달
-              }}
-            >
+            <button className={"btn btn-blue"} onClick={handleSave}>
               저장
             </button>
           </DialogFooter>

@@ -104,7 +104,8 @@ function ReviewContainer({ tourId }) {
     { review, rating, removeFiles, uploadFiles },
   ) {
     setProcessing(true);
-    // console.log("container", removeFiles);
+    console.log("container-remove", removeFiles);
+    console.log("container-upload", uploadFiles);
 
     axios
       .putForm(`/api/review/edit`, {
