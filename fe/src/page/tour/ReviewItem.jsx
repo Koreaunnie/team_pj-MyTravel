@@ -22,6 +22,7 @@ function EditButton({ review, onEditClick, onRateChange }) {
   const [newRating, setNewRating] = useState(review.rating);
   const [removeFiles, setRemoveFiles] = useState([]);
   const [fileList, setFileList] = useState(review.imageList || []);
+  const [uploadFiles, setUploadFiles] = useState([]);
 
   const handleRemoveFile = (fileName) => {
     setRemoveFiles((prev) => [...prev, fileName]);
@@ -56,7 +57,12 @@ function EditButton({ review, onEditClick, onRateChange }) {
               files={fileList}
             />
             <Field>
-              <Input type="file" multiple />
+              <Input
+                type="file"
+                accept={"image/*"}
+                multiple
+                onChange={(e) => setUploadFiles(e.target.files)}
+              />
             </Field>
             <textarea
               value={newReview}
@@ -75,6 +81,7 @@ function EditButton({ review, onEditClick, onRateChange }) {
                   review: newReview,
                   rating: newRating,
                   removeFiles,
+                  uploadFiles,
                 }); // 새로운 리뷰와 별점을 함께 전달
               }}
             >
@@ -99,6 +106,7 @@ function ReviewItem({ review, onDeleteClick, onEditClick, onRateChange }) {
       </p>
       <p>{review.review}</p>
       <ReviewImageView files={review.imageList} />
+
       <div>
         {/*후기 작성자만 버튼 확인 가능: 지금 email 확인 불가*/}
         {(email === review.writerEmail || isAdmin) && (

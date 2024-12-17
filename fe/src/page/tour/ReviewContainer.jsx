@@ -99,12 +99,22 @@ function ReviewContainer({ tourId }) {
       });
   }
 
-  function handleEditReviewClick(reviewId, { review, rating, removeFiles }) {
+  function handleEditReviewClick(
+    reviewId,
+    { review, rating, removeFiles, uploadFiles },
+  ) {
     setProcessing(true);
-    console.log("container", removeFiles);
+    // console.log("container", removeFiles);
 
     axios
-      .putForm(`/api/review/edit`, { reviewId, review, rating, removeFiles })
+      .putForm(`/api/review/edit`, {
+        reviewId,
+        review,
+        rating,
+        removeFiles,
+        uploadFiles,
+        tourId,
+      })
       .then((res) => res.data.message)
       .then((message) => {
         toaster.create({
