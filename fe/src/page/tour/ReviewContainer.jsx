@@ -27,15 +27,17 @@ function ReviewContainer({ tourId }) {
       .then((res) => setPaidList(res.data));
   }, []);
 
-  function handleSaveReviewClick({ review, rating }) {
-    // console.log("reviewContainer", review, rating);
+  function handleSaveReviewClick({ review, rating, reviewImg }) {
+    console.log("reviewContainer", reviewImg);
+
     setProcessing(true);
     axios
-      .post("/api/review/add", {
+      .postForm("/api/review/add", {
         tourId: tourId,
         review: review,
         rating: rating,
         paymentId: selectedPayment,
+        reviewImg: reviewImg,
       })
       .then((res) => res.data)
       .then((data) => {
