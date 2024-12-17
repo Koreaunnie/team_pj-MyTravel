@@ -50,4 +50,25 @@ public class NoticeController {
                             "text", "작성 권한이 없습니다.")));
         }
     }
+
+    @PutMapping("edit")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, Object>> edit(@RequestBody Notice notice, Authentication auth) {
+        Integer id = notice.getId();
+        if (service.checkRightsOfAccess(id, auth)) {
+            if (service.checkNotice(notice)) {
+                service.edit(notice);
+                return ResponseEntity.ok().body(Map.of("message", "success",
+                        "text", STR."\{notice.getId()}번 게시물이 수정되었습니다"));
+            } else {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("message", Map.of("type", "warning",
+                                "text", "제목이나 본문이 비어있을 수 없습니다.")));
+            }
+        } else {
+            return ResponseEntity.status(403)
+                    .body(Map.of("message", Map.of("type", "error",
+                            "text", "수정 권한이 없습니다.")));
+        }
+    }
 }

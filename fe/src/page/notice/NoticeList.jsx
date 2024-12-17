@@ -42,7 +42,6 @@ function NoticeList(props) {
       setCountNotice(res.data.countNotice);
     });
   }, [searchParams]);
-  console.log(noticeList);
 
   function handleWriteClick() {
     navigate(`/notice/write`);

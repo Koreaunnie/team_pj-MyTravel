@@ -95,4 +95,15 @@ public class NoticeService {
         notice.setWriter(nickname);
         mapper.writeNotice(notice);
     }
+
+    public boolean checkRightsOfAccess(Integer id, Authentication auth) {
+        String nicknameByAuth = mapper.findNickname(auth.getName());
+        String writer = mapper.findNicknameByCommunityId(id);
+
+        return writer.equals(nicknameByAuth);
+    }
+
+    public void edit(Notice notice) {
+        mapper.editNotice(notice);
+    }
 }

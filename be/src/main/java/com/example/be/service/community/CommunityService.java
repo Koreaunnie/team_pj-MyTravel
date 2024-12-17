@@ -151,7 +151,7 @@ public class CommunityService {
         }
     }
 
-    public void edit(Community community, List<Integer> removeFiles, MultipartFile[] uploadFiles, Authentication auth) {
+    public void edit(Community community, List<Integer> removeFiles, MultipartFile[] uploadFiles) {
         mapper.editCommunity(community);
         Integer id = community.getId();
 

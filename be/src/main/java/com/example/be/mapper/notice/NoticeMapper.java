@@ -128,4 +128,18 @@ public interface NoticeMapper {
             """)
     @Options(keyProperty = "id", useGeneratedKeys = true)
     int writeNotice(Notice notice);
+
+    @Select("""
+            SELECT writer
+            FROM notice
+            WHERE id=#{id}
+            """)
+    String findNicknameByCommunityId(Integer id);
+
+    @Update("""
+            UPDATE notice
+            SET title = #{title}, content = #{content}
+            WHERE id=#{id}
+            """)
+    int editNotice(Notice notice);
 }
