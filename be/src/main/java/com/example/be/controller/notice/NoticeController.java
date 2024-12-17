@@ -85,4 +85,24 @@ public class NoticeController {
                             "text", "삭제 권한이 없습니다.")));
         }
     }
+
+    @PostMapping("like/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, Object>> like(@PathVariable Integer id, Authentication auth) {
+        if (service.checkMember(auth)) {
+            if (service.checkLikeInNotice(id, auth)) {
+                service.removeLikeInNotice(id, auth);
+                return ResponseEntity.ok().body(Map.of("message", "success",
+                        "text", "추천을 취소하였습니다"));
+            } else {
+                service.addLikeInNotice(id, auth);
+                return ResponseEntity.ok().body(Map.of("message", "success",
+                        "text", "게시글을 추천하였습니다"));
+            }
+        } else {
+            return ResponseEntity.status(403)
+                    .body(Map.of("message", Map.of("type", "error",
+                            "text", "권한이 없습니다.")));
+        }
+    }
 }

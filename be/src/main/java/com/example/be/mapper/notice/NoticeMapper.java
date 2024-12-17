@@ -116,9 +116,9 @@ public interface NoticeMapper {
     int updateViews(int views, Integer id);
 
     @Select("""
-                        SELECT auth
+            SELECT auth
             FROM auth
-                        WHERE member_email=#{email}
+            WHERE member_email=#{email}
             """)
     String findAuth(String email);
 
@@ -154,4 +154,16 @@ public interface NoticeMapper {
             WHERE id = #{id}
             """)
     int deleteNotice(Integer id);
+
+    @Delete("""
+            DELETE FROM notice_like
+            WHERE notice_id=#{id} AND person=#{person}
+            """)
+    int deleteLikeInNotice(Integer id, String person);
+
+    @Insert("""
+            INSERT INTO notice_like (notice_id, person)
+            VALUES (#{id}, #{person})
+            """)
+    int InputLikeInNotice(Integer id, String person);
 }

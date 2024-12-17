@@ -73,6 +73,14 @@ public class NoticeService {
         return viewer;
     }
 
+    public boolean checkMember(Authentication auth) {
+        if (mapper.findNickname(auth.getName()) != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public boolean checkAdmin(Authentication auth) {
         String myAuth = mapper.findAuth(auth.getName());
         if (myAuth.equals("admin")) {
@@ -112,5 +120,22 @@ public class NoticeService {
         mapper.deleteLikeByNoticeId(id);
 
         mapper.deleteNotice(id);
+    }
+
+    public boolean checkLikeInNotice(Integer id, Authentication auth) {
+        String person = mapper.findNickname(auth.getName());
+        int cnt = mapper.findLikeByIdAndNickname(id, person);
+
+        return cnt == 1;
+    }
+
+    public void removeLikeInNotice(Integer id, Authentication auth) {
+        String person = mapper.findNickname(auth.getName());
+        mapper.deleteLikeInNotice(id, person);
+    }
+
+    public void addLikeInNotice(Integer id, Authentication auth) {
+        String person = mapper.findNickname(auth.getName());
+        mapper.InputLikeInNotice(id, person);
     }
 }
