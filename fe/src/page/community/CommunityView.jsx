@@ -28,6 +28,7 @@ import { FiMessageSquare } from "react-icons/fi";
 import { LuPencilLine } from "react-icons/lu";
 import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
+import { HiOutlineBookOpen } from "react-icons/hi";
 
 function ImageFileView({ files }) {
   return (
@@ -154,6 +155,14 @@ function CommunityView(props) {
         <h1>{id}번 게시물</h1>
         <Stack>
           <Box>
+            <Field readOnly>
+              <HStack>
+                <Icon fontSize="2xl">
+                  <HiOutlineBookOpen />
+                </Icon>{" "}
+                : {community.views}
+              </HStack>
+            </Field>
             <Field label={"제목"} readOnly>
               <Input value={community.title} />
             </Field>
