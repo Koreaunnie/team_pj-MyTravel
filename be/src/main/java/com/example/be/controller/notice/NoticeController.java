@@ -32,7 +32,7 @@ public class NoticeController {
     }
 
     @PostMapping("write")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAuthority('SCOPE_admin')")
     public ResponseEntity<Map<String, Object>> write(@RequestBody Notice notice, Authentication auth) {
         if (service.checkAdmin(auth)) {
             if (service.checkNotice(notice)) {
