@@ -69,10 +69,30 @@ function ReviewContainer({ tourId }) {
     setProcessing(true);
     axios
       .delete(`/api/review/delete/${reviewId}`)
-      .then(() => {
-        axios
-          .get(`/api/review/payment/${tourId}`)
-          .then((res) => setPaidList(res.data));
+      .then((res) => {
+        // 성공적인 응답을 받아왔을 경우
+        const data = res.data;
+        if (data.message) {
+          toaster.create({
+            type: data.message.type,
+            description: data.message.text,
+          });
+        }
+
+        // 후기를 삭제한 후 결제 목록을 다시 받아오기
+        return axios.get(`/api/review/payment/${tourId}`);
+      })
+      .then((res) => {
+        // 결제 목록 갱신
+        setPaidList(res.data);
+      })
+      .catch((e) => {
+        // 오류 처리
+        const data = e.response.data;
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
       })
       .finally(() => {
         setProcessing(false);

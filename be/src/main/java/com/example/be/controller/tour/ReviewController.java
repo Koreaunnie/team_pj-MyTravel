@@ -56,9 +56,11 @@ public class ReviewController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> remove(@PathVariable Integer reviewId, Authentication auth) {
         if (service.delete(reviewId)) {
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok().body(Map.of("message",
+                Map.of("type", "success", "text", "후기를 삭제하였습니다.")));
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(400).body(Map.of("message",
+                Map.of("type", "warning", "text", "오류 발생!")));
         }
     }
 
