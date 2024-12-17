@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Box, HStack, Image, Input, Textarea } from "@chakra-ui/react";
 import { Field } from "../../components/ui/field.jsx";
 import { Button } from "../../components/ui/button.jsx";
@@ -11,6 +11,9 @@ import {
 } from "../../components/ui/file-button.jsx";
 import { HiUpload } from "react-icons/hi";
 import { CloseButton } from "../../components/ui/close-button.jsx";
+import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
+import { Alert } from "../../components/ui/alert.jsx";
+import CommunityList from "./CommunityList.jsx";
 
 function CommunityEdit(props) {
   const [community, setCommunity] = useState({});
@@ -19,6 +22,7 @@ function CommunityEdit(props) {
   const [files, setFiles] = useState([]);
   const [removeFiles, setRemoveFiles] = useState([]);
   const [fileList, setFileList] = useState([]);
+  const { hasAccessByNickName } = useContext(AuthenticationContext);
 
   useEffect(() => {
     axios.get(`/api/community/view/${id}`).then((res) => {
@@ -51,64 +55,76 @@ function CommunityEdit(props) {
 
   return (
     <div>
-      <h1>게시글 수정</h1>
-      <Box
-        mx={"auto"}
-        w={{
-          md: "500px",
-        }}
-      >
-        <Field label={"제목"}>
-          <Input
-            value={community.title}
-            onChange={(e) =>
-              setCommunity({ ...community, title: e.target.value })
-            }
-          />
-        </Field>
-        <Field label={"본문"}>
-          <Textarea
-            value={community.content}
-            onChange={(e) =>
-              setCommunity({ ...community, content: e.target.value })
-            }
-            h={300}
-          />
-        </Field>
-        <Field>
-          {fileList?.map((file) => (
-            <HStack key={file.fileName}>
-              <Image src={file.filePath} border={"1px solid black"} m={3} />
-              <CloseButton
-                variant="solid"
-                onClick={() => handleDeleteFileClick(file)}
-              />
-            </HStack>
-          ))}
-        </Field>
-        <Field label={"파일 첨부"}>
-          <FileUploadRoot
-            value={files}
-            maxFiles={5}
-            multiple
-            onChange={(e) => setFiles(e.target.files)}
-          >
-            <FileUploadTrigger asChild>
-              <Button variant="outline" size="sm">
-                <HiUpload /> Upload file
-              </Button>
-            </FileUploadTrigger>
-            <FileUploadList showSize clearable />
-          </FileUploadRoot>
-        </Field>
-        <br />
+      {hasAccessByNickName(community.writer) && (
         <Box>
-          <HStack>
-            <Button onClick={handleCancelClick}>취소</Button>
-            <Button onClick={handleSaveClick}>저장</Button>
-          </HStack>
+          <h1>게시글 수정</h1>
+          <Box
+            mx={"auto"}
+            w={{
+              md: "500px",
+            }}
+          >
+            <Field label={"제목"}>
+              <Input
+                value={community.title}
+                onChange={(e) =>
+                  setCommunity({ ...community, title: e.target.value })
+                }
+              />
+            </Field>
+            <Field label={"본문"}>
+              <Textarea
+                value={community.content}
+                onChange={(e) =>
+                  setCommunity({ ...community, content: e.target.value })
+                }
+                h={300}
+              />
+            </Field>
+            <Field>
+              {fileList?.map((file) => (
+                <HStack key={file.fileName}>
+                  <Image src={file.filePath} border={"1px solid black"} m={3} />
+                  <CloseButton
+                    variant="solid"
+                    onClick={() => handleDeleteFileClick(file)}
+                  />
+                </HStack>
+              ))}
+            </Field>
+            <Field label={"파일 첨부"}>
+              <FileUploadRoot
+                value={files}
+                maxFiles={5}
+                multiple
+                onChange={(e) => setFiles(e.target.files)}
+              >
+                <FileUploadTrigger asChild>
+                  <Button variant="outline" size="sm">
+                    <HiUpload /> Upload file
+                  </Button>
+                </FileUploadTrigger>
+                <FileUploadList showSize clearable />
+              </FileUploadRoot>
+            </Field>
+            <br />
+            <Box>
+              <HStack>
+                <Button onClick={handleCancelClick}>취소</Button>
+                <Button onClick={handleSaveClick}>저장</Button>
+              </HStack>
+            </Box>
+          </Box>
         </Box>
-      </Box>
+      )}
+      {hasAccessByNickName(community.writer) || (
+        <Box>
+          <br />
+          <br />
+          <Alert status="warning" title="접근 권한이 없습니다." />
+          <CommunityList />
+        </Box>
+      )}
     </div>
   );
 }

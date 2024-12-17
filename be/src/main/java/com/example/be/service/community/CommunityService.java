@@ -65,10 +65,11 @@ public class CommunityService {
             } else {
                 community.setNumberOfLikes(0);
             }
+            Integer countViews = mapper.checkViews(community.getId());
+            community.setNumberOfViews(countViews);
         }
 
         Integer countCommunity = mapper.countAllCommunity(searchType, searchKeyword);
-        System.out.println(countCommunity);
 
         return Map.of("list", list, "countCommunity", countCommunity);
     }
@@ -99,13 +100,35 @@ public class CommunityService {
         }
     }
 
-    public Map<String, Object> view(Integer id) {
+    public Map<String, Object> view(Integer id, Authentication auth) {
 
 
         Map<String, Object> viewer = mapper.viewCommunity(id);
         Integer countLike = mapper.countLikesByCommunityId(id);
         viewer.put("like", countLike);
-        // 게시글 좋아요 수 추가
+        // 게시글 좋아요 수
+
+        boolean myCommunityLike;
+        if (auth != null) {
+            String person = mapper.findNickname(auth.getName());
+            if (mapper.findLikeByIdAndNickname(id, person) == 1) {
+                myCommunityLike = true;
+                viewer.put("myCommunityLike", myCommunityLike);
+            } else {
+                myCommunityLike = false;
+                viewer.put("myCommunityLike", myCommunityLike);
+            }
+        } else {
+            myCommunityLike = false;
+            viewer.put("myCommunityLike", myCommunityLike);
+        }
+        // 로그인 여부와 로그인한 회원 좋아요 여부
+
+        int oldViews = mapper.checkViews(id);
+        int views = oldViews + 1;
+        mapper.updateViews(views, id);
+        viewer.put("views", views);
+
 
         List<Integer> fileList = mapper.callCommunityFile(id);
         List<Map<String, Object>> commentList = mapper.callCommunityComment(id);
@@ -190,14 +213,10 @@ public class CommunityService {
         String nickname = mapper.findNickname(auth.getName());
         communityComment.setWriter(nickname);
 
-        System.out.println(communityComment);
-//        TODO : communityId 값 삽입 -> 나중에 jsx 에서 전송하는 것으로 하기.
-
-
         mapper.writeCommunityComment(communityComment);
     }
 
-    public void commentDelete(Integer id, Authentication auth) {
+    public void commentDelete(Integer id) {
         mapper.deleteCommentByCommentId(id);
     }
 
@@ -210,5 +229,62 @@ public class CommunityService {
 
     public List<Community> getMainPageCommunity(String keyword) {
         return mapper.getTop5ByOrderByUpdated(keyword);
+    }
+
+    public boolean checkMember(Authentication auth) {
+        if (mapper.findNickname(auth.getName()) != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean checkCommunity(Community community) {
+        if (community.getTitle().length() > 0 && community.getContent().length() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean checkComment(CommunityComment communityComment) {
+        if (communityComment.getComment().length() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean checkRightsOfAccess(Integer id, Authentication auth) {
+        String nicknameByAuth = mapper.findNickname(auth.getName());
+        String writer = mapper.findNicknameByCommunityId(id);
+
+        return writer.equals(nicknameByAuth);
+    }
+
+    public boolean checkCommentRightsOfAccess(Integer id, Authentication auth) {
+        String nicknameByAuth = mapper.findNickname(auth.getName());
+        String writer = mapper.findNicknameByCommunityCommentId(id);
+
+        return writer.equals(nicknameByAuth);
+    }
+
+//    TODO : 좋아요 작업 중
+
+    public void addLikeInCommunity(Integer id, Authentication auth) {
+        String person = mapper.findNickname(auth.getName());
+        mapper.InputLikeInCommunity(id, person);
+    }
+
+    public boolean checkLikeInCommunity(Integer id, Authentication auth) {
+        String person = mapper.findNickname(auth.getName());
+        int cnt = mapper.findLikeByIdAndNickname(id, person);
+
+        return cnt == 1;
+    }
+
+    public void removeLikeInCommunity(Integer id, Authentication auth) {
+        String person = mapper.findNickname(auth.getName());
+        mapper.deleteLikeInCommunity(id, person);
     }
 }

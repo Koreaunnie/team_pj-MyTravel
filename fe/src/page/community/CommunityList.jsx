@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Box,
   createListCollection,
@@ -27,6 +27,8 @@ import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import { IoMdPhotos } from "react-icons/io";
 import { AiOutlineComment } from "react-icons/ai";
 import { GoHeart } from "react-icons/go";
+import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
+import { HiOutlineBookOpen } from "react-icons/hi";
 
 function CommunityList(props) {
   const [communityList, setCommunityList] = useState([]);
@@ -34,6 +36,7 @@ function CommunityList(props) {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [countCommunity, setCountCommunity] = useState("");
+  const authentication = useContext(AuthenticationContext);
 
   useEffect(() => {
     axios.get(`/api/community/list?${searchParams.toString()}`).then((res) => {
@@ -41,7 +44,6 @@ function CommunityList(props) {
       setCountCommunity(res.data.countCommunity);
     });
   }, [searchParams]);
-  console.log(communityList);
 
   function handleWriteClick() {
     navigate(`/community/write`);
@@ -66,6 +68,10 @@ function CommunityList(props) {
     navigate(
       `/community/list?${searchQuery.toString()}&${pageQuery.toString()}`,
     );
+  }
+
+  function handleLoginClick() {
+    navigate(`/member/login`);
   }
 
   const optionList = createListCollection({
@@ -111,7 +117,8 @@ function CommunityList(props) {
                         <h4>
                           <HStack>
                             <GoHeart /> {c.numberOfLikes} | <AiOutlineComment />{" "}
-                            {c.numberOfComments}
+                            {c.numberOfComments} | <HiOutlineBookOpen />{" "}
+                            {c.numberOfViews}
                           </HStack>
                         </h4>
                       </Stack>
@@ -157,8 +164,18 @@ function CommunityList(props) {
                   <Button onClick={handleSearchClick}>검색</Button>
                 </HStack>
               </Box>
-              <Button onClick={handleWriteClick}>글 쓰기</Button>
+              {authentication.isAuthenticated && (
+                <Button onClick={handleWriteClick}>글 쓰기</Button>
+              )}
             </HStack>
+            {authentication.isAuthenticated || (
+              <Box>
+                <HStack>
+                  로그인을 한 회원만 게시글 작성이 가능합니다.
+                  <Button onClick={handleLoginClick}>로그인</Button>
+                </HStack>
+              </Box>
+            )}
           </Box>
           <Box>
             <PaginationRoot
