@@ -30,6 +30,7 @@
     "react-native-google-places-autocomplete": "^2.5.7",
     "react-places-autocomplete": "^7.3.0",
     "react-router-dom": "^6.28.0",
+    "swiper": "^11.1.15",
     "use-immer": "^0.10.0",
     "use-places-autocomplete": "^4.0.1"
   },

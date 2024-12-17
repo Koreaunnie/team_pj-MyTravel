@@ -121,7 +121,9 @@ function TourView() {
         }
         navigateToDepth2={() => navigate(`/tour/view/${id}`)}
       />
+
       <div>
+        {/*관리 버튼*/}
         {(hasAccess(tour.partnerEmail) || isAdmin) && (
           <Box>
             <button
@@ -157,11 +159,13 @@ function TourView() {
             </DialogRoot>
           </Box>
         )}
+
         {tour.active ? <h1>{tour.title}</h1> : <h1>삭제된 상품입니다.</h1>}
         <Stack>
           <Field label={"상품"} readOnly>
             <Input value={tour.product} />
           </Field>
+
           <ImageFileView files={tour.fileList} />
           <Field label={"위치"} readOnly>
             <Input value={tour.location} />
