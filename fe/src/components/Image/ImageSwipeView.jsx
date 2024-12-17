@@ -6,7 +6,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-export function ImageFileView({ files }) {
+export function ImageSwipeView({ files }) {
   return (
     <Box>
       <Swiper
