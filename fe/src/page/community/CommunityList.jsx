@@ -28,6 +28,7 @@ import { IoMdPhotos } from "react-icons/io";
 import { AiOutlineComment } from "react-icons/ai";
 import { GoHeart } from "react-icons/go";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
+import { HiOutlineBookOpen } from "react-icons/hi";
 
 function CommunityList(props) {
   const [communityList, setCommunityList] = useState([]);
@@ -116,7 +117,8 @@ function CommunityList(props) {
                         <h4>
                           <HStack>
                             <GoHeart /> {c.numberOfLikes} | <AiOutlineComment />{" "}
-                            {c.numberOfComments}
+                            {c.numberOfComments} | <HiOutlineBookOpen />{" "}
+                            {c.numberOfViews}
                           </HStack>
                         </h4>
                       </Stack>

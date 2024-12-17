@@ -65,6 +65,8 @@ public class CommunityService {
             } else {
                 community.setNumberOfLikes(0);
             }
+            Integer countViews = mapper.checkViews(community.getId());
+            community.setNumberOfViews(countViews);
         }
 
         Integer countCommunity = mapper.countAllCommunity(searchType, searchKeyword);
@@ -104,7 +106,8 @@ public class CommunityService {
         Map<String, Object> viewer = mapper.viewCommunity(id);
         Integer countLike = mapper.countLikesByCommunityId(id);
         viewer.put("like", countLike);
-        // 게시글 좋아요 수 추가
+        // 게시글 좋아요 수
+
         String person = mapper.findNickname(auth.getName());
         boolean myCommunityLike;
         if (mapper.findLikeByIdAndNickname(id, person) == 1) {
@@ -113,6 +116,13 @@ public class CommunityService {
             myCommunityLike = false;
         }
         viewer.put("myCommunityLike", myCommunityLike);
+        // 로그인한 회원 좋아요 여부
+
+        int oldViews = mapper.checkViews(id);
+        int views = oldViews + 1;
+        mapper.updateViews(views, id);
+        viewer.put("views", views);
+
 
         List<Integer> fileList = mapper.callCommunityFile(id);
         List<Map<String, Object>> commentList = mapper.callCommunityComment(id);

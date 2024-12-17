@@ -305,17 +305,17 @@ public interface CommunityMapper {
     int deleteLikeInCommunity(Integer id, String person);
 
 
-//    @Select("""
-//            SELECT views
-//            FROM community
-//            WHERE id=#{id}
-//            """)
-//    Integer checkViews(Integer id);
-//
-//    @Update("""
-//            UPDATE community
-//            SET views=#{plusViews}
-//            WHERE id=#{id}
-//            """)
-//    int updateViews(Integer plusViews, Integer id);
+    @Select("""
+            SELECT views
+            FROM community
+            WHERE id=#{id}
+            """)
+    int checkViews(Integer id);
+
+    @Update("""
+            UPDATE community
+            SET views=#{plusViews}
+            WHERE id=#{id}
+            """)
+    int updateViews(Integer plusViews, Integer id);
 }
