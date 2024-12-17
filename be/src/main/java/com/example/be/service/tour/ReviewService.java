@@ -99,7 +99,19 @@ public class ReviewService {
         return cnt == 1;
     }
 
-    public boolean edit(Review review) {
+    public boolean edit(Review review, List<String> removeFiles) {
+        if (removeFiles != null) {
+            for (String file : removeFiles) {
+                String key = "teamPrj1126/" + review.getTourId() + "/review/" + review.getReviewId() + "/" + file;
+                DeleteObjectRequest dor = DeleteObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(key)
+                    .build();
+                s3.deleteObject(dor);
+                mapper.deleteImageByReviewIdAndName(review.getReviewId(), file);
+            }
+        }
+
         int cnt = mapper.update(review);
         return cnt == 1;
     }

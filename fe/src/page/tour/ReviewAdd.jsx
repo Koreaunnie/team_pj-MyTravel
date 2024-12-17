@@ -34,7 +34,7 @@ function ReviewAdd({ tourId, onSaveClick, onRateChange }) {
       <button
         className={"btn btn-blue"}
         onClick={() => {
-          console.log(reviewImg);
+          // console.log(reviewImg);
           setReview("");
           onSaveClick({ review: review, rating: rating, reviewImg: reviewImg });
         }}

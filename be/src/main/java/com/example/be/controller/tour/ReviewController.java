@@ -42,9 +42,13 @@ public class ReviewController {
 
     @PutMapping("edit")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Map<String, Object>> edit(@RequestBody Review review) {
-        System.out.println("수정 내용" + review);
-        if (service.edit(review)) {
+    public ResponseEntity<Map<String, Object>> edit(
+        Review review,
+        @RequestParam(value = "removeFiles[]", required = false) List<String> removeFiles,
+        @RequestParam(value = "uploadFiles[]", required = false) MultipartFile[] uploadFiles
+    ) {
+//        System.out.println("삭제 내용" + removeFiles);
+        if (service.edit(review, removeFiles)) {
             return ResponseEntity.ok().body(Map.of("message",
                 Map.of("type", "success", "text", "후기 수정 완료")));
         } else {

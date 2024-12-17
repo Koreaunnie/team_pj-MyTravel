@@ -106,4 +106,11 @@ public interface ReviewMapper {
         WHERE review_id=#{reviewId}
         """)
     int deleteImageByReviewId(Integer reviewId);
+
+    @Delete("""
+        DELETE FROM tour_review_img
+        WHERE review_id=#{reviewId}
+        AND name=#{file}
+        """)
+    int deleteImageByReviewIdAndName(Integer reviewId, String file);
 }

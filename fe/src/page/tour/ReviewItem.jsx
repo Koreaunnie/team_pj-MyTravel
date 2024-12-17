@@ -13,11 +13,23 @@ import { AuthenticationContext } from "../../components/context/AuthenticationPr
 import { Rating } from "../../components/ui/rating.jsx";
 import { ReviewImageView } from "../../components/Image/ReviewImageView.jsx";
 import { ReviewImageEdit } from "../../components/Image/ReviewImageEdit.jsx";
+import { Field } from "../../components/ui/field.jsx";
+import { Input } from "@chakra-ui/react";
 
 function EditButton({ review, onEditClick, onRateChange }) {
   const [open, setOpen] = useState(false);
   const [newReview, setNewReview] = useState(review.review);
   const [newRating, setNewRating] = useState(review.rating);
+  const [removeFiles, setRemoveFiles] = useState([]);
+  const [fileList, setFileList] = useState(review.imageList || []);
+
+  const handleRemoveFile = (fileName) => {
+    setRemoveFiles((prev) => [...prev, fileName]);
+  };
+
+  const handleFileListChange = (updatedFileList) => {
+    setFileList(updatedFileList);
+  };
 
   return (
     <>
@@ -37,7 +49,15 @@ function EditButton({ review, onEditClick, onRateChange }) {
                 onRateChange(e, setNewRating); // 올바른 상태 설정
               }}
             />
-            <ReviewImageEdit files={review.imageList} />
+
+            <ReviewImageEdit
+              onRemove={handleRemoveFile}
+              onFileListChange={handleFileListChange}
+              files={fileList}
+            />
+            <Field>
+              <Input type="file" multiple />
+            </Field>
             <textarea
               value={newReview}
               onChange={(e) => setNewReview(e.target.value)}
@@ -54,6 +74,7 @@ function EditButton({ review, onEditClick, onRateChange }) {
                 onEditClick(review.reviewId, {
                   review: newReview,
                   rating: newRating,
+                  removeFiles,
                 }); // 새로운 리뷰와 별점을 함께 전달
               }}
             >
