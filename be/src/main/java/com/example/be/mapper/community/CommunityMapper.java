@@ -271,6 +271,20 @@ public interface CommunityMapper {
             """)
     int deleteLikeByInformation(Integer likeCommunityId, String likeUser);
 
+    @Select("""
+            SELECT writer
+            FROM community
+            WHERE id=#{id}
+            """)
+    String findNicknameByCommunityId(Integer id);
+
+    @Select("""
+            SELECT writer
+            FROM community_comment
+            WHERE id=#{id}
+            """)
+    String findNicknameByCommunityCommentId(Integer id);
+
 
 //    @Select("""
 //            SELECT views

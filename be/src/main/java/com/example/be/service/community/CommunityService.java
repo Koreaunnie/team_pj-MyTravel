@@ -192,7 +192,7 @@ public class CommunityService {
         mapper.writeCommunityComment(communityComment);
     }
 
-    public void commentDelete(Integer id, Authentication auth) {
+    public void commentDelete(Integer id) {
         mapper.deleteCommentByCommentId(id);
     }
 
@@ -205,5 +205,43 @@ public class CommunityService {
 
     public List<Community> getMainPageCommunity(String keyword) {
         return mapper.getTop5ByOrderByUpdated(keyword);
+    }
+
+    public boolean checkMember(Authentication auth) {
+        if (mapper.findNickname(auth.getName()) != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean checkCommunity(Community community) {
+        if (community.getTitle().length() > 0 && community.getContent().length() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean checkComment(CommunityComment communityComment) {
+        if (communityComment.getComment().length() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean checkRightsOfAccess(Integer id, Authentication auth) {
+        String nicknameByAuth = mapper.findNickname(auth.getName());
+        String writer = mapper.findNicknameByCommunityId(id);
+
+        return writer.equals(nicknameByAuth);
+    }
+
+    public boolean checkCommentRightsOfAccess(Integer id, Authentication auth) {
+        String nicknameByAuth = mapper.findNickname(auth.getName());
+        String writer = mapper.findNicknameByCommunityCommentId(id);
+
+        return writer.equals(nicknameByAuth);
     }
 }

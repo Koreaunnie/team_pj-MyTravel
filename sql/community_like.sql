@@ -8,12 +8,12 @@ CREATE TABLE community_like
 );
 
 
-INSERT INTO community_like (community_id, person)
-VALUES (40, '마르키시오');
-
 SELECT community_id communityId, person nickName
 FROM community_like
 WHERE person = '마르키시오';
+
+INSERT INTO community_like (community_id, person)
+VALUES (86, '이안오툴');
 
 DELETE
 FROM community_like
