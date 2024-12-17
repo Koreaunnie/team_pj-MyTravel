@@ -7,7 +7,7 @@ import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
 import moment from "moment";
 import { WalletCalendar } from "./WalletCalendar.jsx";
-import { formatNumberWithCommas } from "../../utils/formatNumberWithCommas.jsx";
+import { formatNumberWithCommas } from "../../components/utils/FormatNumberWithCommas.jsx";
 import { WalletCategory } from "./WalletCategory.jsx";
 
 function WalletList(props) {
