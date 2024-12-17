@@ -98,7 +98,6 @@ function CommunityList(props) {
             <Table.Root>
               <Table.Header>
                 <Table.Row>
-                  <Table.ColumnHeader>번호</Table.ColumnHeader>
                   <Table.ColumnHeader>제목</Table.ColumnHeader>
                   <Table.ColumnHeader>작성자</Table.ColumnHeader>
                   <Table.ColumnHeader>작성일시</Table.ColumnHeader>
@@ -107,7 +106,6 @@ function CommunityList(props) {
               <Table.Body>
                 {communityList.map((c) => (
                   <Table.Row onClick={() => handleViewClick(c.id)} key={c.id}>
-                    <Table.Cell>{c.id}</Table.Cell>
                     <Table.Cell>
                       <Stack>
                         <HStack>

@@ -90,7 +90,6 @@ function NoticeList(props) {
             <Table.Root>
               <Table.Header>
                 <Table.Row>
-                  <Table.ColumnHeader>번호</Table.ColumnHeader>
                   <Table.ColumnHeader>제목</Table.ColumnHeader>
                   <Table.ColumnHeader>작성자</Table.ColumnHeader>
                   <Table.ColumnHeader>작성일시</Table.ColumnHeader>
@@ -99,7 +98,6 @@ function NoticeList(props) {
               <Table.Body>
                 {noticeList.map((n) => (
                   <Table.Row onClick={() => handleViewClick(n.id)} key={n.id}>
-                    <Table.Cell>{n.id}</Table.Cell>
                     <Table.Cell>
                       <Stack>
                         <h3>{n.title}</h3>
