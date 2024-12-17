@@ -1,11 +1,11 @@
 import React, { useContext, useState } from "react";
 import { Box, Input, Stack, Textarea } from "@chakra-ui/react";
-import { Button } from "../../components/ui/button.jsx";
 import axios from "axios";
 import { Field } from "../../components/ui/field.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { useNavigate } from "react-router-dom";
+import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 
 export function TourAdd() {
   const [title, setTitle] = useState("");
@@ -47,6 +47,10 @@ export function TourAdd() {
       });
   };
 
+  const handleToListClick = () => {
+    navigate("/tour/list");
+  };
+
   const filesList = [];
   let sumOfFileSize = 0;
   let invalidOneFileSize = false;
@@ -76,7 +80,23 @@ export function TourAdd() {
   }
 
   return (
-    <Box>
+    <div className={"tour"}>
+      <Breadcrumb
+        depth1={"Tour 목록"}
+        navigateToDepth1={() => navigate(`/tour/list`)}
+        depth2={"상품 등록"}
+        navigateToDepth2={() => navigate(`/tour/add`)}
+      />
+
+      <Box>
+        <button className={"btn btn-dark-outline"} onClick={handleToListClick}>
+          목록으로
+        </button>
+        <button onClick={handleSaveClick} className={"btn btn-dark"}>
+          등록
+        </button>
+      </Box>
+
       <h1>Tour 상품 추가</h1>
       <Stack>
         <Field label={"제목"}>
@@ -131,11 +151,7 @@ export function TourAdd() {
           </Field>
           <Box>{filesList}</Box>
         </Box>
-
-        <Box>
-          <Button onClick={handleSaveClick}>저장</Button>
-        </Box>
       </Stack>
-    </Box>
+    </div>
   );
 }

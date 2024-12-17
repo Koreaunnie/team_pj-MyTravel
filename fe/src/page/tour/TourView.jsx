@@ -105,6 +105,10 @@ function TourView() {
       });
   };
 
+  const handleToListClick = () => {
+    navigate("/tour/list");
+  };
+
   return (
     <div className={"tour"}>
       <Breadcrumb
@@ -118,6 +122,41 @@ function TourView() {
         navigateToDepth2={() => navigate(`/tour/view/${id}`)}
       />
       <div>
+        {(hasAccess(tour.partnerEmail) || isAdmin) && (
+          <Box>
+            <button
+              className={"btn btn-dark-outline"}
+              onClick={handleToListClick}
+            >
+              목록으로
+            </button>
+            <button
+              className={"btn btn-dark"}
+              onClick={() => navigate(`/tour/update/${id}`)}
+            >
+              수정
+            </button>
+            <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
+              <DialogTrigger>
+                <button className={"btn btn-warning"}>삭제</button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>삭제 확인</DialogTitle>
+                </DialogHeader>
+                <DialogBody>
+                  <p>{tour.title} 게시물을 삭제하시겠습니까?</p>
+                </DialogBody>
+                <DialogFooter>
+                  <DialogActionTrigger>
+                    <Button>취소</Button>
+                  </DialogActionTrigger>
+                  <Button onClick={handleDeleteClick}>삭제</Button>
+                </DialogFooter>
+              </DialogContent>
+            </DialogRoot>
+          </Box>
+        )}
         {tour.active ? <h1>{tour.title}</h1> : <h1>삭제된 상품입니다.</h1>}
         <Stack>
           <Field label={"상품"} readOnly>
@@ -151,7 +190,7 @@ function TourView() {
           </ul>
           <Box>
             <button
-              className={"btn btn-dark"}
+              className={"btn btn-blue"}
               disabled={!tour.active}
               onClick={() => handleAddToCartClick()}
             >
@@ -164,36 +203,6 @@ function TourView() {
           <Field label={"제공사"} readOnly>
             <Input value={tour.partner} />
           </Field>
-
-          {(hasAccess(tour.partnerEmail) || isAdmin) && (
-            <Box>
-              <button
-                className={"btn btn-dark"}
-                onClick={() => navigate(`/tour/update/${id}`)}
-              >
-                수정
-              </button>
-              <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
-                <DialogTrigger>
-                  <button className={"btn btn-warning"}>삭제</button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>삭제 확인</DialogTitle>
-                  </DialogHeader>
-                  <DialogBody>
-                    <p>{tour.title} 게시물을 삭제하시겠습니까?</p>
-                  </DialogBody>
-                  <DialogFooter>
-                    <DialogActionTrigger>
-                      <Button>취소</Button>
-                    </DialogActionTrigger>
-                    <Button onClick={handleDeleteClick}>삭제</Button>
-                  </DialogFooter>
-                </DialogContent>
-              </DialogRoot>
-            </Box>
-          )}
         </Stack>
         <br />
         <hr />
