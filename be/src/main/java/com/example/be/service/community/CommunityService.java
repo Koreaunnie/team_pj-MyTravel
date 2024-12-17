@@ -244,4 +244,11 @@ public class CommunityService {
 
         return writer.equals(nicknameByAuth);
     }
+
+    public boolean updateLikeInCommunity(Integer id, Authentication auth) {
+        String nicknameByAuth = mapper.findNickname(auth.getName());
+        mapper.InputLikeInCommunity(id, nicknameByAuth);
+
+        return true;
+    }
 }

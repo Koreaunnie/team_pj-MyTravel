@@ -157,5 +157,21 @@ public class CommunityController {
 
 //    TODO : 게시판 좋아요 기능
 
-
+    @PostMapping("like/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, Object>> likeAdd(@PathVariable Integer id, Authentication auth) {
+        if (service.checkMember(auth)) {
+            if (service.updateLikeInCommunity(id, auth)) {
+                return ResponseEntity.ok().body(Map.of("message", "success",
+                        "text", "게시글을 추천하였습니다"));
+            } else {
+                return ResponseEntity.ok().body(Map.of("message", "success",
+                        "text", "게시글을 추천을 취소하였습니다"));
+            }
+        } else {
+            return ResponseEntity.status(403)
+                    .body(Map.of("message", Map.of("type", "error",
+                            "text", "권한이 없습니다.")));
+        }
+    }
 }

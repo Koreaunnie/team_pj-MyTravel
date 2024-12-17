@@ -285,6 +285,12 @@ public interface CommunityMapper {
             """)
     String findNicknameByCommunityCommentId(Integer id);
 
+    @Insert("""
+            INSERT INTO community_like (community_id, person)
+            VALUES (#{id}, #{nicknameByAuth})
+            """)
+    int InputLikeInCommunity(Integer id, String nicknameByAuth);
+
 
 //    @Select("""
 //            SELECT views

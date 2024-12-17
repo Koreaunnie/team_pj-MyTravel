@@ -13,7 +13,7 @@ FROM community_like
 WHERE person = '마르키시오';
 
 INSERT INTO community_like (community_id, person)
-VALUES (86, '이안오툴');
+VALUES (78, '피아니치');
 
 DELETE
 FROM community_like
