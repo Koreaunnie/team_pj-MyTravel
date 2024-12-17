@@ -108,15 +108,21 @@ public class CommunityService {
         viewer.put("like", countLike);
         // 게시글 좋아요 수
 
-        String person = mapper.findNickname(auth.getName());
         boolean myCommunityLike;
-        if (mapper.findLikeByIdAndNickname(id, person) == 1) {
-            myCommunityLike = true;
+        if (auth != null) {
+            String person = mapper.findNickname(auth.getName());
+            if (mapper.findLikeByIdAndNickname(id, person) == 1) {
+                myCommunityLike = true;
+                viewer.put("myCommunityLike", myCommunityLike);
+            } else {
+                myCommunityLike = false;
+                viewer.put("myCommunityLike", myCommunityLike);
+            }
         } else {
             myCommunityLike = false;
+            viewer.put("myCommunityLike", myCommunityLike);
         }
-        viewer.put("myCommunityLike", myCommunityLike);
-        // 로그인한 회원 좋아요 여부
+        // 로그인 여부와 로그인한 회원 좋아요 여부
 
         int oldViews = mapper.checkViews(id);
         int views = oldViews + 1;
