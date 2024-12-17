@@ -70,6 +70,13 @@ function InquiryList(props) {
 
       <div className={"body-normal"}>
         <div className={"btn-wrap"}>
+          <button
+            className={"btn btn-dark-outline"}
+            onClick={() => navigate("/cs/index")}
+          >
+            고객센터 홈
+          </button>
+
           <button className={"btn btn-blue"} onClick={checkLoginOrNot}>
             작성
           </button>
