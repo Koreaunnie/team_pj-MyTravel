@@ -118,6 +118,55 @@
 }
 
 
+/* -------------------------- card design --------------------------- */
+.card-wrap {
+    width: 90%;
+    height: 180px;
+    margin: 30px 0;
+    border: 1px solid var(--table-border-color);
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: var(--box-shadow);
+    position: relative;
+}
+
+.card-wrap:hover {
+    background: var(--bg-gray-color);
+    box-shadow: var(--box-shadow-hover);
+}
+
+.card-wrap:hover .card-header p {
+    background: #f1f0f0;
+}
+
+.card-wrap .card-header p {
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 13px 25px;
+    background: var(--bg-gray-color);
+    border-radius: 10px 10px 0 0;
+}
+
+.card-wrap .card-header .pinned {
+    position: absolute;
+    top: 5px;
+    right: 0;
+}
+
+.card-wrap .card-body {
+    margin: 15px 25px 10px 25px;
+    height: 60px;
+    font-size: 0.9rem;
+}
+
+.card-wrap .card-footer {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--font-gray-color);
+    margin-left: 30px;
+}
+
+
 /*------------------- 화면 크기가 768px 이하 (태블릿 화면) -------------------*/
 @media (max-width: 768px) {
 

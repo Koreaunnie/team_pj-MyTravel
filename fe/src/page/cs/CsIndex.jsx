@@ -6,6 +6,7 @@ import axios from "axios";
 import { CiLock } from "react-icons/ci";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
+import "react-calendar/dist/Calendar.css";
 
 function CsIndex(props) {
   const [faqList, setFaqList] = useState([]);

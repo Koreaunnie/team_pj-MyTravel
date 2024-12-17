@@ -7,9 +7,7 @@
 }
 
 .footer .logo {
-    position: absolute;
-    top: 25px;
-    right: 20px;
+    float: right;
     cursor: pointer;
     width: 200px;
     height: 45px;
