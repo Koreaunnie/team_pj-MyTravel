@@ -71,4 +71,18 @@ public class NoticeController {
                             "text", "수정 권한이 없습니다.")));
         }
     }
+
+    @DeleteMapping("delete/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, Object>> delete(@PathVariable Integer id, Authentication auth) {
+        if (service.checkRightsOfAccess(id, auth)) {
+            service.delete(id);
+            return ResponseEntity.ok().body(Map.of("message", "success",
+                    "text", STR."\{id}번 공지사항이 삭제되었습니다"));
+        } else {
+            return ResponseEntity.status(403)
+                    .body(Map.of("message", Map.of("type", "error",
+                            "text", "삭제 권한이 없습니다.")));
+        }
+    }
 }

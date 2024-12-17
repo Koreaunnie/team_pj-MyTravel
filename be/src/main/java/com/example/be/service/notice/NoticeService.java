@@ -106,4 +106,11 @@ public class NoticeService {
     public void edit(Notice notice) {
         mapper.editNotice(notice);
     }
+
+    public void delete(Integer id) {
+
+        mapper.deleteLikeByNoticeId(id);
+
+        mapper.deleteNotice(id);
+    }
 }

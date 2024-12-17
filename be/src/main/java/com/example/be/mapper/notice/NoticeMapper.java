@@ -142,4 +142,16 @@ public interface NoticeMapper {
             WHERE id=#{id}
             """)
     int editNotice(Notice notice);
+
+    @Delete("""
+            DELETE FROM notice_like
+            WHERE notice_id=#{id}
+            """)
+    int deleteLikeByNoticeId(Integer id);
+
+    @Delete("""
+            DELETE FROM notice
+            WHERE id = #{id}
+            """)
+    int deleteNotice(Integer id);
 }
