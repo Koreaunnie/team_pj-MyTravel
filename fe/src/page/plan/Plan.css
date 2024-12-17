@@ -1,13 +1,5 @@
-.plan .breadcrumb-wrap ol {
-    width: 800px;
-}
-
 .plan-wide {
     height: 100%;
-}
-
-.plan-wide .breadcrumb-wrap ol {
-    width: 1400px;
 }
 
 /*-------------------- PlanAdd --------------------*/
