@@ -250,7 +250,12 @@ function CommunityView(props) {
       .post(`/api/community/like/${id}`, {
         like: myCommunityLike,
       })
-      .then(() => {
+      .then((e) => {
+        const likeSuccess = e.data.message;
+        toaster.create({
+          type: likeSuccess.type,
+          description: likeSuccess.text,
+        });
         fetchLike();
       })
       .finally(() => setMyCommunityLike(!myCommunityLike));

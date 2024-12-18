@@ -47,12 +47,12 @@ public class CommunityController {
                             "text", STR."\{community.getId()}번 게시물이 등록되었습니다"), "id", community.getId()));
                 } else {
                     return ResponseEntity.badRequest()
-                            .body(Map.of("message", Map.of("type", "warning",
+                            .body(Map.of("message", Map.of("type", "error",
                                     "text", "제목이나 본문이 비어있을 수 없습니다.")));
                 }
             } else {
                 return ResponseEntity.status(403)
-                        .body(Map.of("message", Map.of("type", "error",
+                        .body(Map.of("message", Map.of("type", "warning",
                                 "text", "작성 권한이 없습니다.")));
             }
         } catch (Exception e) {
@@ -83,12 +83,12 @@ public class CommunityController {
                                     "text", STR."\{community.getId()}번 게시물이 수정되었습니다"), "id", community.getId()));
                 } else {
                     return ResponseEntity.badRequest()
-                            .body(Map.of("message", Map.of("type", "warning",
+                            .body(Map.of("message", Map.of("type", "error",
                                     "text", "제목이나 본문이 비어있을 수 없습니다.")));
                 }
             } else {
                 return ResponseEntity.status(403)
-                        .body(Map.of("message", Map.of("type", "error",
+                        .body(Map.of("message", Map.of("type", "warning",
                                 "text", "수정 권한이 없습니다.")));
             }
         } catch (Exception e) {
@@ -109,12 +109,12 @@ public class CommunityController {
                                 "text", "게시물이 삭제되었습니다")));
             } else {
                 return ResponseEntity.status(403)
-                        .body(Map.of("message", Map.of("type", "error",
+                        .body(Map.of("message", Map.of("type", "warning",
                                 "text", "삭제 권한이 없습니다.")));
             }
         } catch (Exception e) {
             return ResponseEntity.badRequest()
-                    .body(Map.of("message", Map.of("type", "warning",
+                    .body(Map.of("message", Map.of("type", "error",
                             "text", "존재하지 않는 게시물입니다.")));
         }
     }
@@ -133,12 +133,12 @@ public class CommunityController {
                                     "text", "댓글이 등록되었습니다")));
                 } else {
                     return ResponseEntity.badRequest()
-                            .body(Map.of("message", Map.of("type", "warning",
+                            .body(Map.of("message", Map.of("type", "error",
                                     "text", "댓글 내용이 비어있을 수 없습니다.")));
                 }
             } else {
                 return ResponseEntity.status(403)
-                        .body(Map.of("message", Map.of("type", "error",
+                        .body(Map.of("message", Map.of("type", "warning",
                                 "text", "작성 권한이 없습니다.")));
             }
         } catch (Exception e) {
@@ -159,12 +159,12 @@ public class CommunityController {
                                 "text", "댓글이 삭제되었습니다")));
             } else {
                 return ResponseEntity.status(403)
-                        .body(Map.of("message", Map.of("type", "error",
+                        .body(Map.of("message", Map.of("type", "warning",
                                 "text", "삭제 권한이 없습니다.")));
             }
         } catch (Exception e) {
             return ResponseEntity.badRequest()
-                    .body(Map.of("message", Map.of("type", "warning",
+                    .body(Map.of("message", Map.of("type", "error",
                             "text", "존재하지 않는 댓글입니다.")));
         }
     }
@@ -181,12 +181,12 @@ public class CommunityController {
                                     "text", "댓글이 수정되었습니다")));
                 } else {
                     return ResponseEntity.badRequest()
-                            .body(Map.of("message", Map.of("type", "warning",
+                            .body(Map.of("message", Map.of("type", "error",
                                     "text", "댓글 내용이 비어있을 수 없습니다.")));
                 }
             } else {
                 return ResponseEntity.status(403)
-                        .body(Map.of("message", Map.of("type", "error",
+                        .body(Map.of("message", Map.of("type", "warning",
                                 "text", "수정 권한이 없습니다.")));
             }
         } catch (Exception e) {
@@ -205,7 +205,7 @@ public class CommunityController {
             if (service.checkLikeInCommunity(id, auth)) {
                 service.removeLikeInCommunity(id, auth);
                 return ResponseEntity.ok()
-                        .body(Map.of("message", Map.of("type", "success",
+                        .body(Map.of("message", Map.of("type", "info",
                                 "text", "추천을 취소하였습니다")));
             } else {
                 service.addLikeInCommunity(id, auth);
@@ -215,7 +215,7 @@ public class CommunityController {
             }
         } else {
             return ResponseEntity.status(403)
-                    .body(Map.of("message", Map.of("type", "error",
+                    .body(Map.of("message", Map.of("type", "warning",
                             "text", "권한이 없습니다.")));
         }
     }
