@@ -1,14 +1,21 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import {
   Box,
+  createListCollection,
   DialogTitle,
   HStack,
   Icon,
   Image,
   Input,
   Stack,
+  Table,
   Textarea,
 } from "@chakra-ui/react";
 import { Field } from "../../components/ui/field.jsx";
@@ -23,12 +30,26 @@ import {
   DialogTrigger,
 } from "../../components/ui/dialog.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
-import CommunityList from "./CommunityList.jsx";
 import { FiMessageSquare } from "react-icons/fi";
 import { LuPencilLine } from "react-icons/lu";
-import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
+import { IoMdHeart, IoMdHeartEmpty, IoMdPhotos } from "react-icons/io";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { HiOutlineBookOpen } from "react-icons/hi";
+import { GoHeart } from "react-icons/go";
+import { AiOutlineComment } from "react-icons/ai";
+import {
+  SelectContent,
+  SelectItem,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+} from "../../components/ui/select.jsx";
+import {
+  PaginationItems,
+  PaginationNextTrigger,
+  PaginationPrevTrigger,
+  PaginationRoot,
+} from "../../components/ui/pagination.jsx";
 
 function ImageFileView({ files }) {
   return (
@@ -51,11 +72,19 @@ function CommunityView(props) {
   const navigate = useNavigate();
   const [comment, setComment] = useState("");
   const [commentList, setCommentList] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [commentContent, setCommentContent] = useState("");
   const [myCommunityLike, setMyCommunityLike] = useState(false);
+  const [communityList, setCommunityList] = useState([]);
+  const [search, setSearch] = useState({ type: "all", keyword: "" });
+  const [searchParams] = useSearchParams();
+  const [countCommunity, setCountCommunity] = useState("");
   const authentication = useContext(AuthenticationContext);
   const { hasAccessByNickName } = useContext(AuthenticationContext);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   useEffect(() => {
     axios.get(`/api/community/view/${id}`, { id }).then((e) => {
@@ -64,7 +93,13 @@ function CommunityView(props) {
       setMyCommunityLike(e.data.myCommunityLike);
     });
   }, []);
-  console.log(community);
+
+  useEffect(() => {
+    axios.get(`/api/community/list?${searchParams.toString()}`).then((res) => {
+      setCommunityList(res.data.list);
+      setCountCommunity(res.data.countCommunity);
+    });
+  }, [searchParams]);
 
   const handleDeleteClick = () => {
     axios
@@ -126,10 +161,6 @@ function CommunityView(props) {
       .catch((err) => console.error(err));
   };
 
-  function handleLoginClick() {
-    navigate(`/member/login`);
-  }
-
   // TODO: 로그인에 대한 권한 완료 후 좋아요 즉시 반영 시도하기
   const handleLikeClick = () => {
     axios
@@ -141,6 +172,52 @@ function CommunityView(props) {
       })
       .finally(() => setMyCommunityLike(!myCommunityLike));
   };
+
+  // 리스트
+
+  function handleWriteClick() {
+    navigate(`/community/write`);
+  }
+
+  function handleViewClick(id) {
+    axios
+      .get(`/api/community/view/${id}`)
+      .then((e) => {
+        setCommunity(e.data);
+        setCommentList(e.data.commentList);
+        setMyCommunityLike(e.data.myCommunityLike);
+      })
+      .then(navigate(`/community/view/${id}`));
+  }
+
+  function handleSearchClick() {
+    const searchInfo = { type: search.type, keyword: search.keyword };
+    const searchQuery = new URLSearchParams(searchInfo);
+    navigate(`/community/list?${searchQuery.toString()}`);
+  }
+
+  function handlePageChangeClick(e) {
+    const pageNumber = { page: e.page };
+    const pageQuery = new URLSearchParams(pageNumber);
+    const searchInfo = { type: search.type, keyword: search.keyword };
+    const searchQuery = new URLSearchParams(searchInfo);
+    navigate(
+      `/community/list?${searchQuery.toString()}&${pageQuery.toString()}`,
+    );
+  }
+
+  const optionList = createListCollection({
+    items: [
+      { label: "전체", value: "all" },
+      { label: "제목", value: "title" },
+      { label: "본문", value: "content" },
+      { label: "작성자", value: "writer" },
+    ],
+  });
+
+  function handleLoginClick() {
+    navigate(`/member/login`);
+  }
 
   return (
     <div>
@@ -379,11 +456,105 @@ function CommunityView(props) {
               </Field>
             </Stack>
           </Box>
+          <br />
+          <br />
           <Box>
-            <CommunityList />
+            <Table.Root>
+              <Table.Header>
+                <Table.Row>
+                  <Table.ColumnHeader>제목</Table.ColumnHeader>
+                  <Table.ColumnHeader>작성자</Table.ColumnHeader>
+                  <Table.ColumnHeader>작성일시</Table.ColumnHeader>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                {communityList.map((c) => (
+                  <Table.Row onClick={() => handleViewClick(c.id)} key={c.id}>
+                    <Table.Cell>
+                      <Stack>
+                        <HStack>
+                          <h3>{c.title}</h3>
+                          {c.existOfFiles ? <IoMdPhotos /> : " "}
+                        </HStack>
+                        <h4>
+                          <HStack>
+                            <GoHeart /> {c.numberOfLikes} | <AiOutlineComment />{" "}
+                            {c.numberOfComments} | <HiOutlineBookOpen />{" "}
+                            {c.numberOfViews}
+                          </HStack>
+                        </h4>
+                      </Stack>
+                    </Table.Cell>
+                    <Table.Cell>{c.writer}</Table.Cell>
+                    <Table.Cell>{c.creationDate}</Table.Cell>
+                  </Table.Row>
+                ))}
+              </Table.Body>
+            </Table.Root>
+          </Box>
+          <Box>
+            <HStack>
+              <Box>
+                <HStack>
+                  <SelectRoot
+                    collection={optionList}
+                    defaultValue={["all"]}
+                    onChange={(oc) =>
+                      setSearch({ ...search, type: oc.target.value })
+                    }
+                    size="sm"
+                    width="130px"
+                  >
+                    <SelectTrigger>
+                      <SelectValueText />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {optionList.items.map((option) => (
+                        <SelectItem item={option} key={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </SelectRoot>
+                  <Input
+                    w={300}
+                    value={search.keyword}
+                    onChange={(e) =>
+                      setSearch({ ...search, keyword: e.target.value })
+                    }
+                  />
+                  <Button onClick={handleSearchClick}>검색</Button>
+                </HStack>
+              </Box>
+              {authentication.isAuthenticated && (
+                <Button onClick={handleWriteClick}>글 쓰기</Button>
+              )}
+            </HStack>
+            {authentication.isAuthenticated || (
+              <Box>
+                <HStack>
+                  로그인을 한 회원만 게시글 작성이 가능합니다.
+                  <Button onClick={handleLoginClick}>로그인</Button>
+                </HStack>
+              </Box>
+            )}
+          </Box>
+          <Box>
+            <PaginationRoot
+              count={countCommunity}
+              pageSize={10}
+              defaultPage={1}
+              onPageChange={handlePageChangeClick}
+              siblingCount={2}
+            >
+              <HStack>
+                <PaginationPrevTrigger />
+                <PaginationItems />
+                <PaginationNextTrigger />
+              </HStack>
+            </PaginationRoot>
           </Box>
         </Stack>
-        <input type="hidden" value={loading} />
       </div>
     </div>
   );
