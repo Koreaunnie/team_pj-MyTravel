@@ -34,20 +34,26 @@ public class NoticeController {
     @PostMapping("write")
     @PreAuthorize("hasAuthority('SCOPE_admin')")
     public ResponseEntity<Map<String, Object>> write(@RequestBody Notice notice, Authentication auth) {
-        if (service.checkAdmin(auth)) {
-            if (service.checkNotice(notice)) {
-                service.write(notice, auth);
-                return ResponseEntity.ok().body(Map.of("message", "success",
-                        "text", STR."\{notice.getId()}번 공지사항 등록되었습니다", "id", notice.getId()));
+        try {
+            if (service.checkAdmin(auth)) {
+                if (service.checkNotice(notice)) {
+                    service.write(notice, auth);
+                    return ResponseEntity.ok().body(Map.of("message", "success",
+                            "text", STR."\{notice.getId()}번 공지사항 등록되었습니다", "id", notice.getId()));
+                } else {
+                    return ResponseEntity.badRequest()
+                            .body(Map.of("message", Map.of("type", "warning",
+                                    "text", "제목이나 본문이 비어있을 수 없습니다.")));
+                }
             } else {
-                return ResponseEntity.badRequest()
-                        .body(Map.of("message", Map.of("type", "warning",
-                                "text", "제목이나 본문이 비어있을 수 없습니다.")));
+                return ResponseEntity.status(403)
+                        .body(Map.of("message", Map.of("type", "error",
+                                "text", "작성 권한이 없습니다.")));
             }
-        } else {
-            return ResponseEntity.status(403)
-                    .body(Map.of("message", Map.of("type", "error",
-                            "text", "작성 권한이 없습니다.")));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", Map.of("type", "warning",
+                            "text", "작성에 실패했습니다.")));
         }
     }
 
@@ -55,34 +61,46 @@ public class NoticeController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> edit(@RequestBody Notice notice, Authentication auth) {
         Integer id = notice.getId();
-        if (service.checkRightsOfAccess(id, auth)) {
-            if (service.checkNotice(notice)) {
-                service.edit(notice);
-                return ResponseEntity.ok().body(Map.of("message", "success",
-                        "text", STR."\{notice.getId()}번 게시물이 수정되었습니다"));
+        try {
+            if (service.checkRightsOfAccess(id, auth)) {
+                if (service.checkNotice(notice)) {
+                    service.edit(notice);
+                    return ResponseEntity.ok().body(Map.of("message", "success",
+                            "text", STR."\{notice.getId()}번 게시물이 수정되었습니다"));
+                } else {
+                    return ResponseEntity.badRequest()
+                            .body(Map.of("message", Map.of("type", "warning",
+                                    "text", "제목이나 본문이 비어있을 수 없습니다.")));
+                }
             } else {
-                return ResponseEntity.badRequest()
-                        .body(Map.of("message", Map.of("type", "warning",
-                                "text", "제목이나 본문이 비어있을 수 없습니다.")));
+                return ResponseEntity.status(403)
+                        .body(Map.of("message", Map.of("type", "error",
+                                "text", "수정 권한이 없습니다.")));
             }
-        } else {
-            return ResponseEntity.status(403)
-                    .body(Map.of("message", Map.of("type", "error",
-                            "text", "수정 권한이 없습니다.")));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", Map.of("type", "warning",
+                            "text", "수정에 실패했습니다.")));
         }
     }
 
     @DeleteMapping("delete/{id}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable Integer id, Authentication auth) {
-        if (service.checkRightsOfAccess(id, auth)) {
-            service.delete(id);
-            return ResponseEntity.ok().body(Map.of("message", "success",
-                    "text", STR."\{id}번 공지사항이 삭제되었습니다"));
-        } else {
-            return ResponseEntity.status(403)
-                    .body(Map.of("message", Map.of("type", "error",
-                            "text", "삭제 권한이 없습니다.")));
+        try {
+            if (service.checkRightsOfAccess(id, auth)) {
+                service.delete(id);
+                return ResponseEntity.ok().body(Map.of("message", "success",
+                        "text", STR."\{id}번 공지사항이 삭제되었습니다"));
+            } else {
+                return ResponseEntity.status(403)
+                        .body(Map.of("message", Map.of("type", "error",
+                                "text", "삭제 권한이 없습니다.")));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", Map.of("type", "warning",
+                            "text", "존재하지 않는 게시물입니다.")));
         }
     }
 

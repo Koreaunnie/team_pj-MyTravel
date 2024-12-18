@@ -39,20 +39,26 @@ public class CommunityController {
     @PostMapping("write")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> write(Community community, @RequestParam(value = "files[]", required = false) MultipartFile[] files, Authentication auth) {
-        if (service.checkMember(auth)) {
-            if (service.checkCommunity(community)) {
-                service.write(community, files, auth);
-                return ResponseEntity.ok().body(Map.of("message", "success",
-                        "text", STR."\{community.getId()}번 게시물이 등록되었습니다", "id", community.getId()));
+        try {
+            if (service.checkMember(auth)) {
+                if (service.checkCommunity(community)) {
+                    service.write(community, files, auth);
+                    return ResponseEntity.ok().body(Map.of("message", "success",
+                            "text", STR."\{community.getId()}번 게시물이 등록되었습니다", "id", community.getId()));
+                } else {
+                    return ResponseEntity.badRequest()
+                            .body(Map.of("message", Map.of("type", "warning",
+                                    "text", "제목이나 본문이 비어있을 수 없습니다.")));
+                }
             } else {
-                return ResponseEntity.badRequest()
-                        .body(Map.of("message", Map.of("type", "warning",
-                                "text", "제목이나 본문이 비어있을 수 없습니다.")));
+                return ResponseEntity.status(403)
+                        .body(Map.of("message", Map.of("type", "error",
+                                "text", "작성 권한이 없습니다.")));
             }
-        } else {
-            return ResponseEntity.status(403)
-                    .body(Map.of("message", Map.of("type", "error",
-                            "text", "작성 권한이 없습니다.")));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", Map.of("type", "warning",
+                            "text", "작성에 실패했습니다.")));
         }
     }
 
@@ -68,34 +74,46 @@ public class CommunityController {
                                                     @RequestParam(value = "uploadFiles[]", required = false) MultipartFile[] uploadFiles,
                                                     Authentication auth) {
         Integer id = community.getId();
-        if (service.checkRightsOfAccess(id, auth)) {
-            if (service.checkCommunity(community)) {
-                service.edit(community, removeFiles, uploadFiles);
-                return ResponseEntity.ok().body(Map.of("message", "success",
-                        "text", STR."\{community.getId()}번 게시물이 수정되었습니다"));
+        try {
+            if (service.checkRightsOfAccess(id, auth)) {
+                if (service.checkCommunity(community)) {
+                    service.edit(community, removeFiles, uploadFiles);
+                    return ResponseEntity.ok().body(Map.of("message", "success",
+                            "text", STR."\{community.getId()}번 게시물이 수정되었습니다"));
+                } else {
+                    return ResponseEntity.badRequest()
+                            .body(Map.of("message", Map.of("type", "warning",
+                                    "text", "제목이나 본문이 비어있을 수 없습니다.")));
+                }
             } else {
-                return ResponseEntity.badRequest()
-                        .body(Map.of("message", Map.of("type", "warning",
-                                "text", "제목이나 본문이 비어있을 수 없습니다.")));
+                return ResponseEntity.status(403)
+                        .body(Map.of("message", Map.of("type", "error",
+                                "text", "수정 권한이 없습니다.")));
             }
-        } else {
-            return ResponseEntity.status(403)
-                    .body(Map.of("message", Map.of("type", "error",
-                            "text", "수정 권한이 없습니다.")));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", Map.of("type", "warning",
+                            "text", "수정에 실패했습니다.")));
         }
     }
 
     @DeleteMapping("delete/{id}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable Integer id, Authentication auth) {
-        if (service.checkRightsOfAccess(id, auth)) {
-            service.delete(id, auth);
-            return ResponseEntity.ok().body(Map.of("message", "success",
-                    "text", STR."\{id}번 게시물이 삭제되었습니다"));
-        } else {
-            return ResponseEntity.status(403)
-                    .body(Map.of("message", Map.of("type", "error",
-                            "text", "삭제 권한이 없습니다.")));
+        try {
+            if (service.checkRightsOfAccess(id, auth)) {
+                service.delete(id, auth);
+                return ResponseEntity.ok().body(Map.of("message", "success",
+                        "text", STR."\{id}번 게시물이 삭제되었습니다"));
+            } else {
+                return ResponseEntity.status(403)
+                        .body(Map.of("message", Map.of("type", "error",
+                                "text", "삭제 권한이 없습니다.")));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", Map.of("type", "warning",
+                            "text", "존재하지 않는 게시물입니다.")));
         }
     }
 
@@ -104,54 +122,72 @@ public class CommunityController {
     @PostMapping("comment/write")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> commentWrite(@RequestBody CommunityComment communityComment, Authentication auth) {
-        if (service.checkMember(auth)) {
-            if (service.checkComment(communityComment)) {
-                service.commentWrite(communityComment, auth);
-                return ResponseEntity.ok().body(Map.of("message", "success",
-                        "text", "댓글이 등록되었습니다"));
+        try {
+            if (service.checkMember(auth)) {
+                if (service.checkComment(communityComment)) {
+                    service.commentWrite(communityComment, auth);
+                    return ResponseEntity.ok().body(Map.of("message", "success",
+                            "text", "댓글이 등록되었습니다"));
+                } else {
+                    return ResponseEntity.badRequest()
+                            .body(Map.of("message", Map.of("type", "warning",
+                                    "text", "댓글 내용이 비어있을 수 없습니다.")));
+                }
             } else {
-                return ResponseEntity.badRequest()
-                        .body(Map.of("message", Map.of("type", "warning",
-                                "text", "댓글 내용이 비어있을 수 없습니다.")));
+                return ResponseEntity.status(403)
+                        .body(Map.of("message", Map.of("type", "error",
+                                "text", "작성 권한이 없습니다.")));
             }
-        } else {
-            return ResponseEntity.status(403)
-                    .body(Map.of("message", Map.of("type", "error",
-                            "text", "작성 권한이 없습니다.")));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", Map.of("type", "warning",
+                            "text", "작성에 실패했습니다.")));
         }
     }
 
     @DeleteMapping("comment/delete/{id}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> commentDelete(@PathVariable Integer id, Authentication auth) {
-        if (service.checkCommentRightsOfAccess(id, auth)) {
-            service.commentDelete(id);
-            return ResponseEntity.ok().body(Map.of("message", "success",
-                    "text", "댓글이 삭제되었습니다"));
-        } else {
-            return ResponseEntity.status(403)
-                    .body(Map.of("message", Map.of("type", "error",
-                            "text", "삭제 권한이 없습니다.")));
+        try {
+            if (service.checkCommentRightsOfAccess(id, auth)) {
+                service.commentDelete(id);
+                return ResponseEntity.ok().body(Map.of("message", "success",
+                        "text", "댓글이 삭제되었습니다"));
+            } else {
+                return ResponseEntity.status(403)
+                        .body(Map.of("message", Map.of("type", "error",
+                                "text", "삭제 권한이 없습니다.")));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", Map.of("type", "warning",
+                            "text", "존재하지 않는 댓글입니다.")));
         }
     }
 
     @PutMapping("comment/edit/{id}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> commentEdit(@RequestBody CommunityComment communityComment, @PathVariable Integer id, Authentication auth) {
-        if (service.checkCommentRightsOfAccess(id, auth)) {
-            if (service.checkComment(communityComment)) {
-                service.updateComment(communityComment, id, auth);
-                return ResponseEntity.ok().body(Map.of("message", "success",
-                        "text", "댓글이 수정되었습니다"));
+        try {
+            if (service.checkCommentRightsOfAccess(id, auth)) {
+                if (service.checkComment(communityComment)) {
+                    service.updateComment(communityComment, id, auth);
+                    return ResponseEntity.ok().body(Map.of("message", "success",
+                            "text", "댓글이 수정되었습니다"));
+                } else {
+                    return ResponseEntity.badRequest()
+                            .body(Map.of("message", Map.of("type", "warning",
+                                    "text", "댓글 내용이 비어있을 수 없습니다.")));
+                }
             } else {
-                return ResponseEntity.badRequest()
-                        .body(Map.of("message", Map.of("type", "warning",
-                                "text", "댓글 내용이 비어있을 수 없습니다.")));
+                return ResponseEntity.status(403)
+                        .body(Map.of("message", Map.of("type", "error",
+                                "text", "수정 권한이 없습니다.")));
             }
-        } else {
-            return ResponseEntity.status(403)
-                    .body(Map.of("message", Map.of("type", "error",
-                            "text", "수정 권한이 없습니다.")));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", Map.of("type", "warning",
+                            "text", "수정에 실패했습니다.")));
         }
     }
 

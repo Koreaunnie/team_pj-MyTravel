@@ -435,13 +435,17 @@ function CommunityView(props) {
                                 <DialogRoot>
                                   <DialogTrigger>
                                     <Button>삭제</Button>
-                                    <DialogContent>
-                                      <DialogHeader>글 삭제</DialogHeader>
-                                      <DialogBody>
-                                        해당 댓글을 정말 삭제하시겠습니까?
-                                      </DialogBody>
-                                      <DialogFooter>
+                                  </DialogTrigger>
+                                  <DialogContent>
+                                    <DialogHeader>글 삭제</DialogHeader>
+                                    <DialogBody>
+                                      해당 댓글을 정말 삭제하시겠습니까?
+                                    </DialogBody>
+                                    <DialogFooter>
+                                      <DialogActionTrigger>
                                         <Button>취소</Button>
+                                      </DialogActionTrigger>
+                                      <DialogActionTrigger>
                                         <Button
                                           onClick={() =>
                                             handleCommentDeleteClick(list.id)
@@ -449,9 +453,9 @@ function CommunityView(props) {
                                         >
                                           삭제
                                         </Button>
-                                      </DialogFooter>
-                                    </DialogContent>
-                                  </DialogTrigger>
+                                      </DialogActionTrigger>
+                                    </DialogFooter>
+                                  </DialogContent>
                                 </DialogRoot>
                               </HStack>
                             </Box>
