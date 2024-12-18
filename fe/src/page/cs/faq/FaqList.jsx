@@ -42,6 +42,15 @@ function FaqList(props) {
           )}
         </div>
 
+        <div className={"btn-wrap"}>
+          <button
+            className={"btn btn-dark-outline"}
+            onClick={() => navigate("/cs/index")}
+          >
+            고객센터 홈
+          </button>
+        </div>
+
         <h1>자주 묻는 질문</h1>
 
         {!faqList || faqList.length === 0 ? (

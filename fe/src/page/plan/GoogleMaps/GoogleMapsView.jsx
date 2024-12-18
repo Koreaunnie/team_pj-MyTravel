@@ -28,7 +28,7 @@ export function GoogleMapsView({ placeIds }) {
   useEffect(() => {
     // placeIds가 변경될 때만 실행되도록
     if (prevPlaceIdsRef.current !== placeIds) {
-      console.log("placeIds updated", placeIds);
+      console.log("google maps view placeids", placeIds);
 
       if (placeIds && isLoaded && mapInstanceRef.current) {
         const service = new google.maps.places.PlacesService(

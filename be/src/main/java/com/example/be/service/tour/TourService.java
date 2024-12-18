@@ -193,9 +193,22 @@ public class TourService {
     }
 
     // 메인 화면에 필요한 일부 tour 리스트 가져오기
-    public List<Tour> getMainPageTours(String keyword) {
-        return mapper.getTop4ByOrderById(keyword);
+    public List<TourList> getMainPageTours(String keyword) {
+        // DB에서 투어 리스트 가져오기
+        List<TourList> tours = mapper.getTop4ByOrderById(keyword);
+
+        // 각 투어 객체의 이미지 경로 설정
+        if (tours != null && !tours.isEmpty()) {
+            tours.stream().forEach(tour -> {
+                if (tour.getImage() != null) {
+                    // 이미지 경로 설정
+                    tour.setSrc(imageSrcPrefix + "/" + tour.getId() + "/" + tour.getImage());
+                }
+            });
+        }
+        return tours;
     }
+
 
     public List<Tour> myList(String email) {
         return mapper.myList(email);

@@ -1,12 +1,22 @@
+.main-search-container {
+    top: 0;
+    background-image: url('../assets/main.jpg');
+    background-size: cover;
+    background-position: center 50%;
+    height: 250px;
+    padding: 60px 0;
+}
+
 .main-search-wrap {
     width: 500px;
-    margin: 50px auto;
+    margin: 0 auto;
+    padding: 0 20px;
     display: flex;
     border: 1px solid #dee2e6;
     box-sizing: border-box;
     border-radius: 50px;
     height: 60px;
-    padding: 0 20px;
+    background: #fff;
 }
 
 .main-search-wrap input[type=search] {
@@ -28,55 +38,363 @@
     margin: 20px;
 }
 
-.main-section-wrap {
+/*------------------- calendar section -------------------*/
+.main-calendar-section-wrap {
+    display: flex;
+    position: relative;
     width: 1000px;
-    height: 310px;
+    height: 380px;
     margin: 50px auto;
     box-sizing: border-box;
 }
 
-.main-section-wrap .section-header {
+.main-calendar-section-wrap .calendar {
+    position: inherit;
+    width: 300px;
+    height: 400px;
+    top: 0;
+    border: 1px solid var(--table-border-color);
+    box-shadow: 3px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.main-calendar-section-wrap .react-calendar {
+    width: 430px !important;
+    height: 400px;
+    padding: 20px 10px;
+    line-height: 1rem;
+    border-radius: 10px;
+    border: 1px solid var(--table-border-color) !important;
+    box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* 년-월 */
+.main-calendar-section-wrap .react-calendar__navigation__label > span {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.main-calendar-section-wrap .react-calendar__navigation {
+    margin: 0 0 10px 0;
+}
+
+
+.main-calendar-section-wrap .react-calendar__month-view__weekdays__weekday {
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
+/* 날짜 타일 한개 */
+.main-calendar-section-wrap .react-calendar__tile {
+    width: 40px;
+    height: 48px;
     display: flex;
-    height: 70px;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 0;
+    padding: 0;
 }
 
-.main-section-wrap .section-header h2 {
-    margin: 20px auto;
+.main-calendar-section-wrap .react-calendar__tile:enabled:hover {
+    background: none;
+    border-radius: 0;
+}
+
+.main-calendar-section-wrap .react-calendar__tile--active {
     font-weight: bold;
-    font-size: 25px;
 }
 
-.main-section-wrap .section-header .more-btn {
+/* 오늘 날짜 */
+.main-calendar-section-wrap .react-calendar__tile--now {
+    position: relative;
+    background: none !important;
+    border: none !important;
+}
+
+/* 선택된 날짜의 배경색 변경 */
+.main-calendar-section-wrap .react-calendar__tile--active {
+    background: none !important;
+    color: #000;
+}
+
+.main-calendar-section-wrap .isToday {
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-top: 3px;
+}
+
+.main-calendar-section-wrap .hasPlan {
+    width: 6px;
+    height: 6px;
+    background: var(--main-blue);
+    border-radius: 50%;
+    margin: 5px auto 0;
+}
+
+.main-calendar-section-wrap .section-right {
+    margin-left: 30px;
+}
+
+.main-calendar-section-wrap .section-right .index-calendar-btn-wrap {
+    display: flex;
+}
+
+.main-calendar-section-wrap .section-right .index-calendar-btn-wrap .index-calendar-btn {
+    width: 200px;
     cursor: pointer;
+    color: #fff;
     font-weight: bold;
+    margin: 20px;
+    padding: 15px 20px;
+    background: var(--bg-dark-blue-color);
+    border-radius: 10px;
+    border: 1px solid var(--table-border-color);
+    box-shadow: var(--box-shadow);
+}
+
+.main-calendar-section-wrap .index-calendar-list {
+    width: 100%;
+    display: flex;
+    margin-left: 30px;
+}
+
+.main-calendar-section-wrap .index-calendar-list h3 {
+    font-weight: bold;
+    font-size: 2rem;
+    margin-top: 30px;
+    width: 150px;
+    color: var(--main-blue);
+}
+
+.main-calendar-section-wrap .index-calendar-list ul {
+    margin: 30px 0 0 30px;
+}
+
+.main-calendar-section-wrap .index-calendar-list .calendar-list-title {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.main-calendar-section-wrap .index-calendar-list .calendar-list-description {
+    margin-top: 5px;
     font-size: 0.9rem;
     color: var(--font-gray-color);
 }
 
-.main-section-wrap .section-body .section-body-card {
-    display: flex;
-    justify-content: space-between;
+.main-calendar-section-wrap .index-calendar-list .empty-container {
+    width: 100%;
+    margin: 30px;
+    text-align: left;
 }
 
-.main-section-wrap .section-body .section-body-card > li {
-    height: 230px;
-    margin: 10px;
-    padding: 23px;
-    border: 1px solid var(--table-border-color);
-    box-sizing: border-box;
-    border-radius: 5px;
-    width: 25%;
+.main-calendar-section-wrap .index-calendar-list .empty-container-title {
+    margin-top: 0;
+}
+
+
+/*------------------- 내 여행 -------------------*/
+section.plan-container {
+    margin-top: 100px;
+    width: 100%;
+    height: 400px;
+    background: var(--bg-light-blue-color);
+    display: block;
+}
+
+.plan-container .plan-container-wrap {
+    width: 1000px;
+    margin: 20px auto 0 auto;
+}
+
+.plan-container .plan-container-wrap .plan-container-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.plan-container .plan-container-wrap .plan-container-header h2 {
+    font-size: 1.5rem;
+}
+
+.plan-container .plan-container-wrap .plan-container-header .more-btn {
+    padding: 10px 20px;
+    color: #000;
+    font-weight: bold;
     cursor: pointer;
 }
 
-.main-section-wrap .section-body .section-body-card h3 {
+.plan-container .plan-container-wrap .plan-container-card {
+    height: 210px;
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.plan-container .plan-container-wrap .plan-container-card ul {
+    flex: 1 1 calc(25% - 30px); /* 너비 */
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 30px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0px 48px 48px -12px rgba(46, 107, 170, .12);
+    position: relative;
+}
+
+.plan-container .plan-container-wrap .plan-container-card ul:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.plan-container .plan-container-wrap .plan-container-card .title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: var(--font-dark-blue-color);
+}
+
+.plan-container .plan-container-wrap .plan-container-card li {
+    font-size: 0.9rem;
+}
+
+.plan-container .plan-container-wrap .plan-container-card li:nth-child(3) {
+    font-weight: bold;
+    position: absolute;
+    bottom: 50px;
+}
+
+.plan-container .plan-container-wrap .plan-container-card li:nth-child(4) {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--font-gray-color);
+    position: absolute;
+    bottom: 25px;
+}
+
+/*------------------- banner -------------------*/
+
+.info-banner {
+    width: 100%;
+    height: 100px;
+    background: var(--main-blue);
+}
+
+.info-banner .info-banner-wrap {
+    width: 1000px;
+    margin: 0 auto;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.info-banner .info-banner-wrap p {
+    color: #fff;
+    text-align: center;
+    margin-top: 30px;
     font-weight: bold;
     font-size: 1.1rem;
+}
+
+.info-banner .info-banner-wrap button {
+    width: 280px;
+    margin-top: 20px;
+    padding: 13px 20px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    background: #ffffff;
+    color: var(--main-blue);
+    border-radius: 5px;
+    border: 1px solid var(--table-border-color);
+    box-shadow: var(--box-shadow);
+}
+
+/*------------------- tour -------------------*/
+.tour-container {
+    width: 1000px;
+    height: 400px;
+    margin: 50px auto;
+    box-sizing: border-box;
+}
+
+.tour-container .tour-container-header {
+    display: flex;
+    margin: 30px 0;
+}
+
+.tour-container .tour-container-header h2 {
+    margin: 0 auto;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.tour-container .tour-container-header .more-btn {
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9rem;
+
+}
+
+.tour-container .tour-container-body .tour-container-card {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.tour-container .tour-container-body .tour-container-card ul {
+    flex: 1 1 calc(25% - 30px); /* 너비 */
+    height: 300px;
+    margin: 10px;
+    border: 1px solid var(--table-border-color);
+    box-sizing: border-box;
+    border-radius: 10px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.1s ease;
+}
+
+.tour-container .tour-container-body .tour-container-card ul:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--box-shadow);
+}
+
+.tour-container .tour-container-body .tour-container-card .image {
+    height: 140px;
+    overflow: hidden;
+}
+
+.tour-container .tour-container-body .tour-container-card .li-wrap {
+    padding: 23px;
+}
+
+.tour-container .tour-container-body .tour-container-card .title {
+    font-weight: bold;
+    font-size: 1rem;
     width: 100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: initial;
 }
+
+.tour-container .tour-container-body .tour-container-card li {
+    font-size: 0.9rem;
+}
+
+.tour-container .tour-container-body .tour-container-card li:nth-child(3) {
+    font-weight: bold;
+    position: absolute;
+    bottom: 45px;
+}
+
+.tour-container .tour-container-body .tour-container-card li:nth-child(4) {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--font-gray-color);
+    position: absolute;
+    bottom: 20px;
+}
+
 
 /*------------------- section -------------------*/
 .main-section-wrap .section-body .section-body-card .list-item .description {
@@ -101,58 +419,113 @@
 
 }
 
+
 /*------------------- 광고 슬라이드 -------------------*/
 .ad {
     width: 1000px;
-    height: 250px;
     margin: 100px auto;
-    border: 1px solid red;
 }
 
+.slider-container {
+    width: 100%;
+}
 
-/*------------------- divided section -------------------*/
-.divided-section {
+/*------------------- 커뮤니티 -------------------*/
+.community-container {
+    width: 1000px;
+    margin: 0 auto;
+    background: var(--bg-dark-blue-color);
+    border-radius: 10px;
+    padding: 30px;
+    color: #fff;
+}
+
+.community-container .community-container-wrap {
+    display: flex;
+}
+
+.community-container .community-container-wrap .community-container-header {
+    width: 350px;
+    margin: 55px 0 0 20px;
+}
+
+.community-container .community-container-wrap .community-container-header h2 {
+    font-size: 1.7rem;
+}
+
+.community-container .community-container-wrap .community-container-header .more-btn {
+    font-size: 0.9rem;
+    cursor: pointer;
+    color: var(--font-light-gray-color);
+}
+
+.community-container .community-container-wrap .community-container-body {
+    width: 100%;
+    margin-left: 50px;
+    background: #fff;
+    color: #000;
+    border-radius: 10px;
+    padding: 20px 30px;
+}
+
+.community-container .community-container-wrap .community-container-list ul {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+    cursor: pointer;
+}
+
+.community-container .community-container-wrap .community-container-list ul li:nth-child(2) {
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+/*------------------- 고객센터 -------------------*/
+.divided-container {
     background: var(--bg-gray-color);
 }
 
-.divided-section .main-section-wrap {
+.divided-container .divided-container-wrap {
+    width: 1000px;
+    margin: 0 auto;
     display: flex;
     height: 400px;
     background: var(--bg-gray-color);
     padding: 50px 0;
 }
 
-/*------------------- 고객센터 -------------------*/
-.tel-container {
+/*------------------- 연락처 -------------------*/
+.divided-container .tel-container {
     width: 400px;
     margin-top: 50px;
 }
 
-.divided-section .tel-container h3 {
+.divided-container .tel-container h3 {
     text-align: center;
     font-size: 25px;
     font-weight: bold;
 }
 
-.divided-section .tel-container h5 {
+.divided-container .tel-container h5 {
     text-align: center;
     font-size: 30px;
     font-weight: bold;
     color: var(--main-blue);
 }
 
-.divided-section .tel-container ul {
+.divided-container .tel-container ul {
     margin: 45px 100px;
 }
 
-.divided-section .tel-container ul li {
+.divided-container .tel-container ul li {
     font-size: 1.2rem;
     font-weight: bold;
     margin: 10px 0;
 }
 
-/*------------------- 커뮤니티 -------------------*/
-.divided-section .notice-section-wrap {
+/*------------------- 공지사항 -------------------*/
+.notice-section-wrap {
     width: calc(100% - 400px);;
     border: 1px solid var(--table-border-color);
     border-radius: 15px;
@@ -164,12 +537,6 @@
     justify-content: space-between;
     padding: 10px 30px;
     border-bottom: 1px solid var(--table-border-color);
-}
-
-.notice-section-wrap .notice-section-header .link-box {
-    margin-top: 16px;
-    font-size: 0.9rem;
-    color: var(--font-gray-color);
 }
 
 .notice-section-wrap .notice-section-body {
@@ -208,6 +575,183 @@
     .ad {
         width: 80%;
     }
+
+    /*------------------- banner -------------------*/
+    .info-banner {
+        width: 100%;
+        height: 130px;
+    }
+
+    .info-banner .info-banner-wrap {
+        width: 100%;
+        margin: 0 auto;
+        padding: 5px;
+        display: block;
+        position: relative;
+    }
+
+    .info-banner .info-banner-wrap p {
+        color: #fff;
+        text-align: center;
+        margin-top: 16px;
+        font-weight: bold;
+        font-size: 1rem;
+    }
+
+    .info-banner .info-banner-wrap button {
+        padding: 10px 20px;
+        margin-top: 14px;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+
+    /*------------------- tour -------------------*/
+    .tour-container {
+        width: 80%;
+        height: 800px;
+        position: relative;
+        margin: 40px auto;
+    }
+
+    .tour-container .tour-container-header {
+        display: flex;
+    }
+
+    .tour-container .tour-container-header h2 {
+        margin: 0 auto;
+        font-weight: bold;
+        font-size: 25px;
+    }
+
+    .tour-container .tour-container-header .more-btn {
+        width: 100%;
+        height: 60px;
+        color: #000;
+        position: absolute;
+        border: 1px solid var(--table-border-color);
+        border-radius: 10px;
+        bottom: 0;
+    }
+
+    .tour-container .tour-container-body .tour-container-card {
+        display: block;
+        gap: 20px;
+    }
+
+    .tour-container .tour-container-body .tour-container-card ul {
+        flex: 1 1 calc(25% - 30px); /* 너비 */
+        height: 150px;
+        margin: 10px;
+        border: 1px solid var(--table-border-color);
+        position: relative;
+        display: flex;
+    }
+
+    .tour-container .tour-container-body .tour-container-card ul:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--box-shadow);
+    }
+
+    .tour-container .tour-container-body .tour-container-card .image {
+        width: 230px;
+        height: 100%;
+    }
+
+    .tour-container .tour-container-body .tour-container-card .li-wrap {
+        padding: 20px;
+    }
+
+    .tour-container .tour-container-body .tour-container-card .title {
+        font-size: 1rem;
+    }
+
+    /*------------------- 커뮤니티 -------------------*/
+    .community-container {
+        width: 80%;
+        padding: 10px;
+    }
+
+    .community-container .community-container-wrap {
+        display: block;
+    }
+
+    .community-container .community-container-wrap .community-container-header {
+        width: 100%;
+        margin: 0;
+        text-align: center;
+    }
+
+    .community-container .community-container-wrap .community-container-header h2 {
+        font-size: 1.7rem;
+        margin-bottom: 0;
+    }
+
+    .community-container .community-container-wrap .community-container-body {
+        width: 90%;
+        margin: 20px auto;
+    }
+
+
+    /*------------------- 고객센터 -------------------*/
+    .divided-container {
+        background: var(--bg-gray-color);
+        border: 1px solid green;
+    }
+
+    .divided-container .divided-container-wrap {
+        height: auto;
+        padding: 30px;
+        display: block;
+        border: 1px solid red;
+    }
+
+    /*------------------- 연락처 -------------------*/
+    .divided-container .tel-container {
+        width: 400px;
+        margin-top: 10px;
+    }
+
+    .divided-container .tel-container h3 {
+        font-size: 1.2rem;
+    }
+
+    .divided-container .tel-container h5 {
+        font-size: 1.5rem;
+    }
+
+    .divided-container .tel-container ul {
+        margin: 30px 100px;
+    }
+
+    .divided-container .tel-container ul li {
+        font-size: 1.1rem;
+    }
+
+    /*------------------- 공지사항 -------------------*/
+    .notice-section-wrap {
+        width: 80%;
+    }
+
+    .notice-section-wrap .notice-section-header {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px 20px;
+    }
+
+    .notice-section-wrap .notice-section-header h2 {
+        font-size: 1.2rem;
+    }
+
+    .notice-section-wrap .notice-section-body {
+        padding: 10px 20px;
+    }
+
+    .notice-section-wrap .notice-section-body .notice-section-list li {
+        margin: 4px 0;
+        font-size: 0.9rem;
+    }
 }
 
 /*------------------- 화면 크기가 480px 이하 (모바일 화면) -------------------*/
@@ -217,7 +761,106 @@
     }
 
     .ad {
+        width: 100%;
+    }
+
+    /*------------------- banner -------------------*/
+    .info-banner {
+        width: 100%;
+        height: 110px;
+    }
+
+    .info-banner .info-banner-wrap {
+        padding: 5px;
+    }
+
+    .info-banner .info-banner-wrap p {
+        margin-top: 15px;
+        font-weight: normal;
+        font-size: 0.9rem;
+    }
+
+    .info-banner .info-banner-wrap button {
+        width: 220px;
+        padding: 5px 10px;
+        margin-top: 13px;
+        font-size: 0.9rem;
+    }
+
+
+    /*------------------- tour -------------------*/
+    .tour-container {
         width: 95%;
+        height: 800px;
+        position: relative;
+        margin: 20px auto;
+        border: 1px solid green;
+    }
+
+    .tour-container .tour-container-header {
+        margin: 20px 0;
+    }
+
+    .tour-container .tour-container-header h2 {
+        font-weight: bold;
+        font-size: 1rem;
+        border: 1px solid red;
+    }
+
+    .tour-container .tour-container-header .more-btn {
+        width: 100%;
+        height: 60px;
+        color: #000;
+        position: absolute;
+        border: 1px solid var(--table-border-color);
+        border-radius: 10px;
+        bottom: 0;
+    }
+
+    .tour-container .tour-container-body .tour-container-card {
+        display: block;
+        gap: 20px;
+    }
+
+    .tour-container .tour-container-body .tour-container-card ul {
+        flex: 1 1 calc(25% - 30px); /* 너비 */
+        height: 150px;
+        margin: 10px;
+        border: 1px solid var(--table-border-color);
+        position: relative;
+        display: flex;
+    }
+
+    .tour-container .tour-container-body .tour-container-card ul:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--box-shadow);
+    }
+
+    .tour-container .tour-container-body .tour-container-card .image {
+        width: 150px;
+
+    }
+
+    .tour-container .tour-container-body .tour-container-card .li-wrap {
+        padding: 20px;
+    }
+
+    .tour-container .tour-container-body .tour-container-card .title {
+        font-size: 1rem;
+    }
+
+    .tour-container .tour-container-body .tour-container-card li:nth-child(2) {
+        display: none;
+    }
+
+    /*------------------- 커뮤니티 -------------------*/
+    .community-container {
+        width: 95%;
+        padding: 10px;
+    }
+
+    .community-container .community-container-wrap .community-container-list ul li:nth-child(2) {
+        display: none;
     }
 }
 
