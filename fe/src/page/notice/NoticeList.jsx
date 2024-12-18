@@ -41,6 +41,7 @@ function NoticeList(props) {
       setNoticeList(res.data.list);
       setCountNotice(res.data.countNotice);
     });
+    window.scrollTo(0, 0);
   }, [searchParams]);
 
   function handleWriteClick() {
@@ -48,7 +49,7 @@ function NoticeList(props) {
   }
 
   function handleViewClick(id) {
-    navigate(`/notice/view/${id}`);
+    navigate(`/notice/view/${id}#top`);
   }
 
   function handleSearchClick() {

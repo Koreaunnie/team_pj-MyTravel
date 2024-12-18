@@ -1,5 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import axios from "axios";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
@@ -40,6 +45,7 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../components/ui/pagination.jsx";
+import { toaster } from "../../components/ui/toaster.jsx";
 
 function NoticeView(props) {
   const { id } = useParams();
@@ -52,12 +58,34 @@ function NoticeView(props) {
   const [countNotice, setCountNotice] = useState("");
   const authentication = useContext(AuthenticationContext);
   const { hasAccessByNickName } = useContext(AuthenticationContext);
+  const { pathname } = useLocation();
+  const [titleLength, setTitleLength] = useState("");
+  const [creationDate, setCreationDate] = useState("");
 
   useEffect(() => {
-    axios.get(`/api/notice/view/${id}`, { id }).then((e) => {
-      setNotice(e.data);
-      setMyNoticeLike(e.data.myNoticeLike);
-    });
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  useEffect(() => {
+    axios
+      .get(`/api/notice/view/${id}`, { id })
+      .then((e) => {
+        setNotice(e.data);
+        setMyNoticeLike(e.data.myNoticeLike);
+        setTitleLength(e.data.title.length);
+        setCreationDate(e.data.creationDate.substring(0, 19));
+      })
+      .catch((e) => {
+        const message = e.request.response.message || {
+          type: "error",
+          text: "존재하지 않는 게시물입니다.",
+        };
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+        navigate(`/notice/list`);
+      });
   }, []);
 
   useEffect(() => {
@@ -68,7 +96,27 @@ function NoticeView(props) {
   }, [searchParams]);
 
   const handleDeleteClick = () => {
-    axios.delete(`/api/notice/delete/${id}`).then(navigate(`/notice/list`));
+    axios
+      .delete(`/api/notice/delete/${id}`)
+      .then((e) => {
+        const deleteSuccess = e.data.message;
+        toaster.create({
+          type: deleteSuccess.type,
+          description: deleteSuccess.text,
+        });
+        navigate(`/notice/list`);
+      })
+      .catch((e) => {
+        const deleteFailure = e.request.response;
+        const parsingKey = JSON.parse(deleteFailure);
+        const type = parsingKey.message.type;
+        const text = parsingKey.message.text;
+        toaster.create({
+          type: type,
+          description: text,
+        });
+        navigate(`/`);
+      });
   };
 
   const handleEditClick = () => {
@@ -94,7 +142,12 @@ function NoticeView(props) {
       .post(`/api/notice/like/${id}`, {
         like: myNoticeLike,
       })
-      .then(() => {
+      .then((e) => {
+        const likeSuccess = e.data.message;
+        toaster.create({
+          type: likeSuccess.type,
+          description: likeSuccess.text,
+        });
         fetchLike();
       })
       .finally(() => setMyNoticeLike(!myNoticeLike));
@@ -105,7 +158,12 @@ function NoticeView(props) {
   }
 
   function handleViewClick(id) {
-    axios.get(`/api/notice/view/${id}`).then((e) => setNotice(e.data));
+    axios
+      .get(`/api/notice/view/${id}`)
+      .then(navigate(`/notice/view/${id}#top`))
+      .then((e) => {
+        setNotice(e.data);
+      });
   }
 
   function handleSearchClick() {
@@ -137,8 +195,12 @@ function NoticeView(props) {
       <Breadcrumb
         depth1={"공지사항"}
         navigateToDepth1={() => navigate(`/notice/list`)}
-        depth2={notice.id + "번 공지사항"}
-        navigateToDepth2={() => navigate(`/notice/view/${id}`)}
+        depth2={
+          titleLength > 15
+            ? `${notice.title.substring(0, 15)}...`
+            : notice.title
+        }
+        navigateToDepth2={() => navigate(`/notice/view/${notice.id}`)}
       />
       <div>
         <br />
@@ -151,7 +213,7 @@ function NoticeView(props) {
                 <Icon fontSize="2xl">
                   <HiOutlineBookOpen />
                 </Icon>{" "}
-                : {notice.views} | {notice.creationDate}
+                : {notice.views} | {creationDate}
               </HStack>
             </Field>
             <br />
@@ -225,8 +287,8 @@ function NoticeView(props) {
           )}
           <br />
           <Stack>
+            <br />
             <Box>
-              <h1>공지사항</h1>
               <Table.Root>
                 <Table.Header>
                   <Table.Row>
