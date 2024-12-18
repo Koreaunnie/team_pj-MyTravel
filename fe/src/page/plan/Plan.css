@@ -147,12 +147,14 @@
     cursor: pointer;
 }
 
-/*-------------------- PlanList --------------------*/
+/*-------------------- PlanList -------------------*/
+.plan-wide {
+    min-height: 100vh;
+}
 
 .plan-list-wrap {
     margin: 70px 0 0 30px;
     width: 100%;
-    height: 100%;
     flex: 1;
 }
 
