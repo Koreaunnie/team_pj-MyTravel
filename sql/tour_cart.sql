@@ -23,3 +23,16 @@ GROUP BY id;
 ALTER TABLE tour_cart
     ADD COLUMN startDate DATE,
     ADD COLUMN endDate   DATE;
+
+-- 기존 외래 키 제약 조건 삭제
+ALTER TABLE tour_cart
+    DROP CONSTRAINT tour_cart_ibfk_2;
+
+-- 새로운 외래 키 제약 조건 추가 (ON UPDATE CASCADE)
+ALTER TABLE tour_cart
+    ADD CONSTRAINT tour_cart_ibfk_2
+        FOREIGN KEY (member_email)
+            REFERENCES member (email)
+            ON UPDATE CASCADE;
+
+SHOW CREATE TABLE tour_cart;
