@@ -67,12 +67,25 @@ function NoticeView(props) {
   }, [pathname]);
 
   useEffect(() => {
-    axios.get(`/api/notice/view/${id}`, { id }).then((e) => {
-      setNotice(e.data);
-      setMyNoticeLike(e.data.myNoticeLike);
-      setTitleLength(e.data.title.length);
-      setCreationDate(e.data.creationDate.substring(0, 19));
-    });
+    axios
+      .get(`/api/notice/view/${id}`, { id })
+      .then((e) => {
+        setNotice(e.data);
+        setMyNoticeLike(e.data.myNoticeLike);
+        setTitleLength(e.data.title.length);
+        setCreationDate(e.data.creationDate.substring(0, 19));
+      })
+      .catch((e) => {
+        const message = e.request.response.message || {
+          type: "error",
+          text: "존재하지 않는 게시물입니다.",
+        };
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+        navigate(`/notice/list`);
+      });
   }, []);
 
   useEffect(() => {
