@@ -45,6 +45,7 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../components/ui/pagination.jsx";
+import { toaster } from "../../components/ui/toaster.jsx";
 
 function NoticeView(props) {
   const { id } = useParams();
@@ -82,7 +83,27 @@ function NoticeView(props) {
   }, [searchParams]);
 
   const handleDeleteClick = () => {
-    axios.delete(`/api/notice/delete/${id}`).then(navigate(`/notice/list`));
+    axios
+      .delete(`/api/notice/delete/${id}`)
+      .then((e) => {
+        const deleteSuccess = e.data.message;
+        toaster.create({
+          type: deleteSuccess.type,
+          description: deleteSuccess.text,
+        });
+        navigate(`/notice/list`);
+      })
+      .catch((e) => {
+        const deleteFailure = e.request.response;
+        const parsingKey = JSON.parse(deleteFailure);
+        const type = parsingKey.message.type;
+        const text = parsingKey.message.text;
+        toaster.create({
+          type: type,
+          description: text,
+        });
+        navigate(`/`);
+      });
   };
 
   const handleEditClick = () => {
