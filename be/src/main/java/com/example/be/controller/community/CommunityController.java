@@ -43,7 +43,7 @@ public class CommunityController {
             if (service.checkCommunity(community)) {
                 service.write(community, files, auth);
                 return ResponseEntity.ok().body(Map.of("message", "success",
-                        "text", STR."\{community.getId()}번 게시물이 등록되었습니다"));
+                        "text", STR."\{community.getId()}번 게시물이 등록되었습니다", "id", community.getId()));
             } else {
                 return ResponseEntity.badRequest()
                         .body(Map.of("message", Map.of("type", "warning",

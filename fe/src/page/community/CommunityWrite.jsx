@@ -24,7 +24,9 @@ function CommunityWrite(props) {
   const handleSaveClick = () => {
     axios
       .postForm(`/api/community/write`, { title, content, files })
-      .then(navigate(`/community/list`));
+      .then((e) => {
+        navigate(`/community/view/${e.data.id}`);
+      });
   };
 
   const handleCancelClick = () => {

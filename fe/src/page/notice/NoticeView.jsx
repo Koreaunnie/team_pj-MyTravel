@@ -118,7 +118,9 @@ function NoticeView(props) {
     axios
       .get(`/api/notice/view/${id}`)
       .then(navigate(`/notice/view/${id}#top`))
-      .then((e) => setNotice(e.data));
+      .then((e) => {
+        setNotice(e.data);
+      });
   }
 
   function handleSearchClick() {
