@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -29,8 +30,21 @@ public class FaqService {
         return cnt == 1;
     }
 
-    public List<Faq> list() {
-        return mapper.selectAll();
+    public Map<String, Object> list(Integer page, String type, String keyword) {
+        Integer offset = (page - 1) * 10;
+
+        //list 조회
+        List<Faq> faqList = mapper.searchResult(offset, type, keyword);
+
+        //조회 결과 수
+        Integer count = mapper.countAll(type, keyword);
+
+        if (faqList == null || faqList.isEmpty()) {
+            return Map.of("faqList", List.of());
+        }
+
+        return Map.of("faqList", faqList, "count", count);
+//        return mapper.selectAll();
     }
 
     public Faq view(int id) {
