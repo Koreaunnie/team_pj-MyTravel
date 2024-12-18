@@ -21,9 +21,11 @@ export function ReviewImageEdit({ files, onRemove, onFileListChange }) {
 
   return (
     <Box display="flex" alignItems="center" overflow={"hidden"}>
-      <IconButton onClick={handlePrev} zIndex={1} aria-label="Previous">
-        <FaAngleLeft />
-      </IconButton>
+      {files.length > 2 && (
+        <IconButton onClick={handlePrev} zIndex={1} aria-label="Previous">
+          <FaAngleLeft />
+        </IconButton>
+      )}
       <Box
         display={"flex"}
         transition="transform 0.3s ease"
@@ -45,9 +47,11 @@ export function ReviewImageEdit({ files, onRemove, onFileListChange }) {
           </>
         ))}
       </Box>
-      <IconButton onClick={handleNext}>
-        <FaAngleRight />
-      </IconButton>
+      {files.length > 2 && (
+        <IconButton onClick={handleNext}>
+          <FaAngleRight />
+        </IconButton>
+      )}
     </Box>
   );
 }
