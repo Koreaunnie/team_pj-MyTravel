@@ -3,7 +3,7 @@
 }
 
 /*-------------------- PlanAdd --------------------*/
-.plan-add {
+.plan-form {
     background: var(--bg-gray-color);
     width: 1000px;
     margin: 0 auto;
@@ -13,15 +13,12 @@
     padding: 20px;
 }
 
-.plan-add .input-design-wrap {
+.plan-form .input-design-wrap {
+    position: relative;
     margin: 40px 0;
 }
 
-.plan-add .input-design-wrap {
-    position: relative;
-}
-
-.plan-add .input-design-wrap input {
+.plan-form .input-design-wrap input {
     border: none;
     border-bottom: 1px solid var(--input-border-color);
     padding: 20px 10px;
@@ -32,11 +29,11 @@
     height: 30px;
 }
 
-.plan-add .input-design-wrap input:focus {
+.plan-form .input-design-wrap input:focus {
     outline: none;
 }
 
-.plan-add .input-design-wrap label {
+.plan-form .input-design-wrap label {
     position: absolute;
     color: var(--font-gray-color);
     left: 10px;
@@ -44,17 +41,17 @@
     transition: all .2s;
 }
 
-.plan-add .input-design-wrap input:focus ~ label,
-.plan-add .input-design-wrap input:valid ~ label {
+.plan-form .input-design-wrap input:focus ~ label,
+.plan-form .input-design-wrap input:valid ~ label {
     bottom: 30px;
 }
 
-.plan-add .input-design-wrap input:focus ~ span,
-.plan-add .input-design-wrap input:valid ~ span {
+.plan-form .input-design-wrap input:focus ~ span,
+.plan-form .input-design-wrap input:valid ~ span {
     width: 100%;
 }
 
-.plan-add .input-design-wrap span {
+.plan-form .input-design-wrap span {
     position: absolute;
     bottom: 0;
     left: 0%;
@@ -64,19 +61,19 @@
     transition: 0.5s;
 }
 
-.plan-add .plan input {
+.plan-form .plan input {
     font-weight: bold;
     font-size: 1.5rem;
     padding: 30px 10px;
     height: 50px;
 }
 
-.plan-add .plan input:focus ~ label,
-.plan-add .plan input:valid ~ label {
+.plan-form .plan input:focus ~ label,
+.plan-form .plan input:valid ~ label {
     bottom: 40px;
 }
 
-.plan-add .schedule input {
+.plan-form .schedule input {
     font-weight: bold;
     font-size: 1.2rem;
     padding: 27px 10px;
@@ -84,8 +81,8 @@
     color: var(--font-dark-blue-color);
 }
 
-.plan-add .schedule input:focus ~ label,
-.plan-add .schedule input:valid ~ label {
+.plan-form .schedule input:focus ~ label,
+.plan-form .schedule input:valid ~ label {
     bottom: 36px;
 }
 
@@ -100,11 +97,15 @@
     width: 50%;
 }
 
+.plan-body .input-design-wrap {
+    margin: 20px 0;
+}
+
 .plan-body {
     margin: 20px;
 }
 
-.plan-body-box {
+.plan-body .plan-body-box {
     border-top: 1px dashed var(--font-light-gray-color);
     border-bottom: 1px dashed var(--font-light-gray-color);
     background: #fff;
@@ -117,6 +118,38 @@
     width: 100%;
 }
 
+.plan-body .place-label label {
+    bottom: 357px;
+}
+
+.plan-body .place-label input {
+    border: 0;
+}
+
+.plan-body .memo-label {
+    color: var(--font-gray-color);
+}
+
+.plan-body .btn-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.plan-body .btn-wrap .plan-handle-btn {
+    width: 50px;
+    height: 50px;
+    margin: 10px;
+    border-radius: 5px;
+    border: 1px solid var(--table-border-color);
+    box-shadow: var(--box-shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+}
 
 /*-------------------- PlanList --------------------*/
 
@@ -205,15 +238,14 @@
     font-weight: bold;
 }
 
-/* 일반 데이터 행 스타일 */
 .data-row td {
     padding: 10px;
     text-align: center;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--table-border-color);
 }
 
 .data-row:last-child td {
-    border-bottom: none; /* 마지막 데이터 행의 하단 경계선 제거 */
+    border-bottom: none;
 }
 
 

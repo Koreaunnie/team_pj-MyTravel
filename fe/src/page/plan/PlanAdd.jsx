@@ -6,6 +6,7 @@ import { toaster } from "../../components/ui/toaster.jsx";
 import { Modal } from "/src/components/root/Modal.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import { GoogleMapsAdd } from "./GoogleMaps/GoogleMapsAdd.jsx";
+import { FaMinus, FaPlus } from "react-icons/fa6";
 
 function PlanAdd(props) {
   const [backToListModalOpen, setBackToListModalOpen] = useState(false);
@@ -116,7 +117,7 @@ function PlanAdd(props) {
   }
 
   return (
-    <div className={"plan-add"}>
+    <div className={"plan-form"}>
       <Breadcrumb
         depth1={"내 여행"}
         navigateToDepth1={() => navigate(`/plan/list`)}
@@ -251,7 +252,7 @@ function PlanAdd(props) {
                   </li>
                 </div>
 
-                <li className={"input-design-wrap"}>
+                <li className={"input-design-wrap place-label"}>
                   <label htmlFor="place">장소</label>
                   <GoogleMapsAdd
                     id="place"
@@ -261,7 +262,7 @@ function PlanAdd(props) {
                   />
                 </li>
 
-                <li>
+                <li className={"memo-label"}>
                   <label htmlFor="memo">메모</label>
                   <textarea
                     name="memo"
@@ -275,18 +276,18 @@ function PlanAdd(props) {
 
                 <div className={"btn-wrap"}>
                   <button
-                    className={"btn btn-dark"}
+                    className={"plan-handle-btn"}
                     type="button"
                     onClick={handleAddField}
                   >
-                    +
+                    <FaPlus />
                   </button>
                   <button
-                    className={"btn btn-dark"}
+                    className={"plan-handle-btn"}
                     type="button"
                     onClick={() => handleDeleteField(index)}
                   >
-                    -
+                    <FaMinus />
                   </button>
                 </div>
               </ul>
