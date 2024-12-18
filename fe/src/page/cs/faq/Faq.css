@@ -1,0 +1,12 @@
+.faq {
+    height: calc(100vh - 180px);
+    overflow-x: hidden;
+}
+
+.faq .table-list tbody tr td:first-child {
+    font-size: 0.8rem;
+}
+
+.faq .table-list tr td:nth-child(2) {
+    text-align: left;
+}

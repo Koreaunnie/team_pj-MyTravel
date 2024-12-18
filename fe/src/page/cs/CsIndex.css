@@ -31,11 +31,11 @@
 /*------------------- 자주 하는 질문 -------------------*/
 
 .cs .faq-container {
-    margin: 30px auto;
+    margin: 0 auto;
 }
 
 .cs .faq-container ul {
-    margin: 20px 0;
+    margin: 30px 0;
 }
 
 .cs .faq-container ul li {

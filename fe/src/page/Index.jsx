@@ -209,7 +209,7 @@ export function Index() {
       <section className={"plan-container"}>
         <div className={"plan-container-wrap"}>
           <div className={"plan-container-header"}>
-            <h2>내 여행</h2>
+            <h1>내 여행</h1>
             <button
               className={"more-btn"}
               onClick={() => navigate(`/plan/list`)}
@@ -267,7 +267,7 @@ export function Index() {
       {/* 투어 */}
       <section className={"tour-container"}>
         <div className={"tour-container-header"}>
-          <h2>지금 당장 떠나보세요!</h2>
+          <h1>지금 당장 떠나보세요!</h1>
           <button className={"more-btn"} onClick={() => navigate(`/tour/list`)}>
             투어 구경하기
             <FaArrowRight
@@ -315,7 +315,7 @@ export function Index() {
       <section className={"community-container"}>
         <div className={"community-container-wrap"}>
           <div className={"community-container-header"}>
-            <h2>커뮤니티</h2>
+            <h1>커뮤니티</h1>
             <button
               className={"more-btn"}
               onClick={() => navigate(`/community/list`)}
@@ -376,7 +376,7 @@ export function Index() {
 
           <section className={"notice-section-wrap"}>
             <div className={"notice-section-header"}>
-              <h2>공지사항</h2>
+              <h1>공지사항</h1>
               <button
                 className={"more-btn"}
                 onClick={() => navigate(`/community/list`)}
