@@ -142,7 +142,12 @@ function NoticeView(props) {
       .post(`/api/notice/like/${id}`, {
         like: myNoticeLike,
       })
-      .then(() => {
+      .then((e) => {
+        const likeSuccess = e.data.message;
+        toaster.create({
+          type: likeSuccess.type,
+          description: likeSuccess.text,
+        });
         fetchLike();
       })
       .finally(() => setMyNoticeLike(!myNoticeLike));

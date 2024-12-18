@@ -110,12 +110,12 @@ public class NoticeController {
         if (service.checkMember(auth)) {
             if (service.checkLikeInNotice(id, auth)) {
                 service.removeLikeInNotice(id, auth);
-                return ResponseEntity.ok().body(Map.of("message", "success",
-                        "text", "추천을 취소하였습니다"));
+                return ResponseEntity.ok().body(Map.of("message", Map.of("type", "default",
+                        "text", "추천을 취소하였습니다")));
             } else {
                 service.addLikeInNotice(id, auth);
-                return ResponseEntity.ok().body(Map.of("message", "success",
-                        "text", "게시글을 추천하였습니다"));
+                return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success",
+                        "text", "게시글을 추천하였습니다")));
             }
         } else {
             return ResponseEntity.status(403)
