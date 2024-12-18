@@ -37,6 +37,10 @@ function NoticeList(props) {
   const authentication = useContext(AuthenticationContext);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [searchParams]);
+
+  useEffect(() => {
     axios.get(`/api/notice/list?${searchParams.toString()}`).then((res) => {
       setNoticeList(res.data.list);
       setCountNotice(res.data.countNotice);

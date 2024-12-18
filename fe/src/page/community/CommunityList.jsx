@@ -39,6 +39,10 @@ function CommunityList(props) {
   const authentication = useContext(AuthenticationContext);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [searchParams]);
+
+  useEffect(() => {
     axios.get(`/api/community/list?${searchParams.toString()}`).then((res) => {
       setCommunityList(res.data.list);
       setCountCommunity(res.data.countCommunity);
