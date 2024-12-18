@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Table } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -18,29 +18,27 @@ function MemberList(props) {
   return (
     <Box>
       <h1>회원 목록</h1>
-      <Table.Root interactive>
-        <Table.Header>
-          <Table.Row>
-            <Table.ColumnHeader>기업명</Table.ColumnHeader>
-            <Table.ColumnHeader>Email</Table.ColumnHeader>
-            <Table.ColumnHeader>담당자</Table.ColumnHeader>
-            <Table.ColumnHeader>가입일시</Table.ColumnHeader>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
+      <table className={"table-list"}>
+        <thead>
+          <tr>
+            <th>기업명</th>
+            <th>Email</th>
+            <th>담당자</th>
+            <th>가입일시</th>
+          </tr>
+        </thead>
+
+        <tbody>
           {partnerList.map((member) => (
-            <Table.Row
-              onClick={() => handleRowClick(member.email)}
-              key={member.email}
-            >
-              <Table.Cell>{member.nickname}</Table.Cell>
-              <Table.Cell>{member.email}</Table.Cell>
-              <Table.Cell>{member.name}</Table.Cell>
-              <Table.Cell>{member.inserted}</Table.Cell>
-            </Table.Row>
+            <tr onClick={() => handleRowClick(member.email)} key={member.email}>
+              <td>{member.nickname}</td>
+              <td>{member.email}</td>
+              <td>{member.name}</td>
+              <td>{member.inserted}</td>
+            </tr>
           ))}
-        </Table.Body>
-      </Table.Root>
+        </tbody>
+      </table>
     </Box>
   );
 }

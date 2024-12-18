@@ -30,7 +30,6 @@
 .inquiry .table-list .secret {
     font-size: 0.9rem;
     color: var(--font-gray-color);
-
 }
 
 .inquiry .table-list .secret .icon {
@@ -45,7 +44,6 @@
     border-radius: 5px;
     padding: 1px 4px;
     color: #fff;
-
 }
 
 .inquiry .table-list .badge-success {
