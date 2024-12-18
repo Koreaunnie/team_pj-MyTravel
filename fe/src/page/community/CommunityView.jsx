@@ -224,11 +224,24 @@ function CommunityView(props) {
     const updatedComment = commentContent[id]; // 수정된 댓글 가져오기
     axios
       .put(`/api/community/comment/edit/${id}`, { comment: updatedComment })
-      .then(() => {
-        // 댓글 목록 갱신
+      .then((e) => {
+        const updateSuccess = e.data.message;
+        toaster.create({
+          type: updateSuccess.type,
+          description: updateSuccess.text,
+        });
         fetchComments();
       })
-      .catch((err) => console.error(err));
+      .catch((e) => {
+        const updateFailure = e.request.response;
+        const parsingKey = JSON.parse(updateFailure);
+        const type = parsingKey.message.type;
+        const text = parsingKey.message.text;
+        toaster.create({
+          type: type,
+          description: text,
+        });
+      });
   };
 
   // TODO: 로그인에 대한 권한 완료 후 좋아요 즉시 반영 시도하기
