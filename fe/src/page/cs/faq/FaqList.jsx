@@ -11,6 +11,7 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../../components/ui/pagination.jsx";
+import { IoIosRefresh } from "react-icons/io";
 
 function FaqList(props) {
   const [faqList, setFaqList] = useState([]);
@@ -26,18 +27,28 @@ function FaqList(props) {
   const { isAdmin, hasAccess } = useContext(AuthenticationContext);
 
   useEffect(() => {
+    const controller = new AbortController();
+
     axios
       .get("/api/cs/faq/list", {
         params: searchParams,
+        signal: controller.signal,
       })
       .then((res) => {
         setFaqList(res.data.faqList);
         setCount(res.data.count);
       })
       .catch((err) => {
+        console.error("오류", err);
         setFaqList([]);
       });
-  }, []);
+    return () => {
+      controller.abort();
+    };
+  }, [searchParams]);
+
+  console.log("searchParams", searchParams.toString());
+  console.log("검색 조건", search);
 
   // 날짜 포맷을 yyyy-MM-dd 형식으로 변환
   const formatDate = (date) => {
@@ -45,7 +56,7 @@ function FaqList(props) {
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
   };
 
-  function handleSearchClick() {
+  function handleSearch() {
     if (search.keyword.trim().length > 0) {
       const nextSearchParam = new URLSearchParams(searchParams);
       nextSearchParam.set("type", search.type);
@@ -99,13 +110,28 @@ function FaqList(props) {
 
         {/*검색*/}
         <div className={"search-form"}>
+          <button
+            onClick={() => {
+              // 1. 검색 상태 초기화
+              setSearch({ type: "all", keyword: "" });
+
+              // 2. URL 검색 파라미터 초기화
+              const nextSearchParam = new URLSearchParams();
+              nextSearchParam.set("type", "all");
+              nextSearchParam.set("key", "");
+
+              setSearchParams(nextSearchParam);
+            }}
+          >
+            <IoIosRefresh />
+          </button>
           <select
-            value={search.type}
+            defaultValue={search.type}
             onChange={(e) => setSearch({ ...search, type: e.target.value })}
           >
             <option value="all">전체</option>
-            <option value="all">질문</option>
-            <option value="all">답변</option>
+            <option value="question">질문</option>
+            <option value="answer">답변</option>
           </select>
           <div className={"search-form-input"}>
             <input
@@ -115,10 +141,7 @@ function FaqList(props) {
                 setSearch({ ...search, keyword: e.target.value.trim() })
               }
             />
-            <button
-              className={"btn-search btn-dark"}
-              onClick={handleSearchClick}
-            >
+            <button className={"btn-search btn-dark"} onClick={handleSearch}>
               검색
             </button>
           </div>
