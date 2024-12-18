@@ -3,21 +3,120 @@
 }
 
 /*-------------------- PlanAdd --------------------*/
+.plan-add {
+    background: var(--bg-gray-color);
+    width: 1000px;
+    margin: 0 auto;
+}
+
 .plan-container {
-    background-color: #fff;
     padding: 20px;
 }
 
-.period {
-    display: flex;
+.plan-add .input-design-wrap {
+    margin: 40px 0;
+}
+
+.plan-add .input-design-wrap {
+    position: relative;
+}
+
+.plan-add .input-design-wrap input {
+    border: none;
+    border-bottom: 1px solid var(--input-border-color);
+    padding: 20px 10px;
+    position: relative;
+    background: none;
+    z-index: 5;
+    border-radius: 0;
+    height: 30px;
+}
+
+.plan-add .input-design-wrap input:focus {
+    outline: none;
+}
+
+.plan-add .input-design-wrap label {
+    position: absolute;
+    color: var(--font-gray-color);
+    left: 10px;
+    bottom: 0;
+    transition: all .2s;
+}
+
+.plan-add .input-design-wrap input:focus ~ label,
+.plan-add .input-design-wrap input:valid ~ label {
+    bottom: 30px;
+}
+
+.plan-add .input-design-wrap input:focus ~ span,
+.plan-add .input-design-wrap input:valid ~ span {
     width: 100%;
 }
 
-.fieldset {
-    border: 2px solid #ccc;
-    padding: 20px;
-    margin-bottom: 20px;
+.plan-add .input-design-wrap span {
+    position: absolute;
+    bottom: 0;
+    left: 0%;
+    background: var(--font-gray-color);
+    width: 0;
+    height: 2px;
+    transition: 0.5s;
 }
+
+.plan-add .plan input {
+    font-weight: bold;
+    font-size: 1.5rem;
+    padding: 30px 10px;
+    height: 50px;
+}
+
+.plan-add .plan input:focus ~ label,
+.plan-add .plan input:valid ~ label {
+    bottom: 40px;
+}
+
+.plan-add .schedule input {
+    font-weight: bold;
+    font-size: 1.2rem;
+    padding: 27px 10px;
+    height: 40px;
+    color: var(--font-dark-blue-color);
+}
+
+.plan-add .schedule input:focus ~ label,
+.plan-add .schedule input:valid ~ label {
+    bottom: 36px;
+}
+
+.plan-head .plan-head-info {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+
+.plan-head .plan-head-info li:first-child {
+    width: 50%;
+}
+
+.plan-body {
+    margin: 20px;
+}
+
+.plan-body-box {
+    border-top: 1px dashed var(--font-light-gray-color);
+    border-bottom: 1px dashed var(--font-light-gray-color);
+    background: #fff;
+    padding: 30px;
+}
+
+.plan-body .date-time-wrap {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
 
 /*-------------------- PlanList --------------------*/
 

@@ -91,7 +91,7 @@ export function GoogleMapsPlaceAutocomplete({
         })}
       />
 
-      <ul {...getMenuProps()} className="combobox-menu">
+      <ul {...getMenuProps()} className="autocomplete-container">
         {isOpen &&
           status === "OK" &&
           data.map((suggestion, index) => {
@@ -108,7 +108,7 @@ export function GoogleMapsPlaceAutocomplete({
                 })}
               >
                 <b>{main_text}</b>
-                <div>{secondary_text}</div>
+                <p>{secondary_text}</p>
               </li>
             );
           })}
