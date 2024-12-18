@@ -3,9 +3,27 @@ CREATE TABLE community
     id       INT PRIMARY KEY AUTO_INCREMENT,
     title    VARCHAR(100),
     content  VARCHAR(5000),
-    writer   VARCHAR(20) NOT NULL REFERENCES member (nickname),
+    writer   VARCHAR(20) NULL REFERENCES member (nickname),
     inserted DATETIME DEFAULT NOW()
 );
+
+# 닉네임 수정에 따른 새로운 컬럼과 조건 수정
+
+ALTER TABLE community
+    MODIFY COLUMN writer VARCHAR(20) NULL;
+SHOW COLUMNS FROM `community`;
+ALTER TABLE `community`
+    ADD CONSTRAINT `community_ibfk_1`
+        FOREIGN KEY (`writer`) REFERENCES `member` (`nickname`)
+            ON DELETE SET NULL
+            ON UPDATE CASCADE;
+
+ALTER TABLE community
+    DROP FOREIGN KEY community_ibfk_1;
+
+SELECT CONSTRAINT_NAME, TABLE_NAME
+FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+WHERE TABLE_SCHEMA = 'teamPrj1126';
 
 # TODO : 게시글 조회수
 ALTER TABLE community
