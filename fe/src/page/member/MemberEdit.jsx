@@ -16,6 +16,7 @@ import {
 } from "../../components/ui/dialog.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { ProfileImageView } from "../../components/Image/ProfileImageView.jsx";
+import randomString from "../../components/login/RandomString.jsx";
 
 export function MemberEdit() {
   const [member, setMember] = useState(null);
@@ -34,8 +35,15 @@ export function MemberEdit() {
     axios.get(`/api/member/${email}`).then((res) => {
       setMember(res.data);
       setNickname(res.data.nickname);
-      setPassword(res.data.password);
       setPhone(res.data.phone);
+
+      if (res.data.kakao) {
+        //kakao 계정이라면 랜덤 비밀번호 생성 및 설정
+        const newPassword = randomString();
+        setPassword(newPassword);
+      } else {
+        setPassword(res.data.password);
+      }
     });
   }, []);
 

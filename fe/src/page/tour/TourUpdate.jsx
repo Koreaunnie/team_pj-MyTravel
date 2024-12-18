@@ -87,6 +87,10 @@ function TourUpdate() {
       });
   };
 
+  const handleCancelClick = () => {
+    navigate(`/tour/view/${id}`);
+  };
+
   const uploadFilesList = [];
   let sumOfUploadFileSize = 0;
   let invalidOneFileSize = false;
@@ -178,6 +182,12 @@ function TourUpdate() {
 
         {(hasAccess(tour.partnerEmail) || isAdmin) && (
           <Box>
+            <button
+              className={"btn btn-dark-outline"}
+              onClick={handleCancelClick}
+            >
+              취소
+            </button>
             <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
               <DialogTrigger>
                 <Button>저장</Button>

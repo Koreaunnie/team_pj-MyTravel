@@ -1,11 +1,12 @@
 import React from "react";
 import { Image } from "@chakra-ui/react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 
 function PaymentComplete(props) {
   const location = useLocation();
   const { paidList, paymentId, totalAmount } = location.state || {};
+  const navigate = useNavigate();
 
   if (!paidList || !paymentId || !totalAmount) {
     return <p>결제 정보가 전달되지 않았습니다.</p>;
@@ -18,7 +19,7 @@ function PaymentComplete(props) {
         navigateToDepth1={() => navigate(`/tour/list`)}
         depth2={"장바구니"}
         navigateToDepth2={() => navigate(`/cart`)}
-        depth3={"결제 완료"}
+        depth3={"결제"}
         navigateToDepth3={() => navigate(`/payment/complete`)}
       />
       <h1>결제 완료</h1>

@@ -24,7 +24,7 @@ function MemberInfo(props) {
   const [open, setOpen] = useState(false);
   const { email } = useParams();
   const navigate = useNavigate();
-  const { logout } = useContext(AuthenticationContext);
+  const { logout, isAdmin } = useContext(AuthenticationContext);
 
   useEffect(() => {
     axios.get(`/api/member/${email}`).then((res) => setMember(res.data));
@@ -50,8 +50,12 @@ function MemberInfo(props) {
           type: message.type,
           description: message.text,
         });
-        logout();
-        navigate(`/member/signup`);
+        if (isAdmin) {
+          navigate("/admin");
+        } else {
+          logout();
+          navigate(`/member/signup`);
+        }
       })
       .catch((e) => {
         const message = e.response.data.message;

@@ -97,6 +97,12 @@ function MemberSignup(props) {
     passwordInvalid = true;
   }
 
+  const REST_API_KEY = import.meta.env.VITE_KAKAO_LOGIN_API_KEY;
+  const redirect_uri = "http://localhost:5173/member/login/process";
+  const handleKakaoSignup = () => {
+    window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${redirect_uri}&response_type=code&prompt=login`;
+  };
+
   return (
     <div className={"body-narrow"}>
       <h1>회원 가입</h1>
@@ -247,7 +253,14 @@ function MemberSignup(props) {
             가입
           </button>
         </div>
-
+        <div className={"btn-wrap"}>
+          <button
+            className={"btn-wide btn-dark-outline"}
+            onClick={handleKakaoSignup}
+          >
+            카카오로 간편 가입
+          </button>
+        </div>
         <div className={"move-to-button"}>
           <p>이미 가입을 하셨나요?</p>
           <p className={"link"} onClick={() => navigate(`/member/login`)}>
