@@ -205,7 +205,7 @@ public class CommunityController {
             if (service.checkLikeInCommunity(id, auth)) {
                 service.removeLikeInCommunity(id, auth);
                 return ResponseEntity.ok()
-                        .body(Map.of("message", Map.of("type", "info",
+                        .body(Map.of("message", Map.of("type", "default",
                                 "text", "추천을 취소하였습니다")));
             } else {
                 service.addLikeInCommunity(id, auth);

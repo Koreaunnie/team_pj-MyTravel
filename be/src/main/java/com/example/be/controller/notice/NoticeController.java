@@ -38,8 +38,8 @@ public class NoticeController {
             if (service.checkAdmin(auth)) {
                 if (service.checkNotice(notice)) {
                     service.write(notice, auth);
-                    return ResponseEntity.ok().body(Map.of("message", "success",
-                            "text", STR."\{notice.getId()}번 공지사항 등록되었습니다", "id", notice.getId()));
+                    return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success",
+                            "text", STR."\{notice.getId()}번 공지사항 등록되었습니다"), "id", notice.getId()));
                 } else {
                     return ResponseEntity.badRequest()
                             .body(Map.of("message", Map.of("type", "warning",
@@ -65,8 +65,8 @@ public class NoticeController {
             if (service.checkRightsOfAccess(id, auth)) {
                 if (service.checkNotice(notice)) {
                     service.edit(notice);
-                    return ResponseEntity.ok().body(Map.of("message", "success",
-                            "text", STR."\{notice.getId()}번 게시물이 수정되었습니다"));
+                    return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success",
+                            "text", STR."\{notice.getId()}번 게시물이 수정되었습니다"), "id", notice.getId()));
                 } else {
                     return ResponseEntity.badRequest()
                             .body(Map.of("message", Map.of("type", "warning",
@@ -90,8 +90,8 @@ public class NoticeController {
         try {
             if (service.checkRightsOfAccess(id, auth)) {
                 service.delete(id);
-                return ResponseEntity.ok().body(Map.of("message", "success",
-                        "text", STR."\{id}번 공지사항이 삭제되었습니다"));
+                return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success",
+                        "text", STR."\{id}번 공지사항이 삭제되었습니다")));
             } else {
                 return ResponseEntity.status(403)
                         .body(Map.of("message", Map.of("type", "error",
