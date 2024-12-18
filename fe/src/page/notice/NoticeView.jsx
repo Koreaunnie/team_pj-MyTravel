@@ -1,5 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import axios from "axios";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
@@ -52,6 +57,11 @@ function NoticeView(props) {
   const [countNotice, setCountNotice] = useState("");
   const authentication = useContext(AuthenticationContext);
   const { hasAccessByNickName } = useContext(AuthenticationContext);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   useEffect(() => {
     axios.get(`/api/notice/view/${id}`, { id }).then((e) => {
@@ -105,7 +115,10 @@ function NoticeView(props) {
   }
 
   function handleViewClick(id) {
-    axios.get(`/api/notice/view/${id}`).then((e) => setNotice(e.data));
+    axios
+      .get(`/api/notice/view/${id}`)
+      .then(navigate(`/notice/view/${id}#top`))
+      .then((e) => setNotice(e.data));
   }
 
   function handleSearchClick() {
@@ -225,8 +238,8 @@ function NoticeView(props) {
           )}
           <br />
           <Stack>
+            <br />
             <Box>
-              <h1>공지사항</h1>
               <Table.Root>
                 <Table.Header>
                   <Table.Row>

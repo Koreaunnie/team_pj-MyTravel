@@ -48,7 +48,7 @@ function NoticeList(props) {
   }
 
   function handleViewClick(id) {
-    navigate(`/notice/view/${id}`);
+    navigate(`/notice/view/${id}#top`);
   }
 
   function handleSearchClick() {
