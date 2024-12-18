@@ -23,18 +23,6 @@ function PaymentHistory(props) {
     navigate(`/tour/view/${tourId}#review`);
   }
 
-  // const reviewAndPaymentCheck = (tourId) => {
-  //   axios
-  //     .get(`/api/review/check`, {
-  //       params: { tourId },
-  //     })
-  //     .then((res) => res.data)
-  //     .then((data) => {
-  //       // setReviewCheck(data.available);
-  //     });
-  //   return reviewCheck;
-  // };
-
   // 내 지갑에 추가
   const handleAddToWallet = (tour) => {
     axios

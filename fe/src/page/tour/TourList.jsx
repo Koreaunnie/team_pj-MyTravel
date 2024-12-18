@@ -85,7 +85,7 @@ function TourList() {
       <div>
         {(isPartner || isAdmin) && (
           <button
-            className={"btn btn-dark"}
+            className={"btn btn-blue"}
             onClick={() => navigate(`/tour/add`)}
           >
             새 상품 등록

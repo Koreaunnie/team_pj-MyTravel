@@ -52,8 +52,9 @@ function Payment() {
     });
 
     if (kakaoPayment.code != null) {
-      //실패 내용
+      // 실패 내용
       setWaitingPayment(false);
+      window.alert(`결제 실패: ${kakaoPayment.message}`); // alert 팝업창
       setPaymentStatus({
         status: "FAILED",
         message: kakaoPayment.message,
@@ -137,6 +138,7 @@ function Payment() {
     if (tossPayment.code != null) {
       //실패 내용
       setWaitingPayment(false);
+      window.alert(`결제 실패: ${tossPayment.message}`); // alert 팝업창
       setPaymentStatus({
         status: "FAILED",
         message: tossPayment.message,
@@ -264,53 +266,12 @@ function Payment() {
           </div>
         </form>
       </main>
-      {paymentStatus.status === "FAILED" && (
-        <dialog open>
-          <header>
-            <h1>결제 실패</h1>
-          </header>
-          <p>{paymentStatus.message}</p>
-          <button
-            type={"button"}
-            className={"btn btn-dark-outline"}
-            onClick={handleClose}
-          >
-            닫기
-          </button>
-        </dialog>
-      )}
-      <dialog>
-        <header>
-          <h1>결제 성공</h1>
-        </header>
-        <p>결제에 성공했씁니다.</p>
-        <button
-          type={"button"}
-          className={"btn btn-dark-outline"}
-          onClick={handleClose}
-        >
-          닫기
-        </button>
-      </dialog>
-      <dialog open={paymentStatus.status === "VIRTUAL_ACCOUNT_ISSUED"}>
-        <header>
-          <h1>가장 계좌 발급 완료</h1>
-        </header>
-        <p>가상 계좌가 발급되었습니다.</p>
 
-        {/*<div>예약자: personal info 불러오기 (수정 가능)</div>*/}
-        {/*<div>여행자 정보: input text</div>*/}
-        {/*<div>추가 예약 정보: textarea</div>*/}
-        {/*<div>결제 방법: card, 무통장 입금</div>*/}
-        {/*<div>약관 안내: text</div>*/}
-        <button
-          type={"button"}
-          className={"btn btn-dark-outline"}
-          onClick={handleClose}
-        >
-          닫기
-        </button>
-      </dialog>
+      {/*<div>예약자: personal info 불러오기 (수정 가능)</div>*/}
+      {/*<div>여행자 정보: input text</div>*/}
+      {/*<div>추가 예약 정보: textarea</div>*/}
+      {/*<div>결제 방법: card, 무통장 입금</div>*/}
+      {/*<div>약관 안내: text</div>*/}
     </div>
   );
 }
