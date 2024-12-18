@@ -2,6 +2,7 @@ package com.example.be.service.cs.faq;
 
 import com.example.be.dto.cs.faq.Faq;
 import com.example.be.mapper.cs.faq.FaqMapper;
+import com.example.be.mapper.member.MemberMapper;
 import com.example.be.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -15,10 +16,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FaqService {
     final FaqMapper mapper;
+    final MemberMapper memberMapper;
     final MemberService memberService;
 
     public boolean add(Faq faq, Authentication authentication) {
-        String userNickname = authentication.getName();
+        String userNickname = memberMapper.selectNicknameByEmail(authentication.getName());
         faq.setWriter(userNickname);
 
         int cnt = 0;
