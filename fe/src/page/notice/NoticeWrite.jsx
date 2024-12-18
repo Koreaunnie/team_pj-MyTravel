@@ -7,6 +7,7 @@ import { Field } from "../../components/ui/field.jsx";
 import { Button } from "../../components/ui/button.jsx";
 import { Alert } from "../../components/ui/alert.jsx";
 import NoticeList from "./NoticeList.jsx";
+import { toaster } from "../../components/ui/toaster.jsx";
 
 function NoticeWrite(props) {
   const [title, setTitle] = useState("");
@@ -15,9 +16,26 @@ function NoticeWrite(props) {
   const authentication = useContext(AuthenticationContext);
 
   const handleSaveClick = () => {
-    axios.post(`/api/notice/write`, { title, content }).then((e) => {
-      navigate(`/notice/view/${e.data.id}`);
-    });
+    axios
+      .post(`/api/notice/write`, { title, content })
+      .then((e) => {
+        const writeSuccess = e.data.message;
+        toaster.create({
+          type: writeSuccess.type,
+          description: writeSuccess.text,
+        });
+        navigate(`/notice/view/${e.data.id}`);
+      })
+      .catch((e) => {
+        const writeFailure = e.request.response;
+        const parsingKey = JSON.parse(writeFailure);
+        const type = parsingKey.message.type;
+        const text = parsingKey.message.text;
+        toaster.create({
+          type: type,
+          description: text,
+        });
+      });
   };
 
   const handleCancelClick = () => {

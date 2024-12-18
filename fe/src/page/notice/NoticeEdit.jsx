@@ -34,7 +34,6 @@ function NoticeEdit(props) {
           type: updateSuccess.type,
           description: updateSuccess.text,
         });
-        console.log(e.data);
         navigate(`/notice/view/${e.data.id}`);
       })
       .catch((e) => {
