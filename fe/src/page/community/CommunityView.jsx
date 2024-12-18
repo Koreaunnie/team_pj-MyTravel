@@ -82,6 +82,7 @@ function CommunityView(props) {
   const { hasAccessByNickName } = useContext(AuthenticationContext);
   const { pathname } = useLocation();
   const [titleLength, setTitleLength] = useState("");
+  const [creationDate, setCreationDate] = useState("");
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -93,6 +94,7 @@ function CommunityView(props) {
       setCommentList(e.data.commentList);
       setMyCommunityLike(e.data.myCommunityLike);
       setTitleLength(e.data.title.length);
+      setCreationDate(e.data.creationDate.substring(0, 19));
     });
   }, []);
 
@@ -244,7 +246,7 @@ function CommunityView(props) {
                 <Icon fontSize="2xl">
                   <HiOutlineBookOpen />
                 </Icon>{" "}
-                : {community.views} | {community.creationDate}
+                : {community.views} | {creationDate}
               </HStack>
             </Field>
             <br />

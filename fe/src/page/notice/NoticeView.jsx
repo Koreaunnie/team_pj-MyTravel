@@ -59,6 +59,7 @@ function NoticeView(props) {
   const { hasAccessByNickName } = useContext(AuthenticationContext);
   const { pathname } = useLocation();
   const [titleLength, setTitleLength] = useState("");
+  const [creationDate, setCreationDate] = useState("");
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -69,6 +70,7 @@ function NoticeView(props) {
       setNotice(e.data);
       setMyNoticeLike(e.data.myNoticeLike);
       setTitleLength(e.data.title.length);
+      setCreationDate(e.data.creationDate.substring(0, 19));
     });
   }, []);
 
@@ -172,7 +174,7 @@ function NoticeView(props) {
                 <Icon fontSize="2xl">
                   <HiOutlineBookOpen />
                 </Icon>{" "}
-                : {notice.views} | {notice.creationDate}
+                : {notice.views} | {creationDate}
               </HStack>
             </Field>
             <br />
