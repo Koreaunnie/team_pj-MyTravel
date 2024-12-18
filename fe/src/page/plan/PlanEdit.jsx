@@ -7,6 +7,7 @@ import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import * as PropTypes from "prop-types";
 import { GoogleMapsEdit } from "./GoogleMaps/GoogleMapsEdit.jsx";
 import { FaMinus, FaPlus } from "react-icons/fa6";
+import { toaster } from "../../components/ui/toaster.jsx";
 
 GoogleMapsEdit.propTypes = {
   id: PropTypes.string,
@@ -111,10 +112,21 @@ function PlanEdit(props) {
         endDate: plan.endDate,
         planFieldList: planFields, // 필드 배열을 그대로 전달
       })
-      .then((res) => navigate(`/plan/view/${id}`))
-      .then(() => alert("일정이 수정되었습니다."))
-      .catch((error) => alert("수정에 실패했습니다."))
-      .finally();
+      .then((res) => {
+        const message = res.data.message;
+        toaster.create({
+          description: message.text,
+          type: message.type,
+        });
+        navigate(`/plan/view/${id}`);
+      })
+      .catch((e) => {
+        const message = e.response.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+      });
   }
 
   return (

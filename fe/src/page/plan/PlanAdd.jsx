@@ -96,7 +96,6 @@ function PlanAdd(props) {
       .then((res) => res.data)
       .then((data) => {
         const message = data.message;
-        console.log(message);
         toaster.create({
           description: message.text,
           type: message.type,
