@@ -50,6 +50,7 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../components/ui/pagination.jsx";
+import { toaster } from "../../components/ui/toaster.jsx";
 
 function ImageFileView({ files }) {
   return (
@@ -89,13 +90,26 @@ function CommunityView(props) {
   }, [pathname]);
 
   useEffect(() => {
-    axios.get(`/api/community/view/${id}`, { id }).then((e) => {
-      setCommunity(e.data);
-      setCommentList(e.data.commentList);
-      setMyCommunityLike(e.data.myCommunityLike);
-      setTitleLength(e.data.title.length);
-      setCreationDate(e.data.creationDate.substring(0, 19));
-    });
+    axios
+      .get(`/api/community/view/${id}`, { id })
+      .then((e) => {
+        setCommunity(e.data);
+        setCommentList(e.data.commentList);
+        setMyCommunityLike(e.data.myCommunityLike);
+        setTitleLength(e.data.title.length);
+        setCreationDate(e.data.creationDate.substring(0, 19));
+      })
+      .catch((e) => {
+        const message = e.request.response.message || {
+          type: "error",
+          text: "존재하지 않는 게시물입니다.",
+        };
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+        navigate(`/community/list`);
+      });
   }, []);
 
   useEffect(() => {
@@ -108,7 +122,25 @@ function CommunityView(props) {
   const handleDeleteClick = () => {
     axios
       .delete(`/api/community/delete/${id}`)
-      .then(navigate(`/community/list`));
+      .then((e) => {
+        const deleteSuccess = e.data.message;
+        toaster.create({
+          type: deleteSuccess.type,
+          description: deleteSuccess.text,
+        });
+        navigate(`/community/list`);
+      })
+      .catch((e) => {
+        const deleteFailure = e.request.response;
+        const parsingKey = JSON.parse(deleteFailure);
+        const type = parsingKey.message.type;
+        const text = parsingKey.message.text;
+        toaster.create({
+          type: type,
+          description: text,
+        });
+        navigate(`/`);
+      });
   };
 
   const handleEditClick = () => {
