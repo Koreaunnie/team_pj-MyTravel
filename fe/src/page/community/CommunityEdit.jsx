@@ -14,6 +14,7 @@ import { CloseButton } from "../../components/ui/close-button.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { Alert } from "../../components/ui/alert.jsx";
 import CommunityList from "./CommunityList.jsx";
+import { toaster } from "../../components/ui/toaster.jsx";
 
 function CommunityEdit(props) {
   const [community, setCommunity] = useState({});
@@ -39,9 +40,25 @@ function CommunityEdit(props) {
         content: community.content,
         removeFiles,
         uploadFiles: files,
-        // creationDate: community.creationDate.toString().substring(0, 19),
       })
-      .finally(navigate(`/community/list`));
+      .then((e) => {
+        const updateSuccess = e.data.message;
+        toaster.create({
+          type: updateSuccess.type,
+          description: updateSuccess.text,
+        });
+        navigate(`/community/view/${e.data.id}`);
+      })
+      .catch((e) => {
+        const updateFailure = e.request.response;
+        const parsingKey = JSON.parse(updateFailure);
+        const type = parsingKey.message.type;
+        const text = parsingKey.message.text;
+        toaster.create({
+          type: type,
+          description: text,
+        });
+      });
   };
 
   const handleCancelClick = () => {

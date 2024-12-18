@@ -43,6 +43,7 @@ function CommunityList(props) {
       setCommunityList(res.data.list);
       setCountCommunity(res.data.countCommunity);
     });
+    window.scrollTo(0, 0);
   }, [searchParams]);
 
   function handleWriteClick() {

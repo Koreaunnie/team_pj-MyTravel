@@ -7,6 +7,24 @@ CREATE TABLE community_like
     PRIMARY KEY (community_id, person)
 );
 
+# 닉네임 수정에 따른 새로운 컬럼과 조건 수정
+
+
+SHOW COLUMNS FROM `community_like`;
+
+ALTER TABLE `community_like`
+    ADD CONSTRAINT `community_like_ibfk_1`
+        FOREIGN KEY (`community_id`) REFERENCES `community` (`id`)
+            ON UPDATE CASCADE;
+
+ALTER TABLE community_like
+    DROP FOREIGN KEY community_like_ibfk_1;
+
+SELECT *
+FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+WHERE TABLE_SCHEMA = 'teamPrj1126';
+
+
 
 SELECT community_id communityId, person nickName
 FROM community_like
