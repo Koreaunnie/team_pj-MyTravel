@@ -15,9 +15,9 @@ function NoticeWrite(props) {
   const authentication = useContext(AuthenticationContext);
 
   const handleSaveClick = () => {
-    axios
-      .post(`/api/notice/write`, { title, content })
-      .then(navigate(`/notice/list`));
+    axios.post(`/api/notice/write`, { title, content }).then((e) => {
+      navigate(`/notice/view/${e.data.id}`);
+    });
   };
 
   const handleCancelClick = () => {

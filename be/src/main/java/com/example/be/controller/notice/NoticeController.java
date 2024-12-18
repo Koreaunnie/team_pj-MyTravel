@@ -38,7 +38,7 @@ public class NoticeController {
             if (service.checkNotice(notice)) {
                 service.write(notice, auth);
                 return ResponseEntity.ok().body(Map.of("message", "success",
-                        "text", STR."\{notice.getId()}번 공지사항 등록되었습니다"));
+                        "text", STR."\{notice.getId()}번 공지사항 등록되었습니다", "id", notice.getId()));
             } else {
                 return ResponseEntity.badRequest()
                         .body(Map.of("message", Map.of("type", "warning",
