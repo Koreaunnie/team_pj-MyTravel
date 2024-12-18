@@ -7,6 +7,7 @@ import { Field } from "../../components/ui/field.jsx";
 import { Button } from "../../components/ui/button.jsx";
 import { Alert } from "../../components/ui/alert.jsx";
 import NoticeList from "./NoticeList.jsx";
+import { toaster } from "../../components/ui/toaster.jsx";
 
 function NoticeEdit(props) {
   const [notice, setNotice] = useState({});
@@ -27,7 +28,24 @@ function NoticeEdit(props) {
         title: notice.title,
         content: notice.content,
       })
-      .finally(navigate(`/notice/list`));
+      .then((e) => {
+        const updateSuccess = e.data.message;
+        toaster.create({
+          type: updateSuccess.type,
+          description: updateSuccess.text,
+        });
+        navigate(`/notice/view/${e.data.id}`);
+      })
+      .catch((e) => {
+        const updateFailure = e.request.response;
+        const parsingKey = JSON.parse(updateFailure);
+        const type = parsingKey.message.type;
+        const text = parsingKey.message.text;
+        toaster.create({
+          type: type,
+          description: text,
+        });
+      });
   };
 
   const handleCancelClick = () => {
