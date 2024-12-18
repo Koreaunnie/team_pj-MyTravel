@@ -45,6 +45,10 @@ import MemberSignupKakao from "./page/member/MemberSignupKakao.jsx";
 import TourMyList from "./page/tour/TourMyList.jsx";
 import { CartCombined } from "./page/payment/CartCombined.jsx";
 import PaymentHistoryCombined from "./page/payment/PaymentHistoryCombined.jsx";
+import NoticeList from "./page/notice/NoticeList.jsx";
+import NoticeWrite from "./page/notice/NoticeWrite.jsx";
+import NoticeView from "./page/notice/NoticeView.jsx";
+import NoticeEdit from "./page/notice/NoticeEdit.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -163,6 +167,22 @@ const router = createBrowserRouter([
       {
         path: "community/edit/:id",
         element: <CommunityEdit />,
+      },
+      {
+        path: "notice/list",
+        element: <NoticeList />,
+      },
+      {
+        path: "notice/write",
+        element: <NoticeWrite />,
+      },
+      {
+        path: "notice/view/:id",
+        element: <NoticeView />,
+      },
+      {
+        path: "notice/edit/:id",
+        element: <NoticeEdit />,
       },
       // 고객센터
       {
