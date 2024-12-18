@@ -14,13 +14,13 @@ SHOW COLUMNS FROM `community_like`;
 
 ALTER TABLE `community_like`
     ADD CONSTRAINT `community_like_ibfk_1`
-        FOREIGN KEY (`person`) REFERENCES `member` (`nickname`)
+        FOREIGN KEY (`community_id`) REFERENCES `community` (`id`)
             ON UPDATE CASCADE;
 
 ALTER TABLE community_like
     DROP FOREIGN KEY community_like_ibfk_1;
 
-SELECT CONSTRAINT_NAME, TABLE_NAME
+SELECT *
 FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
 WHERE TABLE_SCHEMA = 'teamPrj1126';
 
