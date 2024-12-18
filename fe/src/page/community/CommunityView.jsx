@@ -81,6 +81,7 @@ function CommunityView(props) {
   const authentication = useContext(AuthenticationContext);
   const { hasAccessByNickName } = useContext(AuthenticationContext);
   const { pathname } = useLocation();
+  const [titleLength, setTitleLength] = useState("");
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -91,6 +92,7 @@ function CommunityView(props) {
       setCommunity(e.data);
       setCommentList(e.data.commentList);
       setMyCommunityLike(e.data.myCommunityLike);
+      setTitleLength(e.data.title.length);
     });
   }, []);
 
@@ -224,8 +226,12 @@ function CommunityView(props) {
       <Breadcrumb
         depth1={"커뮤니티"}
         navigateToDepth1={() => navigate(`/community/list`)}
-        depth2={community.id + "번 게시물"}
-        navigateToDepth2={() => navigate(`/community/view/${id}`)}
+        depth2={
+          titleLength > 15
+            ? `${community.title.substring(0, 15)}...`
+            : community.title
+        }
+        navigateToDepth2={() => navigate(`/community/view/${community.id}`)}
       />
       <div>
         <br />

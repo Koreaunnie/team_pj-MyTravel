@@ -58,6 +58,7 @@ function NoticeView(props) {
   const authentication = useContext(AuthenticationContext);
   const { hasAccessByNickName } = useContext(AuthenticationContext);
   const { pathname } = useLocation();
+  const [titleLength, setTitleLength] = useState("");
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -67,6 +68,7 @@ function NoticeView(props) {
     axios.get(`/api/notice/view/${id}`, { id }).then((e) => {
       setNotice(e.data);
       setMyNoticeLike(e.data.myNoticeLike);
+      setTitleLength(e.data.title.length);
     });
   }, []);
 
@@ -152,8 +154,12 @@ function NoticeView(props) {
       <Breadcrumb
         depth1={"공지사항"}
         navigateToDepth1={() => navigate(`/notice/list`)}
-        depth2={notice.id + "번 공지사항"}
-        navigateToDepth2={() => navigate(`/notice/view/${id}`)}
+        depth2={
+          titleLength > 15
+            ? `${notice.title.substring(0, 15)}...`
+            : notice.title
+        }
+        navigateToDepth2={() => navigate(`/notice/view/${notice.id}`)}
       />
       <div>
         <br />
