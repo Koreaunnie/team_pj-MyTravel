@@ -170,10 +170,6 @@ section {
     background: #fff;
 }
 
-.right-section .wallet-list {
-    font-size: 0.9rem;
-}
-
 .right-section .wallet-list tr td {
     overflow: hidden;
     text-overflow: ellipsis;

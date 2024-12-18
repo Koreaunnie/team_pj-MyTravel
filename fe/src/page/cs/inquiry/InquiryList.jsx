@@ -13,6 +13,7 @@ import {
   PaginationRoot,
 } from "../../../components/ui/pagination.jsx";
 import { HStack } from "@chakra-ui/react";
+import { formattedDate } from "../../../components/utils/FormattedDate.jsx";
 
 function InquiryList(props) {
   const { nickname, isAuthenticated, isAdmin } = useContext(
@@ -21,6 +22,8 @@ function InquiryList(props) {
   const [inquiryList, setInquiryList] = useState([]);
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [showMyInquiries, setShowMyInquiries] = useState(false); // 내가 쓴 글 여부
+  const [notAnsweredInquiries, setNotAnsweredInquiries] = useState(0);
+  const [showNotAnswered, setShowNotAnswered] = useState(false);
   const [search, setSearch] = useState({ type: "all", keyword: "" });
   const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -39,6 +42,12 @@ function InquiryList(props) {
       .then((data) => {
         setInquiryList(data.list);
         setCount(data.count);
+
+        // 미답변 내역 개수 업데이트
+        const notAnsweredCount = data.list.filter(
+          (inquiry) => !inquiry.hasAnswer,
+        ).length;
+        setNotAnsweredInquiries(notAnsweredCount);
       });
   }, [searchParams]);
 
@@ -84,6 +93,11 @@ function InquiryList(props) {
     ? inquiryList.filter((inquiry) => inquiry.writerNickname === nickname)
     : inquiryList;
 
+  // 미답변 내역만 필터링
+  const inquiriesToShow = showNotAnswered
+    ? filteredInquiries.filter((inquiry) => !inquiry.hasAnswer)
+    : filteredInquiries;
+
   // 비밀글 여부 확인
   const checkSecretOrNot = (inquiry) => {
     if (inquiry.secret) {
@@ -106,16 +120,6 @@ function InquiryList(props) {
 
     // 비밀글이 아니거나 권한 확인 통과 시 상세 페이지로 이동
     navigate(`/cs/inquiry/view/${inquiry.id}`);
-  };
-
-  // 날짜 포맷팅
-  const formattedDate = (props) => {
-    const date = new Date(props);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // 월은 0부터 시작하므로 +1 해줘야 함
-    const day = String(date.getDate()).padStart(2, "0"); // 두 자릿수로 맞추기 위해 padStart 사용
-
-    return `${year}-${month}-${day}`;
   };
 
   const handleSearchButton = () => {
@@ -163,14 +167,27 @@ function InquiryList(props) {
             고객센터 홈
           </button>
 
-          <button className={"btn btn-blue"} onClick={checkLoginOrNot}>
-            작성
-          </button>
+          {!isAdmin && (
+            <button className={"btn btn-blue"} onClick={checkLoginOrNot}>
+              작성
+            </button>
+          )}
 
-          {isAuthenticated && (
+          {isAdmin && (
+            <button
+              className={"btn btn-blue"}
+              onClick={() => setShowNotAnswered((prev) => !prev)}
+            >
+              {!showNotAnswered
+                ? `미답변 내역 : ${notAnsweredInquiries}`
+                : "전체내역"}
+            </button>
+          )}
+
+          {isAuthenticated && !isAdmin && (
             <button
               className={"btn btn-dark"}
-              onClick={() => setShowMyInquiries((prev) => !prev)} // 내가 쓴 글 필터 토글
+              onClick={() => setShowMyInquiries((prev) => !prev)}
             >
               {showMyInquiries ? "전체글" : "내가 쓴 글"}
             </button>
@@ -178,8 +195,18 @@ function InquiryList(props) {
         </div>
 
         <h1>문의하기</h1>
+        <h2>궁금한 점이 있으시면 문의해주세요.</h2>
+        <h3>운영시간 09:00 ~ 18:00</h3>
 
         <table className={"table-list"}>
+          <colgroup>
+            <col style={{ width: "50px" }} />
+            <col style={{ width: "250px" }} />
+            <col style={{ width: "100px" }} />
+            <col style={{ width: "80px" }} />
+            <col style={{ width: "100px" }} />
+          </colgroup>
+
           <thead>
             <tr>
               <th>#</th>
@@ -191,8 +218,8 @@ function InquiryList(props) {
           </thead>
 
           <tbody>
-            {filteredInquiries.length > 0 ? (
-              filteredInquiries.map((inquiry) => (
+            {inquiriesToShow.length > 0 ? (
+              inquiriesToShow.map((inquiry) => (
                 <tr key={inquiry.id} onClick={() => checkSecretOrNot(inquiry)}>
                   <td>{inquiry.id}</td>
                   {inquiry.secret ? (
@@ -221,16 +248,11 @@ function InquiryList(props) {
                 </tr>
               ))
             ) : (
-              <td colSpan={4}>
-                <div className={"empty-container"}>
-                  <p className={"empty-container-title"}>
-                    검색 결과가 없습니다.
-                  </p>
-                  <p className={"empty-container-description"}>
-                    검색어를 확인해주세요.
-                  </p>
-                </div>
-              </td>
+              <tr>
+                <td colSpan={5} style={{ textAlign: "center" }}>
+                  데이터가 없습니다.
+                </td>
+              </tr>
             )}
           </tbody>
         </table>

@@ -8,6 +8,7 @@ import { Modal } from "../../../components/root/Modal.jsx";
 import { AnswerContainer } from "./comment/AnswerContainer.jsx";
 import { toaster } from "../../../components/ui/toaster.jsx";
 import { AuthenticationContext } from "../../../components/context/AuthenticationProvider.jsx";
+import { formattedDateTime } from "../../../components/utils/FormattedDateTime.jsx";
 
 function InquiryView(props) {
   const { id } = useParams();
@@ -106,7 +107,7 @@ function InquiryView(props) {
             </tr>
             <tr className={"thead-sub-title"}>
               <th>{inquiry.writerNickname}</th>
-              <th>{inquiry.inserted}</th>
+              <th>{formattedDateTime(inquiry.inserted)}</th>
             </tr>
           </thead>
 
