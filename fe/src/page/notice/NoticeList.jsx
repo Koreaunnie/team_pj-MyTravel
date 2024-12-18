@@ -1,4 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
+import axios from "axios";
 import {
   Box,
   createListCollection,
@@ -7,15 +10,9 @@ import {
   Stack,
   Table,
 } from "@chakra-ui/react";
-import { Button } from "../../components/ui/button.jsx";
-import axios from "axios";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import {
-  PaginationItems,
-  PaginationNextTrigger,
-  PaginationPrevTrigger,
-  PaginationRoot,
-} from "../../components/ui/pagination.jsx";
+import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
+import { GoHeart } from "react-icons/go";
+import { HiOutlineBookOpen } from "react-icons/hi";
 import {
   SelectContent,
   SelectItem,
@@ -23,40 +20,41 @@ import {
   SelectTrigger,
   SelectValueText,
 } from "../../components/ui/select.jsx";
-import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
-import { IoMdPhotos } from "react-icons/io";
-import { AiOutlineComment } from "react-icons/ai";
-import { GoHeart } from "react-icons/go";
-import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
-import { HiOutlineBookOpen } from "react-icons/hi";
+import { Button } from "../../components/ui/button.jsx";
+import {
+  PaginationItems,
+  PaginationNextTrigger,
+  PaginationPrevTrigger,
+  PaginationRoot,
+} from "../../components/ui/pagination.jsx";
 
-function CommunityList(props) {
-  const [communityList, setCommunityList] = useState([]);
+function NoticeList(props) {
+  const [noticeList, setNoticeList] = useState([]);
   const [search, setSearch] = useState({ type: "all", keyword: "" });
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [countCommunity, setCountCommunity] = useState("");
+  const [countNotice, setCountNotice] = useState("");
   const authentication = useContext(AuthenticationContext);
 
   useEffect(() => {
-    axios.get(`/api/community/list?${searchParams.toString()}`).then((res) => {
-      setCommunityList(res.data.list);
-      setCountCommunity(res.data.countCommunity);
+    axios.get(`/api/notice/list?${searchParams.toString()}`).then((res) => {
+      setNoticeList(res.data.list);
+      setCountNotice(res.data.countNotice);
     });
   }, [searchParams]);
 
   function handleWriteClick() {
-    navigate(`/community/write`);
+    navigate(`/notice/write`);
   }
 
   function handleViewClick(id) {
-    navigate(`/community/view/${id}`);
+    navigate(`/notice/view/${id}`);
   }
 
   function handleSearchClick() {
     const searchInfo = { type: search.type, keyword: search.keyword };
     const searchQuery = new URLSearchParams(searchInfo);
-    navigate(`/community/list?${searchQuery.toString()}`);
+    navigate(`/notice/list?${searchQuery.toString()}`);
   }
 
   function handlePageChangeClick(e) {
@@ -65,13 +63,7 @@ function CommunityList(props) {
     const searchInfo = { type: search.type, keyword: search.keyword };
     const searchQuery = new URLSearchParams(searchInfo);
     // const pageURL = new URL(`http://localhost:5173/community/list?${pageQuery.toString()}`);
-    navigate(
-      `/community/list?${searchQuery.toString()}&${pageQuery.toString()}`,
-    );
-  }
-
-  function handleLoginClick() {
-    navigate(`/member/login`);
+    navigate(`/notice/list?${searchQuery.toString()}&${pageQuery.toString()}`);
   }
 
   const optionList = createListCollection({
@@ -86,15 +78,15 @@ function CommunityList(props) {
   return (
     <div>
       <Breadcrumb
-        depth1={"커뮤니티"}
-        navigateToDepth1={() => navigate(`/community/list`)}
+        depth1={"공지사항"}
+        navigateToDepth1={() => navigate(`/notice/list`)}
       />
       <div>
         <br />
         {/*  NavBar*/}
         <Stack>
           <Box>
-            <h1>커뮤니티</h1>
+            <h1>공지사항</h1>
             <Table.Root>
               <Table.Header>
                 <Table.Row>
@@ -104,25 +96,21 @@ function CommunityList(props) {
                 </Table.Row>
               </Table.Header>
               <Table.Body>
-                {communityList.map((c) => (
-                  <Table.Row onClick={() => handleViewClick(c.id)} key={c.id}>
+                {noticeList.map((n) => (
+                  <Table.Row onClick={() => handleViewClick(n.id)} key={n.id}>
                     <Table.Cell>
                       <Stack>
-                        <HStack>
-                          <h3>{c.title}</h3>
-                          {c.existOfFiles ? <IoMdPhotos /> : " "}
-                        </HStack>
+                        <h3>{n.title}</h3>
                         <h4>
                           <HStack>
-                            <GoHeart /> {c.numberOfLikes} | <AiOutlineComment />{" "}
-                            {c.numberOfComments} | <HiOutlineBookOpen />{" "}
-                            {c.numberOfViews}
+                            <GoHeart /> {n.numberOfLikes} |{" "}
+                            <HiOutlineBookOpen /> {n.numberOfViews}
                           </HStack>
                         </h4>
                       </Stack>
                     </Table.Cell>
-                    <Table.Cell>{c.writer}</Table.Cell>
-                    <Table.Cell>{c.creationDate}</Table.Cell>
+                    <Table.Cell>{n.writer}</Table.Cell>
+                    <Table.Cell>{n.creationDate}</Table.Cell>
                   </Table.Row>
                 ))}
               </Table.Body>
@@ -162,22 +150,14 @@ function CommunityList(props) {
                   <Button onClick={handleSearchClick}>검색</Button>
                 </HStack>
               </Box>
-              {authentication.isAuthenticated && (
+              {authentication.isAdmin && (
                 <Button onClick={handleWriteClick}>글 쓰기</Button>
               )}
             </HStack>
-            {authentication.isAuthenticated || (
-              <Box>
-                <HStack>
-                  로그인을 한 회원만 게시글 작성이 가능합니다.
-                  <Button onClick={handleLoginClick}>로그인</Button>
-                </HStack>
-              </Box>
-            )}
           </Box>
           <Box>
             <PaginationRoot
-              count={countCommunity}
+              count={countNotice}
               pageSize={10}
               defaultPage={1}
               onPageChange={handlePageChangeClick}
@@ -198,4 +178,4 @@ function CommunityList(props) {
   );
 }
 
-export default CommunityList;
+export default NoticeList;

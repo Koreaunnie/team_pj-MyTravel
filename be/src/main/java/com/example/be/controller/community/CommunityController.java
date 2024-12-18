@@ -70,7 +70,7 @@ public class CommunityController {
         Integer id = community.getId();
         if (service.checkRightsOfAccess(id, auth)) {
             if (service.checkCommunity(community)) {
-                service.edit(community, removeFiles, uploadFiles, auth);
+                service.edit(community, removeFiles, uploadFiles);
                 return ResponseEntity.ok().body(Map.of("message", "success",
                         "text", STR."\{community.getId()}번 게시물이 수정되었습니다"));
             } else {
