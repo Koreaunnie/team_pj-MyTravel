@@ -1,7 +1,3 @@
-.plan-wide {
-    height: 100%;
-}
-
 /*-------------------- PlanAdd --------------------*/
 .plan-form {
     background: var(--bg-gray-color);
@@ -161,76 +157,73 @@
 }
 
 /*-------------------- PlanView --------------------*/
-.plan-view-container {
-    border: 1px solid red;
-    height: 100vh;
-    width: 1500px;
+.plan-view {
+    width: 100%;
     margin: 0 auto;
+    background: var(--bg-gray-color);
+}
+
+.plan-view-container {
+    width: 1000px;
+    margin: 50px auto;
     position: relative;
 }
 
-.plan-view-header {
-    position: sticky;
-    top: 90px;
+.plan-view-header .plan-view-title {
     z-index: 1;
-    padding: 20px 40px 0 30px;
+    display: flex;
+    justify-content: space-between;
+    background: var(--btn-normal-dark);
+    color: #fff;
+    padding: 10px 20px;
+    margin-top: 20px;
 }
 
-.plan-view-header h3 {
+.plan-view-header .plan-view-title h3 {
     font-size: 30px;
     font-weight: bold;
-    margin-bottom: 10px;
-    text-align: center;
+    margin: 10px;
+    text-align: left;
+    color: #fff;
 }
 
-.plan-view-header h5 {
-    padding-left: 5px;
+.plan-view-header .plan-view-title h4 {
+    margin-left: 10px;
 }
 
-.plan-view-header-right {
+.plan-view-header .plan-view-title ul {
     text-align: right;
-    margin-bottom: 20px;
-    padding: 0 10px;
-    text-align: right;
-    margin-right: 50px;
-}
-
-.plan-view-header-right > ul > li:first-child {
-    margin-bottom: 10px;
-}
-
-.plan-view-map {
-    position: absolute;
-    top: 300px;
-    left: 0;
-    width: 500px;
+    margin: 10px;
 }
 
 .plan-view-table {
-    position: absolute;
-    top: 250px;
-    left: 570px;
-    width: 930px;
+    width: 100%;
+    margin: 30px 0;
+}
+
+
+.plan-view-table caption {
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 30px 20px 10px 20px;
+    text-align: left;
+    color: var(--main-orange);
 }
 
 .plan-view-table .table-group {
     width: 100%;
-    margin: 60px 0;
-    padding: 25px;
-    border: 1px solid var(--table-border-color);
-    overflow: hidden;
-    border-radius: 10px;
+    border-top: 1px dashed var(--font-light-gray-color);
+    border-bottom: 1px dashed var(--font-light-gray-color);
     background: #fff;
-    box-shadow: var(--box-shadow);
+    padding: 30px;
 }
 
 .plan-view-table thead .table-group-date th {
-    font-size: 18px;
+    font-size: 1.5rem;
     font-weight: bold;
-    text-align: center;
-    padding: 10px;
-    background: var(--btn-normal-dark);
-    color: #fff;
+    padding: 20px;
+    text-align: left;
+    color: var(--font-dark-blue-color);
 }
 
 .plan-view-table thead .table-group-header th {
@@ -246,6 +239,10 @@
 
 .data-row:last-child td {
     border-bottom: none;
+}
+
+.plan-view-map {
+    width: 100%;
 }
 
 

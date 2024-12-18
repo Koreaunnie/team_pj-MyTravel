@@ -14,12 +14,12 @@ font-family: "Inter", serif;
     --main-bg-gradient: linear-gradient(90deg, #0072ff, #a044ff);
     --main-purple: #a044ff;
     --main-blue: #0072ff;
+    --main-orange: #ef8630;
     --blue-purple-gradient: linear-gradient(90deg, #0072ff, #a044ff);
     --deep-blue-gradient: linear-gradient(90deg, #1e3c72, #2a5298);
     --purple-skyblue-gradient: linear-gradient(90deg, #7f7fd5, #86a8e7, #91eae4);
     --skyblue-blue-gradient: linear-gradient(90deg, #56ccf2, #2f80ed);
     --blue-skyblue-gradient: linear-gradient(90deg, #5b86e5, #36d1dc);
-    --golden-yellow: #f4a261;
 
     --table-header-color: #f7f7f7;
     --table-border-color: #eee;
@@ -712,20 +712,19 @@ form .required {
         display: block;
     }
 
+    .calendar-list {
+        width: 100%;
+    }
+
     .calendar {
         display: none;
     }
 
     .day-list {
-        margin-left: 0;
-        width: 80%;
-        padding: 0;
-        left: 50%;
-        transform: translateX(-50%);
-
-
+        width: 100%;
+        left: 0;
+        transform: none;
     }
-
 }
 
 /*------------------- 화면 크기가 480px 이하 (모바일 화면) -------------------*/
@@ -733,10 +732,6 @@ form .required {
     .body-wide,
     .body-normal,
     .body-narrow {
-        width: 95%
-    }
-
-    .day-list {
         width: 95%
     }
 

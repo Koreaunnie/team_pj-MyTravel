@@ -9,8 +9,8 @@
 }
 
 .map-view-container {
-    width: 530px;
-    height: 410px;
+    width: 100%;
+    height: 300px;
 }
 
 .autocomplete-container {
