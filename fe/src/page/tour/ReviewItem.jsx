@@ -46,7 +46,8 @@ function EditButton({ review, onEditClick, onRateChange }) {
     const updatedFileList = fileList.filter(
       (file) => !removeFiles.includes(file.id),
     );
-    setFileList(updatedFileList); // 상태 업데이트로 새로고침 없이 반영
+    setFileList(updatedFileList); // 상태 업데이트
+    setUploadFiles([]);
     setOpen(false);
 
     // 외부에 업데이트된 데이터 전달 (필요 시)
