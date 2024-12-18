@@ -12,14 +12,13 @@ CREATE TABLE community_like
 
 SHOW COLUMNS FROM `community_like`;
 
-ALTER TABLE `community_comment`
-    ADD CONSTRAINT `community_comment_ibfk_1`
-        FOREIGN KEY (`writer`) REFERENCES `member` (`nickname`)
-            ON DELETE SET NULL
+ALTER TABLE `community_like`
+    ADD CONSTRAINT `community_like_ibfk_1`
+        FOREIGN KEY (`person`) REFERENCES `member` (`nickname`)
             ON UPDATE CASCADE;
 
-ALTER TABLE community_comment
-    DROP FOREIGN KEY community_comment_ibfk_1;
+ALTER TABLE community_like
+    DROP FOREIGN KEY community_like_ibfk_1;
 
 SELECT CONSTRAINT_NAME, TABLE_NAME
 FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
