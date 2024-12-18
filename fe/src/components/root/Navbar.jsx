@@ -94,7 +94,7 @@ function Navbar(props) {
             </li>
           )}
           <li
-            className={isActive("/cs") ? "active" : ""}
+            className={isActive("/notice") ? "active" : ""}
             onClick={() => navigate("/notice/list")}
           >
             공지사항
