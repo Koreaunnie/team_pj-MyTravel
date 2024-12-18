@@ -85,11 +85,19 @@ function Navbar(props) {
               내 여행
             </li>
           )}
+          {isAuthenticated && (
+            <li
+              className={isActive("/wallet") ? "active" : ""}
+              onClick={() => navigate("/wallet/list")}
+            >
+              내 지갑
+            </li>
+          )}
           <li
-            className={isActive("/wallet") ? "active" : ""}
-            onClick={() => navigate("/wallet/list")}
+            className={isActive("/cs") ? "active" : ""}
+            onClick={() => navigate("/notice/list")}
           >
-            내 지갑
+            공지사항
           </li>
           <li
             className={isActive("/cs") ? "active" : ""}
