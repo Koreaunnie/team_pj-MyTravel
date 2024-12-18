@@ -43,8 +43,8 @@ public class CommunityController {
             if (service.checkMember(auth)) {
                 if (service.checkCommunity(community)) {
                     service.write(community, files, auth);
-                    return ResponseEntity.ok().body(Map.of("message", "success",
-                            "text", STR."\{community.getId()}번 게시물이 등록되었습니다", "id", community.getId()));
+                    return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success",
+                            "text", STR."\{community.getId()}번 게시물이 등록되었습니다"), "id", community.getId()));
                 } else {
                     return ResponseEntity.badRequest()
                             .body(Map.of("message", Map.of("type", "warning",
@@ -78,8 +78,9 @@ public class CommunityController {
             if (service.checkRightsOfAccess(id, auth)) {
                 if (service.checkCommunity(community)) {
                     service.edit(community, removeFiles, uploadFiles);
-                    return ResponseEntity.ok().body(Map.of("message", "success",
-                            "text", STR."\{community.getId()}번 게시물이 수정되었습니다"));
+                    return ResponseEntity.ok()
+                            .body(Map.of("message", Map.of("type", "success",
+                                    "text", STR."\{community.getId()}번 게시물이 수정되었습니다"), "id", community.getId()));
                 } else {
                     return ResponseEntity.badRequest()
                             .body(Map.of("message", Map.of("type", "warning",
@@ -103,8 +104,9 @@ public class CommunityController {
         try {
             if (service.checkRightsOfAccess(id, auth)) {
                 service.delete(id, auth);
-                return ResponseEntity.ok().body(Map.of("message", "success",
-                        "text", STR."\{id}번 게시물이 삭제되었습니다"));
+                return ResponseEntity.ok()
+                        .body(Map.of("message", Map.of("type", "success",
+                                "text", "게시물이 삭제되었습니다")));
             } else {
                 return ResponseEntity.status(403)
                         .body(Map.of("message", Map.of("type", "error",
@@ -126,8 +128,9 @@ public class CommunityController {
             if (service.checkMember(auth)) {
                 if (service.checkComment(communityComment)) {
                     service.commentWrite(communityComment, auth);
-                    return ResponseEntity.ok().body(Map.of("message", "success",
-                            "text", "댓글이 등록되었습니다"));
+                    return ResponseEntity.ok()
+                            .body(Map.of("message", Map.of("type", "success",
+                                    "text", "댓글이 등록되었습니다")));
                 } else {
                     return ResponseEntity.badRequest()
                             .body(Map.of("message", Map.of("type", "warning",
@@ -151,8 +154,9 @@ public class CommunityController {
         try {
             if (service.checkCommentRightsOfAccess(id, auth)) {
                 service.commentDelete(id);
-                return ResponseEntity.ok().body(Map.of("message", "success",
-                        "text", "댓글이 삭제되었습니다"));
+                return ResponseEntity.ok()
+                        .body(Map.of("message", Map.of("type", "success",
+                                "text", "댓글이 삭제되었습니다")));
             } else {
                 return ResponseEntity.status(403)
                         .body(Map.of("message", Map.of("type", "error",
@@ -172,8 +176,9 @@ public class CommunityController {
             if (service.checkCommentRightsOfAccess(id, auth)) {
                 if (service.checkComment(communityComment)) {
                     service.updateComment(communityComment, id, auth);
-                    return ResponseEntity.ok().body(Map.of("message", "success",
-                            "text", "댓글이 수정되었습니다"));
+                    return ResponseEntity.ok()
+                            .body(Map.of("message", Map.of("type", "success",
+                                    "text", "댓글이 수정되었습니다")));
                 } else {
                     return ResponseEntity.badRequest()
                             .body(Map.of("message", Map.of("type", "warning",
@@ -199,12 +204,14 @@ public class CommunityController {
         if (service.checkMember(auth)) {
             if (service.checkLikeInCommunity(id, auth)) {
                 service.removeLikeInCommunity(id, auth);
-                return ResponseEntity.ok().body(Map.of("message", "success",
-                        "text", "추천을 취소하였습니다"));
+                return ResponseEntity.ok()
+                        .body(Map.of("message", Map.of("type", "success",
+                                "text", "추천을 취소하였습니다")));
             } else {
                 service.addLikeInCommunity(id, auth);
-                return ResponseEntity.ok().body(Map.of("message", "success",
-                        "text", "게시글을 추천하였습니다"));
+                return ResponseEntity.ok()
+                        .body(Map.of("message", Map.of("type", "success",
+                                "text", "게시글을 추천하였습니다")));
             }
         } else {
             return ResponseEntity.status(403)
