@@ -15,7 +15,9 @@ import {
 import { HStack } from "@chakra-ui/react";
 
 function InquiryList(props) {
-  const { nickname, isAuthenticated } = useContext(AuthenticationContext);
+  const { nickname, isAuthenticated, isAdmin } = useContext(
+    AuthenticationContext,
+  );
   const [inquiryList, setInquiryList] = useState([]);
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [showMyInquiries, setShowMyInquiries] = useState(false); // 내가 쓴 글 여부
@@ -84,14 +86,26 @@ function InquiryList(props) {
 
   // 비밀글 여부 확인
   const checkSecretOrNot = (inquiry) => {
-    if (inquiry.secret && inquiry.writerNickname != nickname) {
-      toaster.create({
-        type: "warning",
-        description: "비공개 문의내역은 작성자 본인만 확인하실 수 있습니다.",
-      });
-    } else {
-      navigate(`/cs/inquiry/view/${inquiry.id}`);
+    if (inquiry.secret) {
+      if (!isAuthenticated) {
+        toaster.create({
+          type: "error",
+          description: "로그인 후 확인할 수 있습니다.",
+        });
+        return;
+      }
+
+      if (!isAdmin && inquiry.writerNickname !== nickname) {
+        toaster.create({
+          type: "warning",
+          description: "비공개 문의내역은 작성자 본인만 확인할 수 있습니다.",
+        });
+        return;
+      }
     }
+
+    // 비밀글이 아니거나 권한 확인 통과 시 상세 페이지로 이동
+    navigate(`/cs/inquiry/view/${inquiry.id}`);
   };
 
   // 날짜 포맷팅

@@ -43,12 +43,18 @@ public class InquiryController {
     @GetMapping("view/{id}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> get(@PathVariable int id, Authentication authentication) {
+        // 문의사항
         Inquiry inquiry = service.get(id);
-        if (inquiry.isSecret() && !(authentication.getName().equals(inquiry.getWriter()))) {
+
+        // 권한 체크
+        boolean isAdmin = memberService.isAdmin(authentication);
+        boolean isWriter = authentication.getName().equals(inquiry.getWriter());
+
+        if (inquiry.isSecret() && !isAdmin && !isWriter) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Map.of("message", Map.of(
                             "type", "warning",
-                            "text", "비공개 문의내역은 작성자 본인만 확인하실 수 있습니다."
+                            "text", "비공개 문의내역은 작성자 본인만 확인할 수 있습니다."
                     )));
         }
         return ResponseEntity.ok(Map.of("inquiry", inquiry));
