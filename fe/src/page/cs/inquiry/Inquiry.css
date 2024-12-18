@@ -16,6 +16,27 @@
     margin-right: 3px
 }
 
+.inquiry .table-list .badge {
+    font-size: 0.8rem;
+    border-radius: 5px;
+    padding: 3px 5px;
+    color: #fff;
+
+}
+
+.inquiry .table-list .badge-success {
+    background: var(--main-blue);
+}
+
+.inquiry .table-list .badge-warning {
+    background: var(--font-gray-color);
+}
+
+.inquiry .table-list .badge-dark {
+    background: var(--btn-normal-dark);
+    cursor: pointer;
+}
+
 /*------------------- InquiryView -------------------*/
 .inquiry .table-view .thead-sub-title {
     height: 30px;

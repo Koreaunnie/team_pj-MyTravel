@@ -27,3 +27,6 @@ ALTER TABLE inquiry
 
 ALTER TABLE inquiry
     MODIFY COLUMN writer VARCHAR(30) NOT NULL;
+
+ALTER TABLE inquiry
+    ADD COLUMN has_answer BOOLEAN NOT NULL;

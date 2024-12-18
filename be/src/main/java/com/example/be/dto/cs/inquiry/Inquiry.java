@@ -15,4 +15,5 @@ public class Inquiry {
     private boolean secret;
     private LocalDateTime inserted;
     private LocalDateTime updated;
+    private boolean hasAnswer;
 }

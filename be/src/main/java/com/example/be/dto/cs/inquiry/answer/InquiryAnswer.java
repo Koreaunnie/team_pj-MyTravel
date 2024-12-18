@@ -1,16 +1,16 @@
-package com.example.be.dto.cs.inquiry.comment;
+package com.example.be.dto.cs.inquiry.answer;
 
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
-public class Comment {
+public class InquiryAnswer {
     private Integer id;
     private Integer inquiryId;
     private String memberEmail;
     private String memberNickname;
-    private String comment;
+    private String answer;
     private LocalDateTime inserted;
     private LocalDateTime updated;
 }

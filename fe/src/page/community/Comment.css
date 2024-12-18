@@ -1,0 +1,41 @@
+.community-comment {
+    background: var(--bg-gray-color);
+    padding: 10px;
+}
+
+.community-comment .comment-list {
+    margin: 30px;
+    padding: 20px;
+    background: #fff;
+    position: relative;
+    border-radius: 10px;
+    border: 1px solid var(--font-light-gray-color);
+}
+
+.community-comment .comment-list .comment-btn-wrap {
+    display: flex;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.community-comment .comment-list .comment-btn-wrap li {
+    cursor: pointer;
+    margin: 5px;
+    font-size: 0.9rem;
+    padding: 0 5px;
+}
+
+
+.community-comment .comment-list .comment-list-body .nickname {
+    font-weight: bold;
+}
+
+.community-comment .comment-list .comment-list-body .content {
+    margin: 15px 0;
+}
+
+.community-comment .comment-list .comment-list-body .date {
+    font-size: 0.9rem;
+    color: var(--font-gray-color);
+}

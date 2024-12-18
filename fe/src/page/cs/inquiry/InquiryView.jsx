@@ -5,7 +5,7 @@ import axios from "axios";
 import { Spinner } from "@chakra-ui/react";
 import "./Inquiry.css";
 import { Modal } from "../../../components/root/Modal.jsx";
-import { CommentContainer } from "./comment/CommentContainer.jsx";
+import { AnswerContainer } from "./comment/AnswerContainer.jsx";
 import { toaster } from "../../../components/ui/toaster.jsx";
 import { AuthenticationContext } from "../../../components/context/AuthenticationProvider.jsx";
 
@@ -17,7 +17,7 @@ function InquiryView(props) {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const { hasAccess } = useContext(AuthenticationContext);
+  const { hasAccess, isAdmin } = useContext(AuthenticationContext);
 
   useEffect(() => {
     axios
@@ -121,7 +121,7 @@ function InquiryView(props) {
         </table>
       </div>
 
-      <CommentContainer inquiryId={inquiry.id} />
+      {isAdmin && <AnswerContainer inquiryId={inquiry.id} />}
 
       {/* 수정 modal */}
       <Modal

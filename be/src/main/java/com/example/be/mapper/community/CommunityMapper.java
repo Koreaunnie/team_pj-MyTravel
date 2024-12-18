@@ -138,8 +138,8 @@ public interface CommunityMapper {
     int deleteCommunity(Integer id);
 
     @Insert("""
-            INSERT INTO community_comment (comment, writer, community_id)
-            VALUES (#{comment}, #{writer}, #{communityId})
+            INSERT INTO community_comment (inquiryAnswer, writer, community_id)
+            VALUES (#{inquiryAnswer}, #{writer}, #{communityId})
             """)
     int writeCommunityComment(CommunityComment communityComment);
 
@@ -165,7 +165,7 @@ public interface CommunityMapper {
     int deleteFileByFileNumber(Integer fileNumber);
 
     @Select("""
-            SELECT id, comment, writer , inserted creationDate
+            SELECT id, inquiryAnswer, writer , inserted creationDate
             FROM community_comment
             WHERE community_id=#{id}
             ORDER BY creationDate ASC
@@ -187,10 +187,10 @@ public interface CommunityMapper {
 
     @Update("""
             UPDATE community_comment
-            SET comment=#{comment}
+            SET inquiryAnswer=#{inquiryAnswer}
             WHERE id=#{id}
             """)
-    int updateCommunityComment(String comment, Integer id);
+    int updateCommunityComment(String inquiryAnswer, Integer id);
 
     @Select("""
             SELECT nickname

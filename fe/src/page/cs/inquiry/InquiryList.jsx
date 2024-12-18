@@ -186,6 +186,7 @@ function InquiryList(props) {
               <th>제목</th>
               <th>작성자</th>
               <th>작성일</th>
+              <th>답변 상태</th>
             </tr>
           </thead>
 
@@ -206,6 +207,17 @@ function InquiryList(props) {
                   )}
                   <td>{inquiry.writerNickname}</td>
                   <td>{formattedDate(inquiry.updated)}</td>
+                  <td>
+                    {inquiry.hasAnswer ? (
+                      <span className="badge badge-success">답변 완료</span>
+                    ) : isAdmin ? (
+                      <button className="badge badge-dark">
+                        답변 작성하기
+                      </button>
+                    ) : (
+                      <span className="badge badge-warning">답변 대기중</span>
+                    )}
+                  </td>
                 </tr>
               ))
             ) : (

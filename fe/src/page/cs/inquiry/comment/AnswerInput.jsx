@@ -1,23 +1,23 @@
-import "./Comment.css";
+import "./Answer.css";
 import React, { useState } from "react";
 import axios from "axios";
 import { toaster } from "../../../../components/ui/toaster.jsx";
 
-export function CommentInput({ inquiryId }) {
-  const [comment, setComment] = useState("");
+export function AnswerInput({ inquiryId }) {
+  const [answer, setAnswer] = useState("");
 
   function handleSaveButton() {
     axios
-      .post("/api/cs/inquiry/comment/add", {
+      .post("/api/cs/inquiry/answer/add", {
         inquiryId,
-        comment,
+        answer,
       })
       .then((res) => {
         toaster.create({
           type: res.data.message.type,
           description: res.data.message.text,
         });
-        setComment("");
+        setAnswer("");
       })
       .catch((e) => {
         toaster.create({
@@ -29,11 +29,8 @@ export function CommentInput({ inquiryId }) {
 
   return (
     <div className={"inquiry body-normal"}>
-      <div className={"comment-input"}>
-        <textarea
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-        />
+      <div className={"answer-input"}>
+        <textarea value={answer} onChange={(e) => setAnswer(e.target.value)} />
         <button className={"btn btn-dark"} onClick={handleSaveButton}>
           댓글 작성
         </button>
