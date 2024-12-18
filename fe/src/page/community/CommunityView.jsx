@@ -172,14 +172,48 @@ function CommunityView(props) {
         comment,
         communityId: community.id,
       })
-      .then(() => fetchComments())
+      .then((e) => {
+        const writeSuccess = e.data.message;
+        toaster.create({
+          type: writeSuccess.type,
+          description: writeSuccess.text,
+        });
+        fetchComments();
+      })
+      .catch((e) => {
+        const writeFailure = e.request.response;
+        const parsingKey = JSON.parse(writeFailure);
+        const type = parsingKey.message.type;
+        const text = parsingKey.message.text;
+        toaster.create({
+          type: type,
+          description: text,
+        });
+      })
       .finally(() => setComment(""));
   };
 
   const handleCommentDeleteClick = (id) => {
-    axios.delete(`/api/community/comment/delete/${id}`).then(() => {
-      fetchComments();
-    });
+    axios
+      .delete(`/api/community/comment/delete/${id}`)
+      .then((e) => {
+        const deleteSuccess = e.data.message;
+        toaster.create({
+          type: deleteSuccess.type,
+          description: deleteSuccess.text,
+        });
+        fetchComments();
+      })
+      .catch((e) => {
+        const deleteFailure = e.request.response;
+        const parsingKey = JSON.parse(deleteFailure);
+        const type = parsingKey.message.type;
+        const text = parsingKey.message.text;
+        toaster.create({
+          type: type,
+          description: text,
+        });
+      });
   };
 
   const handleCommentChange = (id, value) => {
