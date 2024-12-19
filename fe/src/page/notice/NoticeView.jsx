@@ -23,19 +23,6 @@ import {
 } from "../../components/ui/dialog.jsx";
 import { Button } from "../../components/ui/button.jsx";
 import { GoHeart } from "react-icons/go";
-import {
-  SelectContent,
-  SelectItem,
-  SelectRoot,
-  SelectTrigger,
-  SelectValueText,
-} from "../../components/ui/select.jsx";
-import {
-  PaginationItems,
-  PaginationNextTrigger,
-  PaginationPrevTrigger,
-  PaginationRoot,
-} from "../../components/ui/pagination.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { formattedDateTime } from "../../components/utils/FormattedDateTime.jsx";
 
@@ -182,7 +169,7 @@ function NoticeView(props) {
   });
 
   return (
-    <div>
+    <div className={"notice"}>
       <Breadcrumb
         depth1={"공지사항"}
         navigateToDepth1={() => navigate(`/notice/list`)}
@@ -200,19 +187,21 @@ function NoticeView(props) {
 
         <div className={"like-wrap"}>
           {authentication.isAuthenticated && (
-            <Stack>
-              <Icon
-                fontSize="8xl"
-                color="red.600"
-                onClick={() => {
-                  handleLikeClick();
-                }}
-              >
-                {myNoticeLike ? <IoMdHeart /> : <IoMdHeartEmpty />}
-              </Icon>
-              <h5>{notice.like}</h5>
-            </Stack>
+            <ul>
+              <li className={"icon"}>
+                <Icon
+                  color="red.600"
+                  onClick={() => {
+                    handleLikeClick();
+                  }}
+                >
+                  {myNoticeLike ? <IoMdHeart /> : <IoMdHeartEmpty />}
+                </Icon>
+              </li>
+              <li>{notice.like}</li>
+            </ul>
           )}
+
           {authentication.isAuthenticated || (
             <Stack>
               <DialogRoot>
@@ -290,13 +279,12 @@ function NoticeView(props) {
                 <HiOutlineBookOpen /> {notice.numberOfViews}
               </th>
             </tr>
+            <tr>
+              <th colSpan={2}>조회수 {notice.views}</th>
+            </tr>
           </thead>
 
           <tbody>
-            <tr>
-              <td>❤️ {notice.numberOfLikes}</td>
-              <td>💬 {notice.numberOfViews}</td>
-            </tr>
             <tr className={"tbody-content"}>
               <td>{notice.content}</td>
             </tr>

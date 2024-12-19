@@ -1,3 +1,4 @@
+/*------------------- NoticeView -------------------*/
 .notice {
     width: 100%;
     margin-top: 60px;
@@ -9,11 +10,22 @@
     justify-content: space-between;
 }
 
+.notice .like-wrap ul {
+    display: flex;
+    justify-content: end;
+    margin: 10px;
+    font-size: 1.5rem;
+}
+
+.notice .like-wrap ul .icon {
+    margin: -2px 7px 0 0;
+}
+
 /*------------------- NoticeWrite, NoticeEdit -------------------*/
 
 .notice-form {
     width: 100%;
-    padding-top: 30px;
+    padding-top: 60px;
     min-height: calc(100vh - 230px);
 }
 

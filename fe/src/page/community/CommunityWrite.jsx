@@ -1,7 +1,5 @@
 import React, { useContext, useState } from "react";
 import axios from "axios";
-import { Box, HStack, Input, Textarea } from "@chakra-ui/react";
-import { Field } from "../../components/ui/field.jsx";
 import { Button } from "../../components/ui/button.jsx";
 import { useNavigate } from "react-router-dom";
 import {
@@ -61,10 +59,10 @@ function CommunityWrite(props) {
 
       {authentication.isAuthenticated && (
         <div className={"body-normal"}>
-          <h1>게시글 작성</h1>
-          <h2>여러분의 여행 이야기를 들려주세요.</h2>
-
           <div className={"form-wrap"}>
+            <h1>게시글 작성</h1>
+            <h2>여러분의 여행 이야기를 들려주세요.</h2>
+
             <div className={"btn-wrap"}>
               <button
                 className={"btn btn-dark-outline"}

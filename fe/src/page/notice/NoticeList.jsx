@@ -2,17 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import axios from "axios";
-import {
-  Box,
-  createListCollection,
-  HStack,
-  Input,
-  Stack,
-  Table,
-} from "@chakra-ui/react";
+import { Center, createListCollection, HStack } from "@chakra-ui/react";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
-import { GoHeart } from "react-icons/go";
-import { HiOutlineBookOpen } from "react-icons/hi";
 import {
   SelectContent,
   SelectItem,
@@ -20,7 +11,6 @@ import {
   SelectTrigger,
   SelectValueText,
 } from "../../components/ui/select.jsx";
-import { Button } from "../../components/ui/button.jsx";
 import {
   PaginationItems,
   PaginationNextTrigger,

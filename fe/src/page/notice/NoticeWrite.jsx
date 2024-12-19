@@ -52,9 +52,9 @@ function NoticeWrite(props) {
 
       {authentication.isAdmin && (
         <div className={"body-normal"}>
-          <h1>공지사항 작성</h1>
-
           <div className={"form-wrap"}>
+            <h1>공지사항 작성</h1>
+
             <div className={"btn-wrap"}>
               <button
                 className={"btn btn-dark-outline"}
@@ -79,7 +79,7 @@ function NoticeWrite(props) {
 
               <label htmlFor="content">본문</label>
               <textarea
-                rows={15}
+                rows={13}
                 value={content}
                 id={"content"}
                 onChange={(e) => setContent(e.target.value)}
