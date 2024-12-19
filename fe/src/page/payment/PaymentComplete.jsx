@@ -14,6 +14,7 @@ function PaymentComplete(props) {
     return <p>결제 정보가 전달되지 않았습니다.</p>;
   }
 
+  //지갑에 추가
   const handleSendToWallet = (product) => {
     axios
       .post("/api/wallet/add", {
@@ -23,6 +24,30 @@ function PaymentComplete(props) {
         income: 0,
         expense: product.price,
         memo: product.location,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+      });
+  };
+
+  // 내 여행에 추가
+  const handleSendToPlan = (product) => {
+    axios
+      .post("/api/plan/add", {
+        title: product.product,
+        description: "마이트래블에서 결제한 여행 상품",
+        destination: product.location,
+        startDate: product.startDate,
+        endDate: product.endDate,
+        planFieldList: [
+          {
+            memo: `결제번호: ${paymentId}`,
+          },
+        ],
       })
       .then((res) => res.data)
       .then((data) => {
@@ -67,6 +92,14 @@ function PaymentComplete(props) {
                     }}
                   >
                     내 지갑에 추가
+                  </button>
+                  <button
+                    className={"btn btn-dark"}
+                    onClick={(e) => {
+                      handleSendToPlan(product);
+                    }}
+                  >
+                    내 여행에 추가
                   </button>
                 </td>
                 <td>
