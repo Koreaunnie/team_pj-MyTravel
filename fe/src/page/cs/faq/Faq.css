@@ -1,6 +1,14 @@
 .faq {
-    height: calc(100vh - 180px);
-    overflow-x: hidden;
+    margin-top: 60px;
+}
+
+.faq .btn-wrap {
+    display: flex;
+    justify-content: space-between;
+}
+
+.faq .search-form {
+    margin-top: 20px;
 }
 
 .faq .table-list tbody tr td:first-child {
@@ -10,3 +18,4 @@
 .faq .table-list tr td:nth-child(2) {
     text-align: left;
 }
+

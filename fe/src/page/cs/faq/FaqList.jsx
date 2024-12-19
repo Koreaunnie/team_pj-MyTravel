@@ -4,7 +4,7 @@ import { Breadcrumb } from "../../../components/root/Breadcrumb.jsx";
 import { Modal } from "../../../components/root/Modal.jsx";
 import axios from "axios";
 import { AuthenticationContext } from "../../../components/context/AuthenticationProvider.jsx";
-import { HStack } from "@chakra-ui/react";
+import { Center, HStack } from "@chakra-ui/react";
 import {
   PaginationItems,
   PaginationNextTrigger,
@@ -86,16 +86,8 @@ function FaqList(props) {
       />
 
       <div className={"body-normal"}>
-        <div className={"btn-wrap"}>
-          {isAdmin && hasAccess && (
-            <button
-              className={"btn btn-dark"}
-              onClick={() => setAddModalOpen(true)}
-            >
-              작성
-            </button>
-          )}
-        </div>
+        <h1>자주 묻는 질문</h1>
+        <h2>1대 1 문의사항은 문의게시판을 이용해주세요.</h2>
 
         <div className={"btn-wrap"}>
           <button
@@ -104,47 +96,15 @@ function FaqList(props) {
           >
             고객센터 홈
           </button>
-        </div>
 
-        <h1>자주 묻는 질문</h1>
-
-        {/*검색*/}
-        <div className={"search-form"}>
-          <button
-            onClick={() => {
-              // 1. 검색 상태 초기화
-              setSearch({ type: "all", keyword: "" });
-
-              // 2. URL 검색 파라미터 초기화
-              const nextSearchParam = new URLSearchParams();
-              nextSearchParam.set("type", "all");
-              nextSearchParam.set("key", "");
-
-              setSearchParams(nextSearchParam);
-            }}
-          >
-            <IoIosRefresh />
-          </button>
-          <select
-            defaultValue={search.type}
-            onChange={(e) => setSearch({ ...search, type: e.target.value })}
-          >
-            <option value="all">전체</option>
-            <option value="question">질문</option>
-            <option value="answer">답변</option>
-          </select>
-          <div className={"search-form-input"}>
-            <input
-              type="search"
-              value={search.keyword}
-              onChange={(e) =>
-                setSearch({ ...search, keyword: e.target.value.trim() })
-              }
-            />
-            <button className={"btn-search btn-dark"} onClick={handleSearch}>
-              검색
+          {isAdmin && hasAccess && (
+            <button
+              className={"btn btn-dark"}
+              onClick={() => setAddModalOpen(true)}
+            >
+              작성
             </button>
-          </div>
+          )}
         </div>
 
         {!faqList || faqList.length === 0 ? (
@@ -175,20 +135,66 @@ function FaqList(props) {
             </tbody>
           </table>
         )}
+
+        <div className={"search-form"}>
+          <button
+            onClick={() => {
+              // 1. 검색 상태 초기화
+              setSearch({ type: "all", keyword: "" });
+
+              // 2. URL 검색 파라미터 초기화
+              const nextSearchParam = new URLSearchParams();
+              nextSearchParam.set("type", "all");
+              nextSearchParam.set("key", "");
+
+              setSearchParams(nextSearchParam);
+            }}
+            style={{ marginRight: "10px", cursor: "pointer" }}
+          >
+            <IoIosRefresh />
+          </button>
+
+          <select
+            defaultValue={search.type}
+            onChange={(e) => setSearch({ ...search, type: e.target.value })}
+          >
+            <option value="all">전체</option>
+            <option value="question">질문</option>
+            <option value="answer">답변</option>
+          </select>
+
+          <div className={"search-form-input"}>
+            <input
+              type="search"
+              value={search.keyword}
+              onChange={(e) =>
+                setSearch({ ...search, keyword: e.target.value.trim() })
+              }
+            />
+
+            <button className={"btn-search btn-dark"} onClick={handleSearch}>
+              검색
+            </button>
+          </div>
+        </div>
       </div>
+
       <div className={"pagination"}>
-        <PaginationRoot
-          count={count}
-          pageSize={10}
-          defaultPage={1}
-          onPageChange={handlePageChange}
-        >
-          <HStack>
-            <PaginationPrevTrigger />
-            <PaginationItems />
-            <PaginationNextTrigger />
-          </HStack>
-        </PaginationRoot>
+        <Center>
+          <PaginationRoot
+            count={count}
+            pageSize={10}
+            defaultPage={1}
+            onPageChange={handlePageChange}
+            variant="solid"
+          >
+            <HStack>
+              <PaginationPrevTrigger />
+              <PaginationItems />
+              <PaginationNextTrigger />
+            </HStack>
+          </PaginationRoot>
+        </Center>
       </div>
 
       {/* 추가 modal */}

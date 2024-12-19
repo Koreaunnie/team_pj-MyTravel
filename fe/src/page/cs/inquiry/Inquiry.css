@@ -1,6 +1,19 @@
+.inquiry {
+    margin-top: 60px;
+}
+
 /*------------------- InquiryList -------------------*/
 .inquiry .table-list .title-center {
     text-align: left;
+}
+
+.inquiry .btn-wrap {
+    display: flex;
+    justify-content: space-between;
+}
+
+.inquiry .search-form {
+    margin-top: 20px;
 }
 
 .inquiry .table-list tbody tr td {
@@ -9,6 +22,23 @@
 
 .inquiry .table-list tbody tr td:nth-child(1) {
     font-size: 0.8rem;
+    width: 50px;
+}
+
+.inquiry .table-list tbody tr td:nth-child(2) {
+    width: 250px;
+}
+
+.inquiry .table-list tbody tr td:nth-child(3) {
+    width: 100px;
+}
+
+.inquiry .table-list tbody tr td:nth-child(4) {
+    width: 80px;
+}
+
+.inquiry .table-list tbody tr td:nth-child(5) {
+    width: 100px;
 }
 
 .inquiry .table-list .secret {

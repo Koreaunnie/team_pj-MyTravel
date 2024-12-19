@@ -12,8 +12,9 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../../components/ui/pagination.jsx";
-import { HStack } from "@chakra-ui/react";
+import { Center, HStack } from "@chakra-ui/react";
 import { formattedDate } from "../../../components/utils/FormattedDate.jsx";
+import { IoIosRefresh } from "react-icons/io";
 
 function InquiryList(props) {
   const { nickname, isAuthenticated, isAdmin } = useContext(
@@ -159,6 +160,10 @@ function InquiryList(props) {
       />
 
       <div className={"body-normal"}>
+        <h1>문의하기</h1>
+        <h2>궁금한 점이 있으시면 문의해주세요.</h2>
+        <h3>운영시간 09:00 ~ 18:00</h3>
+
         <div className={"btn-wrap"}>
           <button
             className={"btn btn-dark-outline"}
@@ -194,19 +199,7 @@ function InquiryList(props) {
           )}
         </div>
 
-        <h1>문의하기</h1>
-        <h2>궁금한 점이 있으시면 문의해주세요.</h2>
-        <h3>운영시간 09:00 ~ 18:00</h3>
-
         <table className={"table-list"}>
-          <colgroup>
-            <col style={{ width: "50px" }} />
-            <col style={{ width: "250px" }} />
-            <col style={{ width: "100px" }} />
-            <col style={{ width: "80px" }} />
-            <col style={{ width: "100px" }} />
-          </colgroup>
-
           <thead>
             <tr>
               <th>#</th>
@@ -259,6 +252,23 @@ function InquiryList(props) {
 
         {/* 검색 */}
         <div className={"search-form"}>
+          <button
+            onClick={() => {
+              // 1. 검색 상태 초기화
+              setSearch({ type: "all", keyword: "" });
+
+              // 2. URL 검색 파라미터 초기화
+              const nextSearchParam = new URLSearchParams();
+              nextSearchParam.set("type", "all");
+              nextSearchParam.set("key", "");
+
+              setSearchParams(nextSearchParam);
+            }}
+            style={{ marginRight: "10px", cursor: "pointer" }}
+          >
+            <IoIosRefresh />
+          </button>
+
           <select
             onChange={(e) => setSearch({ ...search, type: e.target.value })}
           >
@@ -288,19 +298,21 @@ function InquiryList(props) {
 
         {/* pagination */}
         <div className="pagination">
-          <PaginationRoot
-            onPageChange={handlePageChange}
-            count={count}
-            pageSize={10}
-            page={page}
-            variant="solid"
-          >
-            <HStack>
-              <PaginationPrevTrigger />
-              <PaginationItems />
-              <PaginationNextTrigger />
-            </HStack>
-          </PaginationRoot>
+          <Center>
+            <PaginationRoot
+              onPageChange={handlePageChange}
+              count={count}
+              pageSize={10}
+              page={page}
+              variant="solid"
+            >
+              <HStack>
+                <PaginationPrevTrigger />
+                <PaginationItems />
+                <PaginationNextTrigger />
+              </HStack>
+            </PaginationRoot>
+          </Center>
         </div>
       </div>
 
