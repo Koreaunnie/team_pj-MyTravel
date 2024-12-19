@@ -248,7 +248,14 @@ function NoticeView(props) {
                         </DialogBody>
                         <DialogFooter>
                           <DialogActionTrigger>
-                            <Button onClick={handleLoginClick}>확인</Button>
+                            <div>
+                              <Button
+                                className={"btn btn-dark"}
+                                onClick={handleLoginClick}
+                              >
+                                확인
+                              </Button>
+                            </div>
                           </DialogActionTrigger>
                         </DialogFooter>
                       </DialogContent>
@@ -267,20 +274,39 @@ function NoticeView(props) {
               <HStack>
                 <DialogRoot>
                   <DialogTrigger>
-                    <Button>삭제</Button>
+                    <div>
+                      <Button className={"btn btn-warning"}>삭제</Button>
+                    </div>
                     <DialogContent>
                       <DialogHeader>글 삭제</DialogHeader>
-                      <DialogBody>{id}번 게시물을 삭제하시겠습니까?</DialogBody>
+                      <DialogBody>
+                        {id}번 공지사항을 삭제하시겠습니까?
+                      </DialogBody>
                       <DialogFooter>
-                        <Button>취소</Button>
+                        <div>
+                          <Button className={"btn btn-dark-outline"}>
+                            취소
+                          </Button>
+                        </div>
                         <DialogActionTrigger>
-                          <Button onClick={handleDeleteClick}>삭제</Button>
+                          <div>
+                            <Button
+                              className={"btn btn-warning"}
+                              onClick={handleDeleteClick}
+                            >
+                              삭제
+                            </Button>
+                          </div>
                         </DialogActionTrigger>
                       </DialogFooter>
                     </DialogContent>
                   </DialogTrigger>
                 </DialogRoot>
-                <Button onClick={handleEditClick}>수정</Button>
+                <div>
+                  <Button className={"btn btn-blue"} onClick={handleEditClick}>
+                    수정
+                  </Button>
+                </div>
               </HStack>
             </Box>
           )}
@@ -319,45 +345,56 @@ function NoticeView(props) {
             </Box>
             <Box>
               <HStack>
-                <Box>
-                  <HStack>
-                    <SelectRoot
-                      collection={optionList}
-                      defaultValue={["all"]}
-                      onChange={(oc) =>
-                        setSearch({ ...search, type: oc.target.value })
+                <div className={"search-form"}>
+                  <SelectRoot
+                    collection={optionList}
+                    defaultValue={["all"]}
+                    onChange={(oc) =>
+                      setSearch({ ...search, type: oc.target.value })
+                    }
+                    size="sm"
+                    width="130px"
+                  >
+                    <SelectTrigger>
+                      <SelectValueText />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {optionList.items.map((option) => (
+                        <SelectItem item={option} key={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </SelectRoot>
+                  <input
+                    type={"text"}
+                    className={"search-form-input"}
+                    value={search.keyword}
+                    onChange={(e) =>
+                      setSearch({ ...search, keyword: e.target.value })
+                    }
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        handleSearchClick();
                       }
-                      size="sm"
-                      width="130px"
-                    >
-                      <SelectTrigger>
-                        <SelectValueText />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {optionList.items.map((option) => (
-                          <SelectItem item={option} key={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </SelectRoot>
-                    <Input
-                      w={300}
-                      value={search.keyword}
-                      onChange={(e) =>
-                        setSearch({ ...search, keyword: e.target.value })
-                      }
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          handleSearchClick();
-                        }
-                      }}
-                    />
-                    <Button onClick={handleSearchClick}>검색</Button>
-                  </HStack>
-                </Box>
+                    }}
+                  />
+                  <Button
+                    className={"btn-search btn-dark"}
+                    onClick={handleSearchClick}
+                  >
+                    검색
+                  </Button>
+                </div>
                 {authentication.isAdmin && (
-                  <Button onClick={handleWriteClick}>글 쓰기</Button>
+                  <div>
+                    <Button
+                      className={"btn btn-dark"}
+                      onClick={handleWriteClick}
+                    >
+                      글 쓰기
+                    </Button>
+                  </div>
                 )}
               </HStack>
             </Box>
