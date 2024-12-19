@@ -118,7 +118,7 @@ function TourUpdate() {
   return (
     <div className={"tour"}>
       <Breadcrumb
-        depth1={"Tour 목록"}
+        depth1={"투어"}
         navigateToDepth1={() => navigate(`/tour/list`)}
         depth2={"상품 수정"}
         navigateToDepth2={() => navigate(`/tour/update/${id}`)}

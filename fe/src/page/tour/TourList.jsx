@@ -82,7 +82,7 @@ function TourList() {
   return (
     <div className={"tour"}>
       <Breadcrumb
-        depth1={"Tour 목록"}
+        depth1={"투어"}
         navigateToDepth1={() => navigate(`/tour/list`)}
       />
 

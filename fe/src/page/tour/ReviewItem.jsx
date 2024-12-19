@@ -15,6 +15,7 @@ import { ReviewImageView } from "../../components/Image/ReviewImageView.jsx";
 import { ReviewImageEdit } from "../../components/Image/ReviewImageEdit.jsx";
 import { Field } from "../../components/ui/field.jsx";
 import { Input } from "@chakra-ui/react";
+import { formattedDateTime } from "../../components/utils/FormattedDateTime.jsx";
 
 function EditButton({ review, onEditClick, onRateChange }) {
   const [open, setOpen] = useState(false);
@@ -115,13 +116,19 @@ function ReviewItem({ review, onDeleteClick, onEditClick, onRateChange }) {
 
   return (
     <div>
-      <h3>{review.writerNickname}</h3>
-      <h3>{review.inserted}</h3>
-      <p>
-        <Rating value={review.rating} readOnly />
-      </p>
-      <p>{review.review}</p>
-      <ReviewImageView files={review.imageList} />
+      <ul className={"review-item"}>
+        <li>
+          <Rating value={review.rating} readOnly />
+        </li>
+        <div className={"review-header"}>
+          <li>{review.writerNickname}</li>
+          <li>{formattedDateTime(review.inserted)}</li>
+        </div>
+        <li className={"review-body"}>{review.review}</li>
+        <li className={"review-img"}>
+          <ReviewImageView files={review.imageList} />
+        </li>
+      </ul>
 
       <div>
         {/*후기 작성자만 버튼 확인 가능: 지금 email 확인 불가*/}

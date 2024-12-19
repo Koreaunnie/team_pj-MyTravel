@@ -82,7 +82,7 @@ export function TourAdd() {
   return (
     <div className={"tour"}>
       <Breadcrumb
-        depth1={"Tour 목록"}
+        depth1={"투어"}
         navigateToDepth1={() => navigate(`/tour/list`)}
         depth2={"상품 등록"}
         navigateToDepth2={() => navigate(`/tour/add`)}

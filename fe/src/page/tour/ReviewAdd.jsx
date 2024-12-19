@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { Rating } from "../../components/ui/rating.jsx";
-import { Box, Input } from "@chakra-ui/react";
-import { Field } from "../../components/ui/field.jsx";
 
 function ReviewAdd({ tourId, onSaveClick, onRateChange }) {
   const [review, setReview] = useState("");
@@ -9,9 +7,8 @@ function ReviewAdd({ tourId, onSaveClick, onRateChange }) {
   const [reviewImg, setReviewImg] = useState([]);
 
   return (
-    <div>
+    <div className={"review-add"}>
       <h4>
-        별점
         <Rating
           defaultValue={5}
           onChange={(e) => {
@@ -20,27 +17,41 @@ function ReviewAdd({ tourId, onSaveClick, onRateChange }) {
           }}
         />
       </h4>
-      <textarea value={review} onChange={(e) => setReview(e.target.value)} />
-      <Box>
-        <Field label={"파일"}>
-          <Input
+
+      <textarea
+        className={"review-text"}
+        value={review}
+        rows={4}
+        onChange={(e) => setReview(e.target.value)}
+      />
+
+      <div className={"submit-container"}>
+        <div>
+          <label htmlFor="file">사진 첨부</label>
+          <input
             type={"file"}
+            id={"file"}
             accept={"image/*"}
             multiple
             onChange={(e) => setReviewImg(Array.from(e.target.files))}
           />
-        </Field>
-      </Box>
-      <button
-        className={"btn btn-blue"}
-        onClick={() => {
-          // console.log(reviewImg);
-          setReview("");
-          onSaveClick({ review: review, rating: rating, reviewImg: reviewImg });
-        }}
-      >
-        후기 저장
-      </button>
+        </div>
+
+        <button
+          className={"btn btn-blue"}
+          onClick={() => {
+            // console.log(reviewImg);
+            setReview("");
+            onSaveClick({
+              review: review,
+              rating: rating,
+              reviewImg: reviewImg,
+            });
+          }}
+        >
+          후기 등록
+        </button>
+      </div>
     </div>
   );
 }
