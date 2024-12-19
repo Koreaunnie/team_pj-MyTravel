@@ -320,4 +320,11 @@ public interface CommunityMapper {
             WHERE id=#{id};
             """)
     Community communityInformation(Integer id);
+
+    @Select("""
+            SELECT auth
+            FROM auth
+            WHERE member_email=#{email}
+            """)
+    String checkAdmin(String email);
 }

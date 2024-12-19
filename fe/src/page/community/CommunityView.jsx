@@ -382,9 +382,10 @@ function CommunityView(props) {
               <Input value={community.writer} />
             </Field>
           </Box>
-          {hasAccessByNickName(community.writer) && (
-            <Box>
-              <HStack>
+          <Box>
+            <HStack>
+              {(hasAccessByNickName(community.writer) ||
+                authentication.isAdmin) && (
                 <DialogRoot>
                   <DialogTrigger>
                     <div>
@@ -413,14 +414,16 @@ function CommunityView(props) {
                     </DialogContent>
                   </DialogTrigger>
                 </DialogRoot>
+              )}
+              {hasAccessByNickName(community.writer) && (
                 <div>
                   <Button className={"btn btn-blue"} onClick={handleEditClick}>
                     수정
                   </Button>
                 </div>
-              </HStack>
-            </Box>
-          )}
+              )}
+            </HStack>
+          </Box>
           <br />
           {/*  TODO: 코멘트 작성, 코멘트 리스트 추가 */}
           <Box>

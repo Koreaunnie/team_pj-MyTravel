@@ -279,4 +279,10 @@ public class CommunityService {
         String person = mapper.findNickname(auth.getName());
         mapper.deleteLikeInCommunity(id, person);
     }
+
+    public boolean checkAdmin(Authentication auth) {
+        String adminAccess = mapper.checkAdmin(auth.getName());
+
+        return adminAccess.equals("admin");
+    }
 }

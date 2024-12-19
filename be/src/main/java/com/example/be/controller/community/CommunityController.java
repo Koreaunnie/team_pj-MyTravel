@@ -107,6 +107,11 @@ public class CommunityController {
                 return ResponseEntity.ok()
                         .body(Map.of("message", Map.of("type", "success",
                                 "text", "게시물이 삭제되었습니다")));
+            } else if (service.checkAdmin(auth)) {
+                service.delete(id, auth);
+                return ResponseEntity.ok()
+                        .body(Map.of("message", Map.of("type", "success",
+                                "text", "게시물이 삭제되었습니다")));
             } else {
                 return ResponseEntity.status(403)
                         .body(Map.of("message", Map.of("type", "warning",
