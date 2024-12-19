@@ -12,7 +12,6 @@ function CommunityMyList(props) {
       .get(`/api/community/wholeList/${email}`)
       .then((res) => setCommunityList(res.data));
   }, []);
-  console.log(communityList);
 
   function handleRowClick(id) {
     navigate(`/community/view/${id}`);

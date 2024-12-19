@@ -196,8 +196,6 @@ public class CommunityController {
         }
     }
 
-//    TODO : 게시판 좋아요 기능
-
     @PostMapping("like/{id}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> like(@PathVariable Integer id, Authentication auth) {
