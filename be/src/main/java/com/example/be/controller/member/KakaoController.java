@@ -47,8 +47,7 @@ public class KakaoController {
 
     @PostMapping("/login/kakao")
     public ResponseEntity<Map<String, Object>> kakaoLogin(@RequestBody KakaoInfo request) {
-        System.out.println("받은 정보:" + request);
-//    String email = request.getKakaoId();
+//        System.out.println("받은 정보:" + request);
         String email = request.getKakaoEmail();
 
         //토큰 생성해옴

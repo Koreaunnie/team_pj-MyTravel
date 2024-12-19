@@ -55,14 +55,9 @@ export function MemberLoginProcess() {
                 //백엔드 전달
                 axios
                   .post(`/api/member/login/kakao`, {
-                    accessToken: tokenData.access_token,
-                    refreshToken: tokenData.refresh_token,
-                    expiresIn: tokenData.expires_in,
-                    kakaoId,
                     nickname,
                     imageSrc,
                     kakaoEmail,
-                    tokenType: tokenData.token_type,
                   })
                   .then((r) => r.data)
                   .then((data) => {
@@ -79,7 +74,6 @@ export function MemberLoginProcess() {
                     //기존 정보 없으면 kakao 회원 가입 추가
                     navigate("/member/signup/kakao", {
                       state: {
-                        kakaoId,
                         kakaoNickname: nickname,
                         kakaoImageSrc: imageSrc,
                         kakaoEmail,
