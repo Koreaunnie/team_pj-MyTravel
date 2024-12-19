@@ -106,7 +106,7 @@ function PaymentHistory(props) {
                 <td>
                   {tour.review ? (
                     <button
-                      className={"btn btn-dark"}
+                      className={"btn btn-dark-outline"}
                       onClick={(e) => {
                         e.stopPropagation();
                         handleWriteReviewClick(tour.tourId);
