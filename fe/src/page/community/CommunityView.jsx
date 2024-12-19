@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import {
   Box,
+  Center,
   createListCollection,
   DialogTitle,
   HStack,
@@ -360,7 +361,14 @@ function CommunityView(props) {
                         </DialogBody>
                         <DialogFooter>
                           <DialogActionTrigger>
-                            <Button onClick={handleLoginClick}>확인</Button>
+                            <div>
+                              <Button
+                                className={"btn btn-dark"}
+                                onClick={handleLoginClick}
+                              >
+                                확인
+                              </Button>
+                            </div>
                           </DialogActionTrigger>
                         </DialogFooter>
                       </DialogContent>
@@ -379,20 +387,37 @@ function CommunityView(props) {
               <HStack>
                 <DialogRoot>
                   <DialogTrigger>
-                    <Button>삭제</Button>
+                    <div>
+                      <Button className={"btn btn-warning"}>삭제</Button>
+                    </div>
                     <DialogContent>
                       <DialogHeader>글 삭제</DialogHeader>
                       <DialogBody>{id}번 게시물을 삭제하시겠습니까?</DialogBody>
                       <DialogFooter>
-                        <Button>취소</Button>
+                        <div>
+                          <button className={"btn btn-dark-outline"}>
+                            취소
+                          </button>
+                        </div>
                         <DialogActionTrigger>
-                          <Button onClick={handleDeleteClick}>삭제</Button>
+                          <div>
+                            <Button
+                              className={"btn btn-warning"}
+                              onClick={handleDeleteClick}
+                            >
+                              삭제
+                            </Button>
+                          </div>
                         </DialogActionTrigger>
                       </DialogFooter>
                     </DialogContent>
                   </DialogTrigger>
                 </DialogRoot>
-                <Button onClick={handleEditClick}>수정</Button>
+                <div>
+                  <Button className={"btn btn-blue"} onClick={handleEditClick}>
+                    수정
+                  </Button>
+                </div>
               </HStack>
             </Box>
           )}
@@ -418,9 +443,15 @@ function CommunityView(props) {
                       value={comment}
                       onChange={(e) => setComment(e.target.value)}
                     />
-                    <Button h={100} onClick={handleCommentSaveClick}>
-                      댓글 등록
-                    </Button>
+                    <div>
+                      <Button
+                        className={"btn btn-dark"}
+                        h={100}
+                        onClick={handleCommentSaveClick}
+                      >
+                        댓글 등록
+                      </Button>
+                    </div>
                   </HStack>
                 )}
                 {authentication.isAuthenticated || (
@@ -432,7 +463,11 @@ function CommunityView(props) {
                           w={700}
                           placeholder="로그인 후 댓글 작성 가능"
                         />
-                        <Button h={100}>댓글 등록</Button>
+                        <div>
+                          <Button className={"btn btn-dark"} h={100}>
+                            댓글 등록
+                          </Button>
+                        </div>
                       </HStack>
                       <DialogContent>
                         <DialogHeader>MyTravel</DialogHeader>
@@ -441,7 +476,14 @@ function CommunityView(props) {
                         </DialogBody>
                         <DialogFooter>
                           <DialogActionTrigger>
-                            <Button onClick={handleLoginClick}>확인</Button>
+                            <div>
+                              <Button
+                                className={"btn btn-dark"}
+                                onClick={handleLoginClick}
+                              >
+                                확인
+                              </Button>
+                            </div>
                           </DialogActionTrigger>
                         </DialogFooter>
                       </DialogContent>
@@ -467,7 +509,14 @@ function CommunityView(props) {
                               <HStack>
                                 <DialogRoot>
                                   <DialogTrigger asChild>
-                                    <Button variant="outline">수정</Button>
+                                    <div>
+                                      <Button
+                                        className={"btn btn-blue"}
+                                        variant="outline"
+                                      >
+                                        수정
+                                      </Button>
+                                    </div>
                                   </DialogTrigger>
                                   <DialogContent>
                                     <DialogHeader>
@@ -495,23 +544,37 @@ function CommunityView(props) {
                                     </DialogBody>
                                     <DialogFooter>
                                       <DialogActionTrigger asChild>
-                                        <Button variant="outline">취소</Button>
+                                        <div>
+                                          <button
+                                            className={"btn btn-dark-outline"}
+                                            variant="outline"
+                                          >
+                                            취소
+                                          </button>
+                                        </div>
                                       </DialogActionTrigger>
                                       <DialogActionTrigger>
-                                        <Button
-                                          onClick={() =>
-                                            handleCommentUpdateClick(list.id)
-                                          }
-                                        >
-                                          수정
-                                        </Button>
+                                        <div>
+                                          <Button
+                                            className={"btn btn-blue"}
+                                            onClick={() =>
+                                              handleCommentUpdateClick(list.id)
+                                            }
+                                          >
+                                            수정
+                                          </Button>
+                                        </div>
                                       </DialogActionTrigger>
                                     </DialogFooter>
                                   </DialogContent>
                                 </DialogRoot>
                                 <DialogRoot>
                                   <DialogTrigger>
-                                    <Button>삭제</Button>
+                                    <div>
+                                      <Button className={"btn btn-warning"}>
+                                        삭제
+                                      </Button>
+                                    </div>
                                   </DialogTrigger>
                                   <DialogContent>
                                     <DialogHeader>글 삭제</DialogHeader>
@@ -520,16 +583,25 @@ function CommunityView(props) {
                                     </DialogBody>
                                     <DialogFooter>
                                       <DialogActionTrigger>
-                                        <Button>취소</Button>
+                                        <div>
+                                          <button
+                                            className={"btn btn-dark-outline"}
+                                          >
+                                            취소
+                                          </button>
+                                        </div>
                                       </DialogActionTrigger>
                                       <DialogActionTrigger>
-                                        <Button
-                                          onClick={() =>
-                                            handleCommentDeleteClick(list.id)
-                                          }
-                                        >
-                                          삭제
-                                        </Button>
+                                        <div>
+                                          <Button
+                                            className={"btn btn-warning"}
+                                            onClick={() =>
+                                              handleCommentDeleteClick(list.id)
+                                            }
+                                          >
+                                            삭제
+                                          </Button>
+                                        </div>
                                       </DialogActionTrigger>
                                     </DialogFooter>
                                   </DialogContent>
@@ -585,68 +657,91 @@ function CommunityView(props) {
             <HStack>
               <Box>
                 <HStack>
-                  <SelectRoot
-                    collection={optionList}
-                    defaultValue={["all"]}
-                    onChange={(oc) =>
-                      setSearch({ ...search, type: oc.target.value })
-                    }
-                    size="sm"
-                    width="130px"
-                  >
-                    <SelectTrigger>
-                      <SelectValueText />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {optionList.items.map((option) => (
-                        <SelectItem item={option} key={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </SelectRoot>
-                  <Input
-                    w={300}
-                    value={search.keyword}
-                    onChange={(e) =>
-                      setSearch({ ...search, keyword: e.target.value })
-                    }
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        handleSearchClick();
+                  <div className={"search-form"}>
+                    <SelectRoot
+                      collection={optionList}
+                      defaultValue={["all"]}
+                      onChange={(oc) =>
+                        setSearch({ ...search, type: oc.target.value })
                       }
-                    }}
-                  />
-                  <Button onClick={handleSearchClick}>검색</Button>
+                      size="sm"
+                      width="130px"
+                    >
+                      <SelectTrigger>
+                        <SelectValueText />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {optionList.items.map((option) => (
+                          <SelectItem item={option} key={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </SelectRoot>
+                    <input
+                      type={"text"}
+                      className={"search-form-input"}
+                      value={search.keyword}
+                      onChange={(e) =>
+                        setSearch({ ...search, keyword: e.target.value })
+                      }
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          handleSearchClick();
+                        }
+                      }}
+                    />
+                    <Button
+                      className={"btn-search btn-dark"}
+                      onClick={handleSearchClick}
+                    >
+                      검색
+                    </Button>
+                  </div>
                 </HStack>
               </Box>
               {authentication.isAuthenticated && (
-                <Button onClick={handleWriteClick}>글 쓰기</Button>
+                <div>
+                  <Button className={"btn btn-dark"} onClick={handleWriteClick}>
+                    글 쓰기
+                  </Button>
+                </div>
               )}
             </HStack>
             {authentication.isAuthenticated || (
               <Box>
                 <HStack>
                   로그인을 한 회원만 게시글 작성이 가능합니다.
-                  <Button onClick={handleLoginClick}>로그인</Button>
+                  <div>
+                    <Button
+                      className={"btn btn-dark"}
+                      onClick={handleLoginClick}
+                    >
+                      로그인
+                    </Button>
+                  </div>
                 </HStack>
               </Box>
             )}
           </Box>
           <Box>
-            <PaginationRoot
-              count={countCommunity}
-              pageSize={10}
-              defaultPage={1}
-              onPageChange={handlePageChangeClick}
-              siblingCount={2}
-            >
-              <HStack>
-                <PaginationPrevTrigger />
-                <PaginationItems />
-                <PaginationNextTrigger />
-              </HStack>
-            </PaginationRoot>
+            <div className={"pagination"}>
+              <Center>
+                <PaginationRoot
+                  count={countCommunity}
+                  pageSize={10}
+                  defaultPage={1}
+                  onPageChange={handlePageChangeClick}
+                  siblingCount={2}
+                >
+                  <HStack>
+                    <PaginationPrevTrigger />
+                    <PaginationItems />
+                    <PaginationNextTrigger />
+                  </HStack>
+                </PaginationRoot>
+              </Center>
+            </div>
           </Box>
         </Stack>
       </div>

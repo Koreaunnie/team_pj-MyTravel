@@ -131,9 +131,15 @@ function CommunityEdit(props) {
                   onChange={(e) => setFiles(e.target.files)}
                 >
                   <FileUploadTrigger asChild>
-                    <Button variant="outline" size="sm">
-                      <HiUpload /> Upload file
-                    </Button>
+                    <div>
+                      <Button
+                        className={"btn btn-wide"}
+                        variant="outline"
+                        size="sm"
+                      >
+                        <HiUpload /> Upload file
+                      </Button>
+                    </div>
                   </FileUploadTrigger>
                   <FileUploadList showSize clearable />
                 </FileUploadRoot>
@@ -141,8 +147,20 @@ function CommunityEdit(props) {
               <br />
               <Box>
                 <HStack>
-                  <Button onClick={handleCancelClick}>취소</Button>
-                  <Button onClick={handleSaveClick}>저장</Button>
+                  <div>
+                    <button
+                      className={"btn btn-dark-outline"}
+                      onClick={handleCancelClick}
+                    >
+                      취소
+                    </button>
+                    <Button
+                      className={"btn btn-blue"}
+                      onClick={handleSaveClick}
+                    >
+                      저장
+                    </Button>
+                  </div>
                 </HStack>
               </Box>
             </Box>

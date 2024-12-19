@@ -80,12 +80,12 @@ function NoticeWrite(props) {
               <Box>
                 <HStack>
                   <div>
-                    <Button
+                    <button
                       className={"btn btn-dark-outline"}
                       onClick={handleCancelClick}
                     >
                       취소
-                    </Button>
+                    </button>
                     <Button
                       className={"btn btn-dark"}
                       onClick={handleSaveClick}

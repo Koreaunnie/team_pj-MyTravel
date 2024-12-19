@@ -284,9 +284,9 @@ function NoticeView(props) {
                       </DialogBody>
                       <DialogFooter>
                         <div>
-                          <Button className={"btn btn-dark-outline"}>
+                          <button className={"btn btn-dark-outline"}>
                             취소
-                          </Button>
+                          </button>
                         </div>
                         <DialogActionTrigger>
                           <div>
