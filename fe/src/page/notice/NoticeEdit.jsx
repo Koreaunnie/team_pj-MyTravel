@@ -93,8 +93,20 @@ function NoticeEdit(props) {
               <br />
               <Box>
                 <HStack>
-                  <Button onClick={handleCancelClick}>취소</Button>
-                  <Button onClick={handleSaveClick}>저장</Button>
+                  <div>
+                    <Button
+                      className={"btn btn-dark-outline"}
+                      onClick={handleCancelClick}
+                    >
+                      취소
+                    </Button>
+                    <Button
+                      className={"btn btn-blue"}
+                      onClick={handleSaveClick}
+                    >
+                      저장
+                    </Button>
+                  </div>
                 </HStack>
               </Box>
             </Box>
