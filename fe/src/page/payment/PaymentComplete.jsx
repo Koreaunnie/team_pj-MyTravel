@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Image } from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import axios from "axios";
 import { toaster } from "../../components/ui/toaster.jsx";
+import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 
 function PaymentComplete(props) {
   const location = useLocation();
   const { paidList, paymentId, totalAmount, date } = location.state || {};
   const navigate = useNavigate();
+  const { email } = useContext(AuthenticationContext);
 
   if (!paidList || !paymentId || !totalAmount) {
     return <p>결제 정보가 전달되지 않았습니다.</p>;
@@ -122,9 +124,12 @@ function PaymentComplete(props) {
             </tr>
           </tfoot>
         </table>
-
-        <p>TODO: 내 여행에 추가: link</p>
-        <p>TODO: 내 지갑에 추가: link</p>
+        <button
+          className={"btn btn-dark-outline"}
+          onClick={() => navigate(`/payment/history/${email}`)}
+        >
+          내 결제 내역으로 이동
+        </button>
       </main>
     </div>
   );
