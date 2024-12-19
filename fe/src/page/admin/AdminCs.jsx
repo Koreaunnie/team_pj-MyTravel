@@ -1,33 +1,24 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Breadcrumb } from "../../../components/root/Breadcrumb.jsx";
 import axios from "axios";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { Modal } from "../../../components/root/Modal.jsx";
-import { AuthenticationContext } from "../../../components/context/AuthenticationProvider.jsx";
-import { CiLock } from "react-icons/ci";
-import { toaster } from "../../../components/ui/toaster.jsx";
+import { formattedDate } from "../../components/utils/FormattedDate.jsx";
+import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import {
   PaginationItems,
   PaginationNextTrigger,
   PaginationPrevTrigger,
   PaginationRoot,
-} from "../../../components/ui/pagination.jsx";
+} from "../../components/ui/pagination.jsx";
 import { HStack } from "@chakra-ui/react";
-import { formattedDate } from "../../../components/utils/FormattedDate.jsx";
+import { useSearchParams } from "react-router-dom";
 
-function InquiryList(props) {
-  const { nickname, isAuthenticated, isAdmin } = useContext(
-    AuthenticationContext,
-  );
+function AdminCs(props) {
+  const { isAdmin } = useContext(AuthenticationContext);
   const [inquiryList, setInquiryList] = useState([]);
-  const [addModalOpen, setAddModalOpen] = useState(false);
-  const [showMyInquiries, setShowMyInquiries] = useState(false); // 내가 쓴 글 여부
   const [notAnsweredInquiries, setNotAnsweredInquiries] = useState(0);
   const [showNotAnswered, setShowNotAnswered] = useState(false);
+  const [countInquiry, setCountInquiry] = useState(0);
   const [search, setSearch] = useState({ type: "all", keyword: "" });
-  const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -41,7 +32,7 @@ function InquiryList(props) {
       .then((res) => res.data)
       .then((data) => {
         setInquiryList(data.list);
-        setCount(data.count);
+        setCountInquiry(data.count);
 
         // 미답변 내역 개수 업데이트
         const notAnsweredCount = data.list.filter(
@@ -69,51 +60,10 @@ function InquiryList(props) {
     setSearch(nextSearch);
   }, [searchParams]);
 
-  // 로그인 안 했을 때 작성 버튼 클릭하면 로그인 유도
-  const checkLoginOrNot = () => {
-    if (isAuthenticated) {
-      setAddModalOpen(true);
-    } else {
-      toaster.create({
-        type: "error",
-        description: "로그인 후 문의글 작성이 가능합니다.",
-      });
-    }
-  };
-
-  // 내가 쓴 글만 필터링
-  const filteredInquiries = showMyInquiries
-    ? inquiryList.filter((inquiry) => inquiry.writerNickname === nickname)
-    : inquiryList;
-
-  // 미답변 내역만 필터링
+  // 미답변 내역 필터링
   const inquiriesToShow = showNotAnswered
-    ? filteredInquiries.filter((inquiry) => !inquiry.hasAnswer)
-    : filteredInquiries;
-
-  // 비밀글 여부 확인
-  const checkSecretOrNot = (inquiry) => {
-    if (inquiry.secret) {
-      if (!isAuthenticated) {
-        toaster.create({
-          type: "error",
-          description: "로그인 후 확인할 수 있습니다.",
-        });
-        return;
-      }
-
-      if (!isAdmin && inquiry.writerNickname !== nickname) {
-        toaster.create({
-          type: "warning",
-          description: "비공개 문의내역은 작성자 본인만 확인할 수 있습니다.",
-        });
-        return;
-      }
-    }
-
-    // 비밀글이 아니거나 권한 확인 통과 시 상세 페이지로 이동
-    navigate(`/cs/inquiry/view/${inquiry.id}`);
-  };
+    ? inquiryList.filter((inquiry) => !inquiry.hasAnswer)
+    : inquiryList;
 
   const handleSearchButton = () => {
     const nextSearchParam = new URLSearchParams(searchParams);
@@ -129,13 +79,6 @@ function InquiryList(props) {
     setSearchParams(nextSearchParam);
   };
 
-  // 엔터 키로 검색 실행
-  function handleKeyPress(event) {
-    if (event.key === "Enter") {
-      handleSearchButton();
-    }
-  }
-
   // pagination
   // page 번호 (searchParams : URL 쿼리 파라미터 관리)
   const pageParam = searchParams.get("page") ?? "1";
@@ -150,53 +93,19 @@ function InquiryList(props) {
   }
 
   return (
-    <div className={"inquiry"}>
-      <Breadcrumb
-        depth1={"고객센터"}
-        navigateToDepth1={() => navigate(`/cs/index`)}
-        depth2={"문의 게시판"}
-        navigateToDepth2={() => navigate(`/cs/inquiry/list`)}
-      />
+    <div className={"admin-cs"}>
+      <div>
+        <h1>문의 내역 관리</h1>
 
-      <div className={"body-normal"}>
-        <div className={"btn-wrap"}>
+        <div className={"admin-inquiry-header"}>
+          <h2>미답변 내역 : {notAnsweredInquiries} 건</h2>
           <button
-            className={"btn btn-dark-outline"}
-            onClick={() => navigate("/cs/index")}
+            className={"btn btn-dark"}
+            onClick={() => setShowNotAnswered((prev) => !prev)}
           >
-            고객센터 홈
+            {!showNotAnswered ? "미답변 내역만 보기" : "전체내역"}
           </button>
-
-          {!isAdmin && (
-            <button className={"btn btn-blue"} onClick={checkLoginOrNot}>
-              작성
-            </button>
-          )}
-
-          {isAdmin && (
-            <button
-              className={"btn btn-blue"}
-              onClick={() => setShowNotAnswered((prev) => !prev)}
-            >
-              {!showNotAnswered
-                ? `미답변 내역 : ${notAnsweredInquiries}`
-                : "전체내역"}
-            </button>
-          )}
-
-          {isAuthenticated && !isAdmin && (
-            <button
-              className={"btn btn-dark"}
-              onClick={() => setShowMyInquiries((prev) => !prev)}
-            >
-              {showMyInquiries ? "전체글" : "내가 쓴 글"}
-            </button>
-          )}
         </div>
-
-        <h1>문의하기</h1>
-        <h2>궁금한 점이 있으시면 문의해주세요.</h2>
-        <h3>운영시간 09:00 ~ 18:00</h3>
 
         <table className={"table-list"}>
           <colgroup>
@@ -218,20 +127,11 @@ function InquiryList(props) {
           </thead>
 
           <tbody>
-            {inquiriesToShow.length > 0 ? (
+            {inquiriesToShow && inquiriesToShow.length > 0 ? (
               inquiriesToShow.map((inquiry) => (
-                <tr key={inquiry.id} onClick={() => checkSecretOrNot(inquiry)}>
+                <tr key={inquiry.id}>
                   <td>{inquiry.id}</td>
-                  {inquiry.secret ? (
-                    <td className={"title-center secret"}>
-                      <span className={"icon"}>
-                        <CiLock />
-                      </span>
-                      비밀글입니다.
-                    </td>
-                  ) : (
-                    <td className={"title-center"}>{inquiry.title}</td>
-                  )}
+                  <td className={"title-center"}>{inquiry.title}</td>
                   <td>{inquiry.writerNickname}</td>
                   <td>{formattedDate(inquiry.updated)}</td>
                   <td>
@@ -275,7 +175,6 @@ function InquiryList(props) {
               onChange={(e) =>
                 setSearch({ ...search, keyword: e.target.value.trim() })
               }
-              onKeyPress={handleKeyPress}
             />
             <button
               className={"btn-search btn-dark"}
@@ -290,7 +189,7 @@ function InquiryList(props) {
         <div className="pagination">
           <PaginationRoot
             onPageChange={handlePageChange}
-            count={count}
+            count={countInquiry}
             pageSize={10}
             page={page}
             variant="solid"
@@ -304,16 +203,11 @@ function InquiryList(props) {
         </div>
       </div>
 
-      {/* 추가 modal */}
-      <Modal
-        isOpen={addModalOpen}
-        onClose={() => setAddModalOpen(false)}
-        onConfirm={() => navigate(`/cs/inquiry/add`)}
-        message="문의 글을 작성하시겠습니까?"
-        buttonMessage="작성"
-      />
+      {/*<div>*/}
+      {/*  <h1>faq 관리</h1>*/}
+      {/*</div>*/}
     </div>
   );
 }
 
-export default InquiryList;
+export default AdminCs;

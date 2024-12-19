@@ -10,8 +10,8 @@ public interface InquiryMapper {
 
     @Insert("""
             INSERT INTO inquiry
-                (category, writer, writer_nickname, title, content, secret, inserted)
-            VALUES (#{category}, #{writer}, #{writerNickname}, #{title}, #{content}, #{secret}, NOW())
+                (category, writer, writer_nickname, title, content, secret, inserted, has_answer
+            VALUES (#{category}, #{writer}, #{writerNickname}, #{title}, #{content}, #{secret}, NOW(), false)
             """)
     @Options(keyProperty = "id", useGeneratedKeys = true)
     int insertInquiry(Inquiry inquiry);
@@ -97,4 +97,12 @@ public interface InquiryMapper {
             WHERE writer = #{writer}
             """)
     int updateWriterNickname(Inquiry inquiry);
+
+    // 문의글 답변 달리면 답변 여부 업데이트
+    @Update("""
+            UPDATE inquiry
+                SET has_answer = true
+            WHERE id =#{id}
+            """)
+    int updateHasAnswerTrue(int id);
 }

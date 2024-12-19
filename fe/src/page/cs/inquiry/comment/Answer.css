@@ -1,25 +1,25 @@
-.inquiry-comment {
-    background: var(--bg-gray-color);
+.inquiry-answer {
+
     padding: 10px;
 }
 
-.inquiry-comment .comment-list {
-    margin: 30px;
+.inquiry-answer .answer-list {
+    margin: 30px 0;
     padding: 20px;
-    background: #fff;
+    background: var(--bg-gray-color);
     position: relative;
     border-radius: 10px;
     border: 1px solid var(--font-light-gray-color);
 }
 
-.inquiry-comment .comment-list .comment-btn-wrap {
+.inquiry-answer .answer-list .answer-btn-wrap {
     display: flex;
     position: absolute;
     right: 10px;
     top: 10px;
 }
 
-.inquiry-comment .comment-list .comment-btn-wrap li {
+.inquiry-answer .answer-list .answer-btn-wrap li {
     cursor: pointer;
     margin: 5px;
     font-size: 0.9rem;
@@ -27,15 +27,15 @@
 }
 
 
-.inquiry-comment .comment-list .comment-list-body .nickname {
+.inquiry-answer .answer-list .answer-list-body .nickname {
     font-weight: bold;
 }
 
-.inquiry-comment .comment-list .comment-list-body .content {
+.inquiry-answer .answer-list .answer-list-body .content {
     margin: 15px 0;
 }
 
-.inquiry-comment .comment-list .comment-list-body .date {
+.inquiry-answer .answer-list .answer-list-body .date {
     font-size: 0.9rem;
     color: var(--font-gray-color);
 }

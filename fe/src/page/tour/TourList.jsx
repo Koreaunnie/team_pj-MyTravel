@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Box, Center, HStack, Image, SimpleGrid, Text } from "@chakra-ui/react";
+import { Center, HStack } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
@@ -11,6 +11,10 @@ import {
   PaginationRoot,
 } from "../../components/ui/pagination.jsx";
 import { IoIosRefresh } from "react-icons/io";
+import { FaRegQuestionCircle } from "react-icons/fa";
+import "./Tour.css";
+import { formatNumberWithCommas } from "../../components/utils/FormatNumberWithCommas.jsx";
+import { IoSearch } from "react-icons/io5";
 
 function TourList() {
   const [tourList, setTourList] = useState([]);
@@ -91,149 +95,182 @@ function TourList() {
             새 상품 등록
           </button>
         )}
-        <div>
-          <h1>Tour 목록</h1>
 
-          <Center>
-            {/*검색*/}
-            <div className={"search-form"}>
-              <button
-                onClick={() => {
-                  // 1. 검색 상태 초기화
-                  setSearch({ type: "all", keyword: "" });
+        <h1>투어 상품</h1>
+        <h2>다양한 투어 상품을 구경해보세요.</h2>
 
-                  // 2. URL 검색 파라미터 초기화
-                  const nextSearchParam = new URLSearchParams();
-                  nextSearchParam.set("type", "all");
-                  nextSearchParam.set("key", "");
+        {/*검색*/}
+        <div className={"tour-search-container"}>
+          <div className={"tour-search-wrap"}>
+            <select
+              className={"tour-search-select"}
+              value={search.type}
+              onChange={(e) => setSearch({ ...search, type: e.target.value })}
+            >
+              <option value="all">전체</option>
+              <option value="title">제목</option>
+              <option value="product">제품</option>
+              <option value="location">위치</option>
+              <option value="content">본문</option>
+              <option value="partner">파트너사</option>
+            </select>
 
-                  setSearchParams(nextSearchParam);
-                }}
-              >
-                <IoIosRefresh />
-              </button>
-              <select
-                value={search.type}
-                onChange={(e) => setSearch({ ...search, type: e.target.value })}
-              >
-                <option value="all">전체</option>
-                <option value="title">제목</option>
-                <option value="product">제품</option>
-                <option value="location">위치</option>
-                <option value="content">본문</option>
-                <option value="partner">파트너사</option>
-              </select>
-              <div className={"search-form-input"}>
-                <input
-                  type={"search"}
-                  value={search.keyword}
-                  onChange={(e) =>
-                    setSearch({ ...search, keyword: e.target.value.trim() })
-                  }
-                />
+            <input
+              className={"tour-search-input"}
+              type={"search"}
+              value={search.keyword}
+              onChange={(e) =>
+                setSearch({ ...search, keyword: e.target.value.trim() })
+              }
+            />
 
-                <button
-                  className={"btn-search btn-dark"}
-                  onClick={handleSearchClick}
-                >
-                  검색
-                </button>
-              </div>
-            </div>
-          </Center>
+            <button
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                // 1. 검색 상태 초기화
+                setSearch({ type: "all", keyword: "" });
 
+                // 2. URL 검색 파라미터 초기화
+                const nextSearchParam = new URLSearchParams();
+                nextSearchParam.set("type", "all");
+                nextSearchParam.set("key", "");
+
+                setSearchParams(nextSearchParam);
+              }}
+            >
+              <IoIosRefresh />
+            </button>
+
+            <button className={"tour-search-btn"} onClick={handleSearchClick}>
+              <IoSearch />
+            </button>
+          </div>
+        </div>
+
+        <div className={"body-wide"}>
           {/* 보기 선택 */}
-          <button
-            className={"btn btn-dark-outline"}
-            onClick={() => handleMenuClick("box")}
-          >
-            박스형
-          </button>
-          <button
-            className={"btn btn-dark-outline"}
-            onClick={() => handleMenuClick("list")}
-          >
-            목록형
-          </button>
+          <div className={"tour-btn-wrap"}>
+            <button
+              className={"btn btn-dark-outline"}
+              onClick={() => handleMenuClick("box")}
+            >
+              박스형
+            </button>
+            <button
+              className={"btn btn-dark-outline"}
+              onClick={() => handleMenuClick("list")}
+            >
+              목록형
+            </button>
+          </div>
 
           {selectedMenu === "box" && (
             <div>
               {tourList.length === 0 ? (
-                <p>찾으시는 상품이 존재하지 않습니다.</p>
+                <div className={"empty-container"}>
+                  <p>
+                    <FaRegQuestionCircle
+                      className={"empty-container-icon"}
+                      style={{ color: "#a1a1a8" }}
+                    />
+                  </p>
+                  <p className={"empty-container-title"}>
+                    찾으시는 상품이 존재하지 않습니다.
+                  </p>
+                  <p className={"empty-container-description"}>
+                    다른 여행은 어떠세요?
+                  </p>
+                </div>
               ) : (
-                <SimpleGrid
-                  columns={{ base: 2, md: 3, lg: 4, xl: 5, "2xl": 6 }}
-                  spacing={6}
-                >
+                <div className={"tour-box-container"}>
                   {tourList.map((tour) => (
-                    <Box
+                    <ul
+                      className={"tour-box"}
                       key={tour.id}
-                      borderWidth={"1px"}
-                      borderRadius={"1g"}
-                      overflow={"hidden"}
-                      p={4}
-                      m={1}
-                      _hover={{ boxShadow: "1g" }}
+                      onClick={() => navigate(`/tour/view/${tour.id}`)}
+                    >
+                      <li className={"image"}>
+                        <img src={tour.src} alt={"투어 사진"} />
+                      </li>
+
+                      <div className={"li-wrap"}>
+                        <li className={"title"}>{tour.title}</li>
+                        <li>{tour.product}</li>
+                        <li>{tour.location}</li>
+                        <li>{formatNumberWithCommas(tour.price)}원</li>
+                        <li className={"tour-list-review"}>
+                          ★★★★★{" "}
+                          <span className={"review-count"}>(리뷰 00개)</span>
+                        </li>
+                      </div>
+                    </ul>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {selectedMenu === "list" && (
+            <div className={"tour-list-container"}>
+              {tourList.length === 0 ? (
+                <div className={"empty-container"}>
+                  <p>
+                    <FaRegQuestionCircle
+                      className={"empty-container-icon"}
+                      style={{ color: "#a1a1a8" }}
+                    />
+                  </p>
+                  <p className={"empty-container-title"}>
+                    찾으시는 상품이 존재하지 않습니다.
+                  </p>
+                  <p className={"empty-container-description"}>
+                    다른 여행은 어떠세요?
+                  </p>
+                </div>
+              ) : (
+                <div>
+                  {tourList.map((tour) => (
+                    <ul
+                      className={"tour-list"}
+                      key={tour.id}
                       onClick={() => handleRowClick(tour.id)}
                     >
-                      <Image key={tour.image} src={tour.src} />
-                      <Text>
-                        <b>{tour.title}</b>
-                      </Text>
-                      <Text>{tour.location}</Text>
-                      <Text>{tour.product}</Text>
-                      <Text>{tour.price}</Text>
-                    </Box>
+                      <li className={"tour-list-title"}>{tour.title}</li>
+                      <li className={"tour-list-description"}>
+                        {tour.product}
+                      </li>
+                      <li className={"tour-list-location"}>{tour.location}</li>
+                      <li className={"tour-list-review"}>★★★★★ (리뷰 00개)</li>
+                      <li className={"tour-list-price"}>
+                        {formatNumberWithCommas(tour.price)} 원
+                      </li>
+                      <li className={"tour-list-img"}>
+                        <img key={tour.image} src={tour.src} />
+                      </li>
+                    </ul>
                   ))}
-                </SimpleGrid>
+                </div>
               )}
             </div>
           )}
-          {selectedMenu === "list" && (
-            <div>
-              {tourList.length === 0 ? (
-                <p>찾으시는 상품이 존재하지 않습니다.</p>
-              ) : (
-                <table className={"table-list"}>
-                  <tbody>
-                    {tourList.map((tour) => (
-                      <tr
-                        key={tour.id}
-                        _hover={{ boxShadow: "1g" }}
-                        onClick={() => handleRowClick(tour.id)}
-                      >
-                        <td>
-                          <Image
-                            key={tour.image}
-                            src={tour.src}
-                            style={{ maxWidth: "400px" }}
-                          />
-                        </td>
-                        <td>{tour.title}</td>
-                        <td>{tour.location}</td>
-                        <td>{tour.product}</td>
-                        <td>{tour.price}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
-            </div>
-          )}
+
           {/*pagination*/}
           <div className={"pagination"}>
-            <PaginationRoot
-              count={count}
-              pageSize={10}
-              defaultPage={1}
-              onPageChange={handlePageChange}
-            >
-              <HStack>
-                <PaginationPrevTrigger />
-                <PaginationItems />
-                <PaginationNextTrigger />
-              </HStack>
-            </PaginationRoot>
+            <Center>
+              <PaginationRoot
+                count={count}
+                pageSize={10}
+                defaultPage={1}
+                onPageChange={handlePageChange}
+                variant="solid"
+              >
+                <HStack>
+                  <PaginationPrevTrigger />
+                  <PaginationItems />
+                  <PaginationNextTrigger />
+                </HStack>
+              </PaginationRoot>
+            </Center>
           </div>
         </div>
       </div>

@@ -1,25 +1,25 @@
 import React, { useContext, useState } from "react";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
-import { Box } from "@chakra-ui/react";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import PaymentHistoryAll from "../payment/PaymentHistoryAll.jsx";
 import MemberList from "../member/MemberList.jsx";
 import PartnerList from "../member/PartnerList.jsx";
-import CsIndex from "../cs/CsIndex.jsx";
 import "./admin.css";
+import AdminCs from "./AdminCs.jsx";
 
 function MyPage(props) {
-  const [selectedMenu, setSelectedMenu] = useState("profile");
+  const [selectedMenu, setSelectedMenu] = useState("home");
   const { isAdmin, nickname } = useContext(AuthenticationContext);
 
   const handleMenuClick = (menu) => {
     setSelectedMenu(menu);
+    window.scrollTo(0, 0); // 페이지 상단으로 스크롤
   };
 
   return (
     <div className={"member"}>
       <Breadcrumb
-        depth1={"관리자 창"}
+        depth1={"관리자 모드"}
         navigateToDepth1={() => navigate(`/admin`)}
       />
 
@@ -40,36 +40,41 @@ function MyPage(props) {
             className={selectedMenu === "memberList" ? "active" : ""}
             onClick={() => handleMenuClick("memberList")}
           >
-            사용자 목록
+            회원 관리
           </li>
           <li
             className={selectedMenu === "partnerList" ? "active" : ""}
             onClick={() => handleMenuClick("partnerList")}
           >
-            파트너 기업 목록
+            파트너 기업 관리
           </li>
           <li
             className={selectedMenu === "paymentAll" ? "active" : ""}
             onClick={() => handleMenuClick("paymentAll")}
           >
-            사이트 내 총 결제 내역
+            결제 내역 관리
           </li>
           <li
             className={selectedMenu === "csList" ? "active" : ""}
             onClick={() => handleMenuClick("csList")}
           >
-            고객센터
+            고객 센터 관리
           </li>
         </ul>
       </nav>
 
-      <Box flex="1" padding="20px">
-        {selectedMenu === "home" && "/"}
+      <section className={"admin-body"}>
+        {selectedMenu === "home" && (
+          <div className={"admin-index"}>
+            <h1>관리자 화면은 PC에 최적화되어있습니다.</h1>
+            <h2>로그인 한 관리자: {nickname}</h2>
+          </div>
+        )}
         {selectedMenu === "memberList" && <MemberList />}
         {selectedMenu === "partnerList" && <PartnerList />}
         {selectedMenu === "paymentAll" && <PaymentHistoryAll />}
-        {selectedMenu === "csList" && <CsIndex />}
-      </Box>
+        {selectedMenu === "csList" && <AdminCs />}
+      </section>
     </div>
   );
 }

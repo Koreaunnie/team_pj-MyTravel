@@ -1,3 +1,324 @@
 .tour {
-    margin-top: 40px;
+    margin: 30px 0 20px 0;
 }
+
+
+/*------------------- tourList -------------------*/
+.tour h1 {
+    margin: 0;
+    padding: 50px 0 10px 0;
+    background: var(--bg-gray-color);
+}
+
+.tour h2 {
+    background: var(--bg-gray-color);
+}
+
+.tour-search-container {
+    padding: 30px;
+    border-bottom: 1px solid var(--table-border-color);
+    position: sticky;
+    top: 100px;
+    background: var(--bg-gray-color);
+    z-index: 100;
+    box-shadow: var(--box-shadow);
+}
+
+.tour-search-wrap {
+    width: 40%;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    border: 1px solid #dee2e6;
+    box-sizing: border-box;
+    border-radius: 50px;
+    height: 60px;
+    background: #fff;
+}
+
+.tour-search-wrap .tour-search-select {
+    border: none;
+    border-radius: 0;
+    height: 60px;
+    padding: 0 10px;
+    background: none;
+}
+
+.tour-search-wrap .tour-search-input[type=search] {
+    width: 100%;
+    border: none;
+    box-sizing: border-box;
+    border-radius: 0;
+    height: 60px;
+    padding: 0 10px;
+}
+
+.tour-search-wrap .tour-search-input[type=search]:focus {
+    outline: none;
+}
+
+.tour-search-wrap .tour-search-btn {
+    padding: 20px;
+    cursor: pointer;
+}
+
+.tour .body-wide {
+    margin: 0 auto;
+}
+
+.tour .tour-btn-wrap {
+    display: flex;
+    justify-content: right;
+    margin: 20px 20px 10px 0;
+}
+
+.tour .tour-btn-wrap button {
+    margin: 5px;
+}
+
+
+/*--------------*/
+.tour-box-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.tour-box-container .tour-box {
+    width: 23%;
+    height: 330px;
+    margin: 10px;
+    border: 1px solid var(--table-border-color);
+    box-sizing: border-box;
+    border-radius: 10px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.tour-box-container .tour-box .image {
+    height: 140px;
+    overflow: hidden;
+}
+
+.tour-box-container .tour-box .image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.tour-box-container .tour-box .li-wrap {
+    padding: 15px;
+}
+
+.tour-box-container .tour-box .title {
+    font-weight: bold;
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.tour-box-container .tour-box li {
+    font-size: 0.9rem;
+}
+
+.tour-box-container .tour-box li:nth-child(2) {
+    margin: 5px 0;
+    height: 60px;
+    color: var(--font-gray-color);
+}
+
+.tour-box-container .tour-box li:nth-child(3) {
+    font-size: 1rem;
+    color: var(--main-blue);
+    font-weight: bold;
+    position: absolute;
+    bottom: 55px;
+}
+
+.tour-box-container .tour-box li:nth-child(4) {
+    font-weight: bold;
+    position: absolute;
+    bottom: 31px;
+}
+
+.tour-box-container .tour-box li:nth-child(5) {
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: var(--font-gray-color);
+    position: absolute;
+    bottom: 10px;
+}
+
+/*--------------*/
+
+
+.tour-list-container .tour-list {
+    width: 100%;
+    height: 200px;
+    padding: 20px;
+    border-bottom: 1px solid var(--table-border-color);
+    position: relative;
+    cursor: pointer;
+}
+
+.tour-list-container .tour-list .tour-list-title {
+    font-weight: bold;
+    width: calc(100% - 250px);
+    overflow: hidden;
+    text-wrap: nowrap;
+}
+
+.tour-list-container .tour-list .tour-list-description {
+    margin: 10px;
+    color: var(--font-gray-color);
+    font-size: 0.9rem;
+    height: 70px;
+    width: calc(100% - 250px);
+    overflow: hidden;
+}
+
+.tour-list-container .tour-list .tour-list-location {
+    position: absolute;
+    left: 20px;
+    bottom: 40px;
+    font-size: 0.9rem;
+    color: var(--main-blue);
+    font-weight: bold;
+}
+
+.tour-list-container .tour-list .tour-list-review {
+    position: absolute;
+    left: 20px;
+    bottom: 15px;
+    font-size: 0.9rem;
+}
+
+.tour-list-container .tour-list .tour-list-price {
+    position: absolute;
+    right: 40px;
+    bottom: 18px;
+    font-weight: bold;
+}
+
+.tour-list-container .tour-list .tour-list-img {
+    width: 200px;
+    height: 110px;
+    position: absolute;
+    right: 30px;
+    top: 30px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.tour-list-container .tour-list .tour-list-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+/*------------------- 화면 크기가 768px 이하 (태블릿 화면) -------------------*/
+@media (max-width: 768px) {
+
+    /*------------------- tourList -------------------*/
+    .tour .body-wide {
+        width: 100%;
+    }
+
+    .tour-search-wrap {
+        width: 90%;
+    }
+
+    .tour-box-container .tour-box {
+        width: 30%;
+        height: 330px;
+    }
+
+    .tour-box-container .tour-box .li-wrap {
+        padding: 15px;
+    }
+
+    .tour-box-container .tour-box .title {
+        font-weight: bold;
+        font-size: 1rem;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .tour-box-container .tour-box .image {
+        height: 120px;
+    }
+
+    .tour-box-container .tour-box .tour-list-review .review-count {
+        display: none;
+    }
+
+    /*-------*/
+    .tour-list-container .tour-list {
+        height: 180px;
+        padding: 15px 5px;
+    }
+
+    .tour-list-container .tour-list .tour-list-title {
+        width: calc(100% - 130px);
+    }
+
+    .tour-list-container .tour-list .tour-list-description {
+        margin: 5px 0;
+        width: calc(100% - 130px);
+    }
+
+    .tour-list-container .tour-list .tour-list-location {
+        left: 10px;
+        bottom: 33px;
+    }
+
+    .tour-list-container .tour-list .tour-list-review {
+        left: 10px;
+        bottom: 10px;
+    }
+
+    .tour-list-container .tour-list .tour-list-price {
+        right: 15px;
+        bottom: 13px;
+    }
+
+    .tour-list-container .tour-list .tour-list-img {
+        right: 15px;
+        top: 20px;
+        width: 100px;
+    }
+}
+
+/*------------------- 화면 크기가 480px 이하 (모바일 화면) -------------------*/
+@media (max-width: 480px) {
+
+    /*------------------- tourList -------------------*/
+    .tour .body-wide {
+        width: 100%;
+    }
+
+    .tour-search-wrap {
+        width: 98%;
+    }
+
+    .tour-box-container .tour-box {
+        width: 95%;
+    }
+
+    .tour-list-container .tour-list .tour-list-title {
+        width: 100%;
+    }
+
+    .tour-list-container .tour-list .tour-list-description {
+        width: 100%;
+    }
+
+    .tour-list-container .tour-list .tour-list-img {
+        display: none;
+    }
+}
+
+

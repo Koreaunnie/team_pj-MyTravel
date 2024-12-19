@@ -3,10 +3,17 @@
     text-align: left;
 }
 
+.inquiry .table-list tbody tr td {
+    font-size: 0.9rem;
+}
+
+.inquiry .table-list tbody tr td:nth-child(1) {
+    font-size: 0.8rem;
+}
+
 .inquiry .table-list .secret {
     font-size: 0.9rem;
     color: var(--font-gray-color);
-
 }
 
 .inquiry .table-list .secret .icon {
@@ -14,6 +21,31 @@
     left: 0;
     margin-top: 3px;
     margin-right: 3px
+}
+
+.inquiry .table-list .badge {
+    font-size: 0.8rem;
+    border-radius: 5px;
+    padding: 1px 4px;
+    color: #fff;
+}
+
+.inquiry .table-list .badge-success {
+    background: var(--main-blue);
+}
+
+.inquiry .table-list .badge-warning {
+    background: var(--font-gray-color);
+}
+
+.inquiry .table-list .badge-dark {
+    background: var(--btn-normal-dark);
+    cursor: pointer;
+}
+
+
+.inquiry .pagination {
+
 }
 
 /*------------------- InquiryView -------------------*/
@@ -42,6 +74,11 @@
 
 /*------------------- 화면 크기가 480px 이하 (모바일 화면) -------------------*/
 @media (max-width: 480px) {
+    .inquiry .table-list th:nth-child(5),
+    .inquiry .table-list td:nth-child(5),
+    .inquiry .table-list col:nth-child(5) {
+        display: none;
+    }
 
 }
 

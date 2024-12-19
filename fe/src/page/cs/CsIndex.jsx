@@ -52,8 +52,6 @@ function CsIndex(props) {
       />
 
       <div>
-        <h1>무엇을 도와드릴까요?</h1>
-
         <section className={"faq-container body-normal"}>
           <h3>자주 묻는 질문</h3>
 

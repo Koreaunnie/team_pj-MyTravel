@@ -209,7 +209,7 @@ export function Index() {
       <section className={"plan-container"}>
         <div className={"plan-container-wrap"}>
           <div className={"plan-container-header"}>
-            <h2>내 여행</h2>
+            <h1>내 여행</h1>
             <button
               className={"more-btn"}
               onClick={() => navigate(`/plan/list`)}
@@ -265,9 +265,9 @@ export function Index() {
       </section>
 
       {/* 투어 */}
-      <section className={"tour-container"}>
-        <div className={"tour-container-header"}>
-          <h2>지금 당장 떠나보세요!</h2>
+      <section className={"index-tour-container"}>
+        <div className={"index-tour-container-header"}>
+          <h1>지금 당장 떠나보세요!</h1>
           <button className={"more-btn"} onClick={() => navigate(`/tour/list`)}>
             투어 구경하기
             <FaArrowRight
@@ -280,7 +280,7 @@ export function Index() {
           </button>
         </div>
 
-        <div className={"tour-container-body"}>
+        <div className={"index-tour-container-body"}>
           {isEmpty(tourList) ? (
             <div className={"empty-container"}>
               <p className={"empty-container-title"}>투어가 없습니다.</p>
@@ -289,7 +289,7 @@ export function Index() {
               </p>
             </div>
           ) : (
-            <div className={"tour-container-card"}>
+            <div className={"index-tour-container-card"}>
               {tourList.map((tour) => (
                 <ul
                   key={tour.id}
@@ -312,10 +312,10 @@ export function Index() {
       </section>
 
       {/* 커뮤니티 */}
-      <section className={"community-container"}>
-        <div className={"community-container-wrap"}>
-          <div className={"community-container-header"}>
-            <h2>커뮤니티</h2>
+      <section className={"index-community-container"}>
+        <div className={"index-community-container-wrap"}>
+          <div className={"index-community-container-header"}>
+            <h1>커뮤니티</h1>
             <button
               className={"more-btn"}
               onClick={() => navigate(`/community/list`)}
@@ -331,7 +331,7 @@ export function Index() {
             </button>
           </div>
 
-          <div className={"community-container-body"}>
+          <div className={"index-community-container-body"}>
             {isEmpty(communityList) ? (
               <div className={"empty-container"}>
                 <p className={"empty-container-title"}>작성된 글이 없습니다.</p>
@@ -340,7 +340,7 @@ export function Index() {
                 </p>
               </div>
             ) : (
-              <div className={"community-container-list"}>
+              <div className={"index-community-container-list"}>
                 {communityList.map((community) => (
                   <ul
                     className={"list-item"}
@@ -376,7 +376,7 @@ export function Index() {
 
           <section className={"notice-section-wrap"}>
             <div className={"notice-section-header"}>
-              <h2>공지사항</h2>
+              <h1>공지사항</h1>
               <button
                 className={"more-btn"}
                 onClick={() => navigate(`/community/list`)}

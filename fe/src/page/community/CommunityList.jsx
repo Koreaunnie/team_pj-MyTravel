@@ -1,13 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  Box,
-  createListCollection,
-  HStack,
-  Input,
-  Stack,
-  Table,
-} from "@chakra-ui/react";
-import { Button } from "../../components/ui/button.jsx";
+import { Center, createListCollection, HStack } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
@@ -25,10 +17,10 @@ import {
 } from "../../components/ui/select.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import { IoMdPhotos } from "react-icons/io";
-import { AiOutlineComment } from "react-icons/ai";
-import { GoHeart } from "react-icons/go";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { HiOutlineBookOpen } from "react-icons/hi";
+import { formattedDateTime } from "../../components/utils/FormattedDateTime.jsx";
+import "./Community.css";
 
 function CommunityList(props) {
   const [communityList, setCommunityList] = useState([]);
@@ -84,104 +76,110 @@ function CommunityList(props) {
   });
 
   return (
-    <div>
+    <div className={"community"}>
       <Breadcrumb
         depth1={"커뮤니티"}
         navigateToDepth1={() => navigate(`/community/list`)}
       />
-      <div>
-        <br />
-        {/*  NavBar*/}
-        <Stack>
-          <Box>
-            <h1>커뮤니티</h1>
-            <Table.Root>
-              <Table.Header>
-                <Table.Row>
-                  <Table.ColumnHeader>제목</Table.ColumnHeader>
-                  <Table.ColumnHeader>작성자</Table.ColumnHeader>
-                  <Table.ColumnHeader>작성일시</Table.ColumnHeader>
-                </Table.Row>
-              </Table.Header>
-              <Table.Body>
-                {communityList.map((c) => (
-                  <Table.Row onClick={() => handleViewClick(c.id)} key={c.id}>
-                    <Table.Cell>
-                      <Stack>
-                        <HStack>
-                          <h3>{c.title}</h3>
-                          {c.existOfFiles ? <IoMdPhotos /> : " "}
-                        </HStack>
-                        <h4>
-                          <HStack>
-                            <GoHeart /> {c.numberOfLikes} | <AiOutlineComment />{" "}
-                            {c.numberOfComments} | <HiOutlineBookOpen />{" "}
-                            {c.numberOfViews}
-                          </HStack>
-                        </h4>
-                      </Stack>
-                    </Table.Cell>
-                    <Table.Cell>{c.writer}</Table.Cell>
-                    <Table.Cell>{c.creationDate}</Table.Cell>
-                  </Table.Row>
-                ))}
-              </Table.Body>
-            </Table.Root>
-          </Box>
-          <Box>
-            <HStack>
-              <Box>
-                <HStack>
-                  <SelectRoot
-                    collection={optionList}
-                    defaultValue={["all"]}
-                    onChange={(oc) =>
-                      setSearch({ ...search, type: oc.target.value })
-                    }
-                    size="sm"
-                    width="130px"
-                  >
-                    <SelectTrigger>
-                      <SelectValueText />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {optionList.items.map((option) => (
-                        <SelectItem item={option} key={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </SelectRoot>
-                  <Input
-                    w={300}
-                    value={search.keyword}
-                    onChange={(e) =>
-                      setSearch({ ...search, keyword: e.target.value })
-                    }
+
+      <div className={"body-normal"}>
+        <h1>커뮤니티</h1>
+        <h2>여러분의 여행 이야기를 들려주세요.</h2>
+
+        <div className={"btn-wrap"}>
+          {authentication.isAuthenticated && (
+            <button className={"btn btn-dark"} onClick={handleWriteClick}>
+              글 쓰기
+            </button>
+          )}
+
+          {authentication.isAuthenticated || (
+            <div className={"community-login"}>
+              <p>로그인 후 게시글 작성이 가능합니다.</p>
+              <button className={"btn btn-dark"} onClick={handleLoginClick}>
+                로그인
+              </button>
+            </div>
+          )}
+        </div>
+
+        <div className={"search-form"}>
+          <SelectRoot
+            collection={optionList}
+            defaultValue={["all"]}
+            onChange={(oc) => setSearch({ ...search, type: oc.target.value })}
+            size="md"
+            width="130px"
+          >
+            <SelectTrigger>
+              <SelectValueText />
+            </SelectTrigger>
+            <SelectContent>
+              {optionList.items.map((option) => (
+                <SelectItem item={option} key={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </SelectRoot>
+
+          <input
+            type={"text"}
+            className={"search-form-input"}
+            value={search.keyword}
+            onChange={(e) => setSearch({ ...search, keyword: e.target.value })}
+          />
+          <button className={"btn-search btn-dark"} onClick={handleSearchClick}>
+            검색
+          </button>
+        </div>
+
+        <div className="community-container">
+          {communityList.map((c) => (
+            <ul
+              className="community-list"
+              key={c.id}
+              onClick={() => handleViewClick(c.id)}
+            >
+              <div className={"community-header"}>
+                <li className="community-title">{c.title}</li>
+                <li>{c.writer}</li>
+                {c.existOfFiles ? <IoMdPhotos /> : " "}
+              </div>
+
+              <li className="community-content">{c.content}</li>
+
+              <div className="community-footer">
+                <li>❤️ {c.numberOfLikes}</li>
+                <li>💬 {c.numberOfComments}</li>
+                <li>
+                  <HiOutlineBookOpen
+                    style={{
+                      display: "inline",
+                      marginTop: "-2px",
+                      marginRight: "4px",
+                    }}
                   />
-                  <Button onClick={handleSearchClick}>검색</Button>
-                </HStack>
-              </Box>
-              {authentication.isAuthenticated && (
-                <Button onClick={handleWriteClick}>글 쓰기</Button>
-              )}
-            </HStack>
-            {authentication.isAuthenticated || (
-              <Box>
-                <HStack>
-                  로그인을 한 회원만 게시글 작성이 가능합니다.
-                  <Button onClick={handleLoginClick}>로그인</Button>
-                </HStack>
-              </Box>
-            )}
-          </Box>
-          <Box>
+                  {c.numberOfViews}
+                </li>
+              </div>
+
+              <li className="community-date">
+                {formattedDateTime(c.creationDate)}
+              </li>
+            </ul>
+          ))}
+        </div>
+
+        <div className={"pagination"}>
+          <Center>
             <PaginationRoot
               count={countCommunity}
               pageSize={10}
               defaultPage={1}
               onPageChange={handlePageChangeClick}
               siblingCount={2}
+              variant="solid"
             >
               <HStack>
                 <PaginationPrevTrigger />
@@ -189,10 +187,8 @@ function CommunityList(props) {
                 <PaginationNextTrigger />
               </HStack>
             </PaginationRoot>
-          </Box>
-          <br />
-        </Stack>
-        <br />
+          </Center>
+        </div>
       </div>
     </div>
   );

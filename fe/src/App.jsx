@@ -259,6 +259,7 @@ const router = createBrowserRouter([
         path: "mypage/:email",
         element: <MyPage />,
       },
+      // 관리자
       {
         path: "admin",
         element: <AdminPage />,

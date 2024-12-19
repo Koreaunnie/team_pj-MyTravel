@@ -77,9 +77,27 @@ public class PlanController {
     // 내 여행 수정
     @PutMapping("update")
     @PreAuthorize("isAuthenticated()")
-    public Map<String, Object> update(@RequestBody Plan plan) {
-        return service.update(plan);
+    public ResponseEntity<Map<String, Object>> update(@RequestBody Plan plan) {
+        // 유효성 검사
+        boolean isValid = service.validate(plan);
+        if (!isValid) {
+            // 유효하지 않으면 바로 반환
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", Map.of("type", "warning", "text", "여행명은 비어있을 수 없습니다.")));
+        }
+
+        // 유효성 검사 후 업데이트
+        boolean isUpdated = service.update(plan);
+
+        if (isUpdated) {
+            return ResponseEntity.ok(Map.of("message", Map.of(
+                    "type", "success", "text", "수정되었습니다")));
+        } else {
+            return ResponseEntity.badRequest().body(Map.of("message", Map.of(
+                    "type", "warning", "text", "수정 중 문제가 발생했습니다.")));
+        }
     }
+
 
     // 내 여행 삭제
     @DeleteMapping("delete/{id}")
