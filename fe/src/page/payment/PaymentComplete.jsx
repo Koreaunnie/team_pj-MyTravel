@@ -2,15 +2,36 @@ import React from "react";
 import { Image } from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
+import axios from "axios";
+import { toaster } from "../../components/ui/toaster.jsx";
 
 function PaymentComplete(props) {
   const location = useLocation();
-  const { paidList, paymentId, totalAmount } = location.state || {};
+  const { paidList, paymentId, totalAmount, date } = location.state || {};
   const navigate = useNavigate();
 
   if (!paidList || !paymentId || !totalAmount) {
     return <p>결제 정보가 전달되지 않았습니다.</p>;
   }
+
+  const handleSendToWallet = (product) => {
+    axios
+      .post("/api/wallet/add", {
+        date,
+        category: "여행",
+        title: product.product,
+        income: 0,
+        expense: product.price,
+        memo: product.location,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+      });
+  };
 
   return (
     <div className={"tour"}>
@@ -28,6 +49,7 @@ function PaymentComplete(props) {
         <table className={"table-list"}>
           <thead>
             <tr>
+              <th>선택</th>
               <th colSpan={2}>상품</th>
               <th>일정</th>
               <th>가격</th>
@@ -37,6 +59,16 @@ function PaymentComplete(props) {
           {paidList.map((product) => (
             <tbody>
               <tr>
+                <td>
+                  <button
+                    className={"btn btn-dark"}
+                    onClick={(e) => {
+                      handleSendToWallet(product);
+                    }}
+                  >
+                    내 지갑에 추가
+                  </button>
+                </td>
                 <td>
                   <Image key={product.image} src={product.src} w={"100px"} />
                 </td>
@@ -51,7 +83,7 @@ function PaymentComplete(props) {
           {/*총 합*/}
           <tfoot>
             <tr>
-              <td colSpan={2}></td>
+              <td colSpan={3}></td>
               <th>결제 금액</th>
               <td>{totalAmount}</td>
             </tr>
