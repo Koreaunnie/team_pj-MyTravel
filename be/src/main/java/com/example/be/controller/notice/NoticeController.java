@@ -122,4 +122,12 @@ public class NoticeController {
                             "text", "권한이 없습니다.")));
         }
     }
+
+    @GetMapping("fetch/{id}")
+    public Map<String, Object> fetch(@PathVariable Integer id, Authentication auth) {
+
+        Map<String, Object> viewer = service.fetchNotice(id, auth);
+
+        return viewer;
+    }
 }
