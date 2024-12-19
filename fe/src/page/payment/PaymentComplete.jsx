@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Image } from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
@@ -15,6 +15,22 @@ function PaymentComplete(props) {
   if (!paidList || !paymentId || !totalAmount) {
     return <p>결제 정보가 전달되지 않았습니다.</p>;
   }
+
+  // 상태: 각 상품의 "내 지갑에 추가" 버튼 상태 저장
+  const [walletButtons, setWalletButtons] = useState(
+    paidList.reduce((acc, product) => {
+      acc[product.product] = false; // 초기값: 모든 버튼이 활성화
+      return acc;
+    }, {}),
+  );
+
+  // 상태: 각 상품의 "내 지갑에 추가" 버튼 상태 저장
+  const [planButtons, setPlanButtons] = useState(
+    paidList.reduce((acc, product) => {
+      acc[product.product] = false; // 초기값: 모든 버튼이 활성화
+      return acc;
+    }, {}),
+  );
 
   //지갑에 추가
   const handleSendToWallet = (product) => {
@@ -33,7 +49,20 @@ function PaymentComplete(props) {
           type: data.message.type,
           description: data.message.text,
         });
+        // 클릭된 버튼을 "내 지갑 확인" 상태로 변경
+        setWalletButtons((prevState) => ({
+          ...prevState,
+          [product.product]: true,
+        }));
       });
+  };
+
+  const handleNavigateToWallet = () => {
+    navigate("/wallet/list");
+  };
+
+  const handleNavigateToPlan = () => {
+    navigate("/plan/list");
   };
 
   // 내 여행에 추가
@@ -57,6 +86,11 @@ function PaymentComplete(props) {
           type: data.message.type,
           description: data.message.text,
         });
+        // 클릭된 버튼을 "내 여행 확인" 상태로 변경
+        setPlanButtons((prevState) => ({
+          ...prevState,
+          [product.product]: true,
+        }));
       });
   };
 
@@ -87,22 +121,40 @@ function PaymentComplete(props) {
             <tbody>
               <tr>
                 <td>
-                  <button
-                    className={"btn btn-dark"}
-                    onClick={(e) => {
-                      handleSendToWallet(product);
-                    }}
-                  >
-                    내 지갑에 추가
-                  </button>
-                  <button
-                    className={"btn btn-dark"}
-                    onClick={(e) => {
-                      handleSendToPlan(product);
-                    }}
-                  >
-                    내 여행에 추가
-                  </button>
+                  {walletButtons[product.product] ? (
+                    <button
+                      className={"btn btn-dark-outline"}
+                      onClick={handleNavigateToWallet}
+                      disabled={false} // "내 지갑 확인" 버튼은 항상 활성화
+                    >
+                      내 지갑 확인
+                    </button>
+                  ) : (
+                    <button
+                      className={"btn btn-dark"}
+                      onClick={() => handleSendToWallet(product)}
+                    >
+                      내 지갑에 추가
+                    </button>
+                  )}
+                  {planButtons[product.product] ? (
+                    <button
+                      className={"btn btn-dark-outline"}
+                      onClick={handleNavigateToPlan}
+                      disabled={false} // "내 지갑 확인" 버튼은 항상 활성화
+                    >
+                      내 여행 확인
+                    </button>
+                  ) : (
+                    <button
+                      className={"btn btn-dark"}
+                      onClick={(e) => {
+                        handleSendToPlan(product);
+                      }}
+                    >
+                      내 여행에 추가
+                    </button>
+                  )}
                 </td>
                 <td>
                   <Image key={product.image} src={product.src} w={"100px"} />
