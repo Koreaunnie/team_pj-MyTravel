@@ -43,32 +43,32 @@ public interface CommunityMapper {
     List<Community> listUp(Integer pageList, String searchType, String searchKeyword);
 
     @Select("""
-                        <script>
-                        SELECT COUNT(*)
-                        FROM community
+            <script>
+            SELECT COUNT(*)
+            FROM community
             WHERE 
-                                            <if test="searchType == 'all'">
-                                                title LIKE CONCAT('%',#{searchKeyword},'%')
-                                             OR writer LIKE CONCAT('%',#{searchKeyword},'%')
-                                             OR content LIKE CONCAT('%',#{searchKeyword},'%')
-                                            </if>
-                                            <if test="searchType != 'all'">
-                                                 <choose>
-                                                     <when test="searchType == 'title'">
-                                                         title LIKE CONCAT('%', #{searchKeyword}, '%')
-                                                     </when>
-                                                     <when test="searchType == 'writer'">
-                                                         writer LIKE CONCAT('%', #{searchKeyword}, '%')
-                                                     </when>
-                                                     <when test="searchType == 'content'">
-                                                         content LIKE CONCAT('%', #{searchKeyword}, '%')
-                                                     </when>
-                                                     <otherwise>
-                                                         1 = 0 
-                                                     </otherwise>
-                                                 </choose>
-                                             </if>
-                </script>
+                <if test="searchType == 'all'">
+                    title LIKE CONCAT('%',#{searchKeyword},'%')
+                       OR writer LIKE CONCAT('%',#{searchKeyword},'%')
+                       OR content LIKE CONCAT('%',#{searchKeyword},'%')
+                </if>
+                <if test="searchType != 'all'">
+                    <choose>
+                        <when test="searchType == 'title'">
+                            title LIKE CONCAT('%', #{searchKeyword}, '%')
+                        </when>
+                        <when test="searchType == 'writer'">
+                            writer LIKE CONCAT('%', #{searchKeyword}, '%')
+                        </when>
+                        <when test="searchType == 'content'">
+                             content LIKE CONCAT('%', #{searchKeyword}, '%')
+                        </when>
+                        <otherwise>
+                              1 = 0 
+                        </otherwise>
+                    </choose>
+                </if>
+            </script>
             """)
     Integer countAllCommunity(String searchType, String searchKeyword);
 
@@ -135,8 +135,8 @@ public interface CommunityMapper {
     int deleteCommunity(Integer id);
 
     @Insert("""
-            INSERT INTO community_comment (inquiryAnswer, writer, community_id)
-            VALUES (#{inquiryAnswer}, #{writer}, #{communityId})
+            INSERT INTO community_comment (comment, writer, community_id)
+            VALUES (#{comment}, #{writer}, #{communityId})
             """)
     int writeCommunityComment(CommunityComment communityComment);
 
@@ -161,7 +161,7 @@ public interface CommunityMapper {
     int deleteFileByFileNumber(Integer fileNumber);
 
     @Select("""
-            SELECT id, inquiryAnswer, writer , inserted creationDate
+            SELECT id, comment, writer , inserted creationDate
             FROM community_comment
             WHERE community_id=#{id}
             ORDER BY creationDate ASC
@@ -183,10 +183,10 @@ public interface CommunityMapper {
 
     @Update("""
             UPDATE community_comment
-            SET inquiryAnswer=#{inquiryAnswer}
+            SET comment=#{comment}
             WHERE id=#{id}
             """)
-    int updateCommunityComment(String inquiryAnswer, Integer id);
+    int updateCommunityComment(String comment, Integer id);
 
     @Select("""
             SELECT nickname
