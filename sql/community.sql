@@ -81,3 +81,7 @@ WHERE title LIKE '%1%';
 SELECT *
 FROM community
 ORDER BY inserted DESC;
+
+SELECT *
+FROM community
+WHERE id = 121;

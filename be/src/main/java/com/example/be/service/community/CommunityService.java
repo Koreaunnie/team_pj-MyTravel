@@ -128,6 +128,7 @@ public class CommunityService {
         int views = oldViews + 1;
         mapper.updateViews(views, id);
         viewer.put("views", views);
+//        조회수
 
 
         List<Integer> fileList = mapper.callCommunityFile(id);

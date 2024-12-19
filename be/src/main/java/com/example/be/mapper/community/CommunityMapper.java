@@ -318,4 +318,11 @@ public interface CommunityMapper {
             WHERE id=#{id}
             """)
     int updateViews(Integer plusViews, Integer id);
+
+    @Select("""
+            SELECT *
+            FROM community
+            WHERE id=#{id};
+            """)
+    Community communityInformation(Integer id);
 }
