@@ -228,4 +228,12 @@ public class CommunityController {
         }
     }
 
+    @GetMapping("fetch/{id}")
+    public Map<String, Object> fetch(@PathVariable Integer id, Authentication auth) {
+//        게시글 불러오기
+        Map<String, Object> viewer = service.fetchCommunity(id, auth);
+
+        return viewer;
+    }
+
 }

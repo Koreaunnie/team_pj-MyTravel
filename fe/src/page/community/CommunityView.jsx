@@ -146,22 +146,19 @@ function CommunityView(props) {
     ///community/edit/18
   };
 
-  const fetchComments = () => {
+  const fetch = () => {
     axios
-      .get(`/api/community/view/${id}`)
-      .then((res) => {
-        setCommentList(res.data.commentList);
-      })
-      .catch((err) => console.error(err));
-  };
-
-  const fetchLike = () => {
-    axios
-      .get(`/api/community/view/${id}`)
+      .get(`/api/community/fetch/${id}`)
       .then((res) => {
         setCommunity(res.data);
+        setCommentList(res.data.commentList);
+        setMyCommunityLike(res.data.myCommunityLike);
       })
       .catch((err) => console.error(err));
+    axios.get(`/api/community/list?${searchParams.toString()}`).then((res) => {
+      setCommunityList(res.data.list);
+      setCountCommunity(res.data.countCommunity);
+    });
   };
 
   const handleCommentSaveClick = () => {
@@ -176,7 +173,7 @@ function CommunityView(props) {
           type: writeSuccess.type,
           description: writeSuccess.text,
         });
-        fetchComments();
+        fetch();
       })
       .catch((e) => {
         const writeFailure = e.request.response;
@@ -200,7 +197,7 @@ function CommunityView(props) {
           type: deleteSuccess.type,
           description: deleteSuccess.text,
         });
-        fetchComments();
+        fetch();
       })
       .catch((e) => {
         const deleteFailure = e.request.response;
@@ -228,7 +225,7 @@ function CommunityView(props) {
           type: updateSuccess.type,
           description: updateSuccess.text,
         });
-        fetchComments();
+        fetch();
       })
       .catch((e) => {
         const updateFailure = e.request.response;
@@ -248,7 +245,7 @@ function CommunityView(props) {
       .post(`/api/community/like/${id}`)
       .then((e) => {
         console.log(e);
-        fetchLike();
+        fetch();
       })
       .finally(() => setMyCommunityLike(!myCommunityLike));
   };
