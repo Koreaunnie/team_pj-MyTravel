@@ -5,6 +5,7 @@ import ReviewList from "./ReviewList.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
 import "./Review.css";
 import { formattedDateTime } from "../../components/utils/FormattedDateTime.jsx";
+import { FaRegQuestionCircle } from "react-icons/fa";
 
 function ReviewContainer({ tourId }) {
   const [reviewList, setReviewList] = useState([]);
@@ -226,7 +227,18 @@ function ReviewContainer({ tourId }) {
       {/*목록*/}
       {activeTab === "list" &&
         (reviewList.length === 0 ? (
-          <p>작성된 후기가 없습니다.</p>
+          <div className={"empty-container"}>
+            <p>
+              <FaRegQuestionCircle
+                className={"empty-container-icon"}
+                style={{ color: "#a1a1a8" }}
+              />
+            </p>
+            <p className={"empty-container-title"}>작성된 후기가 없습니다.</p>
+            <p className={"empty-container-description"}>
+              다른 날짜를 선택해주세요.
+            </p>
+          </div>
         ) : (
           <ReviewList
             tourId={tourId}

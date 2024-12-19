@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Box, Input, Stack, Textarea } from "@chakra-ui/react";
+import { Box, Center } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { Field } from "../../components/ui/field.jsx";
@@ -116,35 +116,39 @@ function TourUpdate() {
   }
 
   return (
-    <div className={"tour"}>
+    <div className={"tour-update"}>
       <Breadcrumb
         depth1={"투어"}
         navigateToDepth1={() => navigate(`/tour/list`)}
         depth2={"상품 수정"}
         navigateToDepth2={() => navigate(`/tour/update/${id}`)}
       />
-      <h1>{id}번 Tour 상품 수정</h1>
-      <Stack>
-        <Field label={"제목"}>
-          <Input
-            value={tour.title}
-            onChange={(e) => setTour({ ...tour, title: e.target.value })}
-          />
-        </Field>
+
+      <h1>{id}번 투어 상품 수정</h1>
+
+      <div className={"body-normal"}>
+        <label htmlFor={"title"}>상품명</label>
+        <input
+          value={tour.title}
+          type={"text"}
+          id={"title"}
+          onChange={(e) => setTour({ ...tour, title: e.target.value })}
+        />
+
         <ImageView
           files={tour.fileList}
           onRemoveCheckClick={handleDeleteCheck}
         />
+
         <Box>
           <Field
-            label={"파일"}
             helperText={
               "총 10MB, 한 파일은 1MB 이내의 이미지만 업로드 가능합니다."
             }
             invalid={fileInputInvalid}
             errorText={"선택한 파일이 업로드 가능한 용량을 초과하였습니다."}
           >
-            <Input
+            <input
               onChange={(e) => setUploadFiles(e.target.files)}
               type={"file"}
               accept={"image/*"}
@@ -152,64 +156,75 @@ function TourUpdate() {
             />
           </Field>
         </Box>
+
         <Box>
           <Box>{uploadFilesList}</Box>
         </Box>
-        <Field label={"상품"}>
-          <Input
-            value={tour.product}
-            onChange={(e) => setTour({ ...tour, product: e.target.value })}
-          />
-        </Field>
-        <Field label={"위치"}>
-          <Input
-            value={tour.location}
-            onChange={(e) => setTour({ ...tour, location: e.target.value })}
-          />
-        </Field>
-        <Field label={"가격"}>
-          <Input
-            value={tour.price}
-            onChange={(e) => setTour({ ...tour, price: e.target.value })}
-          />
-        </Field>
-        <Field label={"내용"}>
-          <Textarea
-            value={tour.content}
-            onChange={(e) => setTour({ ...tour, content: e.target.value })}
-          />
-        </Field>
+
+        <label htmlFor={"product"}>상품</label>
+        <input
+          type={"text"}
+          id={"product"}
+          value={tour.product}
+          onChange={(e) => setTour({ ...tour, product: e.target.value })}
+        />
+
+        <label htmlFor={"location"}>위치</label>
+        <input
+          type={"text"}
+          id={"location"}
+          value={tour.location}
+          onChange={(e) => setTour({ ...tour, location: e.target.value })}
+        />
+
+        <label htmlFor={"price"}>가격</label>
+        <input
+          type={"number"}
+          value={tour.price}
+          onChange={(e) => setTour({ ...tour, price: e.target.value })}
+        />
+
+        <label htmlFor={"content"}>내용</label>
+        <textarea
+          rows={"15"}
+          id={"content"}
+          value={tour.content}
+          onChange={(e) => setTour({ ...tour, content: e.target.value })}
+        />
 
         {(hasAccess(tour.partnerEmail) || isAdmin) && (
-          <Box>
-            <button
-              className={"btn btn-dark-outline"}
-              onClick={handleCancelClick}
-            >
-              취소
-            </button>
-            <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
-              <DialogTrigger>
-                <Button>저장</Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>수정 확인</DialogTitle>
-                </DialogHeader>
-                <DialogBody>
-                  <p>{tour.title} 상품의 수정 내용을 저장하시겠습니까?</p>
-                </DialogBody>
-                <DialogFooter>
-                  <DialogActionTrigger>
-                    <Button>취소</Button>
-                  </DialogActionTrigger>
-                  <Button onClick={handleSaveClick}>저장</Button>
-                </DialogFooter>
-              </DialogContent>
-            </DialogRoot>
-          </Box>
+          <Center>
+            <div className={"btn-wrap"}>
+              <button
+                className={"btn btn-dark-outline"}
+                onClick={handleCancelClick}
+              >
+                취소
+              </button>
+
+              <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
+                <DialogTrigger>
+                  <button className={"btn btn-dark"}>저장</button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>수정 확인</DialogTitle>
+                  </DialogHeader>
+                  <DialogBody>
+                    <p>{tour.title} 상품의 수정 내용을 저장하시겠습니까?</p>
+                  </DialogBody>
+                  <DialogFooter>
+                    <DialogActionTrigger>
+                      <button className={"btn btn-dark-outline"}>취소</button>
+                    </DialogActionTrigger>
+                    <Button onClick={handleSaveClick}>저장</Button>
+                  </DialogFooter>
+                </DialogContent>
+              </DialogRoot>
+            </div>
+          </Center>
         )}
-      </Stack>
+      </div>
     </div>
   );
 }

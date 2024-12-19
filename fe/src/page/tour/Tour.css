@@ -2,6 +2,15 @@
     margin: 30px 0 20px 0;
 }
 
+.tour-add h1,
+.tour-update h1 {
+    margin: 70px 0 20px 0;
+}
+
+.tour-add .btn-wrap,
+.tour-update .btn-wrap {
+    margin: 20px 0 30px 0;
+}
 
 /*------------------- tourList -------------------*/
 .tour h1 {
@@ -237,12 +246,17 @@
 }
 
 .tour-view .btn-back-wrap .btn-admin {
+    width: 800px;
+    margin: 0 auto;
     position: absolute;
-    top: 7px;
-    right: 0;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .tour-view .btn-back-wrap .btn-admin button {
+    float: right;
+    right: 0;
     margin: 0 5px;
 }
 
