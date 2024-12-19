@@ -327,13 +327,13 @@ function NoticeView(props) {
                     <Table.Row onClick={() => handleViewClick(n.id)} key={n.id}>
                       <Table.Cell>
                         <Stack>
-                          <h3>{n.title}</h3>
-                          <h4>
-                            <HStack>
-                              <GoHeart /> {n.numberOfLikes} |{" "}
-                              <HiOutlineBookOpen /> {n.numberOfViews}
-                            </HStack>
-                          </h4>
+                          {n.title.length > 25
+                            ? `${n.title.substring(0, 25)} ...`
+                            : n.title}
+                          <HStack>
+                            <GoHeart /> {n.numberOfLikes} |{" "}
+                            <HiOutlineBookOpen /> {n.numberOfViews}
+                          </HStack>
                         </Stack>
                       </Table.Cell>
                       <Table.Cell>{n.writer}</Table.Cell>

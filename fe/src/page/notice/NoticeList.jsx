@@ -4,6 +4,7 @@ import { AuthenticationContext } from "../../components/context/AuthenticationPr
 import axios from "axios";
 import {
   Box,
+  Center,
   createListCollection,
   HStack,
   Stack,
@@ -100,7 +101,11 @@ function NoticeList(props) {
                   <Table.Row onClick={() => handleViewClick(n.id)} key={n.id}>
                     <Table.Cell>
                       <Stack>
-                        <h3>{n.title}</h3>
+                        <h3>
+                          {n.title.length > 25
+                            ? `${n.title.substring(0, 25)} ...`
+                            : n.title}
+                        </h3>
                         <h4>
                           <HStack>
                             <GoHeart /> {n.numberOfLikes} |{" "}
@@ -173,19 +178,23 @@ function NoticeList(props) {
             </HStack>
           </Box>
           <Box>
-            <PaginationRoot
-              count={countNotice}
-              pageSize={10}
-              defaultPage={1}
-              onPageChange={handlePageChangeClick}
-              siblingCount={2}
-            >
-              <HStack>
-                <PaginationPrevTrigger />
-                <PaginationItems />
-                <PaginationNextTrigger />
-              </HStack>
-            </PaginationRoot>
+            <div className={"pagination"}>
+              <Center>
+                <PaginationRoot
+                  count={countNotice}
+                  pageSize={10}
+                  defaultPage={1}
+                  onPageChange={handlePageChangeClick}
+                  siblingCount={2}
+                >
+                  <HStack>
+                    <PaginationPrevTrigger />
+                    <PaginationItems />
+                    <PaginationNextTrigger />
+                  </HStack>
+                </PaginationRoot>
+              </Center>
+            </div>
           </Box>
           <br />
         </Stack>
