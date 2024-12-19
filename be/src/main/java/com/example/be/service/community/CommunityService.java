@@ -45,8 +45,6 @@ public class CommunityService {
 
         Integer pageList = (page - 1) * 10;
 
-//        모든 수를 세는 것을 만들어야 함
-
         List<Community> list = mapper.listUp(pageList, searchType, searchKeyword);
         for (Community community : list) {
             Integer countFiles = mapper.countFilesByCommunityId(community.getId());
@@ -106,7 +104,6 @@ public class CommunityService {
         Map<String, Object> viewer = mapper.viewCommunity(id);
         Integer countLike = mapper.countLikesByCommunityId(id);
         viewer.put("like", countLike);
-        // 게시글 좋아요 수
 
         boolean myCommunityLike;
         if (auth != null) {
@@ -122,14 +119,11 @@ public class CommunityService {
             myCommunityLike = false;
             viewer.put("myCommunityLike", myCommunityLike);
         }
-        // 로그인 여부와 로그인한 회원 좋아요 여부
 
         int oldViews = mapper.checkViews(id);
         int views = oldViews + 1;
         mapper.updateViews(views, id);
         viewer.put("views", views);
-//        조회수
-
 
         List<Integer> fileList = mapper.callCommunityFile(id);
         List<Map<String, Object>> commentList = mapper.callCommunityComment(id);
@@ -224,7 +218,6 @@ public class CommunityService {
     public void updateComment(CommunityComment communityComment, Integer id, Authentication auth) {
         String comment = communityComment.getComment();
         System.out.println(comment);
-//        TODO : 권한이 있을 경우 수정 가능, 권한이 없을 경우 toaster 로 수정 불가
         mapper.updateCommunityComment(comment, id);
     }
 
@@ -269,8 +262,6 @@ public class CommunityService {
 
         return writer.equals(nicknameByAuth);
     }
-
-//    TODO : 좋아요 작업 중
 
     public void addLikeInCommunity(Integer id, Authentication auth) {
         String person = mapper.findNickname(auth.getName());

@@ -33,7 +33,6 @@ public interface CommunityMapper {
                                          </when>
                                          <otherwise>
                                              1 = 0 
-            <!-- 허용되지 않은 searchType이면 빈 결과 반환 -->
                                          </otherwise>
                                      </choose>
                                  </if>
@@ -66,7 +65,6 @@ public interface CommunityMapper {
                                                      </when>
                                                      <otherwise>
                                                          1 = 0 
-                        <!-- 허용되지 않은 searchType이면 빈 결과 반환 -->
                                                      </otherwise>
                                                  </choose>
                                              </if>
@@ -123,7 +121,6 @@ public interface CommunityMapper {
             """)
     int addFile(String filesName, Integer id);
 
-
     @Update("""
             UPDATE community
             SET title = #{title}, content = #{content}
@@ -149,7 +146,6 @@ public interface CommunityMapper {
             WHERE id=#{id}
             """)
     Community selectByCommunityId(int id);
-
 
     @Delete("""
             DELETE FROM community_file
@@ -227,7 +223,6 @@ public interface CommunityMapper {
             """)
     int deleteLikeByCommunityId(Integer id);
 
-    // 메인 화면에 필요한 일부 community 리스트 가져오기
     @Select("""
             <script>
             SELECT *

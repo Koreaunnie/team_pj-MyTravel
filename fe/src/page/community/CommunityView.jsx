@@ -165,7 +165,7 @@ function CommunityView(props) {
       })
       .catch((err) => console.error(err));
   };
-  console.log(community);
+
   const handleCommentSaveClick = () => {
     axios
       .post(`/api/community/comment/write`, {
