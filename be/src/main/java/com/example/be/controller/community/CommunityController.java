@@ -107,6 +107,11 @@ public class CommunityController {
                 return ResponseEntity.ok()
                         .body(Map.of("message", Map.of("type", "success",
                                 "text", "게시물이 삭제되었습니다")));
+            } else if (service.checkAdmin(auth)) {
+                service.delete(id, auth);
+                return ResponseEntity.ok()
+                        .body(Map.of("message", Map.of("type", "success",
+                                "text", "게시물이 삭제되었습니다")));
             } else {
                 return ResponseEntity.status(403)
                         .body(Map.of("message", Map.of("type", "warning",
@@ -153,6 +158,11 @@ public class CommunityController {
     public ResponseEntity<Map<String, Object>> commentDelete(@PathVariable Integer id, Authentication auth) {
         try {
             if (service.checkCommentRightsOfAccess(id, auth)) {
+                service.commentDelete(id);
+                return ResponseEntity.ok()
+                        .body(Map.of("message", Map.of("type", "success",
+                                "text", "댓글이 삭제되었습니다")));
+            } else if (service.checkAdmin(auth)) {
                 service.commentDelete(id);
                 return ResponseEntity.ok()
                         .body(Map.of("message", Map.of("type", "success",
@@ -216,6 +226,14 @@ public class CommunityController {
                     .body(Map.of("message", Map.of("type", "warning",
                             "text", "권한이 없습니다.")));
         }
+    }
+
+    @GetMapping("fetch/{id}")
+    public Map<String, Object> fetch(@PathVariable Integer id, Authentication auth) {
+
+        Map<String, Object> viewer = service.fetchCommunity(id, auth);
+
+        return viewer;
     }
 
 }

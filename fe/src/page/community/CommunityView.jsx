@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import {
   Box,
+  Center,
   createListCollection,
   DialogTitle,
   HStack,
@@ -86,10 +87,6 @@ function CommunityView(props) {
   const [creationDate, setCreationDate] = useState("");
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-
-  useEffect(() => {
     axios
       .get(`/api/community/view/${id}`, { id })
       .then((e) => {
@@ -110,14 +107,15 @@ function CommunityView(props) {
         });
         navigate(`/community/list`);
       });
-  }, []);
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   useEffect(() => {
     axios.get(`/api/community/list?${searchParams.toString()}`).then((res) => {
       setCommunityList(res.data.list);
       setCountCommunity(res.data.countCommunity);
     });
-  }, [searchParams]);
+  }, [pathname]);
 
   const handleDeleteClick = () => {
     axios
@@ -148,22 +146,19 @@ function CommunityView(props) {
     ///community/edit/18
   };
 
-  const fetchComments = () => {
+  const fetch = () => {
     axios
-      .get(`/api/community/view/${id}`)
-      .then((res) => {
-        setCommentList(res.data.commentList);
-      })
-      .catch((err) => console.error(err));
-  };
-
-  const fetchLike = () => {
-    axios
-      .get(`/api/community/view/${id}`)
+      .get(`/api/community/fetch/${id}`)
       .then((res) => {
         setCommunity(res.data);
+        setCommentList(res.data.commentList);
+        setMyCommunityLike(res.data.myCommunityLike);
       })
       .catch((err) => console.error(err));
+    axios.get(`/api/community/list?${searchParams.toString()}`).then((res) => {
+      setCommunityList(res.data.list);
+      setCountCommunity(res.data.countCommunity);
+    });
   };
 
   const handleCommentSaveClick = () => {
@@ -178,7 +173,7 @@ function CommunityView(props) {
           type: writeSuccess.type,
           description: writeSuccess.text,
         });
-        fetchComments();
+        fetch();
       })
       .catch((e) => {
         const writeFailure = e.request.response;
@@ -202,7 +197,7 @@ function CommunityView(props) {
           type: deleteSuccess.type,
           description: deleteSuccess.text,
         });
-        fetchComments();
+        fetch();
       })
       .catch((e) => {
         const deleteFailure = e.request.response;
@@ -230,7 +225,7 @@ function CommunityView(props) {
           type: updateSuccess.type,
           description: updateSuccess.text,
         });
-        fetchComments();
+        fetch();
       })
       .catch((e) => {
         const updateFailure = e.request.response;
@@ -249,12 +244,8 @@ function CommunityView(props) {
     axios
       .post(`/api/community/like/${id}`)
       .then((e) => {
-        const likeSuccess = e.data.message;
-        toaster.create({
-          type: likeSuccess.type,
-          description: likeSuccess.text,
-        });
-        fetchLike();
+        console.log(e);
+        fetch();
       })
       .finally(() => setMyCommunityLike(!myCommunityLike));
   };
@@ -367,7 +358,14 @@ function CommunityView(props) {
                         </DialogBody>
                         <DialogFooter>
                           <DialogActionTrigger>
-                            <Button onClick={handleLoginClick}>확인</Button>
+                            <div>
+                              <Button
+                                className={"btn btn-dark"}
+                                onClick={handleLoginClick}
+                              >
+                                확인
+                              </Button>
+                            </div>
                           </DialogActionTrigger>
                         </DialogFooter>
                       </DialogContent>
@@ -381,32 +379,60 @@ function CommunityView(props) {
               <Input value={community.writer} />
             </Field>
           </Box>
-          {hasAccessByNickName(community.writer) && (
-            <Box>
-              <HStack>
+          <Box>
+            <HStack>
+              {(hasAccessByNickName(community.writer) ||
+                authentication.isAdmin) && (
                 <DialogRoot>
                   <DialogTrigger>
-                    <Button>삭제</Button>
+                    <div>
+                      <Button className={"btn btn-warning"}>삭제</Button>
+                    </div>
                     <DialogContent>
                       <DialogHeader>글 삭제</DialogHeader>
                       <DialogBody>{id}번 게시물을 삭제하시겠습니까?</DialogBody>
                       <DialogFooter>
-                        <Button>취소</Button>
+                        <div>
+                          <button className={"btn btn-dark-outline"}>
+                            취소
+                          </button>
+                        </div>
                         <DialogActionTrigger>
-                          <Button onClick={handleDeleteClick}>삭제</Button>
+                          <div>
+                            <Button
+                              className={"btn btn-warning"}
+                              onClick={handleDeleteClick}
+                            >
+                              삭제
+                            </Button>
+                          </div>
                         </DialogActionTrigger>
                       </DialogFooter>
                     </DialogContent>
                   </DialogTrigger>
                 </DialogRoot>
-                <Button onClick={handleEditClick}>수정</Button>
-              </HStack>
-            </Box>
-          )}
+              )}
+              {hasAccessByNickName(community.writer) && (
+                <div>
+                  <Button className={"btn btn-blue"} onClick={handleEditClick}>
+                    수정
+                  </Button>
+                </div>
+              )}
+            </HStack>
+          </Box>
           <br />
           {/*  TODO: 코멘트 작성, 코멘트 리스트 추가 */}
           <Box>
             <Stack>
+              <Field fontSize="xl">
+                <strong>
+                  <HStack>
+                    <FiMessageSquare />
+                    코멘트 ({commentList.length})
+                  </HStack>
+                </strong>
+              </Field>
               <Field label={community.writer + " 님에게 댓글 작성"}>
                 {authentication.isAuthenticated && (
                   <HStack>
@@ -417,9 +443,15 @@ function CommunityView(props) {
                       value={comment}
                       onChange={(e) => setComment(e.target.value)}
                     />
-                    <Button h={100} onClick={handleCommentSaveClick}>
-                      댓글 등록
-                    </Button>
+                    <div>
+                      <Button
+                        className={"btn btn-dark"}
+                        h={100}
+                        onClick={handleCommentSaveClick}
+                      >
+                        댓글 등록
+                      </Button>
+                    </div>
                   </HStack>
                 )}
                 {authentication.isAuthenticated || (
@@ -431,7 +463,11 @@ function CommunityView(props) {
                           w={700}
                           placeholder="로그인 후 댓글 작성 가능"
                         />
-                        <Button h={100}>댓글 등록</Button>
+                        <div>
+                          <Button className={"btn btn-dark"} h={100}>
+                            댓글 등록
+                          </Button>
+                        </div>
                       </HStack>
                       <DialogContent>
                         <DialogHeader>MyTravel</DialogHeader>
@@ -440,7 +476,14 @@ function CommunityView(props) {
                         </DialogBody>
                         <DialogFooter>
                           <DialogActionTrigger>
-                            <Button onClick={handleLoginClick}>확인</Button>
+                            <div>
+                              <Button
+                                className={"btn btn-dark"}
+                                onClick={handleLoginClick}
+                              >
+                                확인
+                              </Button>
+                            </div>
                           </DialogActionTrigger>
                         </DialogFooter>
                       </DialogContent>
@@ -450,12 +493,6 @@ function CommunityView(props) {
               </Field>
               <br />
               <Field>
-                <h2>
-                  <HStack>
-                    <FiMessageSquare />
-                    코멘트 ({commentList.length})
-                  </HStack>
-                </h2>
                 {commentList.map((list) => (
                   <Box value={list.id}>
                     <HStack>
@@ -467,12 +504,19 @@ function CommunityView(props) {
                         <HStack>
                           <Input value={list.comment} readOnly w={450} />
                           {/* TODO : 권한받은 유저만 보이게 */}
-                          {hasAccessByNickName(list.writer) && (
-                            <Box>
-                              <HStack>
+                          <Box>
+                            <HStack>
+                              {hasAccessByNickName(list.writer) && (
                                 <DialogRoot>
                                   <DialogTrigger asChild>
-                                    <Button variant="outline">수정</Button>
+                                    <div>
+                                      <Button
+                                        className={"btn btn-blue"}
+                                        variant="outline"
+                                      >
+                                        수정
+                                      </Button>
+                                    </div>
                                   </DialogTrigger>
                                   <DialogContent>
                                     <DialogHeader>
@@ -500,23 +544,40 @@ function CommunityView(props) {
                                     </DialogBody>
                                     <DialogFooter>
                                       <DialogActionTrigger asChild>
-                                        <Button variant="outline">취소</Button>
+                                        <div>
+                                          <button
+                                            className={"btn btn-dark-outline"}
+                                            variant="outline"
+                                          >
+                                            취소
+                                          </button>
+                                        </div>
                                       </DialogActionTrigger>
                                       <DialogActionTrigger>
-                                        <Button
-                                          onClick={() =>
-                                            handleCommentUpdateClick(list.id)
-                                          }
-                                        >
-                                          수정
-                                        </Button>
+                                        <div>
+                                          <Button
+                                            className={"btn btn-blue"}
+                                            onClick={() =>
+                                              handleCommentUpdateClick(list.id)
+                                            }
+                                          >
+                                            수정
+                                          </Button>
+                                        </div>
                                       </DialogActionTrigger>
                                     </DialogFooter>
                                   </DialogContent>
                                 </DialogRoot>
+                              )}
+                              {(hasAccessByNickName(list.writer) ||
+                                authentication.isAdmin) && (
                                 <DialogRoot>
                                   <DialogTrigger>
-                                    <Button>삭제</Button>
+                                    <div>
+                                      <Button className={"btn btn-warning"}>
+                                        삭제
+                                      </Button>
+                                    </div>
                                   </DialogTrigger>
                                   <DialogContent>
                                     <DialogHeader>글 삭제</DialogHeader>
@@ -525,23 +586,32 @@ function CommunityView(props) {
                                     </DialogBody>
                                     <DialogFooter>
                                       <DialogActionTrigger>
-                                        <Button>취소</Button>
+                                        <div>
+                                          <button
+                                            className={"btn btn-dark-outline"}
+                                          >
+                                            취소
+                                          </button>
+                                        </div>
                                       </DialogActionTrigger>
                                       <DialogActionTrigger>
-                                        <Button
-                                          onClick={() =>
-                                            handleCommentDeleteClick(list.id)
-                                          }
-                                        >
-                                          삭제
-                                        </Button>
+                                        <div>
+                                          <Button
+                                            className={"btn btn-warning"}
+                                            onClick={() =>
+                                              handleCommentDeleteClick(list.id)
+                                            }
+                                          >
+                                            삭제
+                                          </Button>
+                                        </div>
                                       </DialogActionTrigger>
                                     </DialogFooter>
                                   </DialogContent>
                                 </DialogRoot>
-                              </HStack>
-                            </Box>
-                          )}
+                              )}
+                            </HStack>
+                          </Box>
                         </HStack>
                       </Stack>
                     </HStack>
@@ -567,7 +637,11 @@ function CommunityView(props) {
                     <Table.Cell>
                       <Stack>
                         <HStack>
-                          <h3>{c.title}</h3>
+                          <h3>
+                            {c.title.length > 25
+                              ? `${c.title.substring(0, 25)}...`
+                              : c.title}
+                          </h3>
                           {c.existOfFiles ? <IoMdPhotos /> : " "}
                         </HStack>
                         <h4>
@@ -590,63 +664,91 @@ function CommunityView(props) {
             <HStack>
               <Box>
                 <HStack>
-                  <SelectRoot
-                    collection={optionList}
-                    defaultValue={["all"]}
-                    onChange={(oc) =>
-                      setSearch({ ...search, type: oc.target.value })
-                    }
-                    size="sm"
-                    width="130px"
-                  >
-                    <SelectTrigger>
-                      <SelectValueText />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {optionList.items.map((option) => (
-                        <SelectItem item={option} key={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </SelectRoot>
-                  <Input
-                    w={300}
-                    value={search.keyword}
-                    onChange={(e) =>
-                      setSearch({ ...search, keyword: e.target.value })
-                    }
-                  />
-                  <Button onClick={handleSearchClick}>검색</Button>
+                  <div className={"search-form"}>
+                    <SelectRoot
+                      collection={optionList}
+                      defaultValue={["all"]}
+                      onChange={(oc) =>
+                        setSearch({ ...search, type: oc.target.value })
+                      }
+                      size="sm"
+                      width="130px"
+                    >
+                      <SelectTrigger>
+                        <SelectValueText />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {optionList.items.map((option) => (
+                          <SelectItem item={option} key={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </SelectRoot>
+                    <input
+                      type={"text"}
+                      className={"search-form-input"}
+                      value={search.keyword}
+                      onChange={(e) =>
+                        setSearch({ ...search, keyword: e.target.value })
+                      }
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          handleSearchClick();
+                        }
+                      }}
+                    />
+                    <Button
+                      className={"btn-search btn-dark"}
+                      onClick={handleSearchClick}
+                    >
+                      검색
+                    </Button>
+                  </div>
                 </HStack>
               </Box>
               {authentication.isAuthenticated && (
-                <Button onClick={handleWriteClick}>글 쓰기</Button>
+                <div>
+                  <Button className={"btn btn-dark"} onClick={handleWriteClick}>
+                    글 쓰기
+                  </Button>
+                </div>
               )}
             </HStack>
             {authentication.isAuthenticated || (
               <Box>
                 <HStack>
                   로그인을 한 회원만 게시글 작성이 가능합니다.
-                  <Button onClick={handleLoginClick}>로그인</Button>
+                  <div>
+                    <Button
+                      className={"btn btn-dark"}
+                      onClick={handleLoginClick}
+                    >
+                      로그인
+                    </Button>
+                  </div>
                 </HStack>
               </Box>
             )}
           </Box>
           <Box>
-            <PaginationRoot
-              count={countCommunity}
-              pageSize={10}
-              defaultPage={1}
-              onPageChange={handlePageChangeClick}
-              siblingCount={2}
-            >
-              <HStack>
-                <PaginationPrevTrigger />
-                <PaginationItems />
-                <PaginationNextTrigger />
-              </HStack>
-            </PaginationRoot>
+            <div className={"pagination"}>
+              <Center>
+                <PaginationRoot
+                  count={countCommunity}
+                  pageSize={10}
+                  defaultPage={1}
+                  onPageChange={handlePageChangeClick}
+                  siblingCount={2}
+                >
+                  <HStack>
+                    <PaginationPrevTrigger />
+                    <PaginationItems />
+                    <PaginationNextTrigger />
+                  </HStack>
+                </PaginationRoot>
+              </Center>
+            </div>
           </Box>
         </Stack>
       </div>

@@ -28,7 +28,7 @@ export function MemberLoginProcess() {
         })
         .then((response) => {
           const tokenData = response.data;
-          console.log(tokenData.access_token);
+          // console.log("토큰 정보", tokenData);
           if (tokenData.access_token) {
             //사용자 정보 요청
             axios
@@ -50,18 +50,14 @@ export function MemberLoginProcess() {
                 const imageSrc =
                   userInfo.kakao_account.profile.profile_image_url;
                 const kakaoId = userInfo.id;
+                const kakaoEmail = userInfo.kakao_account.email;
 
                 //백엔드 전달
                 axios
                   .post(`/api/member/login/kakao`, {
-                    accessToken: tokenData.access_token,
-                    refreshToken: tokenData.refresh_token,
-                    expiresIn: tokenData.expires_in,
-                    kakaoId,
                     nickname,
                     imageSrc,
-                    tokenType: tokenData.token_type,
-                    //TODO: 불필요한 정보전달 잘라내기
+                    kakaoEmail,
                   })
                   .then((r) => r.data)
                   .then((data) => {
@@ -78,9 +74,9 @@ export function MemberLoginProcess() {
                     //기존 정보 없으면 kakao 회원 가입 추가
                     navigate("/member/signup/kakao", {
                       state: {
-                        kakaoId,
                         kakaoNickname: nickname,
                         kakaoImageSrc: imageSrc,
+                        kakaoEmail,
                       },
                     });
                   });

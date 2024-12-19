@@ -23,6 +23,19 @@ import {
 } from "../../components/ui/dialog.jsx";
 import { Button } from "../../components/ui/button.jsx";
 import { GoHeart } from "react-icons/go";
+import {
+  SelectContent,
+  SelectItem,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+} from "../../components/ui/select.jsx";
+import {
+  PaginationItems,
+  PaginationNextTrigger,
+  PaginationPrevTrigger,
+  PaginationRoot,
+} from "../../components/ui/pagination.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { formattedDateTime } from "../../components/utils/FormattedDateTime.jsx";
 
@@ -40,10 +53,6 @@ function NoticeView(props) {
   const { pathname } = useLocation();
   const [titleLength, setTitleLength] = useState("");
   const [creationDate, setCreationDate] = useState("");
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
 
   useEffect(() => {
     axios
@@ -65,14 +74,16 @@ function NoticeView(props) {
         });
         navigate(`/notice/list`);
       });
-  }, []);
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   useEffect(() => {
     axios.get(`/api/notice/list?${searchParams.toString()}`).then((res) => {
+      console.log(res.data);
       setNoticeList(res.data.list);
       setCountNotice(res.data.countNotice);
     });
-  }, [searchParams]);
+  }, [pathname]);
 
   const handleDeleteClick = () => {
     axios
@@ -142,6 +153,7 @@ function NoticeView(props) {
       .then(navigate(`/notice/view/${id}#top`))
       .then((e) => {
         setNotice(e.data);
+        setMyNoticeLike(e.data.myNoticeLike);
       });
   }
 
@@ -170,7 +182,7 @@ function NoticeView(props) {
   });
 
   return (
-    <div className={"notice"}>
+    <div>
       <Breadcrumb
         depth1={"공지사항"}
         navigateToDepth1={() => navigate(`/notice/list`)}

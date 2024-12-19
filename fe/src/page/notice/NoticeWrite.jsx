@@ -6,6 +6,7 @@ import { Box } from "@chakra-ui/react";
 import { Alert } from "../../components/ui/alert.jsx";
 import NoticeList from "./NoticeList.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
+import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 
 function NoticeWrite(props) {
   const [title, setTitle] = useState("");
@@ -42,6 +43,13 @@ function NoticeWrite(props) {
 
   return (
     <div className={"notice-form form-container"}>
+      <Breadcrumb
+        depth1={"공지사항"}
+        navigateToDepth1={() => navigate(`/notice/list`)}
+        depth2={"공지사항 작성"}
+        navigateToDepth2={() => navigate(`/notice/write`)}
+      />
+
       {authentication.isAdmin && (
         <div className={"body-normal"}>
           <h1>공지사항 작성</h1>

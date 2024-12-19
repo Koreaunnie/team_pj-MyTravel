@@ -58,11 +58,10 @@ public class NoticeController {
     }
 
     @PutMapping("edit")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAuthority('SCOPE_admin')")
     public ResponseEntity<Map<String, Object>> edit(@RequestBody Notice notice, Authentication auth) {
-        Integer id = notice.getId();
         try {
-            if (service.checkRightsOfAccess(id, auth)) {
+            if (service.checkAdmin(auth)) {
                 if (service.checkNotice(notice)) {
                     service.edit(notice);
                     return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success",
@@ -85,10 +84,10 @@ public class NoticeController {
     }
 
     @DeleteMapping("delete/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAuthority('SCOPE_admin')")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable Integer id, Authentication auth) {
         try {
-            if (service.checkRightsOfAccess(id, auth)) {
+            if (service.checkAdmin(auth)) {
                 service.delete(id);
                 return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success",
                         "text", STR."\{id}번 공지사항이 삭제되었습니다")));
@@ -122,5 +121,13 @@ public class NoticeController {
                     .body(Map.of("message", Map.of("type", "error",
                             "text", "권한이 없습니다.")));
         }
+    }
+
+    @GetMapping("fetch/{id}")
+    public Map<String, Object> fetch(@PathVariable Integer id, Authentication auth) {
+
+        Map<String, Object> viewer = service.fetchNotice(id, auth);
+
+        return viewer;
     }
 }
