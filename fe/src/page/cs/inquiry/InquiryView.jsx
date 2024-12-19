@@ -5,7 +5,7 @@ import axios from "axios";
 import { Spinner } from "@chakra-ui/react";
 import "./Inquiry.css";
 import { Modal } from "../../../components/root/Modal.jsx";
-import { AnswerContainer } from "./comment/AnswerContainer.jsx";
+import { AnswerContainer } from "./answer/AnswerContainer.jsx";
 import { toaster } from "../../../components/ui/toaster.jsx";
 import { AuthenticationContext } from "../../../components/context/AuthenticationProvider.jsx";
 import { formattedDateTime } from "../../../components/utils/FormattedDateTime.jsx";
@@ -114,9 +114,6 @@ function InquiryView(props) {
           <tbody>
             <tr className={"tbody-content"}>
               <td colSpan={2}>{inquiry.content}</td>
-            </tr>
-            <tr>
-              <td colSpan={2}>첨부파일</td>
             </tr>
           </tbody>
         </table>

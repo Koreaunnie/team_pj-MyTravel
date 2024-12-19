@@ -15,6 +15,7 @@ import Calendar from "react-calendar";
 import { Modal } from "/src/components/root/Modal.jsx";
 import { Breadcrumb } from "/src/components/root/Breadcrumb.jsx";
 import { GoHeart, GoHeartFill } from "react-icons/go";
+import { IoIosRefresh } from "react-icons/io";
 
 function PlanList(props) {
   const [allPlans, setAllPlans] = useState([]);
@@ -210,6 +211,23 @@ function PlanList(props) {
             </div>
 
             <div className={"search-form"}>
+              <button
+                onClick={() => {
+                  // 1. 검색 상태 초기화
+                  setSearch({ type: "all", keyword: "" });
+
+                  // 2. URL 검색 파라미터 초기화
+                  const nextSearchParam = new URLSearchParams();
+                  nextSearchParam.set("type", "all");
+                  nextSearchParam.set("key", "");
+
+                  setSearchParams(nextSearchParam);
+                }}
+                style={{ marginRight: "10px", cursor: "pointer" }}
+              >
+                <IoIosRefresh />
+              </button>
+
               <select
                 onChange={(e) => setSearch({ ...search, type: e.target.value })}
               >

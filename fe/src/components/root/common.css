@@ -15,6 +15,7 @@ font-family: "Inter", serif;
     --main-purple: #a044ff;
     --main-blue: #0072ff;
     --main-orange: #ef8630;
+    --main-yellow: #f4b543;
     --blue-purple-gradient: linear-gradient(90deg, #0072ff, #a044ff);
     --deep-blue-gradient: linear-gradient(90deg, #1e3c72, #2a5298);
     --purple-skyblue-gradient: linear-gradient(90deg, #7f7fd5, #86a8e7, #91eae4);
@@ -126,6 +127,16 @@ input[type=checkbox] {
     background: none;
 }
 
+input[type=file] {
+    border: 1px solid var(--input-border-color);
+    box-sizing: border-box;
+    border-radius: 5px;
+    width: 100%;
+    height: 40px;
+    padding: 5px;
+    background: none;
+}
+
 textarea {
     border: 1px solid var(--input-border-color);
     box-sizing: border-box;
@@ -165,21 +176,25 @@ h3 {
     color: var(--font-dark-gray-color);
 }
 
+li {
+    white-space: pre-line;
+}
+
 .body-wide {
     width: 1000px;
-    margin: 40px auto;
+    margin: 0 auto;
     position: relative;
 }
 
 .body-normal {
     width: 800px;
-    margin: 30px auto;
+    margin: 0 auto;
     position: relative;
 }
 
 .body-narrow {
     width: 400px;
-    margin: 40px auto;
+    margin: 0 auto;
     position: relative;
 }
 
@@ -290,6 +305,13 @@ form .required {
     margin-left: -5px;
     vertical-align: top;
     min-width: 60px;
+}
+
+.btn-back {
+    margin: 10px;
+    font-size: 2rem;
+    height: 2rem;
+    cursor: pointer;
 }
 
 .btn-dark {
@@ -480,9 +502,31 @@ form .required {
     padding: 5px 10px;
 }
 
-.table-view tbody .tbody-content {
-    padding: 30px;
-    height: 400px;
+.table-view tbody .tbody-content td {
+    padding: 50px;
+    text-align: left;
+}
+
+/*------------------- form design -------------------*/
+.form-container {
+    background: var(--bg-gray-color);
+    margin: 0 auto;
+}
+
+.form-container .btn-wrap {
+    justify-content: space-between;
+}
+
+.form-wrap {
+    margin: 20px auto;
+}
+
+.form-wrap fieldset {
+    margin: 10px 0 30px 0;
+    background: #fff;
+    padding: 20px;
+    border: 1px solid var(--table-border-color);
+    border-radius: 10px;
 }
 
 /*------------------- pagination -------------------*/

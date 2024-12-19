@@ -21,8 +21,8 @@ function WalletAdd(props) {
   const [date, setDate] = useState("");
   const [category, setCategory] = useState(categoryOptions[0]);
   const [title, setTitle] = useState("");
-  const [income, setIncome] = useState(0);
-  const [expense, setExpense] = useState(0);
+  const [income, setIncome] = useState();
+  const [expense, setExpense] = useState();
   const [paymentMethod, setPaymentMethod] = useState("");
   const [memo, setMemo] = useState("");
 
@@ -101,7 +101,7 @@ function WalletAdd(props) {
   };
 
   return (
-    <div className={"wallet"}>
+    <div className={"wallet-form form-container"}>
       <Breadcrumb
         depth1={"내 지갑"}
         navigateToDepth1={() => navigate(`/wallet/list`)}
@@ -109,7 +109,10 @@ function WalletAdd(props) {
         navigateToDepth2={() => navigate(`/wallet/add`)}
       />
 
-      <div className={"body-normal"}>
+      <h1>내 지갑 추가</h1>
+      <h2>수입과 지출 내역을 입력하여 내 지갑을 정리해보세요.</h2>
+
+      <div className={"body-normal form-wrap"}>
         <div className={"btn-wrap"}>
           <button
             className={"btn btn-dark-outline"}
@@ -130,159 +133,133 @@ function WalletAdd(props) {
         </div>
 
         <form>
-          <table className={"form-table"}>
-            <tbody>
-              <tr>
-                <th>
-                  <label htmlFor="date">날짜</label>
-                </th>
-                <td>
-                  <input
-                    type="date"
-                    name="date"
-                    id="date"
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                  />
-                </td>
-              </tr>
+          <fieldset>
+            <ul>
+              <li>
+                <label htmlFor="date">날짜</label>
+                <input
+                  type="date"
+                  name="date"
+                  id="date"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                />
+              </li>
 
-              <tr>
-                <th>
-                  <label htmlFor="category">항목</label>
-                </th>
-                <td>
-                  <select
-                    name="category"
-                    id="category"
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                  >
-                    {categoryOptions.map((option, index) => (
-                      <option key={index} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
+              <li>
+                <label htmlFor="category">항목</label>
+                <select
+                  name="category"
+                  id="category"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                >
+                  {categoryOptions.map((option, index) => (
+                    <option key={index} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
 
-                  <button
-                    type="button"
-                    className={"btn btn-dark"}
-                    onClick={() =>
-                      setHandleAddCategoryOpen(!handleAddCategoryOpen)
-                    }
-                  >
-                    {handleAddCategoryOpen ? "닫기" : "항목 추가"}
-                  </button>
+                <button
+                  type="button"
+                  className={"btn btn-dark"}
+                  onClick={() =>
+                    setHandleAddCategoryOpen(!handleAddCategoryOpen)
+                  }
+                >
+                  {handleAddCategoryOpen ? "닫기" : "항목 추가"}
+                </button>
 
-                  <button
-                    type="button"
-                    className={"btn btn-warning"}
-                    onClick={handleDeleteCategory}
-                  >
-                    항목 삭제
-                  </button>
+                <button
+                  type="button"
+                  className={"btn btn-warning"}
+                  onClick={handleDeleteCategory}
+                >
+                  항목 삭제
+                </button>
 
-                  {handleAddCategoryOpen && (
-                    <div className={"btn-wrap"}>
-                      <input
-                        type="text"
-                        placeholder="새로운 항목을 입력해주세요."
-                        value={newCategory}
-                        onChange={(e) => setNewCategory(e.target.value)}
-                      />
-                      <button
-                        type="button"
-                        className={"btn-search btn-dark"}
-                        onClick={handleAddCategory}
-                      >
-                        &#43;
-                      </button>
-                    </div>
-                  )}
-                </td>
-              </tr>
+                {handleAddCategoryOpen && (
+                  <div className={"btn-wrap"}>
+                    <input
+                      type="text"
+                      placeholder="새로운 항목을 입력해주세요."
+                      value={newCategory}
+                      onChange={(e) => setNewCategory(e.target.value)}
+                    />
+                    <button
+                      type="button"
+                      className={"btn-search btn-dark"}
+                      onClick={handleAddCategory}
+                    >
+                      &#43;
+                    </button>
+                  </div>
+                )}
+              </li>
 
-              <tr>
-                <th>
-                  <label htmlFor="title">사용처</label>
-                </th>
-                <td>
-                  <input
-                    type="text"
-                    name="title"
-                    id="title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                  />
-                </td>
-              </tr>
+              <li>
+                <label htmlFor="title">사용처</label>
+                <input
+                  type="text"
+                  name="title"
+                  id="title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+              </li>
 
-              <tr>
-                <th>
-                  <label htmlFor="income">수입</label>
-                </th>
-                <td>
-                  <input
-                    type="number"
-                    name="income"
-                    id="income"
-                    value={income}
-                    onChange={(e) => setIncome(e.target.value)}
-                  />
-                </td>
-              </tr>
+              <li>
+                <label htmlFor="income">수입</label>
+                <input
+                  placeholder={"숫자만 입력 해주세요."}
+                  type="number"
+                  name="income"
+                  id="income"
+                  value={income}
+                  onChange={(e) => setIncome(e.target.value)}
+                />
+              </li>
 
-              <tr>
-                <th>
-                  <label htmlFor="expense">지출</label>
-                </th>
-                <td>
-                  <input
-                    type="number"
-                    name="expense"
-                    id="expense"
-                    value={expense}
-                    onChange={(e) => setExpense(e.target.value)}
-                  />
-                </td>
-              </tr>
+              <li>
+                <label htmlFor="expense">지출</label>
+                <input
+                  placeholder={"숫자만 입력 해주세요."}
+                  type="number"
+                  name="expense"
+                  id="expense"
+                  value={expense}
+                  onChange={(e) => setExpense(e.target.value)}
+                />
+              </li>
 
-              <tr>
-                <th>
-                  <label htmlFor="paymentMethod">지출 방식</label>
-                </th>
-                <td>
-                  <select
-                    name="paymentMethod"
-                    id="paymentMethod"
-                    value={paymentMethod}
-                    onChange={(e) => setPaymentMethod(e.target.value)}
-                  >
-                    <option value="cash">현금</option>
-                    <option value="card">카드</option>
-                    <option value="bankTransfer">계좌이체</option>
-                    <option value="other">기타</option>
-                  </select>
-                </td>
-              </tr>
+              <li>
+                <label htmlFor="paymentMethod">지출 방식</label>
+                <select
+                  name="paymentMethod"
+                  id="paymentMethod"
+                  value={paymentMethod}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                >
+                  <option value="cash">현금</option>
+                  <option value="card">카드</option>
+                  <option value="bankTransfer">계좌이체</option>
+                  <option value="other">기타</option>
+                </select>
+              </li>
 
-              <tr>
-                <th>
-                  <label htmlFor="memo">메모</label>
-                </th>
-                <td>
-                  <textarea
-                    name="memo"
-                    id="memo"
-                    rows="3"
-                    value={memo}
-                    onChange={(e) => setMemo(e.target.value)}
-                  ></textarea>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+              <li>
+                <label htmlFor="memo">메모</label>
+                <textarea
+                  name="memo"
+                  id="memo"
+                  rows="3"
+                  value={memo}
+                  onChange={(e) => setMemo(e.target.value)}
+                ></textarea>
+              </li>
+            </ul>
+          </fieldset>
         </form>
 
         {/* 목록 modal */}

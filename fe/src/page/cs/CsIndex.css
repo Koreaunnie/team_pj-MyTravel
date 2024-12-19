@@ -29,6 +29,9 @@
 }
 
 /*------------------- 자주 하는 질문 -------------------*/
+.cs .body-normal {
+    padding-bottom: 0;
+}
 
 .cs .faq-container {
     margin: 0 auto;
@@ -39,7 +42,7 @@
 }
 
 .cs .faq-container ul li {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     height: 60px;
     line-height: 60px;
     border-bottom: 1px solid var(--table-border-color);

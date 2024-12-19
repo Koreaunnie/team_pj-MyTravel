@@ -16,7 +16,7 @@ import {
   SelectValueText,
 } from "../../components/ui/select.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
-import { IoMdPhotos } from "react-icons/io";
+import { IoIosRefresh, IoMdPhotos } from "react-icons/io";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { HiOutlineBookOpen } from "react-icons/hi";
 import { formattedDateTime } from "../../components/utils/FormattedDateTime.jsx";
@@ -104,6 +104,23 @@ function CommunityList(props) {
         </div>
 
         <div className={"search-form"}>
+          <button
+            onClick={() => {
+              // 1. 검색 상태 초기화
+              setSearch({ type: "all", keyword: "" });
+
+              // 2. URL 검색 파라미터 초기화
+              const nextSearchParam = new URLSearchParams();
+              nextSearchParam.set("type", "all");
+              nextSearchParam.set("key", "");
+
+              setSearchParams(nextSearchParam);
+            }}
+            style={{ marginRight: "10px", cursor: "pointer" }}
+          >
+            <IoIosRefresh />
+          </button>
+
           <SelectRoot
             collection={optionList}
             defaultValue={["all"]}
@@ -147,11 +164,7 @@ function CommunityList(props) {
               onClick={() => handleViewClick(c.id)}
             >
               <div className={"community-header"}>
-                <li className="community-title">
-                  {c.title.length > 25
-                    ? `${c.title.substring(0, 25)} ...`
-                    : c.title}
-                </li>
+                <li className="community-title">{c.title}</li>
                 <li>{c.writer}</li>
                 {c.existOfFiles ? <IoMdPhotos /> : " "}
               </div>

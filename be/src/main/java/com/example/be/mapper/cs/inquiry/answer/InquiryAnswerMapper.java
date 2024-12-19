@@ -25,7 +25,7 @@ public interface InquiryAnswerMapper {
 
     @Update("""
             UPDATE inquiry_answer 
-            SET inquiryAnswer = #{inquiryAnswer},
+            SET answer = #{answer},
                 updated = NOW()
             WHERE id = #{id}
             """)

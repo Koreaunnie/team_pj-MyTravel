@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Box, HStack, Image, Input, Textarea } from "@chakra-ui/react";
-import { Field } from "../../components/ui/field.jsx";
+import { HStack, Image } from "@chakra-ui/react";
 import { Button } from "../../components/ui/button.jsx";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
@@ -72,58 +71,53 @@ function CommunityEdit(props) {
   };
 
   return (
-    <div>
+    <div className={"community-form form-container"}>
+      <Breadcrumb
+        depth1={"커뮤니티"}
+        navigateToDepth1={() => navigate(`/community/list`)}
+        depth2={"게시글 수정"}
+        navigateToDepth2={() => navigate(`/community/edit/${id}`)}
+      />
+
       {hasAccessByNickName(community.writer) && (
-        <div>
-          <Breadcrumb
-            depth1={"커뮤니티"}
-            navigateToDepth1={() => navigate(`/community/list`)}
-            depth2={"게시글 수정"}
-            navigateToDepth2={() => navigate(`/community/edit/${id}`)}
-          />
-          <br />
-          <br />
-          <Box>
+        <div className={"body-normal"}>
+          <div className={"form-wrap"}>
             <h1>게시글 수정</h1>
-            <Box
-              mx={"auto"}
-              w={{
-                md: "500px",
-              }}
-            >
-              <Field label={"제목"}>
-                <Input
-                  value={community.title}
-                  onChange={(e) =>
-                    setCommunity({ ...community, title: e.target.value })
-                  }
-                />
-              </Field>
-              <Field label={"본문"}>
-                <Textarea
-                  value={community.content}
-                  onChange={(e) =>
-                    setCommunity({ ...community, content: e.target.value })
-                  }
-                  h={300}
-                />
-              </Field>
-              <Field>
-                {fileList?.map((file) => (
-                  <HStack key={file.fileName}>
-                    <Image
-                      src={file.filePath}
-                      border={"1px solid black"}
-                      m={3}
-                    />
-                    <CloseButton
-                      variant="solid"
-                      onClick={() => handleDeleteFileClick(file)}
-                    />
-                  </HStack>
-                ))}
-              </Field>
-              <Field label={"파일 첨부"}>
+            <h2>여러분의 여행 이야기를 들려주세요.</h2>
+
+            <div className={"btn-wrap"}>
+              <button
+                className={"btn btn-dark-outline"}
+                onClick={handleCancelClick}
+              >
+                목록
+              </button>
+              <button className={"btn btn-dark"} onClick={handleSaveClick}>
+                저장
+              </button>
+            </div>
+
+            <fieldset>
+              <label htmlFor="title">제목</label>
+              <input
+                type={"text"}
+                value={community.title}
+                onChange={(e) =>
+                  setCommunity({ ...community, title: e.target.value })
+                }
+              />
+
+              <label htmlFor="content">본문</label>
+              <textarea
+                rows={10}
+                id={"content"}
+                value={community.content}
+                onChange={(e) =>
+                  setCommunity({ ...community, content: e.target.value })
+                }
+              />
+
+              <div>
                 <FileUploadRoot
                   value={files}
                   maxFiles={5}
@@ -143,37 +137,32 @@ function CommunityEdit(props) {
                   </FileUploadTrigger>
                   <FileUploadList showSize clearable />
                 </FileUploadRoot>
-              </Field>
-              <br />
-              <Box>
-                <HStack>
-                  <div>
-                    <button
-                      className={"btn btn-dark-outline"}
-                      onClick={handleCancelClick}
-                    >
-                      취소
-                    </button>
-                    <Button
-                      className={"btn btn-blue"}
-                      onClick={handleSaveClick}
-                    >
-                      저장
-                    </Button>
-                  </div>
-                </HStack>
-              </Box>
-            </Box>
-          </Box>
+              </div>
+              <div>
+                {fileList?.map((file) => (
+                  <HStack key={file.fileName}>
+                    <Image
+                      src={file.filePath}
+                      border={"1px solid black"}
+                      m={3}
+                    />
+                    <CloseButton
+                      variant="solid"
+                      onClick={() => handleDeleteFileClick(file)}
+                    />
+                  </HStack>
+                ))}
+              </div>
+            </fieldset>
+          </div>
         </div>
       )}
+
       {hasAccessByNickName(community.writer) || (
-        <Box>
-          <br />
-          <br />
+        <div>
           <Alert status="warning" title="접근 권한이 없습니다." />
           <CommunityList />
-        </Box>
+        </div>
       )}
     </div>
   );

@@ -8,16 +8,7 @@ import {
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import axios from "axios";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
-import {
-  Box,
-  createListCollection,
-  HStack,
-  Icon,
-  Input,
-  Stack,
-  Table,
-  Textarea,
-} from "@chakra-ui/react";
+import { createListCollection, HStack, Icon, Stack } from "@chakra-ui/react";
 import { Field } from "../../components/ui/field.jsx";
 import { HiOutlineBookOpen } from "react-icons/hi";
 import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
@@ -32,20 +23,8 @@ import {
 } from "../../components/ui/dialog.jsx";
 import { Button } from "../../components/ui/button.jsx";
 import { GoHeart } from "react-icons/go";
-import {
-  SelectContent,
-  SelectItem,
-  SelectRoot,
-  SelectTrigger,
-  SelectValueText,
-} from "../../components/ui/select.jsx";
-import {
-  PaginationItems,
-  PaginationNextTrigger,
-  PaginationPrevTrigger,
-  PaginationRoot,
-} from "../../components/ui/pagination.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
+import { formattedDateTime } from "../../components/utils/FormattedDateTime.jsx";
 
 function NoticeView(props) {
   const { id } = useParams();
@@ -190,7 +169,7 @@ function NoticeView(props) {
   });
 
   return (
-    <div>
+    <div className={"notice"}>
       <Breadcrumb
         depth1={"공지사항"}
         navigateToDepth1={() => navigate(`/notice/list`)}
@@ -201,12 +180,119 @@ function NoticeView(props) {
         }
         navigateToDepth2={() => navigate(`/notice/view/${notice.id}`)}
       />
-      <div>
-        <br />
-        <br />
-        <h1>{notice.title}</h1>
-        <Stack>
-          <Box>
+
+      <div className={"body-normal"}>
+        <h1>공지사항</h1>
+        <h2>공지사항 외 문의는 문의 게시판을 이용해주세요.</h2>
+
+        <div className={"like-wrap"}>
+          {authentication.isAuthenticated && (
+            <ul>
+              <li className={"icon"}>
+                <Icon
+                  color="red.600"
+                  onClick={() => {
+                    handleLikeClick();
+                  }}
+                >
+                  {myNoticeLike ? <IoMdHeart /> : <IoMdHeartEmpty />}
+                </Icon>
+              </li>
+              <li>{notice.like}</li>
+            </ul>
+          )}
+
+          {authentication.isAuthenticated || (
+            <Stack>
+              <DialogRoot>
+                <DialogTrigger>
+                  <Icon fontSize="8xl" color="red.600">
+                    <IoMdHeartEmpty />
+                  </Icon>
+                  <DialogContent>
+                    <DialogHeader>MyTravel</DialogHeader>
+                    <DialogBody>
+                      로그인을 한 회원만 게시글 추천이 가능합니다.
+                    </DialogBody>
+                    <DialogFooter>
+                      <DialogActionTrigger>
+                        <Button onClick={handleLoginClick}>확인</Button>
+                      </DialogActionTrigger>
+                    </DialogFooter>
+                  </DialogContent>
+                </DialogTrigger>
+              </DialogRoot>
+              <h5>{notice.like}</h5>
+            </Stack>
+          )}
+        </div>
+
+        <div className={"btn-wrap"}>
+          {authentication.isAdmin && (
+            <button
+              className={"btn btn-dark-outline"}
+              onClick={handleWriteClick}
+            >
+              글 쓰기
+            </button>
+          )}
+
+          {hasAccessByNickName(notice.writer) && (
+            <div>
+              <button className={"btn btn-dark"} onClick={handleEditClick}>
+                수정
+              </button>
+
+              <DialogRoot>
+                <DialogTrigger>
+                  <button className={"btn btn-warning"}>삭제</button>
+                  <DialogContent>
+                    <DialogHeader>글 삭제</DialogHeader>
+                    <DialogBody>{id}번 게시물을 삭제하시겠습니까?</DialogBody>
+                    <DialogFooter>
+                      <Button>취소</Button>
+                      <DialogActionTrigger>
+                        <Button onClick={handleDeleteClick}>삭제</Button>
+                      </DialogActionTrigger>
+                    </DialogFooter>
+                  </DialogContent>
+                </DialogTrigger>
+              </DialogRoot>
+            </div>
+          )}
+        </div>
+
+        <table className={"table-view"}>
+          <thead>
+            <tr className={"thead-title"}>
+              <th colSpan={2}>{notice.title}</th>
+            </tr>
+            <tr className={"thead-sub-title"}>
+              <th>{notice.writer}</th>
+              <th>{formattedDateTime(notice.creationDate)}</th>
+            </tr>
+            <tr className={"thead-sub-title"}>
+              <th>
+                <GoHeart /> {notice.numberOfLikes} |{" "}
+              </th>
+              <th>
+                <HiOutlineBookOpen /> {notice.numberOfViews}
+              </th>
+            </tr>
+            <tr>
+              <th colSpan={2}>조회수 {notice.views}</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr className={"tbody-content"}>
+              <td>{notice.content}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div>
+          <div>
             <Field readOnly>
               <HStack>
                 <Icon fontSize="2xl">
@@ -215,207 +301,8 @@ function NoticeView(props) {
                 : {notice.views} | {creationDate}
               </HStack>
             </Field>
-            <br />
-            <Field readOnly>
-              <Textarea value={notice.content} />
-            </Field>
-            <Field>
-              {authentication.isAuthenticated && (
-                <Stack>
-                  <Icon
-                    fontSize="8xl"
-                    color="red.600"
-                    onClick={() => {
-                      handleLikeClick();
-                    }}
-                  >
-                    {myNoticeLike ? <IoMdHeart /> : <IoMdHeartEmpty />}
-                  </Icon>
-                  <h5>{notice.like}</h5>
-                </Stack>
-              )}
-              {authentication.isAuthenticated || (
-                <Stack>
-                  <DialogRoot>
-                    <DialogTrigger>
-                      <Icon fontSize="8xl" color="red.600">
-                        <IoMdHeartEmpty />
-                      </Icon>
-                      <DialogContent>
-                        <DialogHeader>MyTravel</DialogHeader>
-                        <DialogBody>
-                          로그인을 한 회원만 게시글 추천이 가능합니다.
-                        </DialogBody>
-                        <DialogFooter>
-                          <DialogActionTrigger>
-                            <div>
-                              <Button
-                                className={"btn btn-dark"}
-                                onClick={handleLoginClick}
-                              >
-                                확인
-                              </Button>
-                            </div>
-                          </DialogActionTrigger>
-                        </DialogFooter>
-                      </DialogContent>
-                    </DialogTrigger>
-                  </DialogRoot>
-                  <h5>{notice.like}</h5>
-                </Stack>
-              )}
-            </Field>
-            <Field label={"작성자"} readOnly>
-              <Input value={notice.writer} />
-            </Field>
-          </Box>
-          {authentication.isAdmin && (
-            <Box>
-              <HStack>
-                <DialogRoot>
-                  <DialogTrigger>
-                    <div>
-                      <Button className={"btn btn-warning"}>삭제</Button>
-                    </div>
-                    <DialogContent>
-                      <DialogHeader>글 삭제</DialogHeader>
-                      <DialogBody>
-                        {id}번 공지사항을 삭제하시겠습니까?
-                      </DialogBody>
-                      <DialogFooter>
-                        <div>
-                          <button className={"btn btn-dark-outline"}>
-                            취소
-                          </button>
-                        </div>
-                        <DialogActionTrigger>
-                          <div>
-                            <Button
-                              className={"btn btn-warning"}
-                              onClick={handleDeleteClick}
-                            >
-                              삭제
-                            </Button>
-                          </div>
-                        </DialogActionTrigger>
-                      </DialogFooter>
-                    </DialogContent>
-                  </DialogTrigger>
-                </DialogRoot>
-                <div>
-                  <Button className={"btn btn-blue"} onClick={handleEditClick}>
-                    수정
-                  </Button>
-                </div>
-              </HStack>
-            </Box>
-          )}
-          <br />
-          <Stack>
-            <br />
-            <Box>
-              <Table.Root>
-                <Table.Header>
-                  <Table.Row>
-                    <Table.ColumnHeader>제목</Table.ColumnHeader>
-                    <Table.ColumnHeader>작성자</Table.ColumnHeader>
-                    <Table.ColumnHeader>작성일시</Table.ColumnHeader>
-                  </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                  {noticeList.map((n) => (
-                    <Table.Row onClick={() => handleViewClick(n.id)} key={n.id}>
-                      <Table.Cell>
-                        <Stack>
-                          {n.title.length > 25
-                            ? `${n.title.substring(0, 25)} ...`
-                            : n.title}
-                          <HStack>
-                            <GoHeart /> {n.numberOfLikes} |{" "}
-                            <HiOutlineBookOpen /> {n.numberOfViews}
-                          </HStack>
-                        </Stack>
-                      </Table.Cell>
-                      <Table.Cell>{n.writer}</Table.Cell>
-                      <Table.Cell>{n.creationDate}</Table.Cell>
-                    </Table.Row>
-                  ))}
-                </Table.Body>
-              </Table.Root>
-            </Box>
-            <Box>
-              <HStack>
-                <div className={"search-form"}>
-                  <SelectRoot
-                    collection={optionList}
-                    defaultValue={["all"]}
-                    onChange={(oc) =>
-                      setSearch({ ...search, type: oc.target.value })
-                    }
-                    size="sm"
-                    width="130px"
-                  >
-                    <SelectTrigger>
-                      <SelectValueText />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {optionList.items.map((option) => (
-                        <SelectItem item={option} key={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </SelectRoot>
-                  <input
-                    type={"text"}
-                    className={"search-form-input"}
-                    value={search.keyword}
-                    onChange={(e) =>
-                      setSearch({ ...search, keyword: e.target.value })
-                    }
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        handleSearchClick();
-                      }
-                    }}
-                  />
-                  <Button
-                    className={"btn-search btn-dark"}
-                    onClick={handleSearchClick}
-                  >
-                    검색
-                  </Button>
-                </div>
-                {authentication.isAdmin && (
-                  <div>
-                    <Button
-                      className={"btn btn-dark"}
-                      onClick={handleWriteClick}
-                    >
-                      글 쓰기
-                    </Button>
-                  </div>
-                )}
-              </HStack>
-            </Box>
-            <Box>
-              <PaginationRoot
-                count={countNotice}
-                pageSize={10}
-                defaultPage={1}
-                onPageChange={handlePageChangeClick}
-                siblingCount={2}
-              >
-                <HStack>
-                  <PaginationPrevTrigger />
-                  <PaginationItems />
-                  <PaginationNextTrigger />
-                </HStack>
-              </PaginationRoot>
-            </Box>
-            <br />
-          </Stack>
-        </Stack>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -2,9 +2,7 @@ import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import axios from "axios";
-import { Box, HStack, Input, Textarea } from "@chakra-ui/react";
-import { Field } from "../../components/ui/field.jsx";
-import { Button } from "../../components/ui/button.jsx";
+import { Box } from "@chakra-ui/react";
 import { Alert } from "../../components/ui/alert.jsx";
 import NoticeList from "./NoticeList.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
@@ -44,65 +42,55 @@ function NoticeWrite(props) {
   };
 
   return (
-    <div>
+    <div className={"notice-form form-container"}>
+      <Breadcrumb
+        depth1={"공지사항"}
+        navigateToDepth1={() => navigate(`/notice/list`)}
+        depth2={"공지사항 작성"}
+        navigateToDepth2={() => navigate(`/notice/write`)}
+      />
+
       {authentication.isAdmin && (
-        <div>
-          <Breadcrumb
-            depth1={"공지사항"}
-            navigateToDepth1={() => navigate(`/notice/list`)}
-            depth2={"공지사항 작성"}
-            navigateToDepth2={() => navigate(`/notice/write`)}
-          />
-          <br />
-          <br />
-          <Box>
+        <div className={"body-normal"}>
+          <div className={"form-wrap"}>
             <h1>공지사항 작성</h1>
-            <Box
-              mx={"auto"}
-              w={{
-                md: "500px",
-              }}
-            >
-              <Field label={"제목"}>
-                <Input
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-              </Field>
-              <Field label={"본문"}>
-                <Textarea
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                  h={300}
-                />
-              </Field>
-              <br />
-              <Box>
-                <HStack>
-                  <div>
-                    <button
-                      className={"btn btn-dark-outline"}
-                      onClick={handleCancelClick}
-                    >
-                      취소
-                    </button>
-                    <Button
-                      className={"btn btn-dark"}
-                      onClick={handleSaveClick}
-                    >
-                      저장
-                    </Button>
-                  </div>
-                </HStack>
-              </Box>
-            </Box>
-          </Box>
+
+            <div className={"btn-wrap"}>
+              <button
+                className={"btn btn-dark-outline"}
+                onClick={handleCancelClick}
+              >
+                목록
+              </button>
+
+              <button className={"btn btn-dark"} onClick={handleSaveClick}>
+                저장
+              </button>
+            </div>
+
+            <fieldset>
+              <label htmlFor={"title"}>제목</label>
+              <input
+                type={"text"}
+                value={title}
+                id={"title"}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+
+              <label htmlFor="content">본문</label>
+              <textarea
+                rows={13}
+                value={content}
+                id={"content"}
+                onChange={(e) => setContent(e.target.value)}
+              />
+            </fieldset>
+          </div>
         </div>
       )}
+
       {authentication.isAdmin || (
         <Box>
-          <br />
-          <br />
           <Alert status="warning" title="공지사항 작성 권한이 없습니다." />
           <NoticeList />
         </Box>
