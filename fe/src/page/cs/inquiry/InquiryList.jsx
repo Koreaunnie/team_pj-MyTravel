@@ -162,7 +162,7 @@ function InquiryList(props) {
       <div className={"body-normal"}>
         <h1>문의하기</h1>
         <h2>궁금한 점이 있으시면 문의해주세요.</h2>
-        <h3>운영시간 09:00 ~ 18:00</h3>
+        <h3>운영 시간 09:00 ~ 18:00</h3>
 
         <div className={"btn-wrap"}>
           <button
@@ -172,31 +172,33 @@ function InquiryList(props) {
             고객센터 홈
           </button>
 
-          {!isAdmin && (
-            <button className={"btn btn-blue"} onClick={checkLoginOrNot}>
-              작성
-            </button>
-          )}
+          <div>
+            {!isAdmin && (
+              <button className={"btn btn-blue"} onClick={checkLoginOrNot}>
+                작성
+              </button>
+            )}
 
-          {isAdmin && (
-            <button
-              className={"btn btn-blue"}
-              onClick={() => setShowNotAnswered((prev) => !prev)}
-            >
-              {!showNotAnswered
-                ? `미답변 내역 : ${notAnsweredInquiries}`
-                : "전체내역"}
-            </button>
-          )}
+            {isAdmin && (
+              <button
+                className={"btn btn-blue"}
+                onClick={() => setShowNotAnswered((prev) => !prev)}
+              >
+                {!showNotAnswered
+                  ? `미답변 내역 : ${notAnsweredInquiries}`
+                  : "전체내역"}
+              </button>
+            )}
 
-          {isAuthenticated && !isAdmin && (
-            <button
-              className={"btn btn-dark"}
-              onClick={() => setShowMyInquiries((prev) => !prev)}
-            >
-              {showMyInquiries ? "전체글" : "내가 쓴 글"}
-            </button>
-          )}
+            {isAuthenticated && !isAdmin && (
+              <button
+                className={"btn btn-dark"}
+                onClick={() => setShowMyInquiries((prev) => !prev)}
+              >
+                {showMyInquiries ? "전체글" : "내가 쓴 글"}
+              </button>
+            )}
+          </div>
         </div>
 
         <table className={"table-list"}>

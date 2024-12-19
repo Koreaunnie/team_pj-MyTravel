@@ -38,7 +38,7 @@
 .admin-body {
     width: 1000px;
     margin: 20px auto;
-    min-height: calc(100vh - 250px);
+    min-height: calc(100vh - 270px);
 }
 
 /*------------------- 홈 -------------------*/
@@ -52,14 +52,27 @@
     text-align: left;
 }
 
-.admin-index h1 {
+.admin-index h2 {
+    text-align: left;
+    font-size: 1rem;
 }
 
 /*------------------- 문의 내역 관리 -------------------*/
 
+.admin-cs {
+    margin-top: 60px;
+}
+
 .admin-cs .admin-inquiry-header {
     display: flex;
     justify-content: space-between;
+}
+
+.admin-cs .admin-inquiry-header h2 {
+    line-height: 50px;
+    font-weight: bold;
+    font-size: 1rem;
+    color: #000;
 }
 
 .admin-cs .table-list .badge {
@@ -80,4 +93,13 @@
 .admin-cs .table-list .badge-dark {
     background: var(--btn-normal-dark);
     cursor: pointer;
+}
+
+.admin-cs .btn-wrap {
+    display: flex;
+    justify-content: space-between;
+}
+
+.admin-cs .search-form {
+    margin-top: 20px;
 }

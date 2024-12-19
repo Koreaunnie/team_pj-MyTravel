@@ -15,6 +15,7 @@ import { AuthenticationContext } from "../../components/context/AuthenticationPr
 import { Alert } from "../../components/ui/alert.jsx";
 import CommunityList from "./CommunityList.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
+import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 
 function CommunityEdit(props) {
   const [community, setCommunity] = useState({});
@@ -72,9 +73,17 @@ function CommunityEdit(props) {
 
   return (
     <div>
+      <Breadcrumb
+        depth1={"커뮤니티"}
+        navigateToDepth1={() => navigate(`/community/list`)}
+        depth2={"게시글 수정"}
+        navigateToDepth1={() => navigate(`/community/list/edit/${id}`)}
+      />
+
       {hasAccessByNickName(community.writer) && (
         <Box>
           <h1>게시글 수정</h1>
+          <h2>여러분의 여행 이야기를 들려주세요.</h2>
           <Box
             mx={"auto"}
             w={{

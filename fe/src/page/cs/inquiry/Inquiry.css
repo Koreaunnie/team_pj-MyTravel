@@ -1,5 +1,30 @@
 .inquiry {
-    margin-top: 60px;
+    width: 100%;
+    margin-top: 30px;
+    padding-top: 30px;
+}
+
+/*------------------- inquiry form -------------------*/
+.form-wrap .inquiry-form-header {
+    display: flex;
+    gap: 30px;
+}
+
+
+.form-wrap .inquiry-form-header select {
+    width: 200px;
+}
+
+.form-wrap .check-secret {
+    display: flex;
+}
+
+.form-wrap .check-secret input {
+    margin: 15px 5px 0 0;
+}
+
+.form-wrap .check-secret label {
+    cursor: pointer;
 }
 
 /*------------------- InquiryList -------------------*/

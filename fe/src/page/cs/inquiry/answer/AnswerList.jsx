@@ -9,13 +9,17 @@ export function AnswerList({ inquiryId }) {
   const [editingAnswerId, setEditingAnswerID] = useState(null); // 수정 중인 댓글 ID
   const [newAnswer, setNewAnswer] = useState(""); // 수정된 댓글 내용
   const [processing, setProcessing] = useState(false); // 수정 내용 바로 반영
+  const [updated, setUpdated] = useState(false);
 
   useEffect(() => {
     if (!processing) {
       axios
         .get(`/api/cs/inquiry/answer/list/${inquiryId}`)
         .then((res) => res.data)
-        .then((data) => setAnswerList(data));
+        .then((data) => {
+          setAnswerList(data);
+          setUpdated(false);
+        });
     }
   }, [processing]);
 
@@ -36,13 +40,11 @@ export function AnswerList({ inquiryId }) {
         res.data;
         setEditingAnswerID(null);
         setNewAnswer("");
+        setUpdated(true); // 업데이트 트리거
         toaster.create({
           type: res.data.message.type,
           description: res.data.message.text,
         });
-      })
-      .catch((error) => {
-        console.error("댓글 수정 실패:", error);
       })
       .finally(() => {
         setProcessing(false);
@@ -58,6 +60,7 @@ export function AnswerList({ inquiryId }) {
           type: res.data.message.type,
           description: res.data.message.text,
         });
+        setUpdated(true); // 업데이트 트리거
       })
       .finally(() => {
         setProcessing(false);
@@ -65,16 +68,17 @@ export function AnswerList({ inquiryId }) {
   }
 
   return (
-    <div className={"inquiry inquiry-answer body-normal"}>
+    <div className={"inquiry-answer body-normal"}>
       {answerList.map((answer) => (
         <div className={"answer-list"}>
-          <ul className={"answer-btn-wrap"}>
-            <li onClick={() => handleEditButton(answer.id, answer.answer)}>
-              수정
-            </li>
-
-            <li onClick={() => handleDeleteButton(answer.id)}>삭제</li>
-          </ul>
+          {editingAnswerId !== answer.id && (
+            <ul className={"answer-btn-wrap"}>
+              <li onClick={() => handleEditButton(answer.id, answer.answer)}>
+                수정
+              </li>
+              <li onClick={() => handleDeleteButton(answer.id)}>삭제</li>
+            </ul>
+          )}
 
           {editingAnswerId === answer.id ? (
             // 수정 모드

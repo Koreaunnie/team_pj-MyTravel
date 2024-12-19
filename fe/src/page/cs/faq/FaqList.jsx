@@ -87,7 +87,7 @@ function FaqList(props) {
 
       <div className={"body-normal"}>
         <h1>자주 묻는 질문</h1>
-        <h2>1대 1 문의사항은 문의게시판을 이용해주세요.</h2>
+        <h2>1대 1 문의 사항은 문의 게시판을 이용해주세요.</h2>
 
         <div className={"btn-wrap"}>
           <button

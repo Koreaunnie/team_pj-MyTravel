@@ -502,9 +502,31 @@ form .required {
     padding: 5px 10px;
 }
 
-.table-view tbody .tbody-content {
-    padding: 30px;
-    height: 400px;
+.table-view tbody .tbody-content td {
+    padding: 50px;
+    text-align: left;
+}
+
+/*------------------- form design -------------------*/
+.form-container {
+    background: var(--bg-gray-color);
+    margin: 0 auto;
+}
+
+.form-container .btn-wrap {
+    justify-content: space-between;
+}
+
+.form-wrap {
+    margin: 20px auto;
+}
+
+.form-wrap fieldset {
+    margin: 10px 0 30px 0;
+    background: #fff;
+    padding: 20px;
+    border: 1px solid var(--table-border-color);
+    border-radius: 10px;
 }
 
 /*------------------- pagination -------------------*/
