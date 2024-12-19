@@ -6,9 +6,9 @@ import React from "react";
 
 export function RootLayout() {
   return (
-    <Stack>
+    <Stack gap="0">
       <Navbar />
-      <Stack marginTop="65px">
+      <Stack marginTop="65px" gap="0">
         <Outlet />
       </Stack>
       <Footer />

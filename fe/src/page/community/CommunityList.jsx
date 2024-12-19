@@ -141,7 +141,6 @@ function CommunityList(props) {
               className="community-list"
               key={c.id}
               onClick={() => handleViewClick(c.id)}
-              key={c.id}
             >
               <div className={"community-header"}>
                 <li className="community-title">{c.title}</li>

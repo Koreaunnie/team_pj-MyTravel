@@ -1,5 +1,6 @@
-.wallet .breadcrumb-wrap ol {
-    width: 800px;
+.wallet {
+    min-height: calc(100vh - 170px);
+    overflow: hidden;
 }
 
 /*-------------------- WalletAdd, WalletEdit --------------------*/
@@ -23,7 +24,7 @@ section {
     position: fixed;
     left: 530px;
     width: 350px;
-    height: 83vh;
+    height: calc(100vh - 260px);
     margin-top: 65px;
     border: 1px solid var(--table-border-color);
     border-radius: 10px;
@@ -40,6 +41,10 @@ section {
     border-bottom: 1px solid var(--table-border-color);
     magin: 0 auto;
     padding: 40px 30px;
+}
+
+.middle-section .category-table:last-child {
+    border: 0;
 }
 
 .middle-section .category-table table {
@@ -79,7 +84,7 @@ section {
     margin: 65px 0;
     left: 910px;
     width: calc(100% - 940px);
-    height: 83vh;
+    height: calc(100vh - 260px);
     overflow: hidden;
     overflow-y: auto;
     border: 1px solid var(--table-border-color);
@@ -105,7 +110,7 @@ section {
 }
 
 .right-section .month-wrap ul li button {
-    margin: 30px;
+    margin: 20px;
     cursor: pointer;
 }
 
