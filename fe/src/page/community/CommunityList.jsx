@@ -128,6 +128,11 @@ function CommunityList(props) {
             className={"search-form-input"}
             value={search.keyword}
             onChange={(e) => setSearch({ ...search, keyword: e.target.value })}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSearchClick();
+              }
+            }}
           />
           <button className={"btn-search btn-dark"} onClick={handleSearchClick}>
             검색

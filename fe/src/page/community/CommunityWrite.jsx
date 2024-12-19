@@ -14,6 +14,7 @@ import { AuthenticationContext } from "../../components/context/AuthenticationPr
 import MemberLogin from "../member/MemberLogin.jsx";
 import { Alert } from "../../components/ui/alert.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
+import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 
 function CommunityWrite(props) {
   const [title, setTitle] = useState("");
@@ -52,48 +53,61 @@ function CommunityWrite(props) {
   return (
     <div>
       {authentication.isAuthenticated && (
-        <Box>
-          <h1>게시글 작성</h1>
-          <Box
-            mx={"auto"}
-            w={{
-              md: "500px",
-            }}
-          >
-            <Field label={"제목"}>
-              <Input value={title} onChange={(e) => setTitle(e.target.value)} />
-            </Field>
-            <Field label={"본문"}>
-              <Textarea
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                h={300}
-              />
-            </Field>
-            <Field label={"파일 첨부"}>
-              <FileUploadRoot
-                value={files}
-                maxFiles={5}
-                multiple
-                onChange={(e) => setFiles(e.target.files)}
-              >
-                <FileUploadTrigger asChild>
-                  <Button variant="outline" size="sm">
-                    <HiUpload /> Upload file
-                  </Button>
-                </FileUploadTrigger>
-                <FileUploadList showSize clearable />
-              </FileUploadRoot>
-            </Field>
-            <br />
-            <Box>
-              <HStack>
-                <Button onClick={handleCancelClick}>취소</Button>
-                <Button onClick={handleSaveClick}>저장</Button>
-              </HStack>
+        <div>
+          <Breadcrumb
+            depth1={"커뮤니티"}
+            navigateToDepth1={() => navigate(`/community/list`)}
+            depth2={"게시글 작성"}
+            navigateToDepth2={() => navigate(`/community/write`)}
+          />
+          <br />
+          <br />
+          <Box>
+            <h1>게시글 작성</h1>
+            <Box
+              mx={"auto"}
+              w={{
+                md: "500px",
+              }}
+            >
+              <Field label={"제목"}>
+                <Input
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+              </Field>
+              <Field label={"본문"}>
+                <Textarea
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  h={300}
+                />
+              </Field>
+              <Field label={"파일 첨부"}>
+                <FileUploadRoot
+                  value={files}
+                  maxFiles={5}
+                  multiple
+                  onChange={(e) => setFiles(e.target.files)}
+                >
+                  <FileUploadTrigger asChild>
+                    <Button variant="outline" size="sm">
+                      <HiUpload /> Upload file
+                    </Button>
+                  </FileUploadTrigger>
+                  <FileUploadList showSize clearable />
+                </FileUploadRoot>
+              </Field>
+              <br />
+              <Box>
+                <HStack>
+                  <Button onClick={handleCancelClick}>취소</Button>
+                  <Button onClick={handleSaveClick}>저장</Button>
+                </HStack>
+              </Box>
             </Box>
           </Box>
-        </Box>
+        </div>
       )}
       {authentication.isAuthenticated || (
         <Box>

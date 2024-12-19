@@ -86,10 +86,6 @@ function CommunityView(props) {
   const [creationDate, setCreationDate] = useState("");
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-
-  useEffect(() => {
     axios
       .get(`/api/community/view/${id}`, { id })
       .then((e) => {
@@ -110,14 +106,15 @@ function CommunityView(props) {
         });
         navigate(`/community/list`);
       });
-  }, []);
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   useEffect(() => {
     axios.get(`/api/community/list?${searchParams.toString()}`).then((res) => {
       setCommunityList(res.data.list);
       setCountCommunity(res.data.countCommunity);
     });
-  }, [searchParams]);
+  }, [pathname]);
 
   const handleDeleteClick = () => {
     axios
@@ -249,11 +246,7 @@ function CommunityView(props) {
     axios
       .post(`/api/community/like/${id}`)
       .then((e) => {
-        const likeSuccess = e.data.message;
-        toaster.create({
-          type: likeSuccess.type,
-          description: likeSuccess.text,
-        });
+        console.log(e);
         fetchLike();
       })
       .finally(() => setMyCommunityLike(!myCommunityLike));
@@ -407,6 +400,14 @@ function CommunityView(props) {
           {/*  TODO: 코멘트 작성, 코멘트 리스트 추가 */}
           <Box>
             <Stack>
+              <Field fontSize="xl">
+                <strong>
+                  <HStack>
+                    <FiMessageSquare />
+                    코멘트 ({commentList.length})
+                  </HStack>
+                </strong>
+              </Field>
               <Field label={community.writer + " 님에게 댓글 작성"}>
                 {authentication.isAuthenticated && (
                   <HStack>
@@ -450,12 +451,6 @@ function CommunityView(props) {
               </Field>
               <br />
               <Field>
-                <h2>
-                  <HStack>
-                    <FiMessageSquare />
-                    코멘트 ({commentList.length})
-                  </HStack>
-                </h2>
                 {commentList.map((list) => (
                   <Box value={list.id}>
                     <HStack>
@@ -616,6 +611,11 @@ function CommunityView(props) {
                     onChange={(e) =>
                       setSearch({ ...search, keyword: e.target.value })
                     }
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        handleSearchClick();
+                      }
+                    }}
                   />
                   <Button onClick={handleSearchClick}>검색</Button>
                 </HStack>

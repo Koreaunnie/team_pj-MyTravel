@@ -8,6 +8,7 @@ import { Button } from "../../components/ui/button.jsx";
 import { Alert } from "../../components/ui/alert.jsx";
 import NoticeList from "./NoticeList.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
+import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 
 function NoticeEdit(props) {
   const [notice, setNotice] = useState({});
@@ -55,40 +56,50 @@ function NoticeEdit(props) {
   return (
     <div>
       {hasAccessByNickName(notice.writer) && (
-        <Box>
-          <h1>공지사항 수정</h1>
-          <Box
-            mx={"auto"}
-            w={{
-              md: "500px",
-            }}
-          >
-            <Field label={"제목"}>
-              <Input
-                value={notice.title}
-                onChange={(e) =>
-                  setNotice({ ...notice, title: e.target.value })
-                }
-              />
-            </Field>
-            <Field label={"본문"}>
-              <Textarea
-                value={notice.content}
-                onChange={(e) =>
-                  setNotice({ ...notice, content: e.target.value })
-                }
-                h={300}
-              />
-            </Field>
-            <br />
-            <Box>
-              <HStack>
-                <Button onClick={handleCancelClick}>취소</Button>
-                <Button onClick={handleSaveClick}>저장</Button>
-              </HStack>
+        <div>
+          <Breadcrumb
+            depth1={"공지사항"}
+            navigateToDepth1={() => navigate(`/notice/list`)}
+            depth2={"공지사항 수정"}
+            navigateToDepth2={() => navigate(`/notice/edit/${id}`)}
+          />
+          <br />
+          <br />
+          <Box>
+            <h1>공지사항 수정</h1>
+            <Box
+              mx={"auto"}
+              w={{
+                md: "500px",
+              }}
+            >
+              <Field label={"제목"}>
+                <Input
+                  value={notice.title}
+                  onChange={(e) =>
+                    setNotice({ ...notice, title: e.target.value })
+                  }
+                />
+              </Field>
+              <Field label={"본문"}>
+                <Textarea
+                  value={notice.content}
+                  onChange={(e) =>
+                    setNotice({ ...notice, content: e.target.value })
+                  }
+                  h={300}
+                />
+              </Field>
+              <br />
+              <Box>
+                <HStack>
+                  <Button onClick={handleCancelClick}>취소</Button>
+                  <Button onClick={handleSaveClick}>저장</Button>
+                </HStack>
+              </Box>
             </Box>
           </Box>
-        </Box>
+        </div>
       )}
       {hasAccessByNickName(notice.writer) || (
         <Box>

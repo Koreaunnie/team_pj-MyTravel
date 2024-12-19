@@ -63,10 +63,6 @@ function NoticeView(props) {
   const [creationDate, setCreationDate] = useState("");
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-
-  useEffect(() => {
     axios
       .get(`/api/notice/view/${id}`, { id })
       .then((e) => {
@@ -86,14 +82,16 @@ function NoticeView(props) {
         });
         navigate(`/notice/list`);
       });
-  }, []);
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   useEffect(() => {
     axios.get(`/api/notice/list?${searchParams.toString()}`).then((res) => {
+      console.log(res.data);
       setNoticeList(res.data.list);
       setCountNotice(res.data.countNotice);
     });
-  }, [searchParams]);
+  }, [pathname]);
 
   const handleDeleteClick = () => {
     axios
@@ -163,6 +161,7 @@ function NoticeView(props) {
       .then(navigate(`/notice/view/${id}#top`))
       .then((e) => {
         setNotice(e.data);
+        setMyNoticeLike(e.data.myNoticeLike);
       });
   }
 
@@ -348,6 +347,11 @@ function NoticeView(props) {
                       onChange={(e) =>
                         setSearch({ ...search, keyword: e.target.value })
                       }
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          handleSearchClick();
+                        }
+                      }}
                     />
                     <Button onClick={handleSearchClick}>검색</Button>
                   </HStack>

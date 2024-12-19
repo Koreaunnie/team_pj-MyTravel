@@ -147,6 +147,11 @@ function NoticeList(props) {
                     onChange={(e) =>
                       setSearch({ ...search, keyword: e.target.value })
                     }
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        handleSearchClick();
+                      }
+                    }}
                   />
                   <Button onClick={handleSearchClick}>검색</Button>
                 </HStack>
