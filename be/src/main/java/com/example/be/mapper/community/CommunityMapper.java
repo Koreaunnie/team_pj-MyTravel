@@ -12,7 +12,7 @@ public interface CommunityMapper {
 
     @Select("""
                         <script>
-                        SELECT id, title, writer, inserted creationDate
+                        SELECT id, title, writer, content, inserted creationDate
                         FROM community
                         WHERE 
                                 <if test="searchType == 'all'">
@@ -43,32 +43,32 @@ public interface CommunityMapper {
     List<Community> listUp(Integer pageList, String searchType, String searchKeyword);
 
     @Select("""
-                        <script>
-                        SELECT COUNT(*)
-                        FROM community
+            <script>
+            SELECT COUNT(*)
+            FROM community
             WHERE 
-                                            <if test="searchType == 'all'">
-                                                title LIKE CONCAT('%',#{searchKeyword},'%')
-                                             OR writer LIKE CONCAT('%',#{searchKeyword},'%')
-                                             OR content LIKE CONCAT('%',#{searchKeyword},'%')
-                                            </if>
-                                            <if test="searchType != 'all'">
-                                                 <choose>
-                                                     <when test="searchType == 'title'">
-                                                         title LIKE CONCAT('%', #{searchKeyword}, '%')
-                                                     </when>
-                                                     <when test="searchType == 'writer'">
-                                                         writer LIKE CONCAT('%', #{searchKeyword}, '%')
-                                                     </when>
-                                                     <when test="searchType == 'content'">
-                                                         content LIKE CONCAT('%', #{searchKeyword}, '%')
-                                                     </when>
-                                                     <otherwise>
-                                                         1 = 0 
-                                                     </otherwise>
-                                                 </choose>
-                                             </if>
-                </script>
+                <if test="searchType == 'all'">
+                    title LIKE CONCAT('%',#{searchKeyword},'%')
+                       OR writer LIKE CONCAT('%',#{searchKeyword},'%')
+                       OR content LIKE CONCAT('%',#{searchKeyword},'%')
+                </if>
+                <if test="searchType != 'all'">
+                    <choose>
+                        <when test="searchType == 'title'">
+                            title LIKE CONCAT('%', #{searchKeyword}, '%')
+                        </when>
+                        <when test="searchType == 'writer'">
+                            writer LIKE CONCAT('%', #{searchKeyword}, '%')
+                        </when>
+                        <when test="searchType == 'content'">
+                             content LIKE CONCAT('%', #{searchKeyword}, '%')
+                        </when>
+                        <otherwise>
+                              1 = 0 
+                        </otherwise>
+                    </choose>
+                </if>
+            </script>
             """)
     Integer countAllCommunity(String searchType, String searchKeyword);
 

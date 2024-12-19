@@ -14,12 +14,12 @@ font-family: "Inter", serif;
     --main-bg-gradient: linear-gradient(90deg, #0072ff, #a044ff);
     --main-purple: #a044ff;
     --main-blue: #0072ff;
+    --main-orange: #ef8630;
     --blue-purple-gradient: linear-gradient(90deg, #0072ff, #a044ff);
     --deep-blue-gradient: linear-gradient(90deg, #1e3c72, #2a5298);
     --purple-skyblue-gradient: linear-gradient(90deg, #7f7fd5, #86a8e7, #91eae4);
     --skyblue-blue-gradient: linear-gradient(90deg, #56ccf2, #2f80ed);
     --blue-skyblue-gradient: linear-gradient(90deg, #5b86e5, #36d1dc);
-    --golden-yellow: #f4a261;
 
     --table-header-color: #f7f7f7;
     --table-border-color: #eee;
@@ -41,6 +41,7 @@ font-family: "Inter", serif;
     --bg-dark-blue-color: #0a223f;
 
     --font-gray-color: #787878;
+    --font-dark-gray-color: #4b4b4c;
     --font-light-gray-color: #dcdcdc;
     --font-red-color: #ef4444;
     --font-dark-blue-color: #0e4487;
@@ -50,6 +51,8 @@ font-family: "Inter", serif;
 
     --box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.05);
     --box-shadow-hover: 1px 1px 7px rgba(0, 0, 0, 0.1);
+
+    --input-border-color: #dee2e6;
 }
 
 html {
@@ -96,20 +99,22 @@ input[type=number],
 input[type=tel],
 input[type=email],
 input[type=password] {
-    border: 1px solid #dee2e6;
+    border: 1px solid var(--input-border-color);
     box-sizing: border-box;
     border-radius: 5px;
     width: 100%;
     height: 40px;
     padding: 0 10px;
+    background: none;
 }
 
 input[type=search] {
-    border: 1px solid #dee2e6;
+    border: 1px solid var(--input-border-color);
     box-sizing: border-box;
     border-radius: 5px;
     height: 40px;
     padding: 0 10px;
+    background: none;
 }
 
 input[type=checkbox] {
@@ -118,19 +123,19 @@ input[type=checkbox] {
     margin-top: 7px;
     cursor: pointer;
     accent-color: var(--btn-normal-dark);
+    background: none;
 }
 
 textarea {
-    border: 1px solid #dee2e6;
+    border: 1px solid var(--input-border-color);
     box-sizing: border-box;
     border-radius: 5px;
     width: 100%;
-    height: 200px;
     padding: 10px;
 }
 
 select {
-    border: 1px solid #dee2e6;
+    border: 1px solid var(--input-border-color);
     box-sizing: border-box;
     border-radius: 5px;
     height: 40px;
@@ -142,15 +147,22 @@ select {
 
 h1 {
     text-align: center;
-    font-size: 30px;
+    font-size: 1.6rem;
     font-weight: bold;
-    margin: 20px 0;
+    margin: 15px 0;
 }
 
 h2 {
-    font-size: 20px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--font-gray-color);
+}
+
+h3 {
+    text-align: center;
+    font-size: 0.9rem;
     font-weight: bold;
-    margin: 10px 0;
+    color: var(--font-dark-gray-color);
 }
 
 .body-wide {
@@ -161,7 +173,7 @@ h2 {
 
 .body-normal {
     width: 800px;
-    margin: 40px auto;
+    margin: 30px auto;
     position: relative;
 }
 
@@ -381,6 +393,7 @@ form .required {
     border-collapse: collapse;
     text-align: center;
     width: 100%;
+    margin: 10px 0;
 }
 
 .table-list caption {
@@ -390,7 +403,7 @@ form .required {
 }
 
 .table-list thead tr {
-    height: 50px;
+    height: 40px;
     border-top: 1px solid #000;
     background: var(--table-header-color);
     border-bottom: 1px solid var(--table-border-color);
@@ -401,8 +414,9 @@ form .required {
 }
 
 .table-list tbody tr {
+    height: 35px;
+    font-size: 0.9rem;
     cursor: pointer;
-    height: 40px;
 }
 
 .table-list tbody tr td {
@@ -474,7 +488,7 @@ form .required {
 /*------------------- pagination -------------------*/
 .pagination {
     width: 100%;
-    margin: 30px;
+    padding: 30px 0;
     bottom: 0;
 }
 
@@ -543,7 +557,7 @@ form .required {
 }
 
 .day-list {
-    position: absolute;
+    position: relative;
     left: 500px;
     width: calc(100% - 530px);
     border-right: 1px solid var(--table-border-color);
@@ -698,20 +712,19 @@ form .required {
         display: block;
     }
 
+    .calendar-list {
+        width: 100%;
+    }
+
     .calendar {
         display: none;
     }
 
     .day-list {
-        margin-left: 0;
-        width: 80%;
-        padding: 0;
-        left: 50%;
-        transform: translateX(-50%);
-
-
+        width: 100%;
+        left: 0;
+        transform: none;
     }
-
 }
 
 /*------------------- 화면 크기가 480px 이하 (모바일 화면) -------------------*/
@@ -719,10 +732,6 @@ form .required {
     .body-wide,
     .body-normal,
     .body-narrow {
-        width: 95%
-    }
-
-    .day-list {
         width: 95%
     }
 

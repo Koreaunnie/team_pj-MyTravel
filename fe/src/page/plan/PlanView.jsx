@@ -32,12 +32,24 @@ function PlanView(props) {
   }
 
   const groupByDate = (fields) => {
-    return fields.reduce((acc, field) => {
-      const date = field.date; // 날짜를 기준으로 그룹화
-      if (!acc[date]) {
-        acc[date] = [];
+    const formatDate = (dateString) => {
+      const date = new Date(dateString); // 문자열을 Date 객체로 변환
+      if (isNaN(date.getTime())) {
+        return "";
       }
-      acc[date].push(field);
+      return new Intl.DateTimeFormat("ko-KR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }).format(date); // yyyy년 MM월 dd일 형식으로 변환
+    };
+
+    return fields.reduce((acc, field) => {
+      const formattedDate = formatDate(field.date); // 날짜 포맷팅
+      if (!acc[formattedDate]) {
+        acc[formattedDate] = [];
+      }
+      acc[formattedDate].push(field);
       return acc;
     }, {});
   };
@@ -83,7 +95,7 @@ function PlanView(props) {
   };
 
   return (
-    <div className={"plan"}>
+    <div className={"plan-view"}>
       <Breadcrumb
         depth1={"내 여행"}
         navigateToDepth1={() => navigate(`/plan/list`)}
@@ -91,7 +103,7 @@ function PlanView(props) {
         navigateToDepth2={() => navigate(`/plan/view/${id}`)}
       />
 
-      <div className={"body"}>
+      <div>
         <div className={"plan-view-container"}>
           <div className={"plan-view-header"}>
             <div className={"btn-warp"}>
@@ -128,44 +140,40 @@ function PlanView(props) {
               </button>
             </div>
 
-            <div>
-              <h3>{plan.title}</h3>
-              <h5>{plan.description}</h5>
-            </div>
+            <div className={"plan-view-title"}>
+              <div>
+                <h3>{plan.title}</h3>
+                <h4>{plan.description}</h4>
+              </div>
 
-            <div className={"plan-view-header-right"}>
-              <ul>
-                <li>
-                  <ul>
-                    <li className={"font-bold"}>Destination</li>
-                    <li>{plan.destination}</li>
-                  </ul>
-                </li>
-                <li>
-                  <ul>
-                    <li className={"font-bold"}>Date</li>
-                    <li>
-                      {plan.startDate} ~ {plan.endDate}
-                    </li>
-                  </ul>
-                </li>
-              </ul>
+              <div>
+                <ul>
+                  <li className={"font-bold"}>Destination</li>
+                  <li>{plan.destination}</li>
+                </ul>
+                <ul>
+                  <li className={"font-bold"}>Date</li>
+                  <li>
+                    {plan.startDate} ~ {plan.endDate}
+                  </li>
+                </ul>
+              </div>
             </div>
-          </div>
-
-          <div className={"plan-view-map"}>
-            <GoogleMapsView
-              placeIds={planFields.map((field) => field.placeId)}
-            />
           </div>
 
           <div className={"plan-view-table"}>
             {Object.entries(groupedPlanFields).map(([date, fields]) => (
               <table key={date} className="table-group">
+                <caption>{date}</caption>
+
+                <colgroup>
+                  <col style={{ width: "10%" }} />
+                  <col style={{ width: "35%" }} />
+                  <col style={{ width: "25%" }} />
+                  <col style={{ width: "25%" }} />
+                </colgroup>
+
                 <thead>
-                  <tr className="table-group-date">
-                    <th colSpan="4">{date}</th>
-                  </tr>
                   <tr className="table-group-header">
                     <th>시간</th>
                     <th>일정</th>
@@ -186,6 +194,12 @@ function PlanView(props) {
                 </tbody>
               </table>
             ))}
+          </div>
+
+          <div className={"plan-view-map"}>
+            <GoogleMapsView
+              placeIds={planFields.map((field) => field.placeId)}
+            />
           </div>
         </div>
 

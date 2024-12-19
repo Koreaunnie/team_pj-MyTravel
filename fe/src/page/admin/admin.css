@@ -1,14 +1,10 @@
 .admin-aside {
-    position: absolute;
+    position: fixed;
     width: 300px;
     height: 100vh;
     background: var(--bg-gray-color);
     border-right: 1px solid var(--font-light-gray-color);
     padding: 100px 0;
-}
-
-.admin-aside h1 {
-    margin-top: 20px;
 }
 
 .admin-aside .nickname {
@@ -36,4 +32,52 @@
 
 .admin-aside .active {
     background: #fff;
+    font-weight: bold;
+}
+
+.admin-body {
+    width: 1000px;
+    margin: 20px auto;
+    min-height: calc(100vh - 250px);
+}
+
+/*------------------- 홈 -------------------*/
+
+.admin-index {
+    width: 1000px;
+    margin: 50px 0;
+}
+
+.admin-index h1 {
+    text-align: left;
+}
+
+.admin-index h1 {
+}
+
+/*------------------- 문의 내역 관리 -------------------*/
+
+.admin-cs .admin-inquiry-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.admin-cs .table-list .badge {
+    font-size: 0.8rem;
+    border-radius: 5px;
+    padding: 1px 4px;
+    color: #fff;
+}
+
+.admin-cs .table-list .badge-success {
+    background: var(--main-blue);
+}
+
+.admin-cs .table-list .badge-warning {
+    background: var(--font-gray-color);
+}
+
+.admin-cs .table-list .badge-dark {
+    background: var(--btn-normal-dark);
+    cursor: pointer;
 }

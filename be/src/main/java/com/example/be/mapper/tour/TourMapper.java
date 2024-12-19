@@ -193,6 +193,7 @@ public interface TourMapper {
                             OR partner LIKE CONCAT('%', #{keyword}, '%')
                         </trim>
                     )
+                GROUP BY id
                 ORDER BY id DESC
                 LIMIT 4
                 </script>

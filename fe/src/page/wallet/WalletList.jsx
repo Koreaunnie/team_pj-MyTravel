@@ -292,7 +292,7 @@ function WalletList(props) {
   };
 
   return (
-    <div>
+    <div className={"wallet"}>
       <Breadcrumb
         depth1={"내 지갑"}
         navigateToDepth1={() => navigate(`/wallet/list`)}

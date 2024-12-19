@@ -1,7 +1,8 @@
-package com.example.be.controller.cs.inquiry.comment;
+package com.example.be.controller.cs.inquiry.answer;
 
-import com.example.be.dto.cs.inquiry.comment.Comment;
-import com.example.be.service.cs.inquiry.comment.CommentService;
+import com.example.be.dto.cs.inquiry.answer.InquiryAnswer;
+import com.example.be.service.cs.inquiry.InquiryService;
+import com.example.be.service.cs.inquiry.answer.InquiryAnswerService;
 import com.example.be.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,23 +16,24 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/cs/inquiry/comment")
-public class CommentController {
-    final CommentService service;
+@RequestMapping("/api/cs/inquiry/answer")
+public class InquiryAnswerController {
+    final InquiryAnswerService service;
+    final InquiryService inquiryService;
     final MemberService memberService;
 
     @PostMapping("add")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Map<String, Object>> add(@RequestBody Comment comment,
+    public ResponseEntity<Map<String, Object>> add(@RequestBody InquiryAnswer answer,
                                                    Authentication authentication) {
 
         String userEmail = authentication.getName();
         String userNickname = memberService.getNicknameByEmail(userEmail);
 
-        comment.setMemberEmail(userEmail);
-        comment.setMemberNickname(userNickname);
+        answer.setMemberEmail(userEmail);
+        answer.setMemberNickname(userNickname);
 
-        if (service.add(comment)) {
+        if (service.add(answer) && inquiryService.hasAnswer(answer.getInquiryId())) {
             return ResponseEntity.ok(Map.of("message", Map.of(
                     "type", "success",
                     "text", "댓글이 작성되었습니다."
@@ -47,13 +49,13 @@ public class CommentController {
     }
 
     @GetMapping("list/{inquiryId}")
-    public List<Comment> list(@PathVariable Integer inquiryId) {
+    public List<InquiryAnswer> list(@PathVariable Integer inquiryId) {
         return service.list(inquiryId);
     }
 
     @PutMapping("edit")
-    public ResponseEntity<Map<String, Object>> edit(@RequestBody Comment comment) {
-        if (service.update(comment)) {
+    public ResponseEntity<Map<String, Object>> edit(@RequestBody InquiryAnswer inquiryAnswer) {
+        if (service.update(inquiryAnswer)) {
             return ResponseEntity.ok().body(Map.of("message",
                     Map.of("type", "success",
                             "text", "댓글이 수정되었습니다.")));

@@ -324,7 +324,10 @@ function PlanList(props) {
         <Modal
           isOpen={addModalOpen}
           onClose={() => setAddModalOpen(false)}
-          onConfirm={() => navigate(`/plan/add`)}
+          onConfirm={() => {
+            navigate(`/plan/add`);
+            window.scrollTo(0, 0);
+          }}
           message="새로운 여행을 작성하시겠습니까?"
           buttonMessage="작성"
         />

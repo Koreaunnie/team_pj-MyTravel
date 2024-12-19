@@ -6,6 +6,7 @@ import axios from "axios";
 import { Spinner } from "@chakra-ui/react";
 import { toaster } from "../../../components/ui/toaster.jsx";
 import { AuthenticationContext } from "../../../components/context/AuthenticationProvider.jsx";
+import "./Faq.css";
 
 function FaqView(props) {
   const { id } = useParams();
@@ -101,7 +102,7 @@ function FaqView(props) {
 
             <li>
               <label htmlFor="answer">답변</label>
-              <textarea id={"answer"} value={faq.answer} readOnly />
+              <textarea id={"answer"} value={faq.answer} rows={15} readOnly />
             </li>
           </ul>
         </fieldset>

@@ -55,4 +55,10 @@ public class InquiryService {
         int cnt = mapper.updateWriterNickname(inquiry);
         return cnt == 1;
     }
+
+    // 문의글 답변 달리면 답변 여부 업데이트
+    public boolean hasAnswer(int id) {
+        int cnt = mapper.updateHasAnswerTrue(id);
+        return cnt == 1;
+    }
 }

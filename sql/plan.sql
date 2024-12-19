@@ -11,7 +11,8 @@ CREATE TABLE plan
     endDate     DATE,
     updated     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     writer      VARCHAR(20) NOT NULL REFERENCES member (email),
-    pinned      BOOLEAN   DEFAULT FALSE
+    pinned      BOOLEAN   DEFAULT FALSE,
+    FOREIGN KEY (writer) REFERENCES member (email) ON DELETE CASCADE
 );
 
 DROP TABLE plan;
@@ -30,3 +31,9 @@ ALTER TABLE plan
 
 ALTER TABLE plan
     ADD COLUMN writer VARCHAR(20) NOT NULL REFERENCES member (email) AFTER updated;
+
+ALTER TABLE plan
+    ADD CONSTRAINT
+        FOREIGN KEY (writer) REFERENCES member (email) ON DELETE CASCADE;
+
+SHOW CREATE TABLE plan;
