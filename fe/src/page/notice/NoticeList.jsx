@@ -2,17 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import axios from "axios";
-import {
-  Box,
-  createListCollection,
-  HStack,
-  Input,
-  Stack,
-  Table,
-} from "@chakra-ui/react";
+import { Center, createListCollection, HStack, Stack } from "@chakra-ui/react";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
-import { GoHeart } from "react-icons/go";
-import { HiOutlineBookOpen } from "react-icons/hi";
 import {
   SelectContent,
   SelectItem,
@@ -20,13 +11,14 @@ import {
   SelectTrigger,
   SelectValueText,
 } from "../../components/ui/select.jsx";
-import { Button } from "../../components/ui/button.jsx";
 import {
   PaginationItems,
   PaginationNextTrigger,
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../components/ui/pagination.jsx";
+import "./Notice.css";
+import { formattedDate } from "../../components/utils/FormattedDate.jsx";
 
 function NoticeList(props) {
   const [noticeList, setNoticeList] = useState([]);
@@ -77,103 +69,111 @@ function NoticeList(props) {
   });
 
   return (
-    <div>
+    <div className={"notice"}>
       <Breadcrumb
         depth1={"공지사항"}
         navigateToDepth1={() => navigate(`/notice/list`)}
       />
-      <div>
-        <br />
-        {/*  NavBar*/}
+
+      <div className={"body-normal"}>
         <Stack>
-          <Box>
-            <h1>공지사항</h1>
-            <Table.Root>
-              <Table.Header>
-                <Table.Row>
-                  <Table.ColumnHeader>제목</Table.ColumnHeader>
-                  <Table.ColumnHeader>작성자</Table.ColumnHeader>
-                  <Table.ColumnHeader>작성일시</Table.ColumnHeader>
-                </Table.Row>
-              </Table.Header>
-              <Table.Body>
+          <h1>공지사항</h1>
+          <h2>공지사항 외 문의는 문의게시판을 이용해주세요.</h2>
+
+          <div className={"btn-wrap"}>
+            {authentication.isAdmin && (
+              <button className={"btn btn-dark"} onClick={handleWriteClick}>
+                글 쓰기
+              </button>
+            )}
+          </div>
+
+          <div>
+            <Center>
+              <SelectRoot
+                collection={optionList}
+                defaultValue={["all"]}
+                onChange={(oc) =>
+                  setSearch({ ...search, type: oc.target.value })
+                }
+                size="md"
+                width="130px"
+              >
+                <SelectTrigger>
+                  <SelectValueText />
+                </SelectTrigger>
+                <SelectContent>
+                  {optionList.items.map((option) => (
+                    <SelectItem item={option} key={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </SelectRoot>
+              <input
+                type={"text"}
+                className={"search-form-input"}
+                value={search.keyword}
+                onChange={(e) =>
+                  setSearch({ ...search, keyword: e.target.value })
+                }
+              />
+              <button
+                className={"btn-search btn-dark"}
+                onClick={handleSearchClick}
+              >
+                검색
+              </button>
+            </Center>
+          </div>
+
+          <div>
+            <table className={"table-list"}>
+              <thead>
+                <tr>
+                  <th>제목</th>
+                  <th>작성자</th>
+                  <th>작성일시</th>
+                </tr>
+              </thead>
+
+              <tbody>
                 {noticeList.map((n) => (
-                  <Table.Row onClick={() => handleViewClick(n.id)} key={n.id}>
-                    <Table.Cell>
-                      <Stack>
-                        <h3>{n.title}</h3>
-                        <h4>
-                          <HStack>
-                            <GoHeart /> {n.numberOfLikes} |{" "}
-                            <HiOutlineBookOpen /> {n.numberOfViews}
-                          </HStack>
-                        </h4>
-                      </Stack>
-                    </Table.Cell>
-                    <Table.Cell>{n.writer}</Table.Cell>
-                    <Table.Cell>{n.creationDate}</Table.Cell>
-                  </Table.Row>
+                  <tr onClick={() => handleViewClick(n.id)} key={n.id}>
+                    <td>
+                      <p className={"title"}>{n.title}</p>
+                      <div className="info">
+                        <span>❤️ {n.numberOfLikes}</span>
+                        <span>💬 {n.numberOfViews}</span>
+                      </div>
+                    </td>
+                    <td className={"writer"}>{n.writer}</td>
+                    <td>{formattedDate(n.creationDate)}</td>
+                  </tr>
                 ))}
-              </Table.Body>
-            </Table.Root>
-          </Box>
-          <Box>
-            <HStack>
-              <Box>
+              </tbody>
+            </table>
+          </div>
+
+          <div className={"pagination"}>
+            <Center>
+              <PaginationRoot
+                count={countNotice}
+                pageSize={10}
+                defaultPage={1}
+                onPageChange={handlePageChangeClick}
+                siblingCount={2}
+                variant="solid"
+              >
                 <HStack>
-                  <SelectRoot
-                    collection={optionList}
-                    defaultValue={["all"]}
-                    onChange={(oc) =>
-                      setSearch({ ...search, type: oc.target.value })
-                    }
-                    size="sm"
-                    width="130px"
-                  >
-                    <SelectTrigger>
-                      <SelectValueText />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {optionList.items.map((option) => (
-                        <SelectItem item={option} key={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </SelectRoot>
-                  <Input
-                    w={300}
-                    value={search.keyword}
-                    onChange={(e) =>
-                      setSearch({ ...search, keyword: e.target.value })
-                    }
-                  />
-                  <Button onClick={handleSearchClick}>검색</Button>
+                  <PaginationPrevTrigger />
+                  <PaginationItems />
+                  <PaginationNextTrigger />
                 </HStack>
-              </Box>
-              {authentication.isAdmin && (
-                <Button onClick={handleWriteClick}>글 쓰기</Button>
-              )}
-            </HStack>
-          </Box>
-          <Box>
-            <PaginationRoot
-              count={countNotice}
-              pageSize={10}
-              defaultPage={1}
-              onPageChange={handlePageChangeClick}
-              siblingCount={2}
-            >
-              <HStack>
-                <PaginationPrevTrigger />
-                <PaginationItems />
-                <PaginationNextTrigger />
-              </HStack>
-            </PaginationRoot>
-          </Box>
-          <br />
+              </PaginationRoot>
+            </Center>
+          </div>
         </Stack>
-        <br />
       </div>
     </div>
   );
