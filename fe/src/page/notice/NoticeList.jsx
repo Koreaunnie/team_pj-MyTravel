@@ -6,7 +6,6 @@ import {
   Box,
   createListCollection,
   HStack,
-  Input,
   Stack,
   Table,
 } from "@chakra-ui/react";
@@ -121,43 +120,55 @@ function NoticeList(props) {
             <HStack>
               <Box>
                 <HStack>
-                  <SelectRoot
-                    collection={optionList}
-                    defaultValue={["all"]}
-                    onChange={(oc) =>
-                      setSearch({ ...search, type: oc.target.value })
-                    }
-                    size="sm"
-                    width="130px"
-                  >
-                    <SelectTrigger>
-                      <SelectValueText />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {optionList.items.map((option) => (
-                        <SelectItem item={option} key={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </SelectRoot>
-                  <Input
-                    w={300}
-                    value={search.keyword}
-                    onChange={(e) =>
-                      setSearch({ ...search, keyword: e.target.value })
-                    }
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        handleSearchClick();
+                  <div className={"search-form"}>
+                    <SelectRoot
+                      collection={optionList}
+                      defaultValue={["all"]}
+                      onChange={(oc) =>
+                        setSearch({ ...search, type: oc.target.value })
                       }
-                    }}
-                  />
-                  <Button onClick={handleSearchClick}>검색</Button>
+                      size="sm"
+                      width="130px"
+                    >
+                      <SelectTrigger>
+                        <SelectValueText />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {optionList.items.map((option) => (
+                          <SelectItem item={option} key={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </SelectRoot>
+                    <input
+                      type={"text"}
+                      className={"search-form-input"}
+                      value={search.keyword}
+                      onChange={(e) =>
+                        setSearch({ ...search, keyword: e.target.value })
+                      }
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          handleSearchClick();
+                        }
+                      }}
+                    />
+                    <Button
+                      className={"btn-search btn-dark"}
+                      onClick={handleSearchClick}
+                    >
+                      검색
+                    </Button>
+                  </div>
                 </HStack>
               </Box>
               {authentication.isAdmin && (
-                <Button onClick={handleWriteClick}>글 쓰기</Button>
+                <div>
+                  <Button className={"btn btn-dark"} onClick={handleWriteClick}>
+                    글 쓰기
+                  </Button>
+                </div>
               )}
             </HStack>
           </Box>
