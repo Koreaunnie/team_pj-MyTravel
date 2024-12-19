@@ -284,4 +284,49 @@ public class CommunityService {
 
         return adminAccess.equals("admin");
     }
+
+    public Map<String, Object> fetchCommunity(Integer id, Authentication auth) {
+        Map<String, Object> viewer = mapper.viewCommunity(id);
+        Integer countLike = mapper.countLikesByCommunityId(id);
+        viewer.put("like", countLike);
+
+        boolean myCommunityLike;
+        if (auth != null) {
+            String person = mapper.findNickname(auth.getName());
+            if (mapper.findLikeByIdAndNickname(id, person) == 1) {
+                myCommunityLike = true;
+                viewer.put("myCommunityLike", myCommunityLike);
+            } else {
+                myCommunityLike = false;
+                viewer.put("myCommunityLike", myCommunityLike);
+            }
+        } else {
+            myCommunityLike = false;
+            viewer.put("myCommunityLike", myCommunityLike);
+        }
+
+        int views = mapper.checkViews(id);
+
+        viewer.put("views", views);
+
+        List<Integer> fileList = mapper.callCommunityFile(id);
+        List<Map<String, Object>> commentList = mapper.callCommunityComment(id);
+        viewer.put("commentList", commentList);
+        if (fileList.size() != 0) {
+            List<Object> files = new ArrayList();
+            for (Integer fileNumber : fileList) {
+                Map<String, Object> file = new HashMap<>();
+                String fileName = mapper.findFileNameByFileNumber(fileNumber);
+                String filePath = STR."\{imageSrcPrefix}/community/\{viewer.get("id").toString()}/\{fileName}";
+                file.put("id", fileNumber);
+                file.put("fileName", fileName);
+                file.put("filePath", filePath);
+                files.add(file);
+            }
+            viewer.put("files", files);
+            return viewer;
+        } else {
+            return viewer;
+        }
+    }
 }
