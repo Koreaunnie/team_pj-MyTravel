@@ -507,9 +507,9 @@ function CommunityView(props) {
                         <HStack>
                           <Input value={list.comment} readOnly w={450} />
                           {/* TODO : 권한받은 유저만 보이게 */}
-                          {hasAccessByNickName(list.writer) && (
-                            <Box>
-                              <HStack>
+                          <Box>
+                            <HStack>
+                              {hasAccessByNickName(list.writer) && (
                                 <DialogRoot>
                                   <DialogTrigger asChild>
                                     <div>
@@ -571,6 +571,9 @@ function CommunityView(props) {
                                     </DialogFooter>
                                   </DialogContent>
                                 </DialogRoot>
+                              )}
+                              {(hasAccessByNickName(list.writer) ||
+                                authentication.isAdmin) && (
                                 <DialogRoot>
                                   <DialogTrigger>
                                     <div>
@@ -609,9 +612,9 @@ function CommunityView(props) {
                                     </DialogFooter>
                                   </DialogContent>
                                 </DialogRoot>
-                              </HStack>
-                            </Box>
-                          )}
+                              )}
+                            </HStack>
+                          </Box>
                         </HStack>
                       </Stack>
                     </HStack>

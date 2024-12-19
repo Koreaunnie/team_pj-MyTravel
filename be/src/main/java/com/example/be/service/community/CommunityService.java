@@ -217,7 +217,6 @@ public class CommunityService {
 
     public void updateComment(CommunityComment communityComment, Integer id, Authentication auth) {
         String comment = communityComment.getComment();
-        System.out.println(comment);
         mapper.updateCommunityComment(comment, id);
     }
 
