@@ -15,6 +15,7 @@ import { AuthenticationContext } from "../../components/context/AuthenticationPr
 import { Alert } from "../../components/ui/alert.jsx";
 import CommunityList from "./CommunityList.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
+import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 
 function CommunityEdit(props) {
   const [community, setCommunity] = useState({});
@@ -73,66 +74,98 @@ function CommunityEdit(props) {
   return (
     <div>
       {hasAccessByNickName(community.writer) && (
-        <Box>
-          <h1>게시글 수정</h1>
-          <Box
-            mx={"auto"}
-            w={{
-              md: "500px",
-            }}
-          >
-            <Field label={"제목"}>
-              <Input
-                value={community.title}
-                onChange={(e) =>
-                  setCommunity({ ...community, title: e.target.value })
-                }
-              />
-            </Field>
-            <Field label={"본문"}>
-              <Textarea
-                value={community.content}
-                onChange={(e) =>
-                  setCommunity({ ...community, content: e.target.value })
-                }
-                h={300}
-              />
-            </Field>
-            <Field>
-              {fileList?.map((file) => (
-                <HStack key={file.fileName}>
-                  <Image src={file.filePath} border={"1px solid black"} m={3} />
-                  <CloseButton
-                    variant="solid"
-                    onClick={() => handleDeleteFileClick(file)}
-                  />
+        <div>
+          <Breadcrumb
+            depth1={"커뮤니티"}
+            navigateToDepth1={() => navigate(`/community/list`)}
+            depth2={"게시글 수정"}
+            navigateToDepth2={() => navigate(`/community/edit/${id}`)}
+          />
+          <br />
+          <br />
+          <Box>
+            <h1>게시글 수정</h1>
+            <Box
+              mx={"auto"}
+              w={{
+                md: "500px",
+              }}
+            >
+              <Field label={"제목"}>
+                <Input
+                  value={community.title}
+                  onChange={(e) =>
+                    setCommunity({ ...community, title: e.target.value })
+                  }
+                />
+              </Field>
+              <Field label={"본문"}>
+                <Textarea
+                  value={community.content}
+                  onChange={(e) =>
+                    setCommunity({ ...community, content: e.target.value })
+                  }
+                  h={300}
+                />
+              </Field>
+              <Field>
+                {fileList?.map((file) => (
+                  <HStack key={file.fileName}>
+                    <Image
+                      src={file.filePath}
+                      border={"1px solid black"}
+                      m={3}
+                    />
+                    <CloseButton
+                      variant="solid"
+                      onClick={() => handleDeleteFileClick(file)}
+                    />
+                  </HStack>
+                ))}
+              </Field>
+              <Field label={"파일 첨부"}>
+                <FileUploadRoot
+                  value={files}
+                  maxFiles={5}
+                  multiple
+                  onChange={(e) => setFiles(e.target.files)}
+                >
+                  <FileUploadTrigger asChild>
+                    <div>
+                      <Button
+                        className={"btn btn-wide"}
+                        variant="outline"
+                        size="sm"
+                      >
+                        <HiUpload /> Upload file
+                      </Button>
+                    </div>
+                  </FileUploadTrigger>
+                  <FileUploadList showSize clearable />
+                </FileUploadRoot>
+              </Field>
+              <br />
+              <Box>
+                <HStack>
+                  <div>
+                    <button
+                      className={"btn btn-dark-outline"}
+                      onClick={handleCancelClick}
+                    >
+                      취소
+                    </button>
+                    <Button
+                      className={"btn btn-blue"}
+                      onClick={handleSaveClick}
+                    >
+                      저장
+                    </Button>
+                  </div>
                 </HStack>
-              ))}
-            </Field>
-            <Field label={"파일 첨부"}>
-              <FileUploadRoot
-                value={files}
-                maxFiles={5}
-                multiple
-                onChange={(e) => setFiles(e.target.files)}
-              >
-                <FileUploadTrigger asChild>
-                  <Button variant="outline" size="sm">
-                    <HiUpload /> Upload file
-                  </Button>
-                </FileUploadTrigger>
-                <FileUploadList showSize clearable />
-              </FileUploadRoot>
-            </Field>
-            <br />
-            <Box>
-              <HStack>
-                <Button onClick={handleCancelClick}>취소</Button>
-                <Button onClick={handleSaveClick}>저장</Button>
-              </HStack>
+              </Box>
             </Box>
           </Box>
-        </Box>
+        </div>
       )}
       {hasAccessByNickName(community.writer) || (
         <Box>

@@ -4,9 +4,9 @@ import { AuthenticationContext } from "../../components/context/AuthenticationPr
 import axios from "axios";
 import {
   Box,
+  Center,
   createListCollection,
   HStack,
-  Input,
   Stack,
   Table,
 } from "@chakra-ui/react";
@@ -101,7 +101,11 @@ function NoticeList(props) {
                   <Table.Row onClick={() => handleViewClick(n.id)} key={n.id}>
                     <Table.Cell>
                       <Stack>
-                        <h3>{n.title}</h3>
+                        <h3>
+                          {n.title.length > 25
+                            ? `${n.title.substring(0, 25)} ...`
+                            : n.title}
+                        </h3>
                         <h4>
                           <HStack>
                             <GoHeart /> {n.numberOfLikes} |{" "}
@@ -121,55 +125,76 @@ function NoticeList(props) {
             <HStack>
               <Box>
                 <HStack>
-                  <SelectRoot
-                    collection={optionList}
-                    defaultValue={["all"]}
-                    onChange={(oc) =>
-                      setSearch({ ...search, type: oc.target.value })
-                    }
-                    size="sm"
-                    width="130px"
-                  >
-                    <SelectTrigger>
-                      <SelectValueText />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {optionList.items.map((option) => (
-                        <SelectItem item={option} key={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </SelectRoot>
-                  <Input
-                    w={300}
-                    value={search.keyword}
-                    onChange={(e) =>
-                      setSearch({ ...search, keyword: e.target.value })
-                    }
-                  />
-                  <Button onClick={handleSearchClick}>검색</Button>
+                  <div className={"search-form"}>
+                    <SelectRoot
+                      collection={optionList}
+                      defaultValue={["all"]}
+                      onChange={(oc) =>
+                        setSearch({ ...search, type: oc.target.value })
+                      }
+                      size="sm"
+                      width="130px"
+                    >
+                      <SelectTrigger>
+                        <SelectValueText />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {optionList.items.map((option) => (
+                          <SelectItem item={option} key={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </SelectRoot>
+                    <input
+                      type={"text"}
+                      className={"search-form-input"}
+                      value={search.keyword}
+                      onChange={(e) =>
+                        setSearch({ ...search, keyword: e.target.value })
+                      }
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          handleSearchClick();
+                        }
+                      }}
+                    />
+                    <Button
+                      className={"btn-search btn-dark"}
+                      onClick={handleSearchClick}
+                    >
+                      검색
+                    </Button>
+                  </div>
                 </HStack>
               </Box>
               {authentication.isAdmin && (
-                <Button onClick={handleWriteClick}>글 쓰기</Button>
+                <div>
+                  <Button className={"btn btn-dark"} onClick={handleWriteClick}>
+                    글 쓰기
+                  </Button>
+                </div>
               )}
             </HStack>
           </Box>
           <Box>
-            <PaginationRoot
-              count={countNotice}
-              pageSize={10}
-              defaultPage={1}
-              onPageChange={handlePageChangeClick}
-              siblingCount={2}
-            >
-              <HStack>
-                <PaginationPrevTrigger />
-                <PaginationItems />
-                <PaginationNextTrigger />
-              </HStack>
-            </PaginationRoot>
+            <div className={"pagination"}>
+              <Center>
+                <PaginationRoot
+                  count={countNotice}
+                  pageSize={10}
+                  defaultPage={1}
+                  onPageChange={handlePageChangeClick}
+                  siblingCount={2}
+                >
+                  <HStack>
+                    <PaginationPrevTrigger />
+                    <PaginationItems />
+                    <PaginationNextTrigger />
+                  </HStack>
+                </PaginationRoot>
+              </Center>
+            </div>
           </Box>
           <br />
         </Stack>
