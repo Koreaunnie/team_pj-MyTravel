@@ -75,11 +75,9 @@ function MemberInfo(props) {
       <h1>회원 정보</h1>
       <Stack>
         <ProfileImageView files={member.profile} />
-        {member.kakao || (
-          <Field label={"이메일"}>
-            <Input readOnly value={member.email} />
-          </Field>
-        )}
+        <Field label={"이메일"}>
+          <Input readOnly value={member.email} />
+        </Field>
         <Field label={"닉네임"}>
           <Input readOnly value={member.nickname} />
         </Field>

@@ -32,8 +32,8 @@ VALUES ('3829160102', '아로', 'a', '아로', '0', TRUE);
 
 SELECT *
 FROM member
-WHERE nickname = '아로';
+WHERE nickname = '아로루';
 
 DELETE
 FROM member
-WHERE nickname = '아로';
+WHERE nickname = '아로루';

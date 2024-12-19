@@ -6,6 +6,7 @@ import "./Member.css";
 import { Box, Image } from "@chakra-ui/react";
 import randomString from "../../components/login/RandomString.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
+import { Field } from "../../components/ui/field.jsx";
 
 function MemberSignupKakao() {
   const [phone, setPhone] = useState("");
@@ -13,7 +14,7 @@ function MemberSignupKakao() {
   const navigate = useNavigate();
   const password = randomString();
   const location = useLocation();
-  const { kakaoId, kakaoNickname, kakaoImageSrc } = location.state || {};
+  const { kakaoNickname, kakaoImageSrc, kakaoEmail } = location.state || {};
   const [nickname, setNickname] = useState(kakaoNickname);
   const [name, setName] = useState(kakaoNickname);
   const [files, setFiles] = useState([]);
@@ -31,7 +32,8 @@ function MemberSignupKakao() {
 
     axios
       .postForm("/api/member/signup/kakao", {
-        email: kakaoId,
+        // email: kakaoId,
+        email: kakaoEmail,
         nickname,
         password,
         name,
@@ -110,7 +112,23 @@ function MemberSignupKakao() {
                 accept={"image/*"}
               />
             </li>
-
+            <li className={"check-form"}>
+              <form>
+                <label htmlFor="email">
+                  이메일
+                  <span className={"required"}>&#42;</span>
+                </label>
+              </form>
+              <Field helperText={"이메일은 수정이 불가합니다."}>
+                <input
+                  maxLength="30"
+                  id={"email"}
+                  type="email"
+                  readOnly
+                  defaultValue={kakaoEmail}
+                />
+              </Field>
+            </li>
             <li className={"check-form"}>
               <form>
                 <label htmlFor="nickname">
