@@ -17,4 +17,5 @@ public class Wallet {
     private String memo;
     private LocalDateTime inserted;
     private String writer;
+    private Integer paymentDetailId;
 }

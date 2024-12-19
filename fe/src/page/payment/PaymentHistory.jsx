@@ -15,6 +15,8 @@ function PaymentHistory(props) {
     });
   }, []);
 
+  // console.log(paidList);
+
   function handleRowClick(tourId) {
     navigate(`/tour/view/${tourId}`);
   }
@@ -33,6 +35,7 @@ function PaymentHistory(props) {
         income: 0,
         expense: tour.price,
         memo: tour.location,
+        paymentDetailId: tour.paymentDetailId,
       })
       .then((res) => res.data)
       .then((data) => {
@@ -40,6 +43,12 @@ function PaymentHistory(props) {
           type: data.message.type,
           description: data.message.text,
         });
+        // 지갑에 추가 후, 해당 상품의 isInWallet을 true로 설정
+        setPaidList((prevList) =>
+          prevList.map((item) =>
+            item.id === tour.id ? { ...item, isInWallet: true } : item,
+          ),
+        );
       });
   };
 
@@ -128,15 +137,28 @@ function PaymentHistory(props) {
                 </td>
 
                 <td>
-                  <button
-                    className={"btn btn-dark"}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleAddToWallet(tour);
-                    }}
-                  >
-                    내 지갑에 추가
-                  </button>
+                  {tour.walletId ? (
+                    <button
+                      className={"btn btn-dark-outline"}
+                      onClick={(e) => {
+                        e.stopPropagation();
+
+                        navigate(`/wallet/list`);
+                      }}
+                    >
+                      내 지갑 확인
+                    </button>
+                  ) : (
+                    <button
+                      className={"btn btn-dark"}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleAddToWallet(tour);
+                      }}
+                    >
+                      내 지갑에 추가
+                    </button>
+                  )}
                 </td>
 
                 <td>
