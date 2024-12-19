@@ -634,7 +634,11 @@ function CommunityView(props) {
                     <Table.Cell>
                       <Stack>
                         <HStack>
-                          <h3>{c.title}</h3>
+                          <h3>
+                            {c.title.length > 25
+                              ? `${c.title.substring(0, 25)}...`
+                              : c.title}
+                          </h3>
                           {c.existOfFiles ? <IoMdPhotos /> : " "}
                         </HStack>
                         <h4>
