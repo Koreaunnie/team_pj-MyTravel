@@ -217,7 +217,6 @@ public class CommunityService {
 
     public void updateComment(CommunityComment communityComment, Integer id, Authentication auth) {
         String comment = communityComment.getComment();
-        System.out.println(comment);
         mapper.updateCommunityComment(comment, id);
     }
 
@@ -278,5 +277,11 @@ public class CommunityService {
     public void removeLikeInCommunity(Integer id, Authentication auth) {
         String person = mapper.findNickname(auth.getName());
         mapper.deleteLikeInCommunity(id, person);
+    }
+
+    public boolean checkAdmin(Authentication auth) {
+        String adminAccess = mapper.checkAdmin(auth.getName());
+
+        return adminAccess.equals("admin");
     }
 }
