@@ -60,6 +60,6 @@ public class WalletService {
     // 내 지갑 내역에서 선택한 항목만 삭제
     public boolean deleteSelectedItems(List<Integer> id, String writer) {
         int cnt = mapper.deleteSelectedItemsById(id, writer);
-        return cnt == 1;
+        return cnt != 0;
     }
 }
