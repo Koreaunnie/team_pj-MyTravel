@@ -12,7 +12,7 @@ public interface CommunityMapper {
 
     @Select("""
                         <script>
-                        SELECT id, title, writer, inserted creationDate
+                        SELECT id, title, writer, content, inserted creationDate
                         FROM community
                         WHERE 
                                 <if test="searchType == 'all'">

@@ -312,9 +312,9 @@ export function Index() {
       </section>
 
       {/* 커뮤니티 */}
-      <section className={"community-container"}>
-        <div className={"community-container-wrap"}>
-          <div className={"community-container-header"}>
+      <section className={"index-community-container"}>
+        <div className={"index-community-container-wrap"}>
+          <div className={"index-community-container-header"}>
             <h1>커뮤니티</h1>
             <button
               className={"more-btn"}
@@ -331,7 +331,7 @@ export function Index() {
             </button>
           </div>
 
-          <div className={"community-container-body"}>
+          <div className={"index-community-container-body"}>
             {isEmpty(communityList) ? (
               <div className={"empty-container"}>
                 <p className={"empty-container-title"}>작성된 글이 없습니다.</p>
@@ -340,7 +340,7 @@ export function Index() {
                 </p>
               </div>
             ) : (
-              <div className={"community-container-list"}>
+              <div className={"index-community-container-list"}>
                 {communityList.map((community) => (
                   <ul
                     className={"list-item"}

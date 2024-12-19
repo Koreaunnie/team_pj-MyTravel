@@ -173,7 +173,7 @@ h3 {
 
 .body-normal {
     width: 800px;
-    margin: 40px auto;
+    margin: 30px auto;
     position: relative;
 }
 
@@ -488,7 +488,7 @@ form .required {
 /*------------------- pagination -------------------*/
 .pagination {
     width: 100%;
-    margin: 30px;
+    padding: 30px 0;
     bottom: 0;
 }
 

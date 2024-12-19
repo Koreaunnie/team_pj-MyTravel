@@ -431,7 +431,7 @@ section.plan-container {
 }
 
 /*------------------- 커뮤니티 -------------------*/
-.community-container {
+.index-community-container {
     width: 1000px;
     margin: 0 auto;
     background: var(--bg-dark-blue-color);
@@ -440,26 +440,26 @@ section.plan-container {
     color: #fff;
 }
 
-.community-container .community-container-wrap {
+.index-community-container .index-community-container-wrap {
     display: flex;
 }
 
-.community-container .community-container-wrap .community-container-header {
+.index-community-container .index-community-container-wrap .index-community-container-header {
     width: 350px;
     margin: 55px 0 0 20px;
 }
 
-.community-container .community-container-wrap .community-container-header h1 {
+.index-community-container .index-community-container-wrap .index-community-container-header h1 {
     font-size: 1.7rem;
 }
 
-.community-container .community-container-wrap .community-container-header .more-btn {
+.index-community-container .index-community-container-wrap .index-community-container-header .more-btn {
     font-size: 0.9rem;
     cursor: pointer;
     color: var(--font-light-gray-color);
 }
 
-.community-container .community-container-wrap .community-container-body {
+.index-community-container .index-community-container-wrap .index-community-container-body {
     width: 100%;
     margin-left: 50px;
     background: #fff;
@@ -468,7 +468,7 @@ section.plan-container {
     padding: 20px 30px;
 }
 
-.community-container .community-container-wrap .community-container-list ul {
+.index-community-container .index-community-container-wrap .index-community-container-list ul {
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -476,7 +476,7 @@ section.plan-container {
     cursor: pointer;
 }
 
-.community-container .community-container-wrap .community-container-list ul li:nth-child(2) {
+.index-community-container .index-community-container-wrap .index-community-container-list ul li:nth-child(2) {
     font-size: 0.9rem;
     font-weight: bold;
 }
