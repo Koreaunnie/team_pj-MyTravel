@@ -138,4 +138,33 @@ public class NoticeService {
         String person = mapper.findNickname(auth.getName());
         mapper.InputLikeInNotice(id, person);
     }
+
+    public Map<String, Object> fetchNotice(Integer id, Authentication auth) {
+        Map<String, Object> viewer = mapper.viewNotice(id);
+        Integer countLike = mapper.countLikesByNoticeId(id);
+        viewer.put("like", countLike);
+
+        boolean myNoticeLike;
+        if (auth != null) {
+            String person = mapper.findNickname(auth.getName());
+            if (mapper.findLikeByIdAndNickname(id, person) == 1) {
+                myNoticeLike = true;
+                viewer.put("myNoticeLike", myNoticeLike);
+            } else {
+                myNoticeLike = false;
+                viewer.put("myNoticeLike", myNoticeLike);
+            }
+        } else {
+            myNoticeLike = false;
+            viewer.put("myNoticeLike", myNoticeLike);
+        }
+
+        int views = mapper.checkViews(id);
+
+        viewer.put("views", views);
+
+
+        return viewer;
+
+    }
 }

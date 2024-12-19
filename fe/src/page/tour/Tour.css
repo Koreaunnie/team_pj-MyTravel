@@ -2,6 +2,15 @@
     margin: 30px 0 20px 0;
 }
 
+.tour-add h1,
+.tour-update h1 {
+    margin: 70px 0 20px 0;
+}
+
+.tour-add .btn-wrap,
+.tour-update .btn-wrap {
+    margin: 20px 0 30px 0;
+}
 
 /*------------------- tourList -------------------*/
 .tour h1 {
@@ -20,7 +29,7 @@
     position: sticky;
     top: 100px;
     background: var(--bg-gray-color);
-    z-index: 100;
+    z-index: 10;
     box-shadow: var(--box-shadow);
 }
 
@@ -75,7 +84,6 @@
 .tour .tour-btn-wrap button {
     margin: 5px;
 }
-
 
 /*--------------*/
 .tour-box-container {
@@ -152,8 +160,6 @@
 }
 
 /*--------------*/
-
-
 .tour-list-container .tour-list {
     width: 100%;
     height: 200px;
@@ -218,21 +224,184 @@
     object-fit: cover;
 }
 
+/*------------------- tourView -------------------*/
+.tour-view {
+    margin: 30px 0 0 0;
+    background: var(--bg-gray-color);
+    padding-bottom: 20px;
+}
+
+.tour-view .btn-back-wrap {
+    background: #fff;
+    width: 100%;
+    height: 50px;
+    border-bottom: 1px solid var(--table-border-color);
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+}
+
+.tour-view .btn-back-wrap .btn-back {
+    width: 800px;
+}
+
+.tour-view .btn-back-wrap .btn-admin {
+    width: 800px;
+    margin: 0 auto;
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.tour-view .btn-back-wrap .btn-admin button {
+    float: right;
+    right: 0;
+    margin: 0 5px;
+}
+
+.tour-view .tour-view-container .img {
+    height: 400px;
+    overflow: hidden;
+}
+
+.tour-view .tour-view-container .img img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.tour-view .tour-view-container .tour-view-header {
+    margin: 5px 0;
+    padding: 15px;
+    border: 1px aolid var(--table-border-color);
+    background: #fff;
+    border-radius: 10px;
+    position: relative;
+}
+
+.tour-view .tour-view-container .tour-view-header .title {
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+.tour-view .tour-view-container .tour-view-header .sub-title {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.tour-view .tour-view-container .tour-view-header .product {
+    padding: 15px 0;
+    color: var(--font-gray-color);
+}
+
+.tour-view .tour-view-container .tour-view-header .location {
+    font-weight: bold;
+    padding: 10px;
+}
+
+.tour-view .tour-view-container .tour-view-header .location .icon {
+    color: var(--main-blue);
+    display: inline;
+    margin: -1px 4px 0 0;
+}
+
+.tour-view .tour-view-container .tour-view-header .review {
+    font-size: 0.9rem;
+}
+
+.tour-view .tour-view-container .tour-view-header .price {
+    margin: 10px 0;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.tour-view .tour-view-container .tour-view-header .cart {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+.tour-view .tour-view-container .tour-view-header .cart button {
+    width: 150px;
+}
+
+.tour-view .tour-view-container .date-wrap {
+    height: 110px;
+    margin: 5px 0;
+    padding: 15px;
+    background: #fff;
+    border-radius: 10px;
+    display: flex;
+}
+
+.tour-view .tour-view-container .date-wrap h3 {
+    padding: 10px;
+    text-align: left;
+    width: 120px;
+    margin: 20px 0 0 10px;
+    color: var(--main-blue);
+}
+
+.tour-view .tour-view-container .date-wrap div {
+    margin: 0 10px;
+}
+
+.tour-view .tour-view-container .date-wrap label {
+    margin: 5px 0 10px 0;
+    color: var(--font-gray-color);
+}
+
+.tour-view .tour-view-container .date-wrap input {
+    width: 300px
+}
+
+.tour-view .tour-view-container .tour-view-content {
+    margin: 5px 0;
+    padding: 50px;
+    border: 1px aolid var(--table-border-color);
+    background: #fff;
+    border-radius: 10px;
+}
+
+.tour-view .tour-view-container .tour-view-footer {
+    margin: 5px 0;
+    padding: 15px;
+    border: 1px aolid var(--table-border-color);
+    background: #fff;
+    border-radius: 10px;
+    display: flex;
+}
+
+.tour-view .tour-view-container .tour-view-footer li:first-child {
+    margin-left: 20px;
+    text-align: left;
+    width: 120px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--main-blue);
+}
+
+.tour-view .tour-review-container {
+    margin: 5px 0;
+    padding: 50px;
+    border: 1px aolid var(--table-border-color);
+    background: #fff;
+    border-radius: 10px;
+}
+
 
 /*------------------- 화면 크기가 768px 이하 (태블릿 화면) -------------------*/
 @media (max-width: 768px) {
 
     /*------------------- tourList -------------------*/
-    .tour .body-wide {
-        width: 100%;
-    }
-
     .tour-search-wrap {
         width: 90%;
     }
 
     .tour-box-container .tour-box {
-        width: 30%;
+        width: 29%;
         height: 330px;
     }
 
@@ -290,22 +459,101 @@
         top: 20px;
         width: 100px;
     }
+
+
+    /*------------------- tourView -------------------*/
+    .tour-view {
+        margin: 30px 0 20px 0;
+    }
+
+    .tour-view .btn-back-wrap {
+        height: 40px;
+    }
+
+    .tour-view .btn-back-wrap .btn-back {
+        width: 800px;
+        font-size: 1.3rem;
+        margin: 5px 10px;
+    }
+
+    .tour-view .tour-view-container .img {
+        height: 300px;
+    }
+
+    .tour-view .tour-view-container .tour-view-header {
+        margin: 0;
+        padding: 15px;
+    }
+
+    .tour-view .tour-view-container .tour-view-header .title {
+        font-size: 1.2rem;
+    }
+
+    .tour-view .tour-view-container .tour-view-header .product {
+        padding: 10px 0;
+    }
+
+    .tour-view .tour-view-container .tour-view-header .location {
+        padding: 10px;
+    }
+
+    .tour-view .tour-view-container .tour-view-header .price {
+        margin: 10px 0;
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    .tour-view .tour-view-container .tour-view-header .cart button {
+        width: 130px;
+    }
+
+    .tour-view .tour-view-container .date-wrap {
+
+        padding: 10px;
+    }
+
+    .tour-view .tour-view-container .date-wrap h3 {
+
+    }
+
+    .tour-view .tour-view-container .date-wrap div {
+        margin: 0 5px;
+    }
+
+    .tour-view .tour-view-container .date-wrap input {
+        width: 100%;
+    }
+
+    .tour-view .tour-view-container .tour-view-content {
+        padding: 40px;
+    }
+
+    .tour-view .tour-view-container .tour-view-footer {
+        padding: 15px 10px;
+    }
+
+    .tour-view .tour-review-container {
+        padding: 20px 30px;
+    }
+}
+
+/*------------------- 화면 크기가 660px 이하 -------------------*/
+@media (max-width: 660px) {
+    .tour-box-container .tour-box {
+        width: 45%;
+    }
 }
 
 /*------------------- 화면 크기가 480px 이하 (모바일 화면) -------------------*/
 @media (max-width: 480px) {
 
     /*------------------- tourList -------------------*/
-    .tour .body-wide {
-        width: 100%;
-    }
-
     .tour-search-wrap {
         width: 98%;
     }
 
     .tour-box-container .tour-box {
-        width: 95%;
+        width: 100%;
     }
 
     .tour-list-container .tour-list .tour-list-title {
@@ -318,6 +566,54 @@
 
     .tour-list-container .tour-list .tour-list-img {
         display: none;
+    }
+
+    /*------------------- tourView -------------------*/
+    .tour-view {
+        margin: 30px 0 0 0;
+        padding-bottom: 5px;
+    }
+
+    .tour-view .tour-view-container .img {
+        height: 200px;
+    }
+
+    .tour-view .tour-view-container .tour-view-header {
+        margin: 0;
+        padding: 10px;
+    }
+
+    .tour-view .tour-view-container .tour-view-header .title {
+        font-size: 1.1rem;
+    }
+
+    .tour-view .tour-view-container .tour-view-header .location {
+        padding: 10px 5px;
+    }
+
+    .tour-view .tour-view-container .tour-view-header .price {
+        font-size: 1.1rem;
+    }
+
+    .tour-view .tour-view-container .tour-view-header .cart {
+        right: 5px;
+        bottom: 5px;
+    }
+
+    .tour-view .tour-view-container .tour-view-header .cart button {
+        width: 130px;
+    }
+
+    .tour-view .tour-view-container .date-wrap h3 {
+        display: none;
+    }
+
+    .tour-view .tour-view-container .tour-view-content {
+        padding: 25px;
+    }
+
+    .tour-view .tour-review-container {
+        padding: 10px 20px;
     }
 }
 

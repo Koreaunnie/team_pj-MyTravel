@@ -2,9 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import axios from "axios";
-import { Box, HStack, Input, Textarea } from "@chakra-ui/react";
-import { Field } from "../../components/ui/field.jsx";
-import { Button } from "../../components/ui/button.jsx";
 import { Alert } from "../../components/ui/alert.jsx";
 import NoticeList from "./NoticeList.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
@@ -54,72 +51,59 @@ function NoticeEdit(props) {
   };
 
   return (
-    <div>
-      {hasAccessByNickName(notice.writer) && (
-        <div>
-          <Breadcrumb
-            depth1={"공지사항"}
-            navigateToDepth1={() => navigate(`/notice/list`)}
-            depth2={"공지사항 수정"}
-            navigateToDepth2={() => navigate(`/notice/edit/${id}`)}
-          />
-          <br />
-          <br />
-          <Box>
+    <div className={"notice-form form-container"}>
+      <Breadcrumb
+        depth1={"공지사항"}
+        navigateToDepth1={() => navigate(`/notice/list`)}
+        depth2={"공지사항 수정"}
+        navigateToDepth2={() => navigate(`/notice/edit/${id}`)}
+      />
+
+      <div className={"body-normal"}>
+        {hasAccessByNickName(notice.writer) && (
+          <div className={"form-wrap"}>
             <h1>공지사항 수정</h1>
-            <Box
-              mx={"auto"}
-              w={{
-                md: "500px",
-              }}
-            >
-              <Field label={"제목"}>
-                <Input
-                  value={notice.title}
-                  onChange={(e) =>
-                    setNotice({ ...notice, title: e.target.value })
-                  }
-                />
-              </Field>
-              <Field label={"본문"}>
-                <Textarea
-                  value={notice.content}
-                  onChange={(e) =>
-                    setNotice({ ...notice, content: e.target.value })
-                  }
-                  h={300}
-                />
-              </Field>
-              <br />
-              <Box>
-                <HStack>
-                  <div>
-                    <button
-                      className={"btn btn-dark-outline"}
-                      onClick={handleCancelClick}
-                    >
-                      취소
-                    </button>
-                    <Button
-                      className={"btn btn-blue"}
-                      onClick={handleSaveClick}
-                    >
-                      저장
-                    </Button>
-                  </div>
-                </HStack>
-              </Box>
-            </Box>
-          </Box>
-        </div>
-      )}
+
+            <div className={"btn-wrap"}>
+              <button
+                className={"btn btn-dark-outline"}
+                onClick={handleCancelClick}
+              >
+                목록
+              </button>
+              <button className={"btn btn-dark"} onClick={handleSaveClick}>
+                저장
+              </button>
+            </div>
+            <fieldset>
+              <label htmlFor="title">제목</label>
+              <input
+                type={"text"}
+                id={"title"}
+                value={notice.title}
+                onChange={(e) =>
+                  setNotice({ ...notice, title: e.target.value })
+                }
+              />
+
+              <label htmlFor="content">본문</label>
+              <textarea
+                rows={13}
+                value={notice.content}
+                onChange={(e) =>
+                  setNotice({ ...notice, content: e.target.value })
+                }
+              />
+            </fieldset>
+          </div>
+        )}
+      </div>
+
       {hasAccessByNickName(notice.writer) || (
-        <Box>
-          <br />
-          <br />
+        <div>
           <Alert status="warning" title="접근 권한이 없습니다." />
           <NoticeList />
-        </Box>
+        </div>
       )}
     </div>
   );

@@ -1,0 +1,73 @@
+/*------------------- NoticeView -------------------*/
+.notice {
+    width: 100%;
+    margin-top: 60px;
+    min-height: calc(100vh - 230px);
+}
+
+.notice .btn-wrap {
+    display: flex;
+    justify-content: space-between;
+}
+
+.notice .like-wrap ul {
+    display: flex;
+    justify-content: end;
+    margin: 10px;
+    font-size: 1.5rem;
+}
+
+.notice .like-wrap ul .icon {
+    margin: -2px 7px 0 0;
+}
+
+/*------------------- NoticeWrite, NoticeEdit -------------------*/
+
+.notice-form {
+    width: 100%;
+    padding-top: 60px;
+    min-height: calc(100vh - 230px);
+}
+
+.notice-form .btn-wrap {
+    display: flex;
+    justify-content: space-between;
+}
+
+.notice .notice-search {
+    margin: 30px 0 30px 0;
+}
+
+.notice .table-list tr td {
+    padding: 10px;
+}
+
+.notice .table-list tbody td .title {
+    width: calc(100% - 250px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: left;
+}
+
+.notice .table-list tbody td .info {
+    margin-top: 8px;
+    font-size: 0.9em;
+    color: var(--font-gray-color);
+    display: flex;
+    gap: 15px;
+}
+
+.notice .table-list tbody td .info span {
+    display: flex;
+    align-items: center; /* 아이콘과 텍스트 정렬 */
+}
+
+.notice .table-list tbody .writer {
+    width: 150px;
+    font-weight: bold;
+}
+
+.notice .table-list tbody td:nth-child(3) {
+    width: 100px;
+}

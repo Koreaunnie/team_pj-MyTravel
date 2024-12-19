@@ -166,4 +166,17 @@ public interface NoticeMapper {
             VALUES (#{id}, #{person})
             """)
     int InputLikeInNotice(Integer id, String person);
+
+    @Select("""
+            SELECT notice_id noticeId
+            FROM notice_like
+            WHERE person=#{nickname}
+            """)
+    List<Integer> selectWholeNoticeLikeByNickName(String nickname);
+
+    @Delete("""
+            DELETE FROM notice_like
+            WHERE notice_id=#{likeNoticeId} AND person=#{likeUser}
+            """)
+    int deleteLikeByInformation(Integer likeNoticeId, String likeUser);
 }

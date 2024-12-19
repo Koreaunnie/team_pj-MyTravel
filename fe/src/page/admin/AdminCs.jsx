@@ -8,8 +8,9 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../components/ui/pagination.jsx";
-import { HStack } from "@chakra-ui/react";
+import { Center, HStack } from "@chakra-ui/react";
 import { useSearchParams } from "react-router-dom";
+import { IoIosRefresh } from "react-icons/io";
 
 function AdminCs(props) {
   const { isAdmin } = useContext(AuthenticationContext);
@@ -159,6 +160,23 @@ function AdminCs(props) {
 
         {/* 검색 */}
         <div className={"search-form"}>
+          <button
+            onClick={() => {
+              // 1. 검색 상태 초기화
+              setSearch({ type: "all", keyword: "" });
+
+              // 2. URL 검색 파라미터 초기화
+              const nextSearchParam = new URLSearchParams();
+              nextSearchParam.set("type", "all");
+              nextSearchParam.set("key", "");
+
+              setSearchParams(nextSearchParam);
+            }}
+            style={{ marginRight: "10px", cursor: "pointer" }}
+          >
+            <IoIosRefresh />
+          </button>
+
           <select
             onChange={(e) => setSearch({ ...search, type: e.target.value })}
           >
@@ -187,19 +205,21 @@ function AdminCs(props) {
 
         {/* pagination */}
         <div className="pagination">
-          <PaginationRoot
-            onPageChange={handlePageChange}
-            count={countInquiry}
-            pageSize={10}
-            page={page}
-            variant="solid"
-          >
-            <HStack>
-              <PaginationPrevTrigger />
-              <PaginationItems />
-              <PaginationNextTrigger />
-            </HStack>
-          </PaginationRoot>
+          <Center>
+            <PaginationRoot
+              onPageChange={handlePageChange}
+              count={countInquiry}
+              pageSize={10}
+              page={page}
+              variant="solid"
+            >
+              <HStack>
+                <PaginationPrevTrigger />
+                <PaginationItems />
+                <PaginationNextTrigger />
+              </HStack>
+            </PaginationRoot>
+          </Center>
         </div>
       </div>
 

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Stack } from "@chakra-ui/react";
 import axios from "axios";
 import ReviewAdd from "./ReviewAdd.jsx";
 import ReviewList from "./ReviewList.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
+import "./Review.css";
+import { formattedDateTime } from "../../components/utils/FormattedDateTime.jsx";
+import { FaRegQuestionCircle } from "react-icons/fa";
 
 function ReviewContainer({ tourId }) {
   const [reviewList, setReviewList] = useState([]);
@@ -11,6 +13,7 @@ function ReviewContainer({ tourId }) {
   const [paymentCheck, setPaymentCheck] = useState(false);
   const [paidList, setPaidList] = useState([]);
   const [selectedPayment, setSelectedPayment] = useState(null);
+  const [activeTab, setActiveTab] = useState("list");
 
   useEffect(() => {
     if (!processing) {
@@ -155,57 +158,87 @@ function ReviewContainer({ tourId }) {
 
   return (
     <div>
-      <Stack>
-        <h2>후기</h2>
+      <ul className={"tab-btn"}>
+        <li
+          className={activeTab === "list" ? "active" : ""}
+          onClick={() => setActiveTab("list")}
+        >
+          후기
+        </li>
+        <li
+          className={activeTab === "add" ? "active" : ""}
+          onClick={() => setActiveTab("add")}
+          disabled={!paymentHistoryCheck()} // 결제 내역이 없으면 비활성화
+        >
+          후기 작성
+        </li>
+      </ul>
 
-        {/*내역에서 후기 작성할 상품 선택: payment_id 전달*/}
-        {paymentHistoryCheck() ? (
-          <div>
-            <h3>후기를 작성할 이력 선택</h3>
-            <table className={"table-list"}>
-              <thead>
-                <tr>
-                  <th>결제일</th>
-                  <th>결제번호</th>
-                  <th>여행 일정</th>
-                </tr>
-              </thead>
-              <tbody>
-                {paidList.map((tour) => (
-                  <tr
-                    key={tour.paymentId}
-                    onClick={() => setSelectedPayment(tour.paymentId)}
-                    style={{
-                      backgroundColor:
-                        selectedPayment === tour.paymentId
-                          ? "#cdddff"
-                          : "transparent",
-                    }}
-                  >
-                    <td>{tour.paidAt}</td>
-                    <td>{tour.paymentId}</td>
-                    <td>
-                      {tour.startDate}
-                      <br />~{tour.endDate}
-                    </td>
+      {/*내역에서 후기 작성할 상품 선택: payment_id 전달*/}
+      {activeTab === "add" && (
+        <div>
+          {paymentHistoryCheck() ? (
+            <div className={"review-history"}>
+              <h2>후기를 작성할 내역을 선택해주세요.</h2>
+
+              <table className={"table-list"}>
+                <thead>
+                  <tr>
+                    <th>결제일</th>
+                    <th>결제번호</th>
+                    <th>여행 일정</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+
+                <tbody>
+                  {paidList.map((tour) => (
+                    <tr
+                      key={tour.paymentId}
+                      onClick={() => setSelectedPayment(tour.paymentId)}
+                      style={{
+                        backgroundColor:
+                          selectedPayment === tour.paymentId
+                            ? "#cdddff"
+                            : "transparent",
+                      }}
+                    >
+                      <td>{formattedDateTime(tour.paidAt)}</td>
+                      <td>{tour.paymentId}</td>
+                      <td>
+                        {tour.startDate} ~ {tour.endDate}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : null}
+
+          {selectedPayment && (
+            <ReviewAdd
+              tourId={tourId}
+              onSaveClick={handleSaveReviewClick}
+              onRateChange={handleRateChange}
+            />
+          )}
+        </div>
+      )}
+
+      {/*목록*/}
+      {activeTab === "list" &&
+        (reviewList.length === 0 ? (
+          <div className={"empty-container"}>
+            <p>
+              <FaRegQuestionCircle
+                className={"empty-container-icon"}
+                style={{ color: "#a1a1a8" }}
+              />
+            </p>
+            <p className={"empty-container-title"}>작성된 후기가 없습니다.</p>
+            <p className={"empty-container-description"}>
+              다른 날짜를 선택해주세요.
+            </p>
           </div>
-        ) : null}
-
-        {selectedPayment && (
-          <ReviewAdd
-            tourId={tourId}
-            onSaveClick={handleSaveReviewClick}
-            onRateChange={handleRateChange}
-          />
-        )}
-
-        {/*목록*/}
-        {reviewList.length === 0 ? (
-          <p>작성된 후기가 없습니다.</p>
         ) : (
           <ReviewList
             tourId={tourId}
@@ -214,8 +247,7 @@ function ReviewContainer({ tourId }) {
             onEditClick={handleEditReviewClick}
             onRateChange={handleRateChange}
           />
-        )}
-      </Stack>
+        ))}
     </div>
   );
 }

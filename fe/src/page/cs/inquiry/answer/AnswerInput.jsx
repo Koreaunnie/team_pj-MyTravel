@@ -28,11 +28,15 @@ export function AnswerInput({ inquiryId }) {
   }
 
   return (
-    <div className={"inquiry body-normal"}>
+    <div className={"body-normal"}>
       <div className={"answer-input"}>
-        <textarea value={answer} onChange={(e) => setAnswer(e.target.value)} />
+        <textarea
+          rows={5}
+          value={answer}
+          onChange={(e) => setAnswer(e.target.value)}
+        />
         <button className={"btn btn-dark"} onClick={handleSaveButton}>
-          댓글 작성
+          답변 작성
         </button>
       </div>
     </div>

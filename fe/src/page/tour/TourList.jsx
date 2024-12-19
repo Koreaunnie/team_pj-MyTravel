@@ -82,20 +82,11 @@ function TourList() {
   return (
     <div className={"tour"}>
       <Breadcrumb
-        depth1={"Tour 목록"}
+        depth1={"투어"}
         navigateToDepth1={() => navigate(`/tour/list`)}
       />
 
       <div>
-        {(isPartner || isAdmin) && (
-          <button
-            className={"btn btn-blue"}
-            onClick={() => navigate(`/tour/add`)}
-          >
-            새 상품 등록
-          </button>
-        )}
-
         <h1>투어 상품</h1>
         <h2>다양한 투어 상품을 구경해보세요.</h2>
 
@@ -150,6 +141,15 @@ function TourList() {
         <div className={"body-wide"}>
           {/* 보기 선택 */}
           <div className={"tour-btn-wrap"}>
+            {(isPartner || isAdmin) && (
+              <button
+                className={"btn btn-blue"}
+                onClick={() => navigate(`/tour/add`)}
+              >
+                새 상품 등록
+              </button>
+            )}
+
             <button
               className={"btn btn-dark-outline"}
               onClick={() => handleMenuClick("box")}

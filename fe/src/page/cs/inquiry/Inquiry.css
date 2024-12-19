@@ -1,6 +1,44 @@
+.inquiry {
+    width: 100%;
+    margin-top: 30px;
+    padding-top: 30px;
+}
+
+/*------------------- inquiry form -------------------*/
+.form-wrap .inquiry-form-header {
+    display: flex;
+    gap: 30px;
+}
+
+
+.form-wrap .inquiry-form-header select {
+    width: 200px;
+}
+
+.form-wrap .check-secret {
+    display: flex;
+}
+
+.form-wrap .check-secret input {
+    margin: 15px 5px 0 0;
+}
+
+.form-wrap .check-secret label {
+    cursor: pointer;
+}
+
 /*------------------- InquiryList -------------------*/
 .inquiry .table-list .title-center {
     text-align: left;
+}
+
+.inquiry .btn-wrap {
+    display: flex;
+    justify-content: space-between;
+}
+
+.inquiry .search-form {
+    margin-top: 20px;
 }
 
 .inquiry .table-list tbody tr td {
@@ -9,6 +47,23 @@
 
 .inquiry .table-list tbody tr td:nth-child(1) {
     font-size: 0.8rem;
+    width: 50px;
+}
+
+.inquiry .table-list tbody tr td:nth-child(2) {
+    width: 250px;
+}
+
+.inquiry .table-list tbody tr td:nth-child(3) {
+    width: 100px;
+}
+
+.inquiry .table-list tbody tr td:nth-child(4) {
+    width: 80px;
+}
+
+.inquiry .table-list tbody tr td:nth-child(5) {
+    width: 100px;
 }
 
 .inquiry .table-list .secret {

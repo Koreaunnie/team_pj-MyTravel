@@ -1,7 +1,5 @@
 import React, { useContext, useState } from "react";
 import axios from "axios";
-import { Box, HStack, Input, Textarea } from "@chakra-ui/react";
-import { Field } from "../../components/ui/field.jsx";
 import { Button } from "../../components/ui/button.jsx";
 import { useNavigate } from "react-router-dom";
 import {
@@ -51,39 +49,49 @@ function CommunityWrite(props) {
   };
 
   return (
-    <div>
+    <div className={"community-form form-container"}>
+      <Breadcrumb
+        depth1={"커뮤니티"}
+        navigateToDepth1={() => navigate(`/community/list`)}
+        depth2={"게시글 작성"}
+        navigateToDepth1={() => navigate(`/community/list/write`)}
+      />
+
       {authentication.isAuthenticated && (
-        <div>
-          <Breadcrumb
-            depth1={"커뮤니티"}
-            navigateToDepth1={() => navigate(`/community/list`)}
-            depth2={"게시글 작성"}
-            navigateToDepth2={() => navigate(`/community/write`)}
-          />
-          <br />
-          <br />
-          <Box>
+        <div className={"body-normal"}>
+          <div className={"form-wrap"}>
             <h1>게시글 작성</h1>
-            <Box
-              mx={"auto"}
-              w={{
-                md: "500px",
-              }}
-            >
-              <Field label={"제목"}>
-                <Input
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-              </Field>
-              <Field label={"본문"}>
-                <Textarea
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                  h={300}
-                />
-              </Field>
-              <Field label={"파일 첨부"}>
+            <h2>여러분의 여행 이야기를 들려주세요.</h2>
+
+            <div className={"btn-wrap"}>
+              <button
+                className={"btn btn-dark-outline"}
+                onClick={handleCancelClick}
+              >
+                목록
+              </button>
+              <button className={"btn btn-dark"} onClick={handleSaveClick}>
+                저장
+              </button>
+            </div>
+
+            <fieldset>
+              <label htmlFor="title">제목</label>
+              <input
+                type={"text"}
+                id={"title"}
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+
+              <label htmlFor="content">본문</label>
+              <textarea
+                rows={10}
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+              />
+
+              <div className={"attached"} style={{ marginTop: "10px" }}>
                 <FileUploadRoot
                   value={files}
                   maxFiles={5}
@@ -91,50 +99,25 @@ function CommunityWrite(props) {
                   onChange={(e) => setFiles(e.target.files)}
                 >
                   <FileUploadTrigger asChild>
-                    <div>
-                      <Button
-                        className={"btn btn-wide"}
-                        variant="outline"
-                        size="sm"
-                      >
-                        <HiUpload /> Upload file
-                      </Button>
-                    </div>
+                    <Button variant="outline" size="sm">
+                      <HiUpload /> 사진 첨부하기
+                    </Button>
                   </FileUploadTrigger>
                   <FileUploadList showSize clearable />
                 </FileUploadRoot>
-              </Field>
-              <br />
-              <Box>
-                <HStack>
-                  <div>
-                    <button
-                      className={"btn btn-dark-outline"}
-                      onClick={handleCancelClick}
-                    >
-                      취소
-                    </button>
-                    <Button
-                      className={"btn btn-dark"}
-                      onClick={handleSaveClick}
-                    >
-                      저장
-                    </Button>
-                  </div>
-                </HStack>
-              </Box>
-            </Box>
-          </Box>
+              </div>
+            </fieldset>
+          </div>
         </div>
       )}
       {authentication.isAuthenticated || (
-        <Box>
+        <div>
           <Alert
             status="warning"
             title="로그인 한 회원만 게시글 작성이 가능합니다."
           />
           <MemberLogin />
-        </Box>
+        </div>
       )}
     </div>
   );
