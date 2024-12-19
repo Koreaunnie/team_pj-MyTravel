@@ -265,8 +265,8 @@ export function Index() {
       </section>
 
       {/* 투어 */}
-      <section className={"tour-container"}>
-        <div className={"tour-container-header"}>
+      <section className={"index-tour-container"}>
+        <div className={"index-tour-container-header"}>
           <h1>지금 당장 떠나보세요!</h1>
           <button className={"more-btn"} onClick={() => navigate(`/tour/list`)}>
             투어 구경하기
@@ -280,7 +280,7 @@ export function Index() {
           </button>
         </div>
 
-        <div className={"tour-container-body"}>
+        <div className={"index-tour-container-body"}>
           {isEmpty(tourList) ? (
             <div className={"empty-container"}>
               <p className={"empty-container-title"}>투어가 없습니다.</p>
@@ -289,7 +289,7 @@ export function Index() {
               </p>
             </div>
           ) : (
-            <div className={"tour-container-card"}>
+            <div className={"index-tour-container-card"}>
               {tourList.map((tour) => (
                 <ul
                   key={tour.id}

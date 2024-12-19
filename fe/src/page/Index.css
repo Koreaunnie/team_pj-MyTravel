@@ -35,7 +35,7 @@
 
 .main-search-wrap .main-search-wrap-btn {
     cursor: pointer;
-    margin: 20px;
+    padding: 20px;
 }
 
 /*------------------- calendar section -------------------*/
@@ -310,38 +310,38 @@ section.plan-container {
 }
 
 /*------------------- tour -------------------*/
-.tour-container {
+.index-tour-container {
     width: 1000px;
     height: 400px;
     margin: 50px auto;
     box-sizing: border-box;
 }
 
-.tour-container .tour-container-header {
+.index-tour-container .index-tour-container-header {
     display: flex;
     margin: 30px 0;
 }
 
-.tour-container .tour-container-header h1 {
+.index-tour-container .index-tour-container-header h1 {
     margin: 0 auto;
     font-weight: bold;
     font-size: 25px;
 }
 
-.tour-container .tour-container-header .more-btn {
+.index-tour-container .index-tour-container-header .more-btn {
     cursor: pointer;
     font-weight: bold;
     font-size: 0.9rem;
 
 }
 
-.tour-container .tour-container-body .tour-container-card {
+.index-tour-container .index-tour-container-body .index-tour-container-card {
     display: flex;
     justify-content: space-between;
     gap: 10px;
 }
 
-.tour-container .tour-container-body .tour-container-card ul {
+.index-tour-container .index-tour-container-body .index-tour-container-card ul {
     flex: 1 1 calc(25% - 30px); /* 너비 */
     height: 300px;
     margin: 10px;
@@ -354,21 +354,27 @@ section.plan-container {
     transition: transform 0.2s ease, box-shadow 0.1s ease;
 }
 
-.tour-container .tour-container-body .tour-container-card ul:hover {
+.index-tour-container .index-tour-container-body .index-tour-container-card ul:hover {
     transform: translateY(-2px);
     box-shadow: var(--box-shadow);
 }
 
-.tour-container .tour-container-body .tour-container-card .image {
+.index-tour-container .index-tour-container-body .index-tour-container-card .image {
     height: 140px;
     overflow: hidden;
 }
 
-.tour-container .tour-container-body .tour-container-card .li-wrap {
-    padding: 23px;
+.index-tour-container .index-tour-container-body .index-tour-container-card .image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.tour-container .tour-container-body .tour-container-card .title {
+.index-tour-container .index-tour-container-body .index-tour-container-card .li-wrap {
+    padding: 15px;
+}
+
+.index-tour-container .index-tour-container-body .index-tour-container-card .title {
     font-weight: bold;
     font-size: 1rem;
     width: 100%;
@@ -377,22 +383,30 @@ section.plan-container {
     text-overflow: initial;
 }
 
-.tour-container .tour-container-body .tour-container-card li {
+.index-tour-container .index-tour-container-body .index-tour-container-card li {
     font-size: 0.9rem;
 }
 
-.tour-container .tour-container-body .tour-container-card li:nth-child(3) {
-    font-weight: bold;
-    position: absolute;
-    bottom: 45px;
+.index-tour-container .index-tour-container-body .index-tour-container-card li:nth-child(2) {
+    color: var(--font-gray-color);
+    margin-top: 5px;
+    height: 45px;
+    overflow: hidden;
+    text-overflow: initial;
 }
 
-.tour-container .tour-container-body .tour-container-card li:nth-child(4) {
+.index-tour-container .index-tour-container-body .index-tour-container-card li:nth-child(3) {
+    font-weight: bold;
+    position: absolute;
+    bottom: 35px;
+}
+
+.index-tour-container .index-tour-container-body .index-tour-container-card li:nth-child(4) {
     font-size: 0.9rem;
     font-weight: bold;
     color: var(--font-gray-color);
     position: absolute;
-    bottom: 20px;
+    bottom: 10px;
 }
 
 
@@ -608,24 +622,24 @@ section.plan-container {
 
 
     /*------------------- tour -------------------*/
-    .tour-container {
+    .index-tour-container {
         width: 80%;
         height: 800px;
         position: relative;
         margin: 40px auto;
     }
 
-    .tour-container .tour-container-header {
+    .index-tour-container .index-tour-container-header {
         display: flex;
     }
 
-    .tour-container .tour-container-header h1 {
+    .index-tour-container .index-tour-container-header h1 {
         margin: 0 auto;
         font-weight: bold;
         font-size: 25px;
     }
 
-    .tour-container .tour-container-header .more-btn {
+    .index-tour-container .index-tour-container-header .more-btn {
         width: 100%;
         height: 60px;
         color: #000;
@@ -635,12 +649,12 @@ section.plan-container {
         bottom: 0;
     }
 
-    .tour-container .tour-container-body .tour-container-card {
+    .index-tour-container .index-tour-container-body .index-tour-container-card {
         display: block;
         gap: 20px;
     }
 
-    .tour-container .tour-container-body .tour-container-card ul {
+    .index-tour-container .index-tour-container-body .index-tour-container-card ul {
         flex: 1 1 calc(25% - 30px); /* 너비 */
         height: 150px;
         margin: 10px;
@@ -649,21 +663,21 @@ section.plan-container {
         display: flex;
     }
 
-    .tour-container .tour-container-body .tour-container-card ul:hover {
+    .index-tour-container .index-tour-container-body .index-tour-container-card ul:hover {
         transform: translateY(-2px);
         box-shadow: var(--box-shadow);
     }
 
-    .tour-container .tour-container-body .tour-container-card .image {
+    .index-tour-container .index-tour-container-body .index-tour-container-card .image {
         width: 230px;
         height: 100%;
     }
 
-    .tour-container .tour-container-body .tour-container-card .li-wrap {
+    .index-tour-container .index-tour-container-body .index-tour-container-card .li-wrap {
         padding: 20px;
     }
 
-    .tour-container .tour-container-body .tour-container-card .title {
+    .index-tour-container .index-tour-container-body .index-tour-container-card .title {
         font-size: 1rem;
     }
 
@@ -789,7 +803,7 @@ section.plan-container {
 
 
     /*------------------- tour -------------------*/
-    .tour-container {
+    .index-tour-container {
         width: 95%;
         height: 800px;
         position: relative;
@@ -797,17 +811,17 @@ section.plan-container {
         border: 1px solid green;
     }
 
-    .tour-container .tour-container-header {
+    .index-tour-container .index-tour-container-header {
         margin: 20px 0;
     }
 
-    .tour-container .tour-container-header h1 {
+    .index-tour-container .index-tour-container-header h1 {
         font-weight: bold;
         font-size: 1rem;
         border: 1px solid red;
     }
 
-    .tour-container .tour-container-header .more-btn {
+    .index-tour-container .index-tour-container-header .more-btn {
         width: 100%;
         height: 60px;
         color: #000;
@@ -817,12 +831,12 @@ section.plan-container {
         bottom: 0;
     }
 
-    .tour-container .tour-container-body .tour-container-card {
+    .index-tour-container .index-tour-container-body .index-tour-container-card {
         display: block;
         gap: 20px;
     }
 
-    .tour-container .tour-container-body .tour-container-card ul {
+    .index-tour-container .index-tour-container-body .index-tour-container-card ul {
         flex: 1 1 calc(25% - 30px); /* 너비 */
         height: 150px;
         margin: 10px;
@@ -831,25 +845,25 @@ section.plan-container {
         display: flex;
     }
 
-    .tour-container .tour-container-body .tour-container-card ul:hover {
+    .index-tour-container .index-tour-container-body .index-tour-container-card ul:hover {
         transform: translateY(-2px);
         box-shadow: var(--box-shadow);
     }
 
-    .tour-container .tour-container-body .tour-container-card .image {
+    .index-tour-container .index-tour-container-body .index-tour-container-card .image {
         width: 150px;
 
     }
 
-    .tour-container .tour-container-body .tour-container-card .li-wrap {
+    .index-tour-container .index-tour-container-body .index-tour-container-card .li-wrap {
         padding: 20px;
     }
 
-    .tour-container .tour-container-body .tour-container-card .title {
+    .index-tour-container .index-tour-container-body .index-tour-container-card .title {
         font-size: 1rem;
     }
 
-    .tour-container .tour-container-body .tour-container-card li:nth-child(2) {
+    .index-tour-container .index-tour-container-body .index-tour-container-card li:nth-child(2) {
         display: none;
     }
 
