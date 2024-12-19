@@ -269,7 +269,7 @@ function NoticeView(props) {
               <Input value={notice.writer} />
             </Field>
           </Box>
-          {hasAccessByNickName(notice.writer) && (
+          {authentication.isAdmin && (
             <Box>
               <HStack>
                 <DialogRoot>
