@@ -1,4 +1,4 @@
-const REST_API_KEY = import.meta.env.VITE_KAKAO_LOGIN_API_KEY;
+const REST_API_KEY = import.meta.env.VITE_KAKAO_TEST_KEY;
 
 const redirect_uri = "http://localhost:5173/member/login/process";
 

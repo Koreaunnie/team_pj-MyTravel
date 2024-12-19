@@ -13,7 +13,14 @@ function MemberSignupKakao() {
   const navigate = useNavigate();
   const password = randomString();
   const location = useLocation();
-  const { kakaoId, kakaoNickname, kakaoImageSrc } = location.state || {};
+  const {
+    kakaoId,
+    kakaoNickname,
+    kakaoImageSrc,
+    kakaoEmail,
+    kakaoName,
+    kakaoPhone,
+  } = location.state || {};
   const [nickname, setNickname] = useState(kakaoNickname);
   const [name, setName] = useState(kakaoNickname);
   const [files, setFiles] = useState([]);
@@ -31,11 +38,13 @@ function MemberSignupKakao() {
 
     axios
       .postForm("/api/member/signup/kakao", {
-        email: kakaoId,
+        // email: kakaoId,
+        email: kakaoEmail,
         nickname,
         password,
         name,
-        phone,
+        // phone,
+        phone: kakaoPhone,
         files,
         kakaoImageSrc,
       })
@@ -151,27 +160,28 @@ function MemberSignupKakao() {
                 id={"name"}
                 type="text"
                 required
-                defaultValue={kakaoNickname}
+                // defaultValue={kakaoNickname}
+                defaultValue={kakaoName}
                 onChange={(e) => setName(e.target.value)}
               />
             </li>
-            <li>
-              <form>
-                <label htmlFor="phone">
-                  전화번호
-                  <span className={"required"}>&#42;</span>
-                </label>
-              </form>
-              <input
-                placeholder={"숫자만 입력해주세요."}
-                maxLength="20"
-                id={"phone"}
-                type="tel"
-                required
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-              />
-            </li>
+            {/*<li>*/}
+            {/*  <form>*/}
+            {/*    <label htmlFor="phone">*/}
+            {/*      전화번호*/}
+            {/*      <span className={"required"}>&#42;</span>*/}
+            {/*    </label>*/}
+            {/*  </form>*/}
+            {/*  <input*/}
+            {/*    placeholder={"숫자만 입력해주세요."}*/}
+            {/*    maxLength="20"*/}
+            {/*    id={"phone"}*/}
+            {/*    type="tel"*/}
+            {/*    required*/}
+            {/*    value={phone}*/}
+            {/*    onChange={(e) => setPhone(e.target.value)}*/}
+            {/*  />*/}
+            {/*</li>*/}
           </ul>
         </fieldset>
 

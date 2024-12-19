@@ -15,7 +15,7 @@ export function MemberLoginProcess() {
     if (code) {
       const data = new URLSearchParams();
       data.append("grant_type", "authorization_code");
-      data.append("client_id", import.meta.env.VITE_KAKAO_LOGIN_API_KEY); // REST API 키
+      data.append("client_id", import.meta.env.VITE_KAKAO_TEST_KEY); // REST API 키
       data.append("redirect_uri", "http://localhost:5173/member/login/process"); // 리다이렉트 URI
       data.append("code", code); // 인가 코드
 
@@ -28,7 +28,7 @@ export function MemberLoginProcess() {
         })
         .then((response) => {
           const tokenData = response.data;
-          console.log(tokenData.access_token);
+          // console.log("토큰 정보", tokenData);
           if (tokenData.access_token) {
             //사용자 정보 요청
             axios
@@ -50,6 +50,9 @@ export function MemberLoginProcess() {
                 const imageSrc =
                   userInfo.kakao_account.profile.profile_image_url;
                 const kakaoId = userInfo.id;
+                const kakaoEmail = userInfo.kakao_account.email;
+                const name = userInfo.kakao_account.name;
+                const phone = userInfo.kakao_account.phone_number;
 
                 //백엔드 전달
                 axios
@@ -60,6 +63,9 @@ export function MemberLoginProcess() {
                     kakaoId,
                     nickname,
                     imageSrc,
+                    kakaoEmail,
+                    name,
+                    phone,
                     tokenType: tokenData.token_type,
                     //TODO: 불필요한 정보전달 잘라내기
                   })
@@ -81,6 +87,9 @@ export function MemberLoginProcess() {
                         kakaoId,
                         kakaoNickname: nickname,
                         kakaoImageSrc: imageSrc,
+                        kakaoEmail,
+                        kakaoName: name,
+                        kakaoPhone: phone,
                       },
                     });
                   });
