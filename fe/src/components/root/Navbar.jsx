@@ -91,6 +91,52 @@ function Navbar() {
         </ul>
       </div>
 
+      <div className={"pc-user-container"}>
+        {isAuthenticated && (
+          <div ref={dropdownRef}>
+            <p className={"user-info"}>
+              <span className={"user"}>{nickname}</span>
+              님, 환영합니다.
+            </p>
+            <button className={"user-button"} onClick={toggleDropdown}>
+              My Page
+            </button>
+            {dropdownOpen && (
+              <div className={"mypage-toggle-container"}>
+                <ul>
+                  <li onClick={() => navigate(`/mypage/${email}`)}>
+                    회원 정보
+                  </li>
+                  <li onClick={() => navigate(`/payment/history/${email}`)}>
+                    결제 내역
+                  </li>
+                  <li onClick={() => navigate("/cart")}>장바구니</li>
+                  <li
+                    onClick={() => {
+                      logout();
+                      navigate("/member/login");
+                    }}
+                  >
+                    로그아웃
+                  </li>
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
+
+        {isAuthenticated || (
+          <div>
+            <button
+              className={"user-button"}
+              onClick={() => navigate("/member/login")}
+            >
+              Login
+            </button>
+          </div>
+        )}
+      </div>
+
       <button className="hamburger" onClick={toggleHamburgerMenu}>
         <span className="bar"></span>
         <span className="bar"></span>
