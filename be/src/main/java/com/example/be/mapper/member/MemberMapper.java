@@ -10,123 +10,130 @@ import java.util.List;
 public interface MemberMapper {
 
     @Insert("""
-            INSERT INTO member 
-            (email, nickname, password, name, phone)
-            VALUES (#{email}, #{nickname}, #{password}, #{name}, #{phone})
-            """)
+        INSERT INTO member 
+        (email, nickname, password, name, phone)
+        VALUES (#{email}, #{nickname}, #{password}, #{name}, #{phone})
+        """)
     int insert(Member member);
 
     @Select("""
-            SELECT * FROM member
-            WHERE email = #{email}""")
+        SELECT * FROM member
+        WHERE email = #{email}""")
     Member selectByEmail(String email);
 
     @Select("""
-            SELECT email, nickname, inserted
-            FROM member
-            ORDER BY inserted""")
+        SELECT email, nickname, inserted
+        FROM member
+        ORDER BY inserted""")
     List<Member> selectAll();
 
     @Delete("""
-            DELETE FROM member
-            WHERE email = #{email}    
-            """)
+        DELETE FROM member
+        WHERE email = #{email}    
+        """)
     int deleteByEmail(String email);
 
     @Update("""
-            UPDATE member
-               SET nickname = #{nickname}, 
-                   password = #{password},
-                   phone = #{phone}      
-             WHERE email=#{email}
-            """)
+        UPDATE member
+           SET nickname = #{nickname}, 
+               password = #{password},
+               phone = #{phone}      
+         WHERE email=#{email}
+        """)
     int update(MemberEdit member);
 
     @Select("""
-            SELECT *
-            FROM member
-            WHERE nickname = #{nickname}
-            """)
+        SELECT *
+        FROM member
+        WHERE nickname = #{nickname}
+        """)
     Member selectByNickname(String nickname);
 
     @Select("""
-            SELECT picture
-            FROM member
-            WHERE email=#{email}""")
+        SELECT picture
+        FROM member
+        WHERE email=#{email}""")
     String selectPictureByEmail(String email);
 
     @Update("""
-            UPDATE member
-            SET picture = #{filename}
-            WHERE email=#{email}
-            """)
+        UPDATE member
+        SET picture = #{filename}
+        WHERE email=#{email}
+        """)
     int updatePicture(String email, String filename);
 
     @Delete("""
-            DELETE FROM tour_cart
-            WHERE member_email=#{email}
-            """)
+        DELETE FROM tour_cart
+        WHERE member_email=#{email}
+        """)
     int deleteCartByMemberEmail(String email);
 
     @Select("""
-            SELECT auth
-            FROM auth
-            WHERE member_email=#{email}
-            """)
+        SELECT auth
+        FROM auth
+        WHERE member_email=#{email}
+        """)
     List<String> selectAuthByMemberEmail(String email);
 
     @Update("""
-            UPDATE tour
-            SET partner = '탈퇴한 회원',
-                partnerEmail = 'left'
-            WHERE id = #{tourId};
-            """)
+        UPDATE tour
+        SET partner = '탈퇴한 회원',
+            partnerEmail = 'left'
+        WHERE id = #{tourId};
+        """)
     int updatePartnerToLeft(Integer tourId);
 
     @Update("""
-            UPDATE community
-            SET writer = '탈퇴한 회원'
-            WHERE id = #{communityId}
-            """)
+        UPDATE community
+        SET writer = '탈퇴한 회원'
+        WHERE id = #{communityId}
+        """)
     int updateWriterToLeft(Integer communityId);
 
     @Update("""
-            UPDATE community_comment
-            SET writer = '탈퇴한 회원'
-            WHERE id = #{communityCommentId}
-            """)
+        UPDATE community_comment
+        SET writer = '탈퇴한 회원'
+        WHERE id = #{communityCommentId}
+        """)
     int updateCommentWriterToLeft(Integer communityCommentId);
 
     @Delete("""
-            DELETE FROM auth
-            WHERE member_email=#{email}""")
+        DELETE FROM auth
+        WHERE member_email=#{email}""")
     int deleteAuthByEmail(String email);
 
     @Select("""
-            SELECT *
-            FROM member m
-            RIGHT JOIN auth ON m.email = auth.member_email
-            WHERE auth.auth='partner';
-            """)
+        SELECT *
+        FROM member m
+        RIGHT JOIN auth ON m.email = auth.member_email
+        WHERE auth.auth='partner';
+        """)
     List<Member> partnerList();
 
     @Select("""
-            SELECT nickname
-            FROM member
-            WHERE email = #{email}
-            """)
+        SELECT nickname
+        FROM member
+        WHERE email = #{email}
+        """)
     String selectNicknameByEmail(String email);
 
     @Select("""
-            SELECT COUNT(*) FROM member
-            WHERE email=#{kakaoId};      
-            """)
+        SELECT COUNT(*) FROM member
+        WHERE email=#{kakaoId};      
+        """)
     int checkKakaoAccount(String kakaoId);
 
     @Update("""
-            UPDATE member
-            SET kakao=TRUE
-            WHERE email=#{email}""")
+        UPDATE member
+        SET kakao=TRUE
+        WHERE email=#{email}""")
     int setAsKakaoAccount(String email);
 
+    @Update("""
+        UPDATE tour_review
+        SET writer_email='left',
+            writer_nickname='탈퇴한 회원'
+        WHERE review_id=#{reviewId}
+        """)
+    int updateEmailToLeft(Integer reviewId);
 }
