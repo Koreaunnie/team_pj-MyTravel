@@ -6,10 +6,15 @@ import MemberList from "../member/MemberList.jsx";
 import PartnerList from "../member/PartnerList.jsx";
 import "./admin.css";
 import AdminCs from "./AdminCs.jsx";
+import Access from "../../components/context/Access.jsx";
 
 function MyPage(props) {
   const [selectedMenu, setSelectedMenu] = useState("home");
   const { isAdmin, nickname } = useContext(AuthenticationContext);
+
+  if (!isAdmin) {
+    return <Access />;
+  }
 
   const handleMenuClick = (menu) => {
     setSelectedMenu(menu);

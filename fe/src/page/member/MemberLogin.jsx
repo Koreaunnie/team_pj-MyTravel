@@ -10,7 +10,12 @@ function MemberLogin(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const { login } = useContext(AuthenticationContext);
+  const { isAuthenticated, login } = useContext(AuthenticationContext);
+
+  if (isAuthenticated) {
+    alert("이미 로그인 되어 있습니다");
+    navigate(`/`);
+  }
 
   function handleLoginClick() {
     axios
@@ -36,8 +41,9 @@ function MemberLogin(props) {
   }
 
   return (
-    <div className={"body-narrow"}>
+    <div className={"member body-narrow"}>
       <h1>로그인</h1>
+      <h2>로그인 후 마이트래블을 이용해보세요.</h2>
 
       <div className={"member-form"}>
         <ul className={"title"}>

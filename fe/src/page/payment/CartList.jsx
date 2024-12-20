@@ -3,7 +3,9 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
-import { Image } from "@chakra-ui/react";
+import { LuShoppingCart } from "react-icons/lu";
+import "./Cart.css";
+import { formatNumberWithCommas } from "../../components/utils/FormatNumberWithCommas.jsx";
 
 function CartList() {
   const [cartList, setCartList] = useState([]);
@@ -105,90 +107,120 @@ function CartList() {
   const isCartEmpty = !cartList || cartList.length === 0;
 
   return (
-    <div>
-      <h1>장바구니 목록</h1>
-      {isCartEmpty ? (
-        <p>장바구니가 비어 있습니다.</p>
-      ) : (
-        <div>
-          <table className={"table-list"}>
-            <tbody>
-              {cartList.map((cart) => (
-                <tr key={cart.id} onClick={() => handleRowClick(cart.id)}>
-                  <td>
-                    <input
-                      type={"checkbox"}
-                      checked={checkedList.some(
-                        (r) => r.product === cart.product,
-                      )}
-                      onClick={(e) => e.stopPropagation()} // 이벤트 전파 막기
-                      onChange={() => handleCheckboxChange(cart)}
-                    />
-                  </td>
-                  <td>
-                    <Image key={cart.image} src={cart.src} w="200px" />
-                  </td>
-                  <td>{cart.product}</td>
-                  <td>{cart.title}</td>
-                  <td>{cart.location}</td>
-                  <td>{cart.price}</td>
-                  <td>
-                    {cart.startDate} ~ {cart.endDate}
-                  </td>
-                  <button
-                    className={"btn btn-warning"}
-                    key={cart.id}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDeleteClick(cart.id, cart);
-                    }}
-                  >
-                    삭제
-                  </button>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-      <br />
-      {cartList.length === 0 || (
-        <div>
-          <h2>선택한 제품</h2>
-          <form>
+    <div className={"cart-list"}>
+      <h1>장바구니</h1>
+
+      <div className={"body-normal"}>
+        {isCartEmpty ? (
+          <div className={"empty-container"}>
+            <p>
+              <LuShoppingCart
+                className={"empty-container-icon"}
+                style={{ color: "#a1a1a8" }}
+              />
+            </p>
+            <p className={"empty-container-title"}>장바구니가 비었습니다.</p>
+            <p className={"empty-container-description"}>
+              투어 상품을 담아주세요.
+            </p>
+          </div>
+        ) : (
+          <div>
             <table className={"table-list"}>
               <thead>
                 <tr>
-                  <th>
-                    <label htmlFor="product">상품</label>
-                  </th>
-                  <th>
-                    <label htmlFor="price">가격</label>
-                  </th>
+                  <th colSpan={5}>상품</th>
+                  <th colSpan={3}>가격</th>
                 </tr>
               </thead>
               <tbody>
-                {checkedList.map((cart) => (
-                  <tr>
+                {cartList.map((cart) => (
+                  <tr key={cart.id} onClick={() => handleRowClick(cart.id)}>
                     <td>
-                      <input value={cart.product} />
+                      <input
+                        type={"checkbox"}
+                        checked={checkedList.some(
+                          (r) => r.product === cart.product,
+                        )}
+                        onClick={(e) => e.stopPropagation()} // 이벤트 전파 막기
+                        onChange={() => handleCheckboxChange(cart)}
+                      />
                     </td>
                     <td>
-                      <input value={cart.price} />
+                      <img key={cart.image} src={cart.src} />
+                    </td>
+                    <td>{cart.product}</td>
+                    <td>
+                      <span>{cart.location}</span>
+                      <br />
+                      {cart.title}
+                    </td>
+                    <td></td>
+                    <td>{formatNumberWithCommas(cart.price)}</td>
+                    <td>
+                      {cart.startDate} ~ {cart.endDate}
+                    </td>
+                    <td>
+                      <button
+                        className={"btn btn-warning"}
+                        key={cart.id}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteClick(cart.id, cart);
+                        }}
+                      >
+                        삭제
+                      </button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          </form>
-          <button className={"btn btn-dark"} onClick={handlePayButton}>
-            총 {calculateTotalPrice()}원 결제
-          </button>
-          <button className={"btn btn-warning"} onClick={handleDeleteAll}>
-            선택 삭제
-          </button>
-        </div>
-      )}
+          </div>
+        )}
+
+        {cartList.length === 0 || (
+          <div>
+            <h1>선택한 제품</h1>
+
+            <div>
+              <table className={"table-list"}>
+                <thead>
+                  <tr>
+                    <th>
+                      <label htmlFor="product">상품</label>
+                    </th>
+                    <th>
+                      <label htmlFor="price">가격</label>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {checkedList.map((cart) => (
+                    <tr>
+                      <td>
+                        <input value={cart.product} />
+                      </td>
+                      <td>
+                        <input value={formatNumberWithCommas(cart.price)} />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className={"btn-wrap"}>
+              <button className={"btn btn-dark"} onClick={handlePayButton}>
+                총 {formatNumberWithCommas(calculateTotalPrice())}원 결제
+              </button>
+              <button className={"btn btn-warning"} onClick={handleDeleteAll}>
+                선택 삭제
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

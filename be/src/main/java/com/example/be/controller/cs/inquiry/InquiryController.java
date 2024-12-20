@@ -41,23 +41,27 @@ public class InquiryController {
     }
 
     @GetMapping("view/{id}")
-    @PreAuthorize("isAuthenticated()")
+//    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> get(@PathVariable int id, Authentication authentication) {
         // 문의사항
         Inquiry inquiry = service.get(id);
 
-        // 권한 체크
-        boolean isAdmin = memberService.isAdmin(authentication);
-        boolean isWriter = authentication.getName().equals(inquiry.getWriter());
+        if (authentication != null) {
+            // 권한 체크
+            boolean isAdmin = memberService.isAdmin(authentication);
+            boolean isWriter = authentication.getName().equals(inquiry.getWriter());
 
-        if (inquiry.isSecret() && !isAdmin && !isWriter) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+            if (inquiry.isSecret() && !isAdmin && !isWriter) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Map.of("message", Map.of(
-                            "type", "warning",
-                            "text", "비공개 문의내역은 작성자 본인만 확인할 수 있습니다."
+                        "type", "warning",
+                        "text", "비공개 문의내역은 작성자 본인만 확인할 수 있습니다."
                     )));
+            }
+            return ResponseEntity.ok(Map.of("inquiry", inquiry));
+        } else {
+            return ResponseEntity.ok(Map.of("inquiry", inquiry));
         }
-        return ResponseEntity.ok(Map.of("inquiry", inquiry));
     }
 
     @PutMapping("update")
@@ -72,22 +76,22 @@ public class InquiryController {
             boolean isUpdated = service.update(inquiry);
             if (isUpdated) {
                 return ResponseEntity.ok(Map.of("message", Map.of(
-                        "type", "success",
-                        "text", "문의글이 수정되었습니다."
+                    "type", "success",
+                    "text", "문의글이 수정되었습니다."
                 )));
             } else {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
-                        "message", Map.of(
-                                "type", "error",
-                                "text", "문의글 수정 중 오류가 발생했습니다."
-                        )));
+                    "message", Map.of(
+                        "type", "error",
+                        "text", "문의글 수정 중 오류가 발생했습니다."
+                    )));
             }
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of(
-                    "message", Map.of(
-                            "type", "warning",
-                            "text", "자신이 작성한 글만 수정할 수 있습니다."
-                    )));
+                "message", Map.of(
+                    "type", "warning",
+                    "text", "자신이 작성한 글만 수정할 수 있습니다."
+                )));
         }
     }
 
@@ -100,18 +104,18 @@ public class InquiryController {
 
         if (!memberService.isPasswordValid(authentication.getName(), password)) {
             return ResponseEntity.badRequest().body(Map.of("message", Map.of(
-                    "type", "warning", "text", "비밀번호가 일치하지 않습니다."
+                "type", "warning", "text", "비밀번호가 일치하지 않습니다."
             )));
         }
 
         if (service.delete(id, authentication.getName())) {
             // 성공
             return ResponseEntity.ok(Map.of("message", Map.of(
-                    "type", "success", "text", "문의 글이 삭제되었습니다.")));
+                "type", "success", "text", "문의 글이 삭제되었습니다.")));
         } else {
             // 실패
             return ResponseEntity.badRequest().body(Map.of("message", Map.of(
-                    "type", "warning", "text", "삭제 중 오류가 생겼습니다.")));
+                "type", "warning", "text", "삭제 중 오류가 생겼습니다.")));
         }
     }
 }

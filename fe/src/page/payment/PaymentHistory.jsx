@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { toaster } from "../../components/ui/toaster.jsx";
+import { MdOutlinePayment } from "react-icons/md";
+import { formattedDateTime } from "../../components/utils/FormattedDateTime.jsx";
+import "./payment.css";
+import { formatNumberWithCommas } from "../../components/utils/FormatNumberWithCommas.jsx";
 
 function PaymentHistory(props) {
   const [paidList, setPaidList] = useState([]);
@@ -78,119 +82,137 @@ function PaymentHistory(props) {
   };
 
   return (
-    <div>
+    <div className={"payment-history"}>
       <h1>내 결제 내역</h1>
-      {paidList.length === 0 ? (
-        <p>결제한 상품이 없습니다.</p>
-      ) : (
-        <table className={"table-list"}>
-          <thead>
-            <tr>
-              <th>결제일</th>
-              <th>결제 번호</th>
-              <th>상품</th>
-              <th>위치</th>
-              <th>가격</th>
-              <th>여행 날짜</th>
-              <th>리뷰</th>
-              <th colSpan={2}>추가</th>
-            </tr>
-          </thead>
-          <tbody>
-            {paidList.map((tour) => (
-              <tr key={tour.id} onClick={() => handleRowClick(tour.tourId)}>
-                <td>{tour.paidAt}</td>
-                <td>{tour.paymentId}</td>
-                <td>{tour.product}</td>
-                <td>{tour.location}</td>
-                <td>
-                  {tour.price}
-                  {tour.currency === "CURRENCY_KRW" ? "원" : tour.currency}
-                </td>
-                <td>
-                  {tour.startDate}
-                  <br />~{tour.endDate}
-                </td>
+      <h2>결제하신 상품을 확인할 수 있습니다.</h2>
 
-                {/*후기 버튼: 이 tour.id의 후기 작성 경험이 있으면 '확인', 없으면 '작성'*/}
-                <td>
-                  {tour.review ? (
-                    <button
-                      className={"btn btn-dark-outline"}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleWriteReviewClick(tour.tourId);
-                      }}
-                    >
-                      후기 확인
-                    </button>
-                  ) : (
-                    <button
-                      className={"btn btn-dark"}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleWriteReviewClick(tour.tourId);
-                      }}
-                    >
-                      후기 작성
-                    </button>
-                  )}
-                </td>
+      <div className={"body-normal"}>
+        {paidList.length === 0 ? (
+          <div className={"empty-container"}>
+            <p>
+              <MdOutlinePayment
+                className={"empty-container-icon"}
+                style={{ color: "#a1a1a8" }}
+              />
+            </p>
+            <p className={"empty-container-title"}>결제한 상품이 없습니다.</p>
+            <p className={"empty-container-description"}>
+              장바구니를 확인해주세요.
+            </p>
+          </div>
+        ) : (
+          <div className={"payment-list"}>
+            <div>
+              {paidList.map((tour) => (
+                <ul key={tour.id}>
+                  <div className={"payment-list-header"}>
+                    <li>{formattedDateTime(tour.paidAt)}</li>
+                    <li>{tour.paymentId}</li>
+                  </div>
 
-                <td>
-                  {tour.walletId ? (
-                    <button
-                      className={"btn btn-dark-outline"}
-                      onClick={(e) => {
-                        e.stopPropagation();
+                  <div className={"payment-list-body"}>
+                    <li>{tour.location}</li>
+                    <li>{tour.product}</li>
+                    <li>
+                      {tour.startDate} ~ {tour.endDate}
+                    </li>
+                    <div className={"flex"}>
+                      <li>
+                        {formatNumberWithCommas(tour.price)}
+                        {tour.currency === "CURRENCY_KRW"
+                          ? "원"
+                          : tour.currency}
+                      </li>
+                      <li onClick={() => handleRowClick(tour.tourId)}>
+                        결제한 상품 보기 &#8594;
+                      </li>
+                    </div>
+                  </div>
 
-                        navigate(`/wallet/list`);
-                      }}
-                    >
-                      내 지갑 확인
-                    </button>
-                  ) : (
-                    <button
-                      className={"btn btn-dark"}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleAddToWallet(tour);
-                      }}
-                    >
-                      내 지갑에 추가
-                    </button>
-                  )}
-                </td>
+                  {/*후기 버튼: 이 tour.id의 후기 작성 경험이 있으면 '확인', 없으면 '작성'*/}
+                  <div className={"payment-list-footer btn-wrap"}>
+                    <li>
+                      {tour.review ? (
+                        <button
+                          className={"btn btn-dark-outline"}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleWriteReviewClick(tour.tourId);
+                          }}
+                        >
+                          후기 확인
+                        </button>
+                      ) : (
+                        <button
+                          className={"btn btn-dark"}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleWriteReviewClick(tour.tourId);
+                          }}
+                        >
+                          후기 작성
+                        </button>
+                      )}
+                    </li>
 
-                <td>
-                  {tour.planId ? (
-                    <button
-                      className={"btn btn-dark-outline"}
-                      onClick={(e) => {
-                        e.stopPropagation();
+                    <div className={"display-flex"}>
+                      <li>
+                        {tour.walletId ? (
+                          <button
+                            className={"btn btn-dark-outline"}
+                            onClick={(e) => {
+                              e.stopPropagation();
 
-                        navigate(`/plan/list`);
-                      }}
-                    >
-                      내 여행 확인
-                    </button>
-                  ) : (
-                    <button
-                      className={"btn btn-dark"}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleAddToPlan(tour);
-                      }}
-                    >
-                      내 여행에 추가
-                    </button>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+                              navigate(`/wallet/list`);
+                            }}
+                          >
+                            내 지갑 확인
+                          </button>
+                        ) : (
+                          <button
+                            className={"btn btn-dark-outline"}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleAddToWallet(tour);
+                            }}
+                          >
+                            내 지갑에 추가
+                          </button>
+                        )}
+                      </li>
+
+                      <li>
+                        {tour.planId ? (
+                          <button
+                            className={"btn btn-dark-outline"}
+                            onClick={(e) => {
+                              e.stopPropagation();
+
+                              navigate(`/plan/list`);
+                            }}
+                          >
+                            내 여행 확인
+                          </button>
+                        ) : (
+                          <button
+                            className={"btn btn-dark-outline"}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleAddToPlan(tour);
+                            }}
+                          >
+                            내 여행에 추가
+                          </button>
+                        )}
+                      </li>
+                    </div>
+                  </div>
+                </ul>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
