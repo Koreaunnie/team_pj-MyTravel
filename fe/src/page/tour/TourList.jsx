@@ -77,7 +77,9 @@ function TourList() {
   function handlePageChange(e) {
     const pageNumber = { page: e.page };
     const pageQuery = new URLSearchParams(pageNumber);
-    navigate(`/tour/list?${pageQuery.toString()}`);
+    const searchInfo = { type: search.type, key: search.keyword };
+    const searchQuery = new URLSearchParams(searchInfo);
+    navigate(`/tour/list?${searchQuery.toString()}&${pageQuery.toString()}`);
   }
 
   return (
