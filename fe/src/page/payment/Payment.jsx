@@ -194,7 +194,7 @@ function Payment() {
   return (
     <div className={"tour"}>
       <Breadcrumb
-        depth1={"Tour 목록"}
+        depth1={"투어"}
         navigateToDepth1={() => navigate(`/tour/list`)}
         depth2={"장바구니"}
         navigateToDepth2={() => navigate(`/cart`)}

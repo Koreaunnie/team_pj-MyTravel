@@ -97,7 +97,7 @@ function PaymentComplete(props) {
   return (
     <div className={"tour"}>
       <Breadcrumb
-        depth1={"Tour 목록"}
+        depth1={"투어"}
         navigateToDepth1={() => navigate(`/tour/list`)}
         depth2={"장바구니"}
         navigateToDepth2={() => navigate(`/cart`)}
@@ -110,16 +110,24 @@ function PaymentComplete(props) {
         <table className={"table-list"}>
           <thead>
             <tr>
-              <th>선택</th>
               <th colSpan={2}>상품</th>
               <th>일정</th>
               <th>가격</th>
+              <th>선택</th>
             </tr>
           </thead>
           {/*결제한 상품 나열*/}
           {paidList.map((product) => (
             <tbody>
               <tr>
+                <td>
+                  <Image key={product.image} src={product.src} w={"100px"} />
+                </td>
+                <td>{product.product}</td>
+                <td>
+                  {product.startDate} ~ {product.endDate}
+                </td>
+                <td>{product.price}</td>
                 <td>
                   {walletButtons[product.product] ? (
                     <button
@@ -156,32 +164,26 @@ function PaymentComplete(props) {
                     </button>
                   )}
                 </td>
-                <td>
-                  <Image key={product.image} src={product.src} w={"100px"} />
-                </td>
-                <td>{product.product}</td>
-                <td>
-                  {product.startDate} ~ {product.endDate}
-                </td>
-                <td>{product.price}</td>
               </tr>
             </tbody>
           ))}
           {/*총 합*/}
           <tfoot>
             <tr>
-              <td colSpan={3}></td>
+              <td colSpan={2}></td>
               <th>결제 금액</th>
               <td>{totalAmount}</td>
+              <td>
+                <button
+                  className={"btn btn-dark-outline"}
+                  onClick={() => navigate(`/payment/history/${email}`)}
+                >
+                  내 결제 내역으로 이동
+                </button>
+              </td>
             </tr>
           </tfoot>
         </table>
-        <button
-          className={"btn btn-dark-outline"}
-          onClick={() => navigate(`/payment/history/${email}`)}
-        >
-          내 결제 내역으로 이동
-        </button>
       </main>
     </div>
   );
