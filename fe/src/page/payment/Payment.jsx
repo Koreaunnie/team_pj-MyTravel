@@ -84,11 +84,15 @@ function Payment() {
 
       if (paymentComplete.status === "SUCCESS") {
         setPaymentStatus({ status: "SUCCESS" });
+
+        const currentDate = new Date().toISOString().split("T")[0];
+
         navigate(`/payment/complete`, {
           state: {
             paidList: tour,
             paymentId,
             totalAmount,
+            date: currentDate,
           },
         });
       } else {
@@ -151,11 +155,15 @@ function Payment() {
 
       if (paymentComplete.status === "SUCCESS") {
         setPaymentStatus({ status: "SUCCESS" });
+
+        const currentDate = new Date().toISOString().split("T")[0];
+
         navigate(`/payment/complete`, {
           state: {
             paidList: tour,
             paymentId,
             totalAmount,
+            date: currentDate,
           },
         });
       } else {

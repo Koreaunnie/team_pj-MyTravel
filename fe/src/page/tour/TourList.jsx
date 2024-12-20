@@ -15,6 +15,7 @@ import { FaRegQuestionCircle } from "react-icons/fa";
 import "./Tour.css";
 import { formatNumberWithCommas } from "../../components/utils/FormatNumberWithCommas.jsx";
 import { IoSearch } from "react-icons/io5";
+import { Rating } from "../../components/ui/rating.jsx";
 
 function TourList() {
   const [tourList, setTourList] = useState([]);
@@ -76,7 +77,9 @@ function TourList() {
   function handlePageChange(e) {
     const pageNumber = { page: e.page };
     const pageQuery = new URLSearchParams(pageNumber);
-    navigate(`/tour/list?${pageQuery.toString()}`);
+    const searchInfo = { type: search.type, key: search.keyword };
+    const searchQuery = new URLSearchParams(searchInfo);
+    navigate(`/tour/list?${searchQuery.toString()}&${pageQuery.toString()}`);
   }
 
   return (
@@ -199,8 +202,10 @@ function TourList() {
                         <li>{tour.location}</li>
                         <li>{formatNumberWithCommas(tour.price)}원</li>
                         <li className={"tour-list-review"}>
-                          ★★★★★{" "}
-                          <span className={"review-count"}>(리뷰 00개)</span>
+                          <Rating readOnly value={tour.rateAvg} />
+                          <span className={"review-count"}>
+                            (리뷰 {tour.reviewCnt}개)
+                          </span>
                         </li>
                       </div>
                     </ul>

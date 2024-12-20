@@ -7,7 +7,7 @@ import "./Review.css";
 import { formattedDateTime } from "../../components/utils/FormattedDateTime.jsx";
 import { FaRegQuestionCircle } from "react-icons/fa";
 
-function ReviewContainer({ tourId }) {
+function ReviewContainer({ tourId, onReviewUpdate }) {
   const [reviewList, setReviewList] = useState([]);
   const [processing, setProcessing] = useState(false);
   const [paymentCheck, setPaymentCheck] = useState(false);
@@ -31,8 +31,7 @@ function ReviewContainer({ tourId }) {
   }, []);
 
   function handleSaveReviewClick({ review, rating, reviewImg }) {
-    console.log("reviewContainer", reviewImg);
-
+    // console.log("reviewContainer", reviewImg);
     setProcessing(true);
     axios
       .postForm("/api/review/add", {
@@ -55,6 +54,7 @@ function ReviewContainer({ tourId }) {
           .then((res) => setPaidList(res.data));
 
         setSelectedPayment(null);
+        if (onReviewUpdate) onReviewUpdate(); // TourView에 알림
       })
       .catch((error) => {
         console.error("오류 코드", error);
@@ -88,6 +88,8 @@ function ReviewContainer({ tourId }) {
       .then((res) => {
         // 결제 목록 갱신
         setPaidList(res.data);
+        // TourView에 수정 알림(평점 갱신)
+        if (onReviewUpdate) onReviewUpdate();
       })
       .catch((e) => {
         // 오류 처리
@@ -125,6 +127,8 @@ function ReviewContainer({ tourId }) {
           type: message.type,
           description: message.text,
         });
+        // TourView에 수정 알림(평점 갱신)
+        if (onReviewUpdate) onReviewUpdate();
       })
       .catch((e) => {
         const message = e.response.data.message;

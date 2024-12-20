@@ -36,4 +36,7 @@ ALTER TABLE plan
     ADD CONSTRAINT
         FOREIGN KEY (writer) REFERENCES member (email) ON DELETE CASCADE;
 
+ALTER TABLE plan
+    ADD COLUMN payment_detail_id INT REFERENCES payment_detail (id);
+
 SHOW CREATE TABLE plan;

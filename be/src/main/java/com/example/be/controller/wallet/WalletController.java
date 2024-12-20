@@ -24,17 +24,17 @@ public class WalletController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> add(@RequestBody Wallet wallet,
                                                    Authentication authentication) {
-
+        System.out.println(wallet);
         wallet.setWriter(authentication.getName());
 
         if (service.add(wallet)) {
             // 성공
             return ResponseEntity.ok(Map.of("message", Map.of(
-                    "type", "success", "text", "내역이 저장되었습니다")));
+                "type", "success", "text", "내역이 저장되었습니다")));
         } else {
             // 실패
             return ResponseEntity.badRequest().body(Map.of("message", Map.of(
-                    "type", "warning", "text", "정확한 정보를 입력해주세요")));
+                "type", "warning", "text", "정확한 정보를 입력해주세요")));
         }
 
     }
@@ -68,11 +68,11 @@ public class WalletController {
         if (isUpdated) {
             // 성공
             return ResponseEntity.ok(Map.of("message", Map.of(
-                    "type", "success", "text", "수정되었습니다")));
+                "type", "success", "text", "수정되었습니다")));
         } else {
             // 실패
             return ResponseEntity.badRequest().body(Map.of("message", Map.of(
-                    "type", "warning", "text", "정확한 정보를 입력해주세요")));
+                "type", "warning", "text", "정확한 정보를 입력해주세요")));
         }
     }
 
@@ -101,11 +101,11 @@ public class WalletController {
         if (service.deleteSelectedItems(id, writer)) {
             // 성공
             return ResponseEntity.ok(Map.of("message", Map.of(
-                    "type", "success", "text", "삭제되었습니다.")));
+                "type", "success", "text", "삭제되었습니다.")));
         } else {
             // 실패
             return ResponseEntity.badRequest().body(Map.of("message", Map.of(
-                    "type", "warning", "text", "삭제 중 오류가 생겼습니다.")));
+                "type", "warning", "text", "삭제 중 오류가 생겼습니다.")));
         }
     }
 }

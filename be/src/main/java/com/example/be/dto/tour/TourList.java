@@ -22,4 +22,8 @@ public class TourList {
     // 메인화면에서 사용
     private String content;
     private String partner;
+
+    //평점
+    private Integer reviewCnt;
+    private Integer rateAvg;
 }

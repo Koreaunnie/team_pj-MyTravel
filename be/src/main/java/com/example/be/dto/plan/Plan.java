@@ -17,6 +17,9 @@ public class Plan {
     private LocalDate startDate;
     private LocalDate endDate;
 
+    //결제 후 추가할 떄 필요
+    private Integer paymentDetailId;
+
     // 여러 일정을 저장할 plan body fields
     private List<PlanField> planFieldList;
 

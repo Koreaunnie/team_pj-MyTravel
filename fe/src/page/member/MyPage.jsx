@@ -30,7 +30,7 @@ function MyPage(props) {
               : selectedMenu === "paymentHistory"
                 ? "결제 내역"
                 : selectedMenu === "myTour"
-                  ? `${email}의 상품`
+                  ? `자사 상품`
                   : "내가 쓴 글"
         }
         navigateToDepth2={() => {}}
@@ -50,9 +50,7 @@ function MyPage(props) {
             결제 내역
           </button>
           {(isPartner || isAdmin) && (
-            <button onClick={() => handleMenuClick("myTour")}>
-              {email}의 상품
-            </button>
+            <button onClick={() => handleMenuClick("myTour")}>자사 상품</button>
           )}
           <button onClick={() => handleMenuClick("myCommunity")}>
             내가 쓴 글

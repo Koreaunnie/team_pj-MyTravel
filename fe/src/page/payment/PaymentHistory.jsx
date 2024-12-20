@@ -15,6 +15,8 @@ function PaymentHistory(props) {
     });
   }, []);
 
+  console.log(paidList);
+
   function handleRowClick(tourId) {
     navigate(`/tour/view/${tourId}`);
   }
@@ -33,12 +35,16 @@ function PaymentHistory(props) {
         income: 0,
         expense: tour.price,
         memo: tour.location,
+        paymentDetailId: tour.paymentDetailId,
       })
       .then((res) => res.data)
       .then((data) => {
         toaster.create({
           type: data.message.type,
           description: data.message.text,
+        });
+        axios.get(`/api/payment/list/${email}`).then((res) => {
+          setPaidList(res.data);
         });
       });
   };
@@ -52,6 +58,7 @@ function PaymentHistory(props) {
         destination: tour.location,
         startDate: tour.startDate,
         endDate: tour.endDate,
+        paymentDetailId: tour.paymentDetailId,
         planFieldList: [
           {
             memo: `결제번호: ${tour.paymentId}`,
@@ -63,6 +70,9 @@ function PaymentHistory(props) {
         toaster.create({
           type: data.message.type,
           description: data.message.text,
+        });
+        axios.get(`/api/payment/list/${email}`).then((res) => {
+          setPaidList(res.data);
         });
       });
   };
@@ -106,7 +116,7 @@ function PaymentHistory(props) {
                 <td>
                   {tour.review ? (
                     <button
-                      className={"btn btn-dark"}
+                      className={"btn btn-dark-outline"}
                       onClick={(e) => {
                         e.stopPropagation();
                         handleWriteReviewClick(tour.tourId);
@@ -128,27 +138,53 @@ function PaymentHistory(props) {
                 </td>
 
                 <td>
-                  <button
-                    className={"btn btn-dark"}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleAddToWallet(tour);
-                    }}
-                  >
-                    내 지갑에 추가
-                  </button>
+                  {tour.walletId ? (
+                    <button
+                      className={"btn btn-dark-outline"}
+                      onClick={(e) => {
+                        e.stopPropagation();
+
+                        navigate(`/wallet/list`);
+                      }}
+                    >
+                      내 지갑 확인
+                    </button>
+                  ) : (
+                    <button
+                      className={"btn btn-dark"}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleAddToWallet(tour);
+                      }}
+                    >
+                      내 지갑에 추가
+                    </button>
+                  )}
                 </td>
 
                 <td>
-                  <button
-                    className={"btn btn-dark"}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleAddToPlan(tour);
-                    }}
-                  >
-                    내 여행에 추가
-                  </button>
+                  {tour.planId ? (
+                    <button
+                      className={"btn btn-dark-outline"}
+                      onClick={(e) => {
+                        e.stopPropagation();
+
+                        navigate(`/plan/list`);
+                      }}
+                    >
+                      내 여행 확인
+                    </button>
+                  ) : (
+                    <button
+                      className={"btn btn-dark"}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleAddToPlan(tour);
+                      }}
+                    >
+                      내 여행에 추가
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}
