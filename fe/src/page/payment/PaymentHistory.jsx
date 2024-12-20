@@ -15,7 +15,7 @@ function PaymentHistory(props) {
     });
   }, []);
 
-  // console.log(paidList);
+  console.log(paidList);
 
   function handleRowClick(tourId) {
     navigate(`/tour/view/${tourId}`);
@@ -43,12 +43,9 @@ function PaymentHistory(props) {
           type: data.message.type,
           description: data.message.text,
         });
-        // 지갑에 추가 후, 해당 상품의 isInWallet을 true로 설정
-        setPaidList((prevList) =>
-          prevList.map((item) =>
-            item.id === tour.id ? { ...item, isInWallet: true } : item,
-          ),
-        );
+        axios.get(`/api/payment/list/${email}`).then((res) => {
+          setPaidList(res.data);
+        });
       });
   };
 
