@@ -161,10 +161,10 @@ public interface CommunityMapper {
     int deleteFileByFileNumber(Integer fileNumber);
 
     @Select("""
-            SELECT id, comment, writer , inserted creationDate
+            SELECT id, comment, writer , inserted creationDate, community_id
             FROM community_comment
             WHERE community_id=#{id}
-            ORDER BY creationDate ASC
+            ORDER BY creationDate DESC
             """)
     List<Map<String, Object>> callCommunityComment(Integer id);
 
@@ -328,10 +328,4 @@ public interface CommunityMapper {
             """)
     String checkAdmin(String email);
 
-    @Select("""
-            SELECT id, comment, writer, inserted creationDate, community_id
-            FROM community_comment
-            WHERE community_id=#{id}
-            """)
-    List<Map<String, Object>> callCommentList(Integer id);
 }

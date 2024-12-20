@@ -22,7 +22,7 @@ export function CommentList({ communityId, onEditClick, onDeleteClick }) {
         setCommentList(res.data);
       })
       .catch((err) => console.error(err));
-  }, [communityId]);
+  }, [communityId || commentList]);
 
   // 댓글 목록을 다시 가져오는 함수
   const fetch = () => {
@@ -120,7 +120,7 @@ export function CommentList({ communityId, onEditClick, onDeleteClick }) {
     setCommentContent(value);
   };
 
-  const handleEditClick = (id, currentComment) => {
+  const handleCommentEditClick = (id, currentComment) => {
     setEditMode(id); // 수정할 댓글로 전환
     setCommentContent(currentComment); // 기존 댓글 내용으로 설정
   };
@@ -134,7 +134,9 @@ export function CommentList({ communityId, onEditClick, onDeleteClick }) {
           <div className={"comment-list"} key={list.id}>
             <ul className={"comment-btn-wrap"}>
               {hasAccessByNickName(list.writer) && (
-                <li onClick={() => handleEditClick(list.id, list.comment)}>
+                <li
+                  onClick={() => handleCommentEditClick(list.id, list.comment)}
+                >
                   수정
                 </li>
               )}

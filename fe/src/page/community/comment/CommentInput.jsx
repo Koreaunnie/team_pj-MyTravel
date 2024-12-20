@@ -25,10 +25,11 @@ export function CommentInput({ communityId, communityWriter }) {
     // 댓글 목록을 불러오는 함수
     axios
       .get(`/api/community/comment/list/${communityId}`, { communityId })
-      .then((response) => {
-        setCommentList(response.data); // 댓글 목록 업데이트
+      .then((res) => {
+        setCommentList(res.data); // 댓글 목록 업데이트
       });
   }, [communityId]); // communityId가 변경될 때마다 댓글 목록을 불러옴
+
   const fetch = () => {
     axios
       .get(`/api/community/fetch/${communityId}`)

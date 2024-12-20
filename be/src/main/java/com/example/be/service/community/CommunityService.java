@@ -331,6 +331,6 @@ public class CommunityService {
     }
 
     public List<Map<String, Object>> commentList(Integer id) {
-        return mapper.callCommentList(id);
+        return mapper.callCommunityComment(id);
     }
 }
