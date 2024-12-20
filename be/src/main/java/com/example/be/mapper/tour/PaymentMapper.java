@@ -34,13 +34,14 @@ public interface PaymentMapper {
     @Select("""
         SELECT payment.payment_id,
                product,
-               w.id as walletId,
+               w.id     walletId,
+               pl.id    planId,
                location,
                currency,
                paid_at,
                pd.tour_id,
-               startDate,
-               endDate,
+               pd.startDate,
+               pd.endDate,
                tour.price,
                review,
                pd.id as paymentDetailId
@@ -50,6 +51,7 @@ public interface PaymentMapper {
                  LEFT JOIN tour ON tour.id = pd.tour_id
                  LEFT JOIN tour_review tr ON tr.payment_id = payment.payment_id AND tr.tour_id = tour.id
                  LEFT JOIN wallet w ON w.payment_detail_id = pd.id
+                 LEFT JOIN plan pl ON pl.payment_detail_id = pd.id
         WHERE buyer_email = #{email}
         ORDER BY paid_at DESC;    
         """)

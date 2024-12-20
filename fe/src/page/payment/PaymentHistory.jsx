@@ -58,6 +58,7 @@ function PaymentHistory(props) {
         destination: tour.location,
         startDate: tour.startDate,
         endDate: tour.endDate,
+        paymentDetailId: tour.paymentDetailId,
         planFieldList: [
           {
             memo: `결제번호: ${tour.paymentId}`,
@@ -69,6 +70,9 @@ function PaymentHistory(props) {
         toaster.create({
           type: data.message.type,
           description: data.message.text,
+        });
+        axios.get(`/api/payment/list/${email}`).then((res) => {
+          setPaidList(res.data);
         });
       });
   };
@@ -159,15 +163,28 @@ function PaymentHistory(props) {
                 </td>
 
                 <td>
-                  <button
-                    className={"btn btn-dark"}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleAddToPlan(tour);
-                    }}
-                  >
-                    내 여행에 추가
-                  </button>
+                  {tour.planId ? (
+                    <button
+                      className={"btn btn-dark-outline"}
+                      onClick={(e) => {
+                        e.stopPropagation();
+
+                        navigate(`/plan/list`);
+                      }}
+                    >
+                      내 여행 확인
+                    </button>
+                  ) : (
+                    <button
+                      className={"btn btn-dark"}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleAddToPlan(tour);
+                      }}
+                    >
+                      내 여행에 추가
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}

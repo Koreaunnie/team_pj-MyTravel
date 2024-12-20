@@ -19,5 +19,6 @@ public class PaymentHistory {
     private String buyerEmail;
     private String review;
     private Integer walletId;
+    private Integer planId;
     private String paymentDetailId;
 }
