@@ -327,4 +327,11 @@ public interface CommunityMapper {
             WHERE member_email=#{email}
             """)
     String checkAdmin(String email);
+
+    @Select("""
+            SELECT id, comment, writer, inserted creationDate, community_id
+            FROM community_comment
+            WHERE community_id=#{id}
+            """)
+    List<Map<String, Object>> callCommentList(Integer id);
 }

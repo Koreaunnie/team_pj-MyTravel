@@ -329,4 +329,8 @@ public class CommunityService {
             return viewer;
         }
     }
+
+    public List<Map<String, Object>> commentList(Integer id) {
+        return mapper.callCommentList(id);
+    }
 }

@@ -6,30 +6,8 @@ import {
   useParams,
   useSearchParams,
 } from "react-router-dom";
-import {
-  Box,
-  DialogTitle,
-  HStack,
-  Image,
-  Input,
-  Stack,
-  Table,
-  Textarea,
-} from "@chakra-ui/react";
-import { Field } from "../../components/ui/field.jsx";
-import { Button } from "../../components/ui/button.jsx";
-import {
-  DialogActionTrigger,
-  DialogBody,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogRoot,
-  DialogTrigger,
-} from "../../components/ui/dialog.jsx";
+import { Box, HStack, Image, Stack, Table } from "@chakra-ui/react";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
-import { FiMessageSquare } from "react-icons/fi";
-import { LuPencilLine } from "react-icons/lu";
 import { IoMdPhotos } from "react-icons/io";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { HiOutlineBookOpen } from "react-icons/hi";
@@ -79,7 +57,6 @@ function CommunityView(props) {
     axios
       .get(`/api/community/view/${id}`, { id })
       .then((e) => {
-        console.log(e.data);
         setCommunity(e.data);
         setCommentList(e.data.commentList);
         setMyCommunityLike(e.data.myCommunityLike);
@@ -105,8 +82,8 @@ function CommunityView(props) {
       setCommunityList(res.data.list);
       setCountCommunity(res.data.countCommunity);
     });
-  }, [pathname]);
-
+  }, [pathname || <CommentContainer />]);
+  console.log(<CommentContainer />);
   const handleDeleteClick = () => {
     axios
       .delete(`/api/community/delete/${id}`)
@@ -149,84 +126,6 @@ function CommunityView(props) {
       setCommunityList(res.data.list);
       setCountCommunity(res.data.countCommunity);
     });
-  };
-
-  const handleCommentSaveClick = () => {
-    axios
-      .post(`/api/community/comment/write`, {
-        comment,
-        communityId: community.id,
-      })
-      .then((e) => {
-        const writeSuccess = e.data.message;
-        toaster.create({
-          type: writeSuccess.type,
-          description: writeSuccess.text,
-        });
-        fetch();
-      })
-      .catch((e) => {
-        const writeFailure = e.request.response;
-        const parsingKey = JSON.parse(writeFailure);
-        const type = parsingKey.message.type;
-        const text = parsingKey.message.text;
-        toaster.create({
-          type: type,
-          description: text,
-        });
-      })
-      .finally(() => setComment(""));
-  };
-
-  const handleCommentDeleteClick = (id) => {
-    axios
-      .delete(`/api/community/comment/delete/${id}`)
-      .then((e) => {
-        const deleteSuccess = e.data.message;
-        toaster.create({
-          type: deleteSuccess.type,
-          description: deleteSuccess.text,
-        });
-        fetch();
-      })
-      .catch((e) => {
-        const deleteFailure = e.request.response;
-        const parsingKey = JSON.parse(deleteFailure);
-        const type = parsingKey.message.type;
-        const text = parsingKey.message.text;
-        toaster.create({
-          type: type,
-          description: text,
-        });
-      });
-  };
-
-  const handleCommentChange = (id, value) => {
-    setCommentContent((prev) => ({ ...prev, [id]: value }));
-  };
-
-  const handleCommentUpdateClick = (id) => {
-    const updatedComment = commentContent[id]; // 수정된 댓글 가져오기
-    axios
-      .put(`/api/community/comment/edit/${id}`, { comment: updatedComment })
-      .then((e) => {
-        const updateSuccess = e.data.message;
-        toaster.create({
-          type: updateSuccess.type,
-          description: updateSuccess.text,
-        });
-        fetch();
-      })
-      .catch((e) => {
-        const updateFailure = e.request.response;
-        const parsingKey = JSON.parse(updateFailure);
-        const type = parsingKey.message.type;
-        const text = parsingKey.message.text;
-        toaster.create({
-          type: type,
-          description: text,
-        });
-      });
   };
 
   const handleLikeClick = () => {
@@ -343,146 +242,6 @@ function CommunityView(props) {
               communityWriter={community.writer}
             />
           </div>
-
-          <Box>
-            <Stack>
-              <Field fontSize="xl">
-                <strong>
-                  <HStack>
-                    <FiMessageSquare />
-                    코멘트 ({commentList.length})
-                  </HStack>
-                </strong>
-              </Field>
-
-              <Field>
-                {commentList.map((list) => (
-                  <Box value={list.id}>
-                    <HStack>
-                      <Stack>
-                        <HStack>
-                          <Field w={300}>{list.writer}</Field>
-                          <Field>{list.creationDate}</Field>
-                        </HStack>
-                        <HStack>
-                          <Input value={list.comment} readOnly w={450} />
-                          <Box>
-                            <HStack>
-                              {hasAccessByNickName(list.writer) && (
-                                <DialogRoot>
-                                  <DialogTrigger asChild>
-                                    <div>
-                                      <Button
-                                        className={"btn btn-blue"}
-                                        variant="outline"
-                                      >
-                                        수정
-                                      </Button>
-                                    </div>
-                                  </DialogTrigger>
-                                  <DialogContent>
-                                    <DialogHeader>
-                                      <DialogTitle>댓글 수정</DialogTitle>
-                                    </DialogHeader>
-                                    <DialogBody pb="4">
-                                      <Stack gap="4">
-                                        <Field>
-                                          <HStack>
-                                            <LuPencilLine /> 수정하기
-                                          </HStack>
-                                          <Textarea
-                                            defaultValue={list.comment} // 기존 댓글 내용 표시
-                                            onChange={
-                                              (e) =>
-                                                handleCommentChange(
-                                                  list.id,
-                                                  e.target.value,
-                                                ) // 변경 이벤트 핸들러
-                                            }
-                                            placeholder="내용을 입력해주세요."
-                                          />
-                                        </Field>
-                                      </Stack>
-                                    </DialogBody>
-                                    <DialogFooter>
-                                      <DialogActionTrigger asChild>
-                                        <div>
-                                          <button
-                                            className={"btn btn-dark-outline"}
-                                            variant="outline"
-                                          >
-                                            취소
-                                          </button>
-                                        </div>
-                                      </DialogActionTrigger>
-                                      <DialogActionTrigger>
-                                        <div>
-                                          <Button
-                                            className={"btn btn-blue"}
-                                            onClick={() =>
-                                              handleCommentUpdateClick(list.id)
-                                            }
-                                          >
-                                            수정
-                                          </Button>
-                                        </div>
-                                      </DialogActionTrigger>
-                                    </DialogFooter>
-                                  </DialogContent>
-                                </DialogRoot>
-                              )}
-                              {(hasAccessByNickName(list.writer) ||
-                                authentication.isAdmin) && (
-                                <DialogRoot>
-                                  <DialogTrigger>
-                                    <div>
-                                      <Button className={"btn btn-warning"}>
-                                        삭제
-                                      </Button>
-                                    </div>
-                                  </DialogTrigger>
-                                  <DialogContent>
-                                    <DialogHeader>글 삭제</DialogHeader>
-                                    <DialogBody>
-                                      해당 댓글을 정말 삭제하시겠습니까?
-                                    </DialogBody>
-                                    <DialogFooter>
-                                      <DialogActionTrigger>
-                                        <div>
-                                          <button
-                                            className={"btn btn-dark-outline"}
-                                          >
-                                            취소
-                                          </button>
-                                        </div>
-                                      </DialogActionTrigger>
-                                      <DialogActionTrigger>
-                                        <div>
-                                          <Button
-                                            className={"btn btn-warning"}
-                                            onClick={() =>
-                                              handleCommentDeleteClick(list.id)
-                                            }
-                                          >
-                                            삭제
-                                          </Button>
-                                        </div>
-                                      </DialogActionTrigger>
-                                    </DialogFooter>
-                                  </DialogContent>
-                                </DialogRoot>
-                              )}
-                            </HStack>
-                          </Box>
-                        </HStack>
-                      </Stack>
-                    </HStack>
-                  </Box>
-                ))}
-              </Field>
-            </Stack>
-          </Box>
-
           <br />
           <br />
           <Box>

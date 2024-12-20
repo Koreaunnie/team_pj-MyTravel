@@ -17,9 +17,9 @@ export function CommentList({ communityId, onEditClick, onDeleteClick }) {
   useEffect(() => {
     // 댓글 목록을 가져옵니다.
     axios
-      .get(`/api/community/view/${communityId}`)
+      .get(`/api/community/comment/list/${communityId}`)
       .then((res) => {
-        setCommentList(res.data.commentList);
+        setCommentList(res.data);
       })
       .catch((err) => console.error(err));
   }, [communityId]);
@@ -92,6 +92,29 @@ export function CommentList({ communityId, onEditClick, onDeleteClick }) {
       });
   };
 
+  const handleCommentDeleteClick = (id) => {
+    axios
+      .delete(`/api/community/comment/delete/${id}`)
+      .then((e) => {
+        const deleteSuccess = e.data.message;
+        toaster.create({
+          type: deleteSuccess.type,
+          description: deleteSuccess.text,
+        });
+        fetch();
+      })
+      .catch((e) => {
+        const deleteFailure = e.request.response;
+        const parsingKey = JSON.parse(deleteFailure);
+        const type = parsingKey.message.type;
+        const text = parsingKey.message.text;
+        toaster.create({
+          type: type,
+          description: text,
+        });
+      });
+  };
+
   // 댓글 수정 입력값 관리
   const handleCommentChange = (id, value) => {
     setCommentContent(value);
@@ -111,12 +134,12 @@ export function CommentList({ communityId, onEditClick, onDeleteClick }) {
           <div className={"comment-list"} key={list.id}>
             <ul className={"comment-btn-wrap"}>
               {hasAccessByNickName(list.writer) && (
-                <li onClick={(e) => handleEditClick(list.id, list.comment)}>
+                <li onClick={() => handleEditClick(list.id, list.comment)}>
                   수정
                 </li>
               )}
               {(hasAccessByNickName(list.writer) || authentication.isAdmin) && (
-                <li onClick={() => onDeleteClick(list.id)}>삭제</li>
+                <li onClick={() => handleCommentDeleteClick(list.id)}>삭제</li>
               )}
             </ul>
 

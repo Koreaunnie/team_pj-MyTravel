@@ -126,6 +126,11 @@ public class CommunityController {
 
 //    TODO :  게시판 댓글 기능
 
+    @GetMapping("comment/list/{id}")
+    public List<Map<String, Object>> commentList(@PathVariable Integer id) {
+        return service.commentList(id);
+    }
+
     @PostMapping("comment/write")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> commentWrite(@RequestBody CommunityComment communityComment, Authentication auth) {

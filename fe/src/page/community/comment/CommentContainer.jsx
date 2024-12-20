@@ -6,13 +6,11 @@ import { toaster } from "../../../components/ui/toaster.jsx";
 
 function CommentContainer({ communityId, communityWriter }) {
   const [commentList, setCommentList] = useState([]);
-  console.log(communityId);
-  console.log(communityWriter);
 
   useEffect(() => {
     // 댓글 목록을 가져옵니다.
     axios
-      .get(`/api/community/view/${communityId}`)
+      .get(`/api/community/comment/list/${communityId}`, { communityId })
       .then((res) => {
         setCommentList(res.data.commentList);
       })
@@ -54,28 +52,28 @@ function CommentContainer({ communityId, communityWriter }) {
       });
   };
 
-  const handleCommentDeleteClick = (id) => {
-    axios
-      .delete(`/api/community/comment/delete/${id}`)
-      .then((e) => {
-        const deleteSuccess = e.data.message;
-        toaster.create({
-          type: deleteSuccess.type,
-          description: deleteSuccess.text,
-        });
-        fetch();
-      })
-      .catch((e) => {
-        const deleteFailure = e.request.response;
-        const parsingKey = JSON.parse(deleteFailure);
-        const type = parsingKey.message.type;
-        const text = parsingKey.message.text;
-        toaster.create({
-          type: type,
-          description: text,
-        });
-      });
-  };
+  // const handleCommentDeleteClick = (id) => {
+  //   axios
+  //     .delete(`/api/community/comment/delete/${id}`)
+  //     .then((e) => {
+  //       const deleteSuccess = e.data.message;
+  //       toaster.create({
+  //         type: deleteSuccess.type,
+  //         description: deleteSuccess.text,
+  //       });
+  //       fetch();
+  //     })
+  //     .catch((e) => {
+  //       const deleteFailure = e.request.response;
+  //       const parsingKey = JSON.parse(deleteFailure);
+  //       const type = parsingKey.message.type;
+  //       const text = parsingKey.message.text;
+  //       toaster.create({
+  //         type: type,
+  //         description: text,
+  //       });
+  //     });
+  // };
 
   return (
     <div className={"community body-normal"}>
@@ -87,7 +85,6 @@ function CommentContainer({ communityId, communityWriter }) {
         communityId={communityId}
         commentList={commentList}
         onEditClick={handleCommentUpdateClick}
-        onDeleteClick={handleCommentDeleteClick}
       />
     </div>
   );

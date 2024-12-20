@@ -23,10 +23,21 @@ export function CommentInput({ communityId, communityWriter }) {
 
   useEffect(() => {
     // 댓글 목록을 불러오는 함수
-    axios.get(`/api/community/comment/list/${communityId}`).then((response) => {
-      setCommentList(response.data); // 댓글 목록 업데이트
-    });
+    axios
+      .get(`/api/community/comment/list/${communityId}`, { communityId })
+      .then((response) => {
+        setCommentList(response.data); // 댓글 목록 업데이트
+      });
   }, [communityId]); // communityId가 변경될 때마다 댓글 목록을 불러옴
+  const fetch = () => {
+    axios
+      .get(`/api/community/fetch/${communityId}`)
+      .then((res) => {
+        console.log(res.data);
+        setCommentList(res.data.commentList);
+      })
+      .catch((err) => console.error(err));
+  };
 
   const handleCommentSaveClick = () => {
     if (!comment.trim()) {
@@ -48,6 +59,7 @@ export function CommentInput({ communityId, communityWriter }) {
           type: writeSuccess.type,
           description: writeSuccess.text,
         });
+        fetch();
         // 새 댓글을 목록에 바로 추가하여 화면에 반영
         const newComment = {
           comment,
@@ -118,17 +130,6 @@ export function CommentInput({ communityId, communityWriter }) {
             </DialogTrigger>
           </DialogRoot>
         )}
-      </div>
-
-      {/* 댓글 목록 표시 */}
-      <div className={"comment-list"}>
-        {commentList.map((commentItem, index) => (
-          <div key={index} className="comment-item">
-            <p>{commentItem.writer}</p>
-            <p>{commentItem.comment}</p>
-            {/* 댓글 작성 시간을 추가할 수도 있음 */}
-          </div>
-        ))}
       </div>
       <br />
     </div>
