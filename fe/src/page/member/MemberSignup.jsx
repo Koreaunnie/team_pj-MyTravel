@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { toaster } from "../../components/ui/toaster.jsx";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Member.css";
+import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 
 function MemberSignup(props) {
   const [email, setEmail] = useState("");
@@ -15,6 +16,12 @@ function MemberSignup(props) {
   const [nicknameCheck, setNicknameCheck] = useState(true);
   const [passwordCheck, setPasswordCheck] = useState("");
   const navigate = useNavigate();
+  const { isAuthenticated } = useContext(AuthenticationContext);
+
+  if (isAuthenticated) {
+    alert("현재 로그인 상태입니다. 회원가입을 위해선 로그아웃이 필요합니다.");
+    navigate(`/`);
+  }
 
   function handleSignupClick() {
     axios

@@ -49,6 +49,7 @@ import NoticeList from "./page/notice/NoticeList.jsx";
 import NoticeWrite from "./page/notice/NoticeWrite.jsx";
 import NoticeView from "./page/notice/NoticeView.jsx";
 import NoticeEdit from "./page/notice/NoticeEdit.jsx";
+import Access from "./components/context/Access.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -263,6 +264,11 @@ const router = createBrowserRouter([
       {
         path: "admin",
         element: <AdminPage />,
+      },
+      // 접근 제한
+      {
+        path: "access/denied",
+        element: <Access />,
       },
     ],
   },
