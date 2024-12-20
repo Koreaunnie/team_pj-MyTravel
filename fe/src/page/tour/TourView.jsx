@@ -34,6 +34,7 @@ function TourView() {
   const [saveModalOpen, setSaveModalOpen] = useState(false);
   const [endDate, setEndDate] = useState("");
   const [loginModalOpen, setLoginModalOpen] = useState(false);
+  const [reviewUpdated, setReviewUpdated] = useState(false);
   const reviewRef = useRef(null);
 
   const { hasAccess, isAuthenticated, isAdmin } = useContext(
@@ -55,7 +56,13 @@ function TourView() {
   useEffect(() => {
     if (!id) return; // id가 없으면 실행하지 않음
     axios.get(`/api/tour/view/${id}`).then((res) => setTour(res.data));
-  }, [id]);
+  }, [id, reviewUpdated]);
+
+  // console.log(tour);
+
+  const handleReviewUpdate = () => {
+    setReviewUpdated((prev) => !prev);
+  };
 
   if (tour === null) {
     return <p>존재하지 않는 상품 정보입니다.</p>;
@@ -180,7 +187,7 @@ function TourView() {
                 </div>
 
                 <li className={"review"}>
-                  <Rating readOnly value={tour.rateAvg} allowHalf step={0.5} />
+                  <Rating readOnly value={tour.rateAvg} />
                   <span className={"review-count"}>
                     (리뷰 {tour.reviewCnt}개)
                   </span>
@@ -249,7 +256,10 @@ function TourView() {
         )}
 
         <div ref={reviewRef} className={"tour-review-container"}>
-          <ReviewContainer tourId={tour.id} />
+          <ReviewContainer
+            tourId={tour.id}
+            onReviewUpdate={handleReviewUpdate}
+          />
         </div>
 
         {/*장바구니 추가 modal*/}

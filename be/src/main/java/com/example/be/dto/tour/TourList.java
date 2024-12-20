@@ -25,5 +25,5 @@ public class TourList {
 
     //평점
     private Integer reviewCnt;
-    private Double rateAvg;
+    private Integer rateAvg;
 }
