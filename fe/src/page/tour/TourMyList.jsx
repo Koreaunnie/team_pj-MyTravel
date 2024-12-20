@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { FaRegQuestionCircle } from "react-icons/fa";
 
 function TourMyList(props) {
   const [tourList, setTourList] = useState([]);
@@ -16,10 +17,23 @@ function TourMyList(props) {
   }
 
   return (
-    <div>
+    <div className={"tour-mylist"}>
       <h1>등록 상품</h1>
       {tourList.length === 0 ? (
-        <p>아직 등록한 상품이 없습니다.</p>
+        <div className={"empty-container"}>
+          <p>
+            <FaRegQuestionCircle
+              className={"empty-container-icon"}
+              style={{ color: "#a1a1a8" }}
+            />
+          </p>
+          <p className={"empty-container-title"}>
+            작성된 커뮤니티 게시물이 없습니다.
+          </p>
+          <p className={"empty-container-description"}>
+            여행 이야기를 들려주세요.
+          </p>
+        </div>
       ) : (
         <table className={"table-list"}>
           <thead>

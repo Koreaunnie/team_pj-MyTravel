@@ -1,3 +1,7 @@
+import React from "react";
+import kakao from "../../assets/kakao_login_wide.png";
+import "./kakao.css";
+
 const REST_API_KEY = import.meta.env.VITE_KAKAO_LOGIN_API_KEY;
 
 const redirect_uri = "http://localhost:5173/member/login/process";
@@ -9,11 +13,15 @@ const SocialKakao = () => {
   };
 
   return (
-    <>
-      <button onClick={handleKakaoLogin} style={{ cursor: "pointer" }}>
-        <img src="https://prj241114-j19121m.s3.ap-northeast-2.amazonaws.com/teamPrj1126/74/kakao_login_medium_narrow.png" />
+    <div className={"kakao-login"}>
+      <button
+        className={"btn"}
+        onClick={handleKakaoLogin}
+        style={{ cursor: "pointer" }}
+      >
+        <img src={kakao} alt={"카카오 로그인"} />
       </button>
-    </>
+    </div>
   );
 };
 
