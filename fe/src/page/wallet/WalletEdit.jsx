@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import { Spinner } from "@chakra-ui/react";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { Modal } from "../../components/root/Modal.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
+import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
+import Access from "../../components/context/Access.jsx";
+import { Spinner } from "@chakra-ui/react";
 
 function WalletEdit(props) {
   const { id } = useParams();
@@ -22,12 +24,14 @@ function WalletEdit(props) {
   const [paymentMethod, setPaymentMethod] = useState("");
   const [memo, setMemo] = useState("");
   const [category, setCategory] = useState(categoryOptions[0]);
+  const [writer, setWriter] = useState("");
 
   const [backToListModalOpen, setBackToListModalOpen] = useState(false);
   const [saveModalOpen, setSaveModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   const navigate = useNavigate();
+  const { hasAccess, isAdmin } = useContext(AuthenticationContext);
 
   useEffect(() => {
     async function fetchData() {
@@ -48,6 +52,7 @@ function WalletEdit(props) {
         setExpense(walletData.expense);
         setPaymentMethod(walletData.paymentMethod);
         setMemo(walletData.memo);
+        setWriter(walletData.writer);
       } catch (error) {
         console.error("데이터를 가져오는 중 문제가 발생했습니다:", error);
       }
@@ -58,6 +63,10 @@ function WalletEdit(props) {
 
   if (wallet === null) {
     return <Spinner />;
+  }
+
+  if (!hasAccess(writer) || wallet === null) {
+    return <Access />;
   }
 
   // 새 카테고리 추가

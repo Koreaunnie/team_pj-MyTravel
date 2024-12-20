@@ -32,11 +32,11 @@ function TourUpdate() {
 
   useEffect(() => {
     if (tour !== null && !(hasAccess(tour.partnerEmail) || isAdmin)) {
-      toaster.create({
-        type: "error",
-        description: "접근 권한이 없습니다.",
-      });
-      navigate("/", { replace: true });
+      // toaster.create({
+      //   type: "error",
+      //   description: "접근 권한이 없습니다.",
+      // });
+      navigate("/access/denied", { replace: true });
     }
   }, [tour, hasAccess, isAdmin, navigate]);
 
