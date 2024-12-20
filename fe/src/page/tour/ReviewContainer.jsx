@@ -175,7 +175,22 @@ function ReviewContainer({ tourId }) {
       </ul>
 
       {/*내역에서 후기 작성할 상품 선택: payment_id 전달*/}
-      {activeTab === "add" && (
+      {activeTab === "add" && paidList.length === 0 ? (
+        <div className={"empty-container"}>
+          <p>
+            <FaRegQuestionCircle
+              className={"empty-container-icon"}
+              style={{ color: "#a1a1a8" }}
+            />
+          </p>
+          <p className={"empty-container-title"}>
+            후기를 작성하실 수 없습니다.
+          </p>
+          <p className={"empty-container-description"}>
+            투어 상품을 이용하신 고객님만 후기를 작성하실 수 있습니다.
+          </p>
+        </div>
+      ) : (
         <div>
           {paymentHistoryCheck() ? (
             <div className={"review-history"}>
@@ -236,7 +251,7 @@ function ReviewContainer({ tourId }) {
             </p>
             <p className={"empty-container-title"}>작성된 후기가 없습니다.</p>
             <p className={"empty-container-description"}>
-              다른 날짜를 선택해주세요.
+              여러분의 후기를 기다립니다!
             </p>
           </div>
         ) : (
