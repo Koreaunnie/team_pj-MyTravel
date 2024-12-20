@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { FaRegQuestionCircle } from "react-icons/fa";
 
 function CommunityMyList(props) {
   const [communityList, setCommunityList] = useState([]);
@@ -18,10 +19,23 @@ function CommunityMyList(props) {
   }
 
   return (
-    <div>
+    <div className={"community-mylist"}>
       <h1>커뮤니티</h1>
       {communityList.length === 0 ? (
-        <p>작성된 커뮤니티 게시물이 없습니다.</p>
+        <div className={"empty-container"}>
+          <p>
+            <FaRegQuestionCircle
+              className={"empty-container-icon"}
+              style={{ color: "#a1a1a8" }}
+            />
+          </p>
+          <p className={"empty-container-title"}>
+            작성된 커뮤니티 게시물이 없습니다.
+          </p>
+          <p className={"empty-container-description"}>
+            여행 이야기를 들려주세요.
+          </p>
+        </div>
       ) : (
         <table className={"table-list"}>
           <thead>

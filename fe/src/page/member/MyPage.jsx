@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
-import { Box, VStack } from "@chakra-ui/react";
 import MemberInfo from "./MemberInfo.jsx";
 import TourMyList from "../tour/TourMyList.jsx";
 import PaymentHistory from "../payment/PaymentHistory.jsx";
@@ -35,35 +34,57 @@ function MyPage(props) {
         }
         navigateToDepth2={() => {}}
       />
-      <h1>마이페이지</h1>
-      <Box>
-        <VStack align={"start"} spacing={"10px"}>
-          <button
-            onClick={() => {
-              handleMenuClick("profile");
-            }}
-          >
-            내 프로필
-          </button>
-          <button onClick={() => handleMenuClick("cart")}>내 장바구니</button>
-          <button onClick={() => handleMenuClick("paymentHistory")}>
-            결제 내역
-          </button>
-          {(isPartner || isAdmin) && (
-            <button onClick={() => handleMenuClick("myTour")}>자사 상품</button>
-          )}
-          <button onClick={() => handleMenuClick("myCommunity")}>
-            내가 쓴 글
-          </button>
-        </VStack>
-      </Box>
-      <Box flex="1" padding="20px">
-        {selectedMenu === "profile" && <MemberInfo />}
-        {selectedMenu === "cart" && <CartList />}
-        {selectedMenu === "paymentHistory" && <PaymentHistory />}
-        {selectedMenu === "myTour" && <TourMyList />}
-        {selectedMenu === "myCommunity" && <CommunityMyList />}
-      </Box>
+
+      <div className={"body-wide member-mypage"}>
+        <h1>마이페이지</h1>
+
+        <nav className={"mypage-nav"}>
+          <ul>
+            <li
+              className={selectedMenu === "profile" ? "active" : ""}
+              onClick={() => {
+                handleMenuClick("profile");
+              }}
+            >
+              내 프로필
+            </li>
+            <li
+              className={selectedMenu === "cart" ? "active" : ""}
+              onClick={() => handleMenuClick("cart")}
+            >
+              장바구니
+            </li>
+            <li
+              className={selectedMenu === "paymentHistory" ? "active" : ""}
+              onClick={() => handleMenuClick("paymentHistory")}
+            >
+              결제 내역
+            </li>
+            {(isPartner || isAdmin) && (
+              <li
+                className={selectedMenu === "myTour" ? "active" : ""}
+                onClick={() => handleMenuClick("myTour")}
+              >
+                자사 상품
+              </li>
+            )}
+            <li
+              className={selectedMenu === "myCommunity" ? "active" : ""}
+              onClick={() => handleMenuClick("myCommunity")}
+            >
+              내가 쓴 글
+            </li>
+          </ul>
+        </nav>
+
+        <section className={"mypage-body"}>
+          {selectedMenu === "profile" && <MemberInfo />}
+          {selectedMenu === "cart" && <CartList />}
+          {selectedMenu === "paymentHistory" && <PaymentHistory />}
+          {selectedMenu === "myTour" && <TourMyList />}
+          {selectedMenu === "myCommunity" && <CommunityMyList />}
+        </section>
+      </div>
     </div>
   );
 }
