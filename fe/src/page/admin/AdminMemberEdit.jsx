@@ -24,6 +24,7 @@ import {
   FileUploadTrigger,
 } from "../../components/ui/file-button.jsx";
 import { HiUpload } from "react-icons/hi";
+import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 
 export function AdminMemberEdit() {
   const [member, setMember] = useState(null);
@@ -110,6 +111,12 @@ export function AdminMemberEdit() {
 
   return (
     <div className={"member-edit"}>
+      <Breadcrumb
+        depth1={"관리자 모드"}
+        navigateToDepth1={() => navigate(`/admin`)}
+        depth2={"회원 정보 수정"}
+        navigateToDepth2={() => {}}
+      />
       <h1>회원 정보 수정</h1>
 
       <ProfileImageView files={member.profile} />

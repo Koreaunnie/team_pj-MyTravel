@@ -19,6 +19,7 @@ import { AuthenticationContext } from "../../components/context/AuthenticationPr
 import { ProfileImageView } from "../../components/Image/ProfileImageView.jsx";
 import Access from "../../components/context/Access.jsx";
 import "/src/page/member/Member.css";
+import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 
 function AdminMemberView(props) {
   const [member, setMember] = useState(null);
@@ -26,7 +27,7 @@ function AdminMemberView(props) {
   const [open, setOpen] = useState(false);
   const { email } = useParams();
   const navigate = useNavigate();
-  const { logout, isAdmin } = useContext(AuthenticationContext);
+  const { logout, isAdmin, isPartner } = useContext(AuthenticationContext);
 
   useEffect(() => {
     axios.get(`/api/member/${email}`).then((res) => setMember(res.data));
@@ -69,6 +70,12 @@ function AdminMemberView(props) {
 
   return (
     <div className={"member-info"}>
+      <Breadcrumb
+        depth1={"관리자 모드"}
+        navigateToDepth1={() => navigate(`/admin`)}
+        depth2={member.nickname + "의 프로필"}
+        navigateToDepth2={() => {}}
+      />
       <h1>회원 정보</h1>
 
       <ProfileImageView files={member.profile} />
