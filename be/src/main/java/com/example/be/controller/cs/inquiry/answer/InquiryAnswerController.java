@@ -70,7 +70,7 @@ public class InquiryAnswerController {
     public ResponseEntity<Map<String, Object>> delete(@PathVariable int id) {
         if (service.delete(id)) {
             return ResponseEntity.ok().body(Map.of("message",
-                    Map.of("type", "success",
+                    Map.of("type", "warning",
                             "text", "댓글이 삭제되었습니다.")));
         } else {
             return ResponseEntity.internalServerError().body(Map.of("message",
