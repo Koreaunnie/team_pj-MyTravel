@@ -5,10 +5,26 @@
     min-height: calc(100vh - 230px);
 }
 
+/* ---------------- CommunityView----------------*/
+.community .table-view thead .thead-sub-title1 {
+    height: 40px;
+}
+
+.community .table-view thead .thead-sub-title2 {
+    height: 35px;
+    text-align: right;
+}
+
+.community .table-view thead .thead-sub-title2 th {
+    font-size: 0.9rem;
+    font-weight: normal;
+}
+
 
 /* ---------------- CommunityList ----------------*/
 .community {
     width: 100%;
+    background: var(--bg-gray-color);
 }
 
 .community .body-normal {

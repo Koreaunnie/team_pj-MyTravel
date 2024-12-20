@@ -10,7 +10,6 @@ import {
   Box,
   DialogTitle,
   HStack,
-  Icon,
   Image,
   Input,
   Stack,
@@ -31,7 +30,7 @@ import {
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import { FiMessageSquare } from "react-icons/fi";
 import { LuPencilLine } from "react-icons/lu";
-import { IoMdHeart, IoMdHeartEmpty, IoMdPhotos } from "react-icons/io";
+import { IoMdPhotos } from "react-icons/io";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { HiOutlineBookOpen } from "react-icons/hi";
 import { GoHeart } from "react-icons/go";
@@ -312,63 +311,17 @@ function CommunityView(props) {
           )}
         </div>
 
-        <div className={"table-view"}>
-          <Box>
-            <Field readOnly>
-              <HStack>
-                <Icon>
-                  <HiOutlineBookOpen />
-                </Icon>{" "}
-                : {community.views} | {creationDate}
-              </HStack>
-            </Field>
-
-            <Field readOnly>
-              <Textarea value={community.content} />
-            </Field>
-            <Field label={"파일"} readOnly>
-              <ImageFileView files={community.files} />
-            </Field>
-
-            <div className={"like-wrap"}>
-              <ul>
-                <li className={"icon"}>
-                  <Icon
-                    color="red.600"
-                    onClick={() => {
-                      if (authentication.isAuthenticated) {
-                        handleLikeClick(); // 로그인한 경우 좋아요 처리
-                      } else {
-                        setLikeModalOpen(true);
-                      }
-                    }}
-                  >
-                    {myCommunityLike ? <IoMdHeart /> : <IoMdHeartEmpty />}
-                  </Icon>
-                </li>
-                <li>{community.like}</li>
-              </ul>
-            </div>
-          </Box>
-
+        <div>
           <table className={"table-view"}>
             <thead>
               <tr className={"thead-title"}>
                 <th colSpan={2}>{community.title}</th>
               </tr>
-              <tr className={"thead-sub-title"}>
+              <tr className={"thead-sub-title1"}>
                 <th>{community.writer}</th>
                 <th>{formattedDateTime(community.creationDate)}</th>
               </tr>
-              <tr className={"thead-sub-title"}>
-                <th>
-                  <GoHeart /> {community.numberOfLikes} |{" "}
-                </th>
-                <th>
-                  <HiOutlineBookOpen /> {community.numberOfViews}
-                </th>
-              </tr>
-              <tr>
+              <tr className={"thead-sub-title2"}>
                 <th colSpan={2}>조회수 {community.views}</th>
               </tr>
             </thead>
