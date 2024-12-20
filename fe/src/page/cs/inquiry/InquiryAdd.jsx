@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Breadcrumb } from "/src/components/root/Breadcrumb.jsx";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Modal } from "../../../components/root/Modal.jsx";
 import "./Inquiry.css";
+import { AuthenticationContext } from "../../../components/context/AuthenticationProvider.jsx";
+import Access from "../../../components/context/Access.jsx";
 
 function InquiryAdd(props) {
   const [category, setCategory] = useState("plan");
@@ -16,6 +18,11 @@ function InquiryAdd(props) {
   const [saveModalOpen, setSaveModalOpen] = useState(false);
 
   const navigate = useNavigate();
+  const { isAuthenticated } = useContext(AuthenticationContext);
+
+  if (!isAuthenticated) {
+    return <Access />;
+  }
 
   const handleSaveButton = () => {
     axios

@@ -17,6 +17,7 @@ import {
 import { toaster } from "../../components/ui/toaster.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { ProfileImageView } from "../../components/Image/ProfileImageView.jsx";
+import Access from "../../components/context/Access.jsx";
 
 function MemberInfo(props) {
   const [member, setMember] = useState(null);
@@ -31,12 +32,7 @@ function MemberInfo(props) {
   }, []);
 
   if (!member) {
-    return (
-      <div>
-        <p>접근 권한이 없습니다.</p>
-        <a href="/">홈페이지로 이동</a>
-      </div>
-    );
+    return <Access />;
   }
 
   function handleDeleteClick() {

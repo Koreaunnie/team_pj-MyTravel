@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthenticationContext } from "./AuthenticationProvider.jsx";
 
 function Access(props) {
   const navigate = useNavigate();
+  const { isAuthenticated } = useContext(AuthenticationContext);
 
   return (
     <>
@@ -15,12 +17,14 @@ function Access(props) {
       >
         홈페이지로 이동
       </button>
-      <button
-        onClick={() => navigate(`/member/login`)}
-        className={"btn btn-dark-outline"}
-      >
-        로그인 페이지로 이동
-      </button>
+      {isAuthenticated ? null : (
+        <button
+          onClick={() => navigate(`/member/login`)}
+          className={"btn btn-dark-outline"}
+        >
+          로그인 페이지로 이동
+        </button>
+      )}
       <br />
     </>
   );

@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { Modal } from "../../components/root/Modal.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
+import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
+import Access from "../../components/context/Access.jsx";
 
 function WalletAdd(props) {
   const [saveModalOpen, setSaveModalOpen] = useState(false);
@@ -27,6 +29,12 @@ function WalletAdd(props) {
   const [memo, setMemo] = useState("");
 
   const navigate = useNavigate();
+
+  const { isAuthenticated } = useContext(AuthenticationContext);
+
+  if (!isAuthenticated) {
+    return <Access />;
+  }
 
   // 카테고리 목록 불러오기
   useEffect(() => {

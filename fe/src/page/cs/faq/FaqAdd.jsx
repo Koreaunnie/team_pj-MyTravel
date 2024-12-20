@@ -5,6 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "../../../components/ui/toaster.jsx";
 import { AuthenticationContext } from "../../../components/context/AuthenticationProvider.jsx";
+import Access from "../../../components/context/Access.jsx";
 
 function FaqAdd(props) {
   const [question, setQuestion] = useState("");
@@ -14,6 +15,10 @@ function FaqAdd(props) {
   const { isAdmin, isAuthenticated } = useContext(AuthenticationContext);
 
   const navigate = useNavigate();
+
+  if (!isAdmin) {
+    return <Access />;
+  }
 
   const handleSaveButton = () => {
     if (!isAuthenticated) {

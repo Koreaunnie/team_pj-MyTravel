@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Breadcrumb } from "../../../components/root/Breadcrumb.jsx";
 import { Modal } from "../../../components/root/Modal.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { Spinner } from "@chakra-ui/react";
 import { toaster } from "../../../components/ui/toaster.jsx";
+import Access from "../../../components/context/Access.jsx";
+import { AuthenticationContext } from "../../../components/context/AuthenticationProvider.jsx";
 
 function FaqEdit(props) {
   const { id } = useParams();
@@ -14,6 +16,11 @@ function FaqEdit(props) {
   const [backToListModalOpen, setBackToListModalOpen] = useState(false);
   const [saveModalOpen, setSaveModalOpen] = useState(false);
   const navigate = useNavigate();
+  const { isAdmin } = useContext(AuthenticationContext);
+
+  if (!isAdmin) {
+    return <Access />;
+  }
 
   useEffect(() => {
     axios.get(`/api/cs/faq/view/${id}`).then((res) => {

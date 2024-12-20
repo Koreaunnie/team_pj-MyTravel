@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import axios from "axios";
 import "./Plan.css";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +7,8 @@ import { Modal } from "/src/components/root/Modal.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import { GoogleMapsAdd } from "./GoogleMaps/GoogleMapsAdd.jsx";
 import { FaMinus, FaPlus } from "react-icons/fa6";
+import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
+import Access from "../../components/context/Access.jsx";
 
 function PlanAdd(props) {
   const [backToListModalOpen, setBackToListModalOpen] = useState(false);
@@ -29,6 +31,11 @@ function PlanAdd(props) {
 
   const fieldRefs = useRef([]);
   const navigate = useNavigate();
+  const { isAuthenticated } = useContext(AuthenticationContext);
+
+  if (!isAuthenticated) {
+    return <Access />;
+  }
 
   // div 입력값을 상태로 업데이트하는 함수
   const handleFieldChange = (index, field, value) => {

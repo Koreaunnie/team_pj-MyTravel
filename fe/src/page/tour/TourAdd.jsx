@@ -6,6 +6,7 @@ import { toaster } from "../../components/ui/toaster.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { useNavigate } from "react-router-dom";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
+import Access from "../../components/context/Access.jsx";
 
 export function TourAdd() {
   const [title, setTitle] = useState("");
@@ -72,8 +73,7 @@ export function TourAdd() {
   }
 
   if (!userToken || (!isPartner && !isAdmin)) {
-    navigate(`/access/denied`);
-    return;
+    return <Access />;
   }
 
   return (
