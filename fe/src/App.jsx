@@ -7,9 +7,7 @@ import CommunityView from "./page/community/CommunityView.jsx";
 import CommunityList from "./page/community/CommunityList.jsx";
 import CommunityEdit from "./page/community/CommunityEdit.jsx"; // import reactLogo from './assets/react.svg'
 import MemberSignup from "./page/member/MemberSignup.jsx";
-import MemberInfo from "./page/member/MemberInfo.jsx";
 import MemberLogin from "./page/member/MemberLogin.jsx";
-import { MemberEdit } from "./page/member/MemberEdit.jsx";
 import { TourAdd } from "./page/tour/TourAdd.jsx";
 import TourList from "./page/tour/TourList.jsx";
 import TourView from "./page/tour/TourView.jsx";
@@ -50,6 +48,8 @@ import NoticeView from "./page/notice/NoticeView.jsx";
 import NoticeEdit from "./page/notice/NoticeEdit.jsx";
 import Access from "./components/context/Access.jsx";
 import MemberList from "./page/admin/MemberList.jsx";
+import AdminMemberView from "./page/admin/AdminMemberView.jsx";
+import { AdminMemberEdit } from "./page/admin/AdminMemberEdit.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -249,11 +249,11 @@ const router = createBrowserRouter([
       },
       {
         path: "member/:email",
-        element: <MemberInfo />,
+        element: <AdminMemberView />,
       },
       {
         path: "member/edit/:email",
-        element: <MemberEdit />,
+        element: <AdminMemberEdit />,
       },
 
       {

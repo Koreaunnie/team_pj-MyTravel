@@ -26,6 +26,18 @@ function MyPage(props) {
       <Breadcrumb
         depth1={"관리자 모드"}
         navigateToDepth1={() => navigate(`/admin`)}
+        depth2={
+          selectedMenu === "home"
+            ? "관리자 홈"
+            : selectedMenu === "memberList"
+              ? "회원 관리"
+              : selectedMenu === "partnerList"
+                ? "파트너 기업 관리"
+                : selectedMenu === "paymentAll"
+                  ? `결제 내역 관리`
+                  : "고객 센터 관리"
+        }
+        navigateToDepth2={() => {}}
       />
 
       <nav className={"admin-aside"}>
