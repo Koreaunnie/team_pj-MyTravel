@@ -47,10 +47,10 @@ public class TourService {
             for (MultipartFile file : files) {
                 String objectKey = "teamPrj1126/" + tour.getId() + "/" + file.getOriginalFilename();
                 PutObjectRequest por = PutObjectRequest.builder()
-                        .bucket(bucketName)
-                        .key(objectKey)
-                        .acl(ObjectCannedACL.PUBLIC_READ)
-                        .build();
+                    .bucket(bucketName)
+                    .key(objectKey)
+                    .acl(ObjectCannedACL.PUBLIC_READ)
+                    .build();
 
                 try {
                     s3.putObject(por, RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
@@ -70,8 +70,8 @@ public class TourService {
         List<String> fileNameList = mapper.selectFilesByTourId(id);
 
         List<TourImg> fileSrcList = fileNameList.stream()
-                .map(name -> new TourImg(id, name, imageSrcPrefix + "/" + id + "/" + name))
-                .toList();
+            .map(name -> new TourImg(id, name, imageSrcPrefix + "/" + id + "/" + name))
+            .toList();
 
         tour.setFileList(fileSrcList);
         return tour;
@@ -83,20 +83,22 @@ public class TourService {
 
         //리스트 조회
         List<TourList> tourList = mapper.selectAll(offset, searchType, keyword);
+//        System.out.println("투어리스트" + tourList);
 
         //전체 게시물
         Integer count = mapper.countAll(searchType, keyword);
+//        System.out.println("전체 개수 " + count);
 
         if (tourList == null || tourList.isEmpty()) {
             return Map.of("tourList", List.of()); // 빈 리스트 반환
         }
 
         tourList.stream()
-                .forEach(tour -> {
-                    if (tour.getImage() != null) {
-                        tour.setSrc(imageSrcPrefix + "/" + tour.getId() + "/" + tour.getImage());
-                    }
-                });
+            .forEach(tour -> {
+                if (tour.getImage() != null) {
+                    tour.setSrc(imageSrcPrefix + "/" + tour.getId() + "/" + tour.getImage());
+                }
+            });
         return Map.of("tourList", tourList, "count", count);
     }
 
@@ -145,9 +147,9 @@ public class TourService {
             for (String file : removeFiles) { //파일 삭제
                 String key = "teamPrj1126/" + tour.getId() + "/" + file;
                 DeleteObjectRequest dor = DeleteObjectRequest.builder()
-                        .bucket(bucketName)
-                        .key(key)
-                        .build();
+                    .bucket(bucketName)
+                    .key(key)
+                    .build();
                 s3.deleteObject(dor);
                 mapper.deleteFileByTourIdAndName(tour.getId(), file);
             }
@@ -157,10 +159,10 @@ public class TourService {
             for (MultipartFile file : uploadFiles) {
                 String objectKey = "teamPrj1126/" + tour.getId() + "/" + file.getOriginalFilename();
                 PutObjectRequest por = PutObjectRequest.builder()
-                        .bucket(bucketName)
-                        .key(objectKey)
-                        .acl(ObjectCannedACL.PUBLIC_READ)
-                        .build();
+                    .bucket(bucketName)
+                    .key(objectKey)
+                    .acl(ObjectCannedACL.PUBLIC_READ)
+                    .build();
                 try {
                     s3.putObject(por, RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
                 } catch (IOException e) {

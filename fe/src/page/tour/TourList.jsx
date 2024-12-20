@@ -15,6 +15,7 @@ import { FaRegQuestionCircle } from "react-icons/fa";
 import "./Tour.css";
 import { formatNumberWithCommas } from "../../components/utils/FormatNumberWithCommas.jsx";
 import { IoSearch } from "react-icons/io5";
+import { Rating } from "../../components/ui/rating.jsx";
 
 function TourList() {
   const [tourList, setTourList] = useState([]);
@@ -199,8 +200,10 @@ function TourList() {
                         <li>{tour.location}</li>
                         <li>{formatNumberWithCommas(tour.price)}원</li>
                         <li className={"tour-list-review"}>
-                          ★★★★★{" "}
-                          <span className={"review-count"}>(리뷰 00개)</span>
+                          <Rating allowHalf readOnly value={tour.reviewAvg} />
+                          <span className={"review-count"}>
+                            (리뷰 {tour.reviewCnt}개)
+                          </span>
                         </li>
                       </div>
                     </ul>

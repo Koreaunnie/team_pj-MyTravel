@@ -2,20 +2,22 @@ USE teamPrj1126;
 
 DESC tour;
 
-
-DROP TABLE tour;
-
-
 CREATE TABLE tour
 (
-    id       INT AUTO_INCREMENT PRIMARY KEY,
-    title    VARCHAR(100) NOT NULL,
-    product  VARCHAR(50)  NOT NULL,
-    price    INT,
-    location VARCHAR(50),
-    content  VARCHAR(5000),
-    partner  varchar(20) REFERENCES member (nickname),
-    inserted DATETIME
+    `id`           int(11)      NOT NULL AUTO_INCREMENT,
+    `title`        varchar(100) NOT NULL,
+    `product`      varchar(50)  NOT NULL,
+    `price`        int(11)       DEFAULT NULL,
+    `location`     varchar(50)   DEFAULT NULL,
+    `content`      varchar(5000) DEFAULT NULL,
+    `partner`      varchar(20)   DEFAULT NULL,
+    `partnerEmail` varchar(30)   DEFAULT 'LEFT',
+    `active`       tinyint(1)    DEFAULT 1,
+    `inserted`     datetime      DEFAULT current_timestamp(),
+    PRIMARY KEY (`id`),
+    KEY `partnerEmail` (`partnerEmail`),
+    KEY `tour_ibfk_1` (`partner`),
+    CONSTRAINT `tour_ibfk_1` FOREIGN KEY (`partner`) REFERENCES `member` (`nickname`) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 SELECT id, title, product, price, location, MIN(name) AS image
@@ -90,3 +92,55 @@ ALTER TABLE `tour`
         FOREIGN KEY (`partner`) REFERENCES `member` (`nickname`)
             ON DELETE SET NULL
             ON UPDATE CASCADE;
+
+SELECT id, t.title, writer_nickname, review, COUNT(review_id), SUM(rating), AVG(rating)
+FROM tour_review tr
+         LEFT JOIN tour t ON t.id = tr.tour_id
+GROUP BY id;
+
+SELECT id,
+       t.title,
+       writer_nickname,
+       review,
+       COUNT(review_id) reviewCnt,
+       SUM(rating),
+       AVG(rating)      reviewAvg,
+       product,
+       price,
+       location,
+       ti.name          image,
+       active
+FROM tour t
+         LEFT JOIN tour_review tr ON t.id = tr.tour_id
+         LEFT JOIN tour_img ti ON t.id = ti.tour_id
+WHERE active = 1
+  AND ti.tour_id = 91
+GROUP BY id;
+
+SELECT AVG(rating)
+FROM tour t
+         LEFT JOIN tour_review tr ON t.id = tr.tour_id
+WHERE active = true
+GROUP BY id
+ORDER BY id DESC;
+
+SELECT id,
+       title,
+       product,
+       price,
+       location,
+       ti.name                       image,
+       active,
+       COUNT(DISTINCT review_id)     reviewCnt,
+       (SELECT AVG(tr_sub.rating)
+        FROM tour_review tr_sub
+        WHERE tr_sub.tour_id = t.id) reviewAvg,
+       (SELECT SUM(tr_sub.rating)
+        FROM tour_review tr_sub
+        WHERE tr_sub.tour_id = t.id) reviewSum
+FROM tour t
+         LEFT JOIN tour_img ti ON t.id = ti.tour_id
+         LEFT JOIN tour_review tr ON t.id = tr.tour_id
+WHERE t.active = true
+GROUP BY id
+ORDER BY id DESC
