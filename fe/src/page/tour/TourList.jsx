@@ -22,10 +22,14 @@ function TourList() {
   const [selectedMenu, setSelectedMenu] = useState("box");
   const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [currentPage, setCurrentPage] = useState(
+    parseInt(searchParams.get("page")) || 1,
+  );
   const [search, setSearch] = useState({
     type: searchParams.get("type") ?? "all",
     keyword: searchParams.get("key") ?? "",
   });
+  console.log(currentPage);
 
   const { isPartner, isAdmin } = useContext(AuthenticationContext);
   const navigate = useNavigate();
@@ -49,6 +53,12 @@ function TourList() {
     };
   }, [searchParams]);
 
+  // Update currentPage when URL changes
+  useEffect(() => {
+    const page = parseInt(searchParams.get("page")) || 1;
+    setCurrentPage(page);
+  }, [searchParams]);
+
   function handleRowClick(id) {
     navigate(`/tour/view/${id}`);
   }
@@ -58,13 +68,13 @@ function TourList() {
       const nextSearchParam = new URLSearchParams(searchParams);
       nextSearchParam.set("type", search.type);
       nextSearchParam.set("key", search.keyword);
-
+      nextSearchParam.set("page", currentPage.toString());
       setSearchParams(nextSearchParam);
     } else {
       const nextSearchParam = new URLSearchParams(searchParams);
       nextSearchParam.delete("type");
       nextSearchParam.delete("key");
-
+      nextSearchParam.delete("page", currentPage.toString());
       setSearchParams(nextSearchParam);
     }
   }
@@ -265,7 +275,7 @@ function TourList() {
               <PaginationRoot
                 count={count}
                 pageSize={10}
-                defaultPage={1}
+                defaultPage={currentPage}
                 onPageChange={handlePageChange}
                 variant="solid"
               >

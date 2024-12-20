@@ -123,6 +123,18 @@ function Payment() {
       payMethod,
     });
 
+    if (tossPayment.code != null) {
+      //실패 내용
+      setWaitingPayment(false);
+      window.alert(`결제 실패: ${tossPayment.message}`); // alert 팝업창
+      setPaymentStatus({
+        status: "FAILED",
+        message: tossPayment.message,
+      });
+      return;
+    }
+
+    //결제 성공 시 백엔드로
     const tossResponse = await fetch(`/api/payment/payment`, {
       method: "POST",
       headers: {
@@ -139,17 +151,7 @@ function Payment() {
       }),
     });
 
-    if (tossPayment.code != null) {
-      //실패 내용
-      setWaitingPayment(false);
-      window.alert(`결제 실패: ${tossPayment.message}`); // alert 팝업창
-      setPaymentStatus({
-        status: "FAILED",
-        message: tossPayment.message,
-      });
-      return;
-    }
-
+    //백엔드의 응답에 대한 처리
     if (tossResponse.ok) {
       const paymentComplete = await tossResponse.json();
 
@@ -192,7 +194,7 @@ function Payment() {
   return (
     <div className={"tour"}>
       <Breadcrumb
-        depth1={"Tour 목록"}
+        depth1={"투어"}
         navigateToDepth1={() => navigate(`/tour/list`)}
         depth2={"장바구니"}
         navigateToDepth2={() => navigate(`/cart`)}

@@ -6,6 +6,7 @@ import { toaster } from "../../components/ui/toaster.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { useNavigate } from "react-router-dom";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
+import Access from "../../components/context/Access.jsx";
 
 export function TourAdd() {
   const [title, setTitle] = useState("");
@@ -72,11 +73,7 @@ export function TourAdd() {
   }
 
   if (!userToken || (!isPartner && !isAdmin)) {
-    return (
-      <div>
-        접근 권한이 없습니다. <a href="/member/login">로그인 페이지로</a>
-      </div>
-    );
+    return <Access />;
   }
 
   return (

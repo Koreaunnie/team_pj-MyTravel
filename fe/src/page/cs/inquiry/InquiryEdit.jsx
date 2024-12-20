@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Breadcrumb } from "../../../components/root/Breadcrumb.jsx";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
@@ -6,6 +6,8 @@ import { Spinner } from "@chakra-ui/react";
 import { Modal } from "../../../components/root/Modal.jsx";
 import { toaster } from "../../../components/ui/toaster.jsx";
 import "./Inquiry.css";
+import { AuthenticationContext } from "../../../components/context/AuthenticationProvider.jsx";
+import Access from "../../../components/context/Access.jsx";
 
 function InquiryEdit(props) {
   const { id } = useParams();
@@ -13,20 +15,27 @@ function InquiryEdit(props) {
   const [category, setCategory] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [writer, setWriter] = useState("");
   const [secret, setSecret] = useState(false);
   const [backToListModalOpen, setBackToListModalOpen] = useState(false);
   const [saveModalOpen, setSaveModalOpen] = useState(false);
   const navigate = useNavigate();
+  const { hasAccess, isAdmin } = useContext(AuthenticationContext);
 
   useEffect(() => {
     axios.get(`/api/cs/inquiry/view/${id}`).then((res) => {
       setInquiry(res.data);
-      setCategory(res.data.category);
-      setTitle(res.data.title);
-      setContent(res.data.content);
-      setSecret(res.data.secret);
+      setCategory(res.data.inquiry.category);
+      setTitle(res.data.inquiry.title);
+      setContent(res.data.inquiry.content);
+      setSecret(res.data.inquiry.secret);
+      setWriter(res.data.inquiry.writer);
     });
   }, [id]);
+
+  if (!(hasAccess(writer) || isAdmin)) {
+    return <Access />;
+  }
 
   const handleSaveButton = () => {
     axios

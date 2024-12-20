@@ -97,7 +97,7 @@ function PaymentComplete(props) {
   return (
     <div className={"tour"}>
       <Breadcrumb
-        depth1={"Tour 목록"}
+        depth1={"투어"}
         navigateToDepth1={() => navigate(`/tour/list`)}
         depth2={"장바구니"}
         navigateToDepth2={() => navigate(`/cart`)}
@@ -110,52 +110,16 @@ function PaymentComplete(props) {
         <table className={"table-list"}>
           <thead>
             <tr>
-              <th>선택</th>
               <th colSpan={2}>상품</th>
               <th>일정</th>
               <th>가격</th>
+              {/*<th>선택</th>*/}
             </tr>
           </thead>
           {/*결제한 상품 나열*/}
           {paidList.map((product) => (
             <tbody>
               <tr>
-                <td>
-                  {walletButtons[product.product] ? (
-                    <button
-                      className={"btn btn-dark-outline"}
-                      onClick={handleNavigateToWallet}
-                      disabled={false} // "내 지갑 확인" 버튼은 항상 활성화
-                    >
-                      내 지갑 확인
-                    </button>
-                  ) : (
-                    <button
-                      className={"btn btn-dark"}
-                      onClick={() => handleSendToWallet(product)}
-                    >
-                      내 지갑에 추가
-                    </button>
-                  )}
-                  {planButtons[product.product] ? (
-                    <button
-                      className={"btn btn-dark-outline"}
-                      onClick={handleNavigateToPlan}
-                      disabled={false} // "내 지갑 확인" 버튼은 항상 활성화
-                    >
-                      내 여행 확인
-                    </button>
-                  ) : (
-                    <button
-                      className={"btn btn-dark"}
-                      onClick={(e) => {
-                        handleSendToPlan(product);
-                      }}
-                    >
-                      내 여행에 추가
-                    </button>
-                  )}
-                </td>
                 <td>
                   <Image key={product.image} src={product.src} w={"100px"} />
                 </td>
@@ -164,13 +128,49 @@ function PaymentComplete(props) {
                   {product.startDate} ~ {product.endDate}
                 </td>
                 <td>{product.price}</td>
+                {/*<td>*/}
+                {/*  {walletButtons[product.product] ? (*/}
+                {/*    <button*/}
+                {/*      className={"btn btn-dark-outline"}*/}
+                {/*      onClick={handleNavigateToWallet}*/}
+                {/*      disabled={false} // "내 지갑 확인" 버튼은 항상 활성화*/}
+                {/*    >*/}
+                {/*      내 지갑 확인*/}
+                {/*    </button>*/}
+                {/*  ) : (*/}
+                {/*    <button*/}
+                {/*      className={"btn btn-dark"}*/}
+                {/*      onClick={() => handleSendToWallet(product)}*/}
+                {/*    >*/}
+                {/*      내 지갑에 추가*/}
+                {/*    </button>*/}
+                {/*  )}*/}
+                {/*  {planButtons[product.product] ? (*/}
+                {/*    <button*/}
+                {/*      className={"btn btn-dark-outline"}*/}
+                {/*      onClick={handleNavigateToPlan}*/}
+                {/*      disabled={false} // "내 지갑 확인" 버튼은 항상 활성화*/}
+                {/*    >*/}
+                {/*      내 여행 확인*/}
+                {/*    </button>*/}
+                {/*  ) : (*/}
+                {/*    <button*/}
+                {/*      className={"btn btn-dark"}*/}
+                {/*      onClick={(e) => {*/}
+                {/*        handleSendToPlan(product);*/}
+                {/*      }}*/}
+                {/*    >*/}
+                {/*      내 여행에 추가*/}
+                {/*    </button>*/}
+                {/*  )}*/}
+                {/*</td>*/}
               </tr>
             </tbody>
           ))}
           {/*총 합*/}
           <tfoot>
             <tr>
-              <td colSpan={3}></td>
+              <td colSpan={2}></td>
               <th>결제 금액</th>
               <td>{totalAmount}</td>
             </tr>

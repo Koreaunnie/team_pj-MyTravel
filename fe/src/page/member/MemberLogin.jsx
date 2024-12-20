@@ -10,7 +10,12 @@ function MemberLogin(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const { login } = useContext(AuthenticationContext);
+  const { isAuthenticated, login } = useContext(AuthenticationContext);
+
+  if (isAuthenticated) {
+    alert("이미 로그인 되어 있습니다");
+    navigate(`/`);
+  }
 
   function handleLoginClick() {
     axios
