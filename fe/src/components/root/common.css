@@ -507,6 +507,17 @@ form .required {
     text-align: left;
 }
 
+.table-view .like-wrap ul {
+    display: flex;
+    justify-content: end;
+    margin: 10px;
+    font-size: 1.5rem;
+}
+
+.table-view .like-wrap ul .icon {
+    margin: -2px 7px 0 0;
+}
+
 /*------------------- form design -------------------*/
 .form-container {
     background: var(--bg-gray-color);
