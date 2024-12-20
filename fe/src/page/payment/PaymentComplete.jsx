@@ -113,7 +113,7 @@ function PaymentComplete(props) {
               <th colSpan={2}>상품</th>
               <th>일정</th>
               <th>가격</th>
-              <th>선택</th>
+              {/*<th>선택</th>*/}
             </tr>
           </thead>
           {/*결제한 상품 나열*/}
@@ -128,42 +128,42 @@ function PaymentComplete(props) {
                   {product.startDate} ~ {product.endDate}
                 </td>
                 <td>{product.price}</td>
-                <td>
-                  {walletButtons[product.product] ? (
-                    <button
-                      className={"btn btn-dark-outline"}
-                      onClick={handleNavigateToWallet}
-                      disabled={false} // "내 지갑 확인" 버튼은 항상 활성화
-                    >
-                      내 지갑 확인
-                    </button>
-                  ) : (
-                    <button
-                      className={"btn btn-dark"}
-                      onClick={() => handleSendToWallet(product)}
-                    >
-                      내 지갑에 추가
-                    </button>
-                  )}
-                  {planButtons[product.product] ? (
-                    <button
-                      className={"btn btn-dark-outline"}
-                      onClick={handleNavigateToPlan}
-                      disabled={false} // "내 지갑 확인" 버튼은 항상 활성화
-                    >
-                      내 여행 확인
-                    </button>
-                  ) : (
-                    <button
-                      className={"btn btn-dark"}
-                      onClick={(e) => {
-                        handleSendToPlan(product);
-                      }}
-                    >
-                      내 여행에 추가
-                    </button>
-                  )}
-                </td>
+                {/*<td>*/}
+                {/*  {walletButtons[product.product] ? (*/}
+                {/*    <button*/}
+                {/*      className={"btn btn-dark-outline"}*/}
+                {/*      onClick={handleNavigateToWallet}*/}
+                {/*      disabled={false} // "내 지갑 확인" 버튼은 항상 활성화*/}
+                {/*    >*/}
+                {/*      내 지갑 확인*/}
+                {/*    </button>*/}
+                {/*  ) : (*/}
+                {/*    <button*/}
+                {/*      className={"btn btn-dark"}*/}
+                {/*      onClick={() => handleSendToWallet(product)}*/}
+                {/*    >*/}
+                {/*      내 지갑에 추가*/}
+                {/*    </button>*/}
+                {/*  )}*/}
+                {/*  {planButtons[product.product] ? (*/}
+                {/*    <button*/}
+                {/*      className={"btn btn-dark-outline"}*/}
+                {/*      onClick={handleNavigateToPlan}*/}
+                {/*      disabled={false} // "내 지갑 확인" 버튼은 항상 활성화*/}
+                {/*    >*/}
+                {/*      내 여행 확인*/}
+                {/*    </button>*/}
+                {/*  ) : (*/}
+                {/*    <button*/}
+                {/*      className={"btn btn-dark"}*/}
+                {/*      onClick={(e) => {*/}
+                {/*        handleSendToPlan(product);*/}
+                {/*      }}*/}
+                {/*    >*/}
+                {/*      내 여행에 추가*/}
+                {/*    </button>*/}
+                {/*  )}*/}
+                {/*</td>*/}
               </tr>
             </tbody>
           ))}
@@ -173,17 +173,15 @@ function PaymentComplete(props) {
               <td colSpan={2}></td>
               <th>결제 금액</th>
               <td>{totalAmount}</td>
-              <td>
-                <button
-                  className={"btn btn-dark-outline"}
-                  onClick={() => navigate(`/payment/history/${email}`)}
-                >
-                  내 결제 내역으로 이동
-                </button>
-              </td>
             </tr>
           </tfoot>
         </table>
+        <button
+          className={"btn btn-dark-outline"}
+          onClick={() => navigate(`/payment/history/${email}`)}
+        >
+          내 결제 내역으로 이동
+        </button>
       </main>
     </div>
   );
