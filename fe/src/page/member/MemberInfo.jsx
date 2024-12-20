@@ -1,32 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Box, Input, Stack } from "@chakra-ui/react";
-import { Field } from "../../components/ui/field.jsx";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
-import { Button } from "../../components/ui/button.jsx";
-import {
-  DialogActionTrigger,
-  DialogBody,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogRoot,
-  DialogTitle,
-  DialogTrigger,
-} from "../../components/ui/dialog.jsx";
-import { toaster } from "../../components/ui/toaster.jsx";
-import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
+import { useParams } from "react-router-dom";
 import { ProfileImageView } from "../../components/Image/ProfileImageView.jsx";
 import Access from "../../components/context/Access.jsx";
 import "./Member.css";
 
 function MemberInfo(props) {
   const [member, setMember] = useState(null);
-  const [password, setPassword] = useState("");
-  const [open, setOpen] = useState(false);
   const { email } = useParams();
-  const navigate = useNavigate();
-  const { logout, isAdmin } = useContext(AuthenticationContext);
 
   useEffect(() => {
     axios.get(`/api/member/${email}`).then((res) => setMember(res.data));
@@ -34,37 +15,6 @@ function MemberInfo(props) {
 
   if (!member) {
     return <Access />;
-  }
-
-  function handleDeleteClick() {
-    axios
-      .delete(`/api/member/remove`, {
-        data: { email, password },
-      })
-      .then((res) => {
-        const message = res.data.message;
-        toaster.create({
-          type: message.type,
-          description: message.text,
-        });
-        if (isAdmin) {
-          navigate("/admin");
-        } else {
-          logout();
-          navigate(`/member/signup`);
-        }
-      })
-      .catch((e) => {
-        const message = e.response.data.message;
-        toaster.create({
-          type: message.type,
-          description: message.text,
-        });
-      })
-      .finally(() => {
-        setOpen(false);
-        setPassword("");
-      });
   }
 
   return (
@@ -136,77 +86,6 @@ function MemberInfo(props) {
             )}
           </ul>
         </fieldset>
-
-        <Box>
-          <button
-            className={"btn btn-dark"}
-            onClick={() => navigate(`/member/edit/${email}`)}
-          >
-            수정
-          </button>
-          {member.kakao || (
-            <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
-              <DialogTrigger>
-                <button className={"btn btn-warning"}>탈퇴</button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>탈퇴 확인</DialogTitle>
-                </DialogHeader>
-                <DialogBody>
-                  <Stack>
-                    <Field label={"비밀번호"}>
-                      <Input
-                        placeholder={"비밀번호 입력"}
-                        onChange={(e) => setPassword(e.target.value)}
-                        value={password}
-                      />
-                    </Field>
-                  </Stack>
-                </DialogBody>
-                <DialogFooter>
-                  <DialogActionTrigger>
-                    <Button variant={"outline"}>취소</Button>
-                  </DialogActionTrigger>
-                  <Button onClick={handleDeleteClick}>탈퇴</Button>
-                </DialogFooter>
-              </DialogContent>
-            </DialogRoot>
-          )}{" "}
-          {member.kakao && (
-            <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
-              <DialogTrigger>
-                <button className={"btn btn-warning"}>탈퇴</button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>탈퇴 확인</DialogTitle>
-                </DialogHeader>
-                <DialogBody>
-                  <Stack>
-                    <p>
-                      회원 정보 삭제를 확인하려면 텍스트 입력 필드에{" "}
-                      {member.password}을 따라 입력해 주십시오
-                    </p>
-                    <Field>
-                      <Input
-                        placeholder={member.password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        value={password}
-                      />
-                    </Field>
-                  </Stack>
-                </DialogBody>
-                <DialogFooter>
-                  <DialogActionTrigger>
-                    <Button variant={"outline"}>취소</Button>
-                  </DialogActionTrigger>
-                  <Button onClick={handleDeleteClick}>탈퇴</Button>
-                </DialogFooter>
-              </DialogContent>
-            </DialogRoot>
-          )}
-        </Box>
       </div>
     </div>
   );

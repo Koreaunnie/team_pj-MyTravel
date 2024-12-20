@@ -70,7 +70,6 @@ export function MemberEdit() {
           type: message.type,
           description: message.text,
         });
-        navigate(`/member/${email}`);
       })
       .catch((e) => {
         const message = e.response.data.message;
@@ -194,13 +193,6 @@ export function MemberEdit() {
 
       <Stack>
         <Center>
-          <button
-            className={"btn btn-dark-outline"}
-            onClick={() => navigate(`/mypage/${email}`)}
-          >
-            마이페이지로 돌아가기
-          </button>
-
           {member.kakao || (
             <Box>
               <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>

@@ -33,6 +33,8 @@ function AdminMemberView(props) {
     axios.get(`/api/member/${email}`).then((res) => setMember(res.data));
   }, []);
 
+  console.log(email);
+
   if (!member) {
     return <Access />;
   }

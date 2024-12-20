@@ -50,6 +50,7 @@ import Access from "./components/context/Access.jsx";
 import MemberList from "./page/admin/MemberList.jsx";
 import AdminMemberView from "./page/admin/AdminMemberView.jsx";
 import { AdminMemberEdit } from "./page/admin/AdminMemberEdit.jsx";
+import MemberInfo from "./page/member/MemberInfo.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -244,6 +245,20 @@ const router = createBrowserRouter([
       },
       // 회원 관리
       {
+        path: "mypage/:email",
+        element: <MyPage />,
+      },
+      {
+        path: "mypage/member/:email",
+        element: <MemberInfo />,
+      },
+
+      // 관리자
+      {
+        path: "admin",
+        element: <AdminPage />,
+      },
+      {
         path: "member/list",
         element: <MemberList />,
       },
@@ -254,16 +269,6 @@ const router = createBrowserRouter([
       {
         path: "member/edit/:email",
         element: <AdminMemberEdit />,
-      },
-
-      {
-        path: "mypage/:email",
-        element: <MyPage />,
-      },
-      // 관리자
-      {
-        path: "admin",
-        element: <AdminPage />,
       },
       // 접근 제한
       {
