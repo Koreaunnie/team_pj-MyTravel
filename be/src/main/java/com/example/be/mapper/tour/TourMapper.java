@@ -38,11 +38,11 @@ public interface TourMapper {
                      COUNT(DISTINCT review_id) reviewCnt, 
                      (SELECT AVG(tr_sub.rating)
                       FROM tour_review tr_sub
-                      WHERE tr_sub.tour_id = t.id) reviewAvg
+                      WHERE tr_sub.tour_id = t.id) rateAvg
               FROM tour t
-              LEFT JOIN tour_img ti ON t.id = ti.tour_id
-              LEFT JOIN tour_review tr ON t.id = tr.tour_id
-          WHERE t.active = true
+                    LEFT JOIN tour_img ti ON t.id = ti.tour_id
+                    LEFT JOIN tour_review tr ON t.id = tr.tour_id
+              WHERE t.active = true
                   <if test="keyword != null and keyword.trim() != ''">
                    AND (
                      <trim prefixOverrides="OR">
@@ -69,8 +69,9 @@ public interface TourMapper {
     List<TourList> selectAll(int offset, String searchType, String keyword);
 
     @Select("""
-        SELECT *
+        SELECT *, COUNT(review_id) reviewCnt, AVG(rating) rateAvg
         FROM tour
+            LEFT JOIN tour_review tr ON tour.id = tr.tour_id
         WHERE id=#{id}
         """)
     Tour selectById(int id);

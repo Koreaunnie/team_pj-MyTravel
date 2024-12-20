@@ -121,6 +121,7 @@ SELECT AVG(rating)
 FROM tour t
          LEFT JOIN tour_review tr ON t.id = tr.tour_id
 WHERE active = true
+  AND id = 73
 GROUP BY id
 ORDER BY id DESC;
 

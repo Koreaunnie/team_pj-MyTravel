@@ -23,6 +23,7 @@ import { FaRegQuestionCircle } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
 import { formatNumberWithCommas } from "../../components/utils/FormatNumberWithCommas.jsx";
 import { IoIosArrowBack } from "react-icons/io";
+import { Rating } from "../../components/ui/rating.jsx";
 
 function TourView() {
   const { id } = useParams();
@@ -179,7 +180,10 @@ function TourView() {
                 </div>
 
                 <li className={"review"}>
-                  ★★★★★ <span className={"review-count"}>(리뷰 00개)</span>
+                  <Rating readOnly value={tour.rateAvg} allowHalf step={0.5} />
+                  <span className={"review-count"}>
+                    (리뷰 {tour.reviewCnt}개)
+                  </span>
                 </li>
 
                 <li className={"price"}>

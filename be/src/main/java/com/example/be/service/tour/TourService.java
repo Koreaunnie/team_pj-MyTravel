@@ -68,6 +68,7 @@ public class TourService {
     public Tour get(int id) {
         Tour tour = mapper.selectById(id);
         List<String> fileNameList = mapper.selectFilesByTourId(id);
+//        System.out.println(tour);
 
         List<TourImg> fileSrcList = fileNameList.stream()
             .map(name -> new TourImg(id, name, imageSrcPrefix + "/" + id + "/" + name))

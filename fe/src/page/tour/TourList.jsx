@@ -200,7 +200,7 @@ function TourList() {
                         <li>{tour.location}</li>
                         <li>{formatNumberWithCommas(tour.price)}원</li>
                         <li className={"tour-list-review"}>
-                          <Rating allowHalf readOnly value={tour.reviewAvg} />
+                          <Rating readOnly value={tour.rateAvg} allowHalf />
                           <span className={"review-count"}>
                             (리뷰 {tour.reviewCnt}개)
                           </span>
