@@ -79,6 +79,7 @@ function CommunityView(props) {
     axios
       .get(`/api/community/view/${id}`, { id })
       .then((e) => {
+        console.log(e.data);
         setCommunity(e.data);
         setCommentList(e.data.commentList);
         setMyCommunityLike(e.data.myCommunityLike);
@@ -329,7 +330,9 @@ function CommunityView(props) {
             <tbody>
               <tr className={"tbody-content"}>
                 <td>{community.content}</td>
-                <td>{community.files}</td>
+                <td>
+                  <ImageFileView files={community.files} />
+                </td>
               </tr>
             </tbody>
           </table>
@@ -363,7 +366,6 @@ function CommunityView(props) {
                         </HStack>
                         <HStack>
                           <Input value={list.comment} readOnly w={450} />
-                          {/* TODO : 권한받은 유저만 보이게 */}
                           <Box>
                             <HStack>
                               {hasAccessByNickName(list.writer) && (

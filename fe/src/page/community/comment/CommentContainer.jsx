@@ -6,6 +6,8 @@ import { toaster } from "../../../components/ui/toaster.jsx";
 
 function CommentContainer({ communityId, communityWriter }) {
   const [commentList, setCommentList] = useState([]);
+  console.log(communityId);
+  console.log(communityWriter);
 
   useEffect(() => {
     // 댓글 목록을 가져옵니다.
