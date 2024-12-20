@@ -18,6 +18,7 @@ import { toaster } from "../../components/ui/toaster.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { ProfileImageView } from "../../components/Image/ProfileImageView.jsx";
 import Access from "../../components/context/Access.jsx";
+import "./Member.css";
 
 function MemberInfo(props) {
   const [member, setMember] = useState(null);
@@ -67,35 +68,75 @@ function MemberInfo(props) {
   }
 
   return (
-    <Box>
+    <div className={"member-info"}>
       <h1>회원 정보</h1>
-      <Stack>
-        <ProfileImageView files={member.profile} />
-        <Field label={"이메일"}>
-          <Input readOnly value={member.email} />
-        </Field>
-        <Field label={"닉네임"}>
-          <Input readOnly value={member.nickname} />
-        </Field>
-        {member.kakao || (
-          <Field label={"비밀번호"}>
-            <Input readOnly value={member.password} />
-          </Field>
-        )}
-        <Field label={"이름"}>
-          <Input readOnly value={member.name} />
-        </Field>
-        <Field label={"전화번호"}>
-          <Input readOnly value={member.phone} />
-        </Field>
-        {member.kakao && (
-          <Field label={"연동 계정"}>
-            <Input readonly value={"카카오톡"} />
-          </Field>
-        )}
-        <Field label={"가입 일시"}>
-          <Input type={"datetime-local"} readOnly value={member.inserted} />
-        </Field>
+
+      <ProfileImageView files={member.profile} />
+
+      <div className={"form-wrap"}>
+        <fieldset>
+          <ul>
+            <li>
+              <label htmlFor="email">이메일</label>
+              <input type={"text"} id={email} readOnly value={member.email} />
+            </li>
+
+            <li>
+              <label htmlFor="nickname">닉네임</label>
+              <input
+                type={"text"}
+                id={"nickname"}
+                readOnly
+                value={member.nickname}
+              />
+            </li>
+
+            {member.kakao || (
+              <li>
+                <label htmlFor="password">비밀번호</label>
+                <input
+                  type={"password"}
+                  id={"password"}
+                  readOnly
+                  value={member.password}
+                />
+              </li>
+            )}
+
+            <li>
+              <label htmlFor="name">이름</label>
+              <input type={"text"} id={"name"} readOnly value={member.name} />
+            </li>
+
+            <li>
+              <label htmlFor="phone">전화번호</label>
+              <input
+                type={"number"}
+                id={"phone"}
+                readOnly
+                value={member.phone}
+              />
+            </li>
+
+            <li>
+              <label htmlFor="inserted">가입 일시</label>
+              <input
+                type={"datetime-local"}
+                id={"inserted"}
+                readOnly
+                value={member.inserted}
+              />
+            </li>
+
+            {member.kakao && (
+              <li>
+                <label htmlFor="kakao">연동 계정</label>
+                <input type={"text"} readonly value={"카카오톡"} />
+              </li>
+            )}
+          </ul>
+        </fieldset>
+
         <Box>
           <button
             className={"btn btn-dark"}
@@ -166,8 +207,8 @@ function MemberInfo(props) {
             </DialogRoot>
           )}
         </Box>
-      </Stack>
-    </Box>
+      </div>
+    </div>
   );
 }
 

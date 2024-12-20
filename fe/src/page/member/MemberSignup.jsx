@@ -1,9 +1,16 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { toaster } from "../../components/ui/toaster.jsx";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Member.css";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
+import { Button } from "../../components/ui/button.jsx";
+import {
+  FileUploadList,
+  FileUploadRoot,
+  FileUploadTrigger,
+} from "../../components/ui/file-button.jsx";
+import { HiUpload } from "react-icons/hi";
 
 function MemberSignup(props) {
   const [email, setEmail] = useState("");
@@ -111,7 +118,7 @@ function MemberSignup(props) {
   };
 
   return (
-    <div className={"body-narrow"}>
+    <div className={"member body-narrow"}>
       <h1>회원 가입</h1>
 
       <form className={"member-form"}>
@@ -119,14 +126,33 @@ function MemberSignup(props) {
           <ul>
             <li>
               <label htmlFor="">프로필 사진</label>
-              <input
-                onChange={(e) => setFiles(e.target.files)}
-                type={"file"}
-                accept={"image/*"}
-                multiple
-              />
-              {filesList}
+
+              <div className={"attached"} style={{ marginTop: "10px" }}>
+                <FileUploadRoot
+                  value={files}
+                  onChange={() => setFiles(e.target.value)}
+                >
+                  <FileUploadTrigger asChild>
+                    <Button variant="outline" size="sm">
+                      <HiUpload /> 프로필 사진 업로드
+                    </Button>
+                  </FileUploadTrigger>
+                  <FileUploadList showSize clearable />
+                </FileUploadRoot>
+              </div>
+
+              {files && files.length > 0 && (
+                <div className="file-preview">
+                  <h4>선택된 파일:</h4>
+                  <ul>
+                    {Array.from(files).map((file, index) => (
+                      <li key={index}>{file.name}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </li>
+
             <li className={"check-form"}>
               <label htmlFor="email">
                 이메일
@@ -261,10 +287,7 @@ function MemberSignup(props) {
           </button>
         </div>
         <div className={"btn-wrap"}>
-          <button
-            className={"btn-wide btn-dark-outline"}
-            onClick={handleKakaoSignup}
-          >
+          <button className={"btn-wide btn-kakao"} onClick={handleKakaoSignup}>
             카카오로 간편 가입
           </button>
         </div>

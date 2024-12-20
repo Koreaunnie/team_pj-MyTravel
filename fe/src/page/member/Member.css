@@ -1,6 +1,108 @@
+.member {
+    min-height: calc(100vh - 200px);
+    margin-top: 30px;
+
+}
+
+/*------------------- MyPage -------------------*/
+.member-mypage {
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    border-right: 1px solid var(--table-border-color);
+}
+
+
+.member-mypage .mypage-nav {
+    position: fixed;
+    width: 260px;
+    height: 100vh;
+    background: #fff;
+    border-left: 1px solid var(--table-border-color);
+    padding: 100px 0;
+    z-index: 1;
+    top: 100px;
+    box-shadow: var(--box-shadow);
+}
+
+.member-mypage .mypage-nav ul {
+    width: 100%;
+}
+
+.member-mypage .mypage-nav ul li {
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 10px 50px;
+    border-top: 1px solid var(--table-border-color);
+}
+
+.member-mypage .mypage-nav ul li:last-child {
+    border-bottom: 1px solid var(--table-border-color);
+}
+
+.member-mypage .mypage-nav .active,
+.member-mypage .mypage-nav li:last-child.active {
+    background: var(--bg-gray-color);
+    font-weight: bold;
+    box-shadow: var(--box-shadow);
+}
+
+.member-mypage .mypage-body {
+    width: calc(100% - 260px);
+}
+
+/*-------------------  -------------------*/
+
+.member-info {
+    padding: 30px 50px;
+    background: var(--bg-gray-color);
+}
+
+.member-info li {
+    margin: 10px 0;
+}
+
+.member-info label {
+    font-size: 0.9rem;
+}
+
+.member-info input {
+    pointer-events: none;
+    font-size: 0.9rem;
+}
+
+/*------------------- MemberEdit -------------------*/
+
+.member-edit {
+    padding: 30px 50px;
+    background: var(--bg-gray-color);
+}
+
+.member-edit li {
+    margin: 10px 0;
+}
+
+.member-edit label {
+    font-size: 0.9rem;
+}
+
+.member-edit input {
+    font-size: 0.9rem;
+}
+
+.member-edit #email {
+    pointer-events: none;
+}
+
+.member-edit span {
+    margin-left: 5px;
+    font-size: 0.8rem;
+    color: var(--font-gray-color);
+}
+
 /*------------------- MemberSignup, MemberLogin -------------------*/
 .member-form {
-    margin: 20px auto 40px auto;
+    margin: 40px auto;
 }
 
 .member-form ul li {
@@ -22,17 +124,74 @@
     cursor: pointer;
 }
 
+.file-upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.profile-pic-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.profile-pic-wrapper img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-pic-wrapper span {
+    font-size: 2rem;
+    color: #e2e8f0;
+}
+
+
 /*------------------- MemberSignup -------------------*/
 
 .check-form input[type=text], .check-form input[type=email] {
     width: calc(100% - 85px);
 }
 
-/*----------------MyPage 상위 여백-------------------------*/
-
-.member {
-    margin-top: 35px;
+.btn-kakao {
+    background: #FEE500;
 }
+
+.file-upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.file-preview {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f7f7f7;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.file-preview ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.file-preview li {
+    padding: 5px;
+    font-size: 14px;
+    color: #333;
+}
+
 
 /*------------------- 화면 크기가 768px 이하 (태블릿 화면) -------------------*/
 @media (max-width: 768px) {
@@ -41,6 +200,15 @@
 
 /*------------------- 화면 크기가 480px 이하 (모바일 화면) -------------------*/
 @media (max-width: 480px) {
+    .move-to-button {
+        display: block;
+        justify-content: center;
+        text-align: center;
+    }
 
+
+    .move-to-button .link {
+        margin: 0;
+    }
 
 }

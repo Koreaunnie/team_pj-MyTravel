@@ -1,5 +1,5 @@
 .tour {
-    margin: 30px 0 20px 0;
+    padding-top: 20px;
 }
 
 .tour-add h1,
@@ -10,6 +10,10 @@
 .tour-add .btn-wrap,
 .tour-update .btn-wrap {
     margin: 20px 0 30px 0;
+}
+
+.tour .pagination {
+    padding-bottom: 40px;
 }
 
 /*------------------- tourList -------------------*/

@@ -1,0 +1,11 @@
+.kakao-login .btn {
+    width: 100%;
+    background: #FEE500;
+    padding: 0;
+    margin-left: 0;
+}
+
+.kakao-login .btn img {
+    height: 100%;
+    padding-left: 50px;
+}
