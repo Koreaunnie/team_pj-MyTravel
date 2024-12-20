@@ -164,7 +164,11 @@ function CommunityList(props) {
               onClick={() => handleViewClick(c.id)}
             >
               <div className={"community-header"}>
-                <li className="community-title">{c.title}</li>
+                <li className="community-title">
+                  {c.title.length > 25
+                    ? `${c.title.substring(0, 25)} ...`
+                    : c.title}
+                </li>
                 <li>{c.writer}</li>
                 {c.existOfFiles ? <IoMdPhotos /> : " "}
               </div>
