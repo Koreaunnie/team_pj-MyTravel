@@ -2,11 +2,11 @@ import React, { useContext, useState } from "react";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import PaymentHistoryAll from "../payment/PaymentHistoryAll.jsx";
-import MemberList from "../member/MemberList.jsx";
-import PartnerList from "../member/PartnerList.jsx";
 import "./admin.css";
 import AdminCs from "./AdminCs.jsx";
 import Access from "../../components/context/Access.jsx";
+import PartnerList from "./PartnerList.jsx";
+import MemberList from "./MemberList.jsx";
 
 function MyPage(props) {
   const [selectedMenu, setSelectedMenu] = useState("home");

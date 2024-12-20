@@ -6,7 +6,6 @@ import CommunityWrite from "./page/community/CommunityWrite.jsx";
 import CommunityView from "./page/community/CommunityView.jsx";
 import CommunityList from "./page/community/CommunityList.jsx";
 import CommunityEdit from "./page/community/CommunityEdit.jsx"; // import reactLogo from './assets/react.svg'
-import MemberList from "./page/member/MemberList.jsx";
 import MemberSignup from "./page/member/MemberSignup.jsx";
 import MemberInfo from "./page/member/MemberInfo.jsx";
 import MemberLogin from "./page/member/MemberLogin.jsx";
@@ -50,6 +49,7 @@ import NoticeWrite from "./page/notice/NoticeWrite.jsx";
 import NoticeView from "./page/notice/NoticeView.jsx";
 import NoticeEdit from "./page/notice/NoticeEdit.jsx";
 import Access from "./components/context/Access.jsx";
+import MemberList from "./page/admin/MemberList.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
