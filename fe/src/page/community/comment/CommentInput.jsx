@@ -54,23 +54,15 @@ export function CommentInput({ communityId, communityWriter }) {
         comment,
         communityId: communityId,
       })
-      .then((response) => {
-        const writeSuccess = response.data.message;
+      .then((res) => {
+        const writeSuccess = res.data.message;
         toaster.create({
           type: writeSuccess.type,
           description: writeSuccess.text,
         });
         fetch();
-        // 새 댓글을 목록에 바로 추가하여 화면에 반영
-        const newComment = {
-          comment,
-          writer: authentication.user.name, // 작성자 이름
-          // 필요한 추가 필드들 (예: 작성 시간 등)
-        };
-
-        setCommentList((prevList) => [newComment, ...prevList]); // 새 댓글을 목록의 맨 앞에 추가
       })
-      .finally(() => setComment("")); // 댓글 작성 후 입력 필드 비우기
+      .finally(() => setComment(""));
   };
 
   function handleLoginClick() {
