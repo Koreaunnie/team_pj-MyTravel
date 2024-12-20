@@ -13,7 +13,6 @@ import { formattedDateTime } from "../../../components/utils/FormattedDateTime.j
 function InquiryView(props) {
   const { id } = useParams();
   const [inquiry, setInquiry] = useState(null);
-  const [backToListModalOpen, setBackToListModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [password, setPassword] = useState("");

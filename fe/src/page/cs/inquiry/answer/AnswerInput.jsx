@@ -32,6 +32,7 @@ export function AnswerInput({ inquiryId }) {
       <div className={"answer-input"}>
         <textarea
           rows={5}
+          placeholder="답변 작성하기"
           value={answer}
           onChange={(e) => setAnswer(e.target.value)}
         />

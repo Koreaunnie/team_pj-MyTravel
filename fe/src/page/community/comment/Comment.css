@@ -3,6 +3,10 @@
     padding: 10px;
 }
 
+.community-comment .comment-input {
+    margin: 10px;
+}
+
 .community-comment .comment-list {
     margin: 30px;
     padding: 20px;

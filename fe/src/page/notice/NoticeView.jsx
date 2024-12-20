@@ -8,23 +8,14 @@ import {
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import axios from "axios";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
-import { HStack, Icon, Stack } from "@chakra-ui/react";
+import { HStack, Icon } from "@chakra-ui/react";
 import { Field } from "../../components/ui/field.jsx";
 import { HiOutlineBookOpen } from "react-icons/hi";
 import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
-import {
-  DialogActionTrigger,
-  DialogBody,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogRoot,
-  DialogTrigger,
-} from "../../components/ui/dialog.jsx";
-import { Button } from "../../components/ui/button.jsx";
 import { GoHeart } from "react-icons/go";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { formattedDateTime } from "../../components/utils/FormattedDateTime.jsx";
+import { Modal } from "../../components/root/Modal.jsx";
 
 function NoticeView(props) {
   const { id } = useParams();
@@ -36,10 +27,13 @@ function NoticeView(props) {
   const [searchParams] = useSearchParams();
   const [countNotice, setCountNotice] = useState("");
   const authentication = useContext(AuthenticationContext);
-  const { hasAccessByNickName } = useContext(AuthenticationContext);
+  const { hasAccessByNickName, isAdmin } = useContext(AuthenticationContext);
   const { pathname } = useLocation();
   const [titleLength, setTitleLength] = useState("");
   const [creationDate, setCreationDate] = useState("");
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [likeModalOpen, setLikeModalOpen] = useState(false);
 
   useEffect(() => {
     axios
@@ -136,81 +130,61 @@ function NoticeView(props) {
         <h1>공지사항</h1>
         <h2>공지사항 외 문의는 문의 게시판을 이용해주세요.</h2>
 
-        <div className={"like-wrap"}>
-          {authentication.isAuthenticated && (
-            <ul>
-              <li className={"icon"}>
-                <Icon
-                  color="red.600"
-                  onClick={() => {
-                    handleLikeClick();
-                  }}
-                >
-                  {myNoticeLike ? <IoMdHeart /> : <IoMdHeartEmpty />}
-                </Icon>
-              </li>
-              <li>{notice.like}</li>
-            </ul>
-          )}
+        <div className={"btn-wrap"}>
+          <button
+            className={"btn btn-dark-outline"}
+            onClick={() => navigate("/notice/list")}
+          >
+            목록
+          </button>
 
-          {authentication.isAuthenticated || (
-            <Stack>
-              <DialogRoot>
-                <DialogTrigger>
-                  <Icon fontSize="8xl" color="red.600">
-                    <IoMdHeartEmpty />
-                  </Icon>
-                  <DialogContent>
-                    <DialogHeader>MyTravel</DialogHeader>
-                    <DialogBody>
-                      로그인을 한 회원만 게시글 추천이 가능합니다.
-                    </DialogBody>
-                    <DialogFooter>
-                      <DialogActionTrigger>
-                        <Button onClick={handleLoginClick}>확인</Button>
-                      </DialogActionTrigger>
-                    </DialogFooter>
-                  </DialogContent>
-                </DialogTrigger>
-              </DialogRoot>
-              <h5>{notice.like}</h5>
-            </Stack>
+          {authentication.isAuthenticated && (
+            <div>
+              {hasAccessByNickName(notice.writer) && (
+                <button
+                  className={"btn btn-dark-outline"}
+                  onClick={() => setEditModalOpen(true)}
+                >
+                  수정
+                </button>
+              )}
+
+              {hasAccessByNickName(notice.writer) && authentication.isAdmin && (
+                <button
+                  className={"btn btn-warning"}
+                  onClick={() => setDeleteModalOpen(true)}
+                >
+                  삭제
+                </button>
+              )}
+
+              {authentication.isAdmin && (
+                <button className={"btn btn-dark"} onClick={handleWriteClick}>
+                  글 쓰기
+                </button>
+              )}
+            </div>
           )}
         </div>
 
-        <div className={"btn-wrap"}>
-          {authentication.isAdmin && (
-            <button
-              className={"btn btn-dark-outline"}
-              onClick={handleWriteClick}
-            >
-              글 쓰기
-            </button>
-          )}
-
-          {hasAccessByNickName(notice.writer) && (
-            <div>
-              <button className={"btn btn-dark"} onClick={handleEditClick}>
-                수정
-              </button>
-
-              <DialogRoot>
-                <DialogTrigger>
-                  <button className={"btn btn-warning"}>삭제</button>
-                  <DialogContent>
-                    <DialogHeader>글 삭제</DialogHeader>
-                    <DialogBody>{id}번 게시물을 삭제하시겠습니까?</DialogBody>
-                    <DialogFooter>
-                      <Button>취소</Button>
-                      <DialogActionTrigger>
-                        <Button onClick={handleDeleteClick}>삭제</Button>
-                      </DialogActionTrigger>
-                    </DialogFooter>
-                  </DialogContent>
-                </DialogTrigger>
-              </DialogRoot>
-            </div>
-          )}
+        <div className={"like-wrap"}>
+          <ul>
+            <li className={"icon"}>
+              <Icon
+                color="red.600"
+                onClick={() => {
+                  if (authentication.isAuthenticated) {
+                    handleLikeClick(); // 로그인한 경우 좋아요 처리
+                  } else {
+                    setLikeModalOpen(true);
+                  }
+                }}
+              >
+                {myNoticeLike ? <IoMdHeart /> : <IoMdHeartEmpty />}
+              </Icon>
+            </li>
+            <li>{notice.like}</li>
+          </ul>
         </div>
 
         <table className={"table-view"}>
@@ -255,6 +229,33 @@ function NoticeView(props) {
           </div>
         </div>
       </div>
+
+      {/* 수정 modal */}
+      <Modal
+        isOpen={editModalOpen}
+        onClose={() => setEditModalOpen(false)}
+        onConfirm={handleEditClick}
+        message="게시글을 수정하시겠습니까?"
+        buttonMessage="수정"
+      />
+
+      {/* 삭제 modal */}
+      <Modal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onConfirm={handleDeleteClick}
+        message="게시글을 삭제하시겠습니까?"
+        buttonMessage="삭제"
+      />
+
+      {/* 좋아요 modal */}
+      <Modal
+        isOpen={likeModalOpen}
+        onClose={() => setLikeModalOpen(false)}
+        onConfirm={handleLoginClick}
+        message="로그인 한 회원만 게시글 추천이 가능합니다."
+        buttonMessage="로그인"
+      />
     </div>
   );
 }

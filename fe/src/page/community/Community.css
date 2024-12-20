@@ -9,7 +9,6 @@
 /* ---------------- CommunityList ----------------*/
 .community {
     width: 100%;
-    background: var(--bg-gray-color);
 }
 
 .community .body-normal {
@@ -23,7 +22,7 @@
 .community .btn-wrap {
     margin: 20px 10px 0 0;
     display: flex;
-    justify-content: end;
+    justify-content: space-between;
 }
 
 .community .btn-wrap .community-login {

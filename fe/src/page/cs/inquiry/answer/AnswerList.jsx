@@ -84,6 +84,7 @@ export function AnswerList({ inquiryId }) {
             // 수정 모드
             <div className={"answer-list-body"}>
               <textarea
+                rows={"5"}
                 value={newAnswer}
                 onChange={(e) => setNewAnswer(e.target.value)}
               />

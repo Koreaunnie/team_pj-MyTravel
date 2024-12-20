@@ -8,8 +8,6 @@ import {
 } from "react-router-dom";
 import {
   Box,
-  Center,
-  createListCollection,
   DialogTitle,
   HStack,
   Icon,
@@ -38,20 +36,10 @@ import { AuthenticationContext } from "../../components/context/AuthenticationPr
 import { HiOutlineBookOpen } from "react-icons/hi";
 import { GoHeart } from "react-icons/go";
 import { AiOutlineComment } from "react-icons/ai";
-import {
-  SelectContent,
-  SelectItem,
-  SelectRoot,
-  SelectTrigger,
-  SelectValueText,
-} from "../../components/ui/select.jsx";
-import {
-  PaginationItems,
-  PaginationNextTrigger,
-  PaginationPrevTrigger,
-  PaginationRoot,
-} from "../../components/ui/pagination.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
+import CommentContainer from "./comment/CommentContainer.jsx";
+import { Modal } from "../../components/root/Modal.jsx";
+import { formattedDateTime } from "../../components/utils/FormattedDateTime.jsx";
 
 function ImageFileView({ files }) {
   return (
@@ -74,17 +62,19 @@ function CommunityView(props) {
   const navigate = useNavigate();
   const [comment, setComment] = useState("");
   const [commentList, setCommentList] = useState([]);
+  const [countCommunity, setCountCommunity] = useState(0);
   const [commentContent, setCommentContent] = useState("");
   const [myCommunityLike, setMyCommunityLike] = useState(false);
   const [communityList, setCommunityList] = useState([]);
-  const [search, setSearch] = useState({ type: "all", keyword: "" });
   const [searchParams] = useSearchParams();
-  const [countCommunity, setCountCommunity] = useState("");
   const authentication = useContext(AuthenticationContext);
-  const { hasAccessByNickName } = useContext(AuthenticationContext);
+  const { hasAccessByNickName, isAdmin } = useContext(AuthenticationContext);
   const { pathname } = useLocation();
   const [titleLength, setTitleLength] = useState("");
   const [creationDate, setCreationDate] = useState("");
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [likeModalOpen, setLikeModalOpen] = useState(false);
 
   useEffect(() => {
     axios
@@ -265,37 +255,12 @@ function CommunityView(props) {
       .then(navigate(`/community/view/${id}`));
   }
 
-  function handleSearchClick() {
-    const searchInfo = { type: search.type, keyword: search.keyword };
-    const searchQuery = new URLSearchParams(searchInfo);
-    navigate(`/community/list?${searchQuery.toString()}`);
-  }
-
-  function handlePageChangeClick(e) {
-    const pageNumber = { page: e.page };
-    const pageQuery = new URLSearchParams(pageNumber);
-    const searchInfo = { type: search.type, keyword: search.keyword };
-    const searchQuery = new URLSearchParams(searchInfo);
-    navigate(
-      `/community/list?${searchQuery.toString()}&${pageQuery.toString()}`,
-    );
-  }
-
-  const optionList = createListCollection({
-    items: [
-      { label: "전체", value: "all" },
-      { label: "제목", value: "title" },
-      { label: "본문", value: "content" },
-      { label: "작성자", value: "writer" },
-    ],
-  });
-
   function handleLoginClick() {
     navigate(`/member/login`);
   }
 
   return (
-    <div>
+    <div className={"community"}>
       <Breadcrumb
         depth1={"커뮤니티"}
         navigateToDepth1={() => navigate(`/community/list`)}
@@ -306,121 +271,123 @@ function CommunityView(props) {
         }
         navigateToDepth2={() => navigate(`/community/view/${community.id}`)}
       />
-      <div>
-        <br />
-        <br />
-        <h1>{community.title}</h1>
-        <Stack>
+
+      <div className={"body-normal"}>
+        <h1>커뮤니티</h1>
+        <h2>여러분의 여행 이야기를 들려주세요.</h2>
+
+        <div className={"btn-wrap"}>
+          <button
+            className={"btn btn-dark-outline"}
+            onClick={() => navigate("/community/list")}
+          >
+            목록
+          </button>
+
+          {authentication.isAuthenticated && (
+            <div>
+              {hasAccessByNickName(community.writer) && (
+                <button
+                  className={"btn btn-dark-outline"}
+                  onClick={() => setEditModalOpen(true)}
+                >
+                  수정
+                </button>
+              )}
+
+              {(hasAccessByNickName(community.writer) ||
+                authentication.isAdmin) && (
+                <button
+                  className={"btn btn-warning"}
+                  onClick={() => setDeleteModalOpen(true)}
+                >
+                  삭제
+                </button>
+              )}
+
+              <button className={"btn btn-dark"} onClick={handleWriteClick}>
+                글 쓰기
+              </button>
+            </div>
+          )}
+        </div>
+
+        <div className={"table-view"}>
           <Box>
             <Field readOnly>
               <HStack>
-                <Icon fontSize="2xl">
+                <Icon>
                   <HiOutlineBookOpen />
                 </Icon>{" "}
                 : {community.views} | {creationDate}
               </HStack>
             </Field>
-            <br />
+
             <Field readOnly>
               <Textarea value={community.content} />
             </Field>
             <Field label={"파일"} readOnly>
               <ImageFileView files={community.files} />
             </Field>
-            <Field>
-              {authentication.isAuthenticated && (
-                <Stack>
+
+            <div className={"like-wrap"}>
+              <ul>
+                <li className={"icon"}>
                   <Icon
-                    fontSize="8xl"
                     color="red.600"
                     onClick={() => {
-                      handleLikeClick();
+                      if (authentication.isAuthenticated) {
+                        handleLikeClick(); // 로그인한 경우 좋아요 처리
+                      } else {
+                        setLikeModalOpen(true);
+                      }
                     }}
                   >
                     {myCommunityLike ? <IoMdHeart /> : <IoMdHeartEmpty />}
                   </Icon>
-                  <h5>{community.like}</h5>
-                </Stack>
-              )}
-              {authentication.isAuthenticated || (
-                <Stack>
-                  <DialogRoot>
-                    <DialogTrigger>
-                      <Icon fontSize="8xl" color="red.600">
-                        <IoMdHeartEmpty />
-                      </Icon>
-                      <DialogContent>
-                        <DialogHeader>MyTravel</DialogHeader>
-                        <DialogBody>
-                          로그인을 한 회원만 게시글 추천이 가능합니다.
-                        </DialogBody>
-                        <DialogFooter>
-                          <DialogActionTrigger>
-                            <div>
-                              <Button
-                                className={"btn btn-dark"}
-                                onClick={handleLoginClick}
-                              >
-                                확인
-                              </Button>
-                            </div>
-                          </DialogActionTrigger>
-                        </DialogFooter>
-                      </DialogContent>
-                    </DialogTrigger>
-                  </DialogRoot>
-                  <h5>{community.like}</h5>
-                </Stack>
-              )}
-            </Field>
-            <Field label={"작성자"} readOnly>
-              <Input value={community.writer} />
-            </Field>
+                </li>
+                <li>{community.like}</li>
+              </ul>
+            </div>
           </Box>
-          <Box>
-            <HStack>
-              {(hasAccessByNickName(community.writer) ||
-                authentication.isAdmin) && (
-                <DialogRoot>
-                  <DialogTrigger>
-                    <div>
-                      <Button className={"btn btn-warning"}>삭제</Button>
-                    </div>
-                    <DialogContent>
-                      <DialogHeader>글 삭제</DialogHeader>
-                      <DialogBody>{id}번 게시물을 삭제하시겠습니까?</DialogBody>
-                      <DialogFooter>
-                        <div>
-                          <button className={"btn btn-dark-outline"}>
-                            취소
-                          </button>
-                        </div>
-                        <DialogActionTrigger>
-                          <div>
-                            <Button
-                              className={"btn btn-warning"}
-                              onClick={handleDeleteClick}
-                            >
-                              삭제
-                            </Button>
-                          </div>
-                        </DialogActionTrigger>
-                      </DialogFooter>
-                    </DialogContent>
-                  </DialogTrigger>
-                </DialogRoot>
-              )}
-              {hasAccessByNickName(community.writer) && (
-                <div>
-                  <Button className={"btn btn-blue"} onClick={handleEditClick}>
-                    수정
-                  </Button>
-                </div>
-              )}
-            </HStack>
-          </Box>
-          <br />
-          {/*  TODO: 코멘트 작성, 코멘트 리스트 추가 */}
+
+          <table className={"table-view"}>
+            <thead>
+              <tr className={"thead-title"}>
+                <th colSpan={2}>{community.title}</th>
+              </tr>
+              <tr className={"thead-sub-title"}>
+                <th>{community.writer}</th>
+                <th>{formattedDateTime(community.creationDate)}</th>
+              </tr>
+              <tr className={"thead-sub-title"}>
+                <th>
+                  <GoHeart /> {community.numberOfLikes} |{" "}
+                </th>
+                <th>
+                  <HiOutlineBookOpen /> {community.numberOfViews}
+                </th>
+              </tr>
+              <tr>
+                <th colSpan={2}>조회수 {community.views}</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr className={"tbody-content"}>
+                <td>{community.content}</td>
+                <td>{community.files}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style={{ border: "1px solid red" }}>
+            <CommentContainer
+              communityId={community.id}
+              communityWriter={community.writer}
+            />
+          </div>
+
           <Box>
             <Stack>
               <Field fontSize="xl">
@@ -431,65 +398,7 @@ function CommunityView(props) {
                   </HStack>
                 </strong>
               </Field>
-              <Field label={community.writer + " 님에게 댓글 작성"}>
-                {authentication.isAuthenticated && (
-                  <HStack>
-                    <Textarea
-                      h={100}
-                      w={700}
-                      placeholder="댓글 쓰기"
-                      value={comment}
-                      onChange={(e) => setComment(e.target.value)}
-                    />
-                    <div>
-                      <Button
-                        className={"btn btn-dark"}
-                        h={100}
-                        onClick={handleCommentSaveClick}
-                      >
-                        댓글 등록
-                      </Button>
-                    </div>
-                  </HStack>
-                )}
-                {authentication.isAuthenticated || (
-                  <DialogRoot>
-                    <DialogTrigger>
-                      <HStack>
-                        <Textarea
-                          h={100}
-                          w={700}
-                          placeholder="로그인 후 댓글 작성 가능"
-                        />
-                        <div>
-                          <Button className={"btn btn-dark"} h={100}>
-                            댓글 등록
-                          </Button>
-                        </div>
-                      </HStack>
-                      <DialogContent>
-                        <DialogHeader>MyTravel</DialogHeader>
-                        <DialogBody>
-                          로그인을 한 회원만 댓글 작성이 가능합니다.
-                        </DialogBody>
-                        <DialogFooter>
-                          <DialogActionTrigger>
-                            <div>
-                              <Button
-                                className={"btn btn-dark"}
-                                onClick={handleLoginClick}
-                              >
-                                확인
-                              </Button>
-                            </div>
-                          </DialogActionTrigger>
-                        </DialogFooter>
-                      </DialogContent>
-                    </DialogTrigger>
-                  </DialogRoot>
-                )}
-              </Field>
-              <br />
+
               <Field>
                 {commentList.map((list) => (
                   <Box value={list.id}>
@@ -618,6 +527,7 @@ function CommunityView(props) {
               </Field>
             </Stack>
           </Box>
+
           <br />
           <br />
           <Box>
@@ -658,98 +568,35 @@ function CommunityView(props) {
               </Table.Body>
             </Table.Root>
           </Box>
-          <Box>
-            <HStack>
-              <Box>
-                <HStack>
-                  <div className={"search-form"}>
-                    <SelectRoot
-                      collection={optionList}
-                      defaultValue={["all"]}
-                      onChange={(oc) =>
-                        setSearch({ ...search, type: oc.target.value })
-                      }
-                      size="sm"
-                      width="130px"
-                    >
-                      <SelectTrigger>
-                        <SelectValueText />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {optionList.items.map((option) => (
-                          <SelectItem item={option} key={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </SelectRoot>
-                    <input
-                      type={"text"}
-                      className={"search-form-input"}
-                      value={search.keyword}
-                      onChange={(e) =>
-                        setSearch({ ...search, keyword: e.target.value })
-                      }
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          handleSearchClick();
-                        }
-                      }}
-                    />
-                    <Button
-                      className={"btn-search btn-dark"}
-                      onClick={handleSearchClick}
-                    >
-                      검색
-                    </Button>
-                  </div>
-                </HStack>
-              </Box>
-              {authentication.isAuthenticated && (
-                <div>
-                  <Button className={"btn btn-dark"} onClick={handleWriteClick}>
-                    글 쓰기
-                  </Button>
-                </div>
-              )}
-            </HStack>
-            {authentication.isAuthenticated || (
-              <Box>
-                <HStack>
-                  로그인을 한 회원만 게시글 작성이 가능합니다.
-                  <div>
-                    <Button
-                      className={"btn btn-dark"}
-                      onClick={handleLoginClick}
-                    >
-                      로그인
-                    </Button>
-                  </div>
-                </HStack>
-              </Box>
-            )}
-          </Box>
-          <Box>
-            <div className={"pagination"}>
-              <Center>
-                <PaginationRoot
-                  count={countCommunity}
-                  pageSize={10}
-                  defaultPage={1}
-                  onPageChange={handlePageChangeClick}
-                  siblingCount={2}
-                >
-                  <HStack>
-                    <PaginationPrevTrigger />
-                    <PaginationItems />
-                    <PaginationNextTrigger />
-                  </HStack>
-                </PaginationRoot>
-              </Center>
-            </div>
-          </Box>
-        </Stack>
+        </div>
       </div>
+
+      {/* 수정 modal */}
+      <Modal
+        isOpen={editModalOpen}
+        onClose={() => setEditModalOpen(false)}
+        onConfirm={handleEditClick}
+        message="게시글을 수정하시겠습니까?"
+        buttonMessage="수정"
+      />
+
+      {/* 삭제 modal */}
+      <Modal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onConfirm={handleDeleteClick}
+        message="게시글을 삭제하시겠습니까?"
+        buttonMessage="삭제"
+      />
+
+      {/* 좋아요 modal */}
+      <Modal
+        isOpen={likeModalOpen}
+        onClose={() => setLikeModalOpen(false)}
+        onConfirm={() => navigate("/member/login")}
+        message="로그인 한 회원만 게시글 추천이 가능합니다."
+        buttonMessage="로그인"
+      />
     </div>
   );
 }
