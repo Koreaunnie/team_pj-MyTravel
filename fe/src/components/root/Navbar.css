@@ -210,12 +210,9 @@
         text-align: left;
     }
 
-    .navbar .nav-container ul li:nth-child(2) {
-        border-top: 1px solid var(--table-border-color);
-    }
-
     .navbar .nav-container .mobile-mypage {
         background: var(--bg-gray-color);
+        border: 1px solid var(--table-border-color);
     }
 
     .navbar .nav-container .mobile-mypage .mobile-user-info {

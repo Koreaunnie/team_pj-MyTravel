@@ -62,6 +62,7 @@ function Navbar() {
 
       <div className={`nav-container ${menuOpen ? "show" : ""}`}>
         <ul>
+          { isAuthenticated && (
           <div className={"mobile-mypage"}>
             <p className={"mobile-user-info"}>{nickname} 님</p>
 
@@ -72,6 +73,13 @@ function Navbar() {
               마이페이지
             </p>
           </div>
+          )}
+
+          <li
+            onClick={() => handleNavigate("/member/login")}
+          >
+            로그인
+          </li>
 
           <li
             className={isActive("/tour") ? "active" : ""}
@@ -120,6 +128,17 @@ function Navbar() {
             >
               관리자
             </li>
+          )}
+
+          {isAuthenticated &&(
+          <li
+            onClick={() => {
+              logout();
+              handleNavigate("/member/login");
+            }}
+          >
+            로그아웃
+          </li>
           )}
         </ul>
       </div>
