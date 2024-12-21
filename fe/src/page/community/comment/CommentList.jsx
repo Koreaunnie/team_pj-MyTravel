@@ -7,7 +7,7 @@ import { toaster } from "../../../components/ui/toaster.jsx";
 import { formattedDateTime } from "../../../components/utils/FormattedDateTime.jsx";
 import "./Comment.css";
 
-export function CommentList({ communityId, onEditClick, onDeleteClick }) {
+export function CommentList({ communityId }) {
   const [commentList, setCommentList] = useState([]);
   const [commentContent, setCommentContent] = useState("");
   const [editMode, setEditMode] = useState(null);
