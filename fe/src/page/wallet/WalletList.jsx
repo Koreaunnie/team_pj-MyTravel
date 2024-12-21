@@ -432,15 +432,6 @@ function WalletList(props) {
         </table>
 
         <table className={"table-list wallet-list"}>
-          <colgroup>
-            <col style={{ width: "30px" }} />
-            <col style={{ width: "130px" }} />
-            <col style={{ width: "140px" }} />
-            <col style={{ width: "230px" }} />
-            <col style={{ width: "120px" }} />
-            <col style={{ width: "120px" }} />
-          </colgroup>
-
           <thead>
             <tr>
               <th>
