@@ -10,6 +10,13 @@
     height: 40px;
 }
 
+.community .like-wrap ul {
+    display: flex;
+    justify-content: end;
+    margin: 10px;
+    font-size: 1.5rem;
+}
+
 .community .table-view thead .thead-sub-title2 {
     height: 35px;
     text-align: right;
