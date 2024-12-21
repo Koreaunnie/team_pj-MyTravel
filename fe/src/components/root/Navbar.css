@@ -4,7 +4,7 @@
     position: fixed;
     width: 100%;
     height: 65px;
-    z-index: 100;
+    z-index: 999999;
     color: #fff;
     box-shadow: var(--box-shadow);
 }
@@ -45,6 +45,10 @@
     margin: 10px 25px;
 }
 
+.navbar .nav-container .mobile-mypage {
+    display: none;
+}
+
 .navbar .nav-container li:hover {
     font-weight: bold;
 }
@@ -81,14 +85,28 @@
 /* 드롭다운 스타일 */
 .navbar .mypage-toggle-container {
     position: absolute;
-    top: 65px;
+    top: 65px; /* Start slightly above final position */
     right: 10px;
     width: 130px;
     cursor: pointer;
     background: #fff;
     color: #000;
     border: 1px solid var(--table-border-color);
-    z-index: 1000;
+    z-index: 100;
+    transform-origin: top center;
+    animation: slideDown 0.2s ease forwards;
+    opacity: 0;
+}
+
+@keyframes slideDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .navbar .mypage-toggle-container li {
@@ -101,7 +119,13 @@
     font-weight: bold;
 }
 
-.mobile-user-container {
+.navbar .mypage-toggle-container .active {
+    font-weight: bold;
+}
+
+
+/* Mobile user menu */
+.mobile-user-menu {
     display: none;
 }
 
@@ -110,74 +134,105 @@
     display: none;
     flex-direction: column;
     justify-content: space-around;
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     background: transparent;
     border: none;
     cursor: pointer;
     z-index: 200;
     position: absolute;
     right: 15px;
-    top: 12px;
+    top: 8px;
+    padding: 0;
 }
 
 .hamburger .bar {
     width: 100%;
-    height: 3px;
+    height: 4px;
     background-color: #fff;
-    border-radius: 10px;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+}
+
+.hamburger.active .bar:nth-child(1) {
+    transform: rotate(45deg) translate(8px, 9px);
+}
+
+.hamburger.active .bar:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active .bar:nth-child(3) {
+    transform: rotate(-45deg) translate(8px, -8px);
+}
+
+@media (max-width: 1200px) {
+    .pc-user-container .user-info {
+        display: none;
+    }
 }
 
 
-@media (max-width: 768px) {
+@media (max-width: 1000px) {
+    .navbar {
+        height: 50px;
+    }
+
+    /* Navbar 로고 */
+    .navbar .logo {
+        left: 15px;
+        width: 150px;
+        height: 40px;
+        font-size: 23px;
+    }
+
     .navbar .nav-container {
-        display: none;
-        position: relative;
-        width: 180px;
-        height: 500px;
+        display: block;
+        justify-content: left;
+        position: fixed;
         top: 65px;
-        right: -180px;
-        align-items: center;
+        left: auto;
+        right: -200px;
+        width: 200px;
+        height: calc(100vh - 65px);
+        background: #fff;
         color: #000;
-        background: green;
-        transform: translateX(100%);
-        transition: transform 0.3s ease-in-out;
+        transition: right 0.3s ease-in-out;
+        z-index: 150;
+        border-left: 1px solid var(--table-border-color);
+        box-shadow: var(--box-shadow-reverse);
+        overflow-y: auto;
     }
 
     .navbar .nav-container.show {
-        display: flex;
-        transform: translateX(0);
+        right: 0;
     }
 
     .navbar .nav-container ul {
+        display: flex;
         flex-direction: column;
-        width: 100%;
         padding: 0;
+        margin: 0;
     }
 
     .navbar .nav-container ul li {
-        margin: 10px 0;
-        text-align: center;
+        margin: 0;
+        padding: 15px 20px;
+        border-bottom: 1px solid #eee;
+        text-align: left;
+        font-size: 0.9rem;
+    }
+
+    .navbar .nav-container .mobile-mypage {
+        display: block;
+    }
+
+    .navbar .nav-container .active {
+        background: var(--bg-gray-color);
     }
 
     .hamburger {
         display: flex;
-    }
-
-    .navbar .user-info {
-        position: absolute;
-        top: 20px;
-        right: 10px;
-    }
-
-    .navbar .user-button {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-    }
-
-    .mobile-user-container {
-        display: block;
     }
 
     .pc-user-container {

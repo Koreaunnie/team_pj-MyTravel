@@ -3,7 +3,7 @@
     height: 100px;
     padding: 30px 50px;
     border-top: 1px solid var(--table-border-color);
-    z-index: 100;
+    z-index: 50;
     background: #fff;
 }
 
