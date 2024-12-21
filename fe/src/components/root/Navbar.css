@@ -134,28 +134,28 @@
     display: none;
     flex-direction: column;
     justify-content: space-around;
-    width: 35px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
     background: transparent;
     border: none;
     cursor: pointer;
     z-index: 200;
     position: absolute;
     right: 15px;
-    top: 8px;
+    top: 12px;
     padding: 0;
 }
 
 .hamburger .bar {
     width: 100%;
-    height: 4px;
+    height: 3px;
     background-color: #fff;
-    border-radius: 5px;
+    border-radius: 10px;
     transition: all 0.3s ease-in-out;
 }
 
 .hamburger.active .bar:nth-child(1) {
-    transform: rotate(45deg) translate(8px, 9px);
+    transform: rotate(45deg) translate(10px, 10px);
 }
 
 .hamburger.active .bar:nth-child(2) {
@@ -174,18 +174,6 @@
 
 
 @media (max-width: 1000px) {
-    .navbar {
-        height: 50px;
-    }
-
-    /* Navbar 로고 */
-    .navbar .logo {
-        left: 15px;
-        width: 150px;
-        height: 40px;
-        font-size: 23px;
-    }
-
     .navbar .nav-container {
         display: block;
         justify-content: left;
