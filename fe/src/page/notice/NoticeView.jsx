@@ -214,6 +214,19 @@ function NoticeView(props) {
             </tr>
           </tbody>
         </table>
+        {/* 게시글 하단 조회수 표시됨*/}
+        {/*<div>*/}
+        {/*  <div>*/}
+        {/*    <Field readOnly>*/}
+        {/*      <HStack>*/}
+        {/*        <Icon fontSize="2xl">*/}
+        {/*          <HiOutlineBookOpen />*/}
+        {/*        </Icon>{" "}*/}
+        {/*        : {notice.views} | {creationDate}*/}
+        {/*      </HStack>*/}
+        {/*    </Field>*/}
+        {/*  </div>*/}
+        {/*</div>*/}
       </div>
 
       {/* 수정 modal */}
