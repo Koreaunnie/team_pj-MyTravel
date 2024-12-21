@@ -174,12 +174,14 @@ function CommunityList(props) {
             >
               <div className={"community-header"}>
                 <li className="community-title">
-                  {c.title.length > 25
-                    ? `${c.title.substring(0, 25)} ...`
-                    : c.title}
+                  <HStack>
+                    {c.title.length > 25
+                      ? `${c.title.substring(0, 25)} ...`
+                      : c.title}{" "}
+                    {c.existOfFiles ? <IoMdPhotos /> : " "}
+                  </HStack>
                 </li>
                 <li>{c.writer}</li>
-                {c.existOfFiles ? <IoMdPhotos /> : " "}
               </div>
 
               <li className="community-content">
