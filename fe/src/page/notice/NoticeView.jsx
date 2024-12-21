@@ -8,8 +8,7 @@ import {
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import axios from "axios";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
-import { HStack, Icon } from "@chakra-ui/react";
-import { Field } from "../../components/ui/field.jsx";
+import { Icon } from "@chakra-ui/react";
 import { HiOutlineBookOpen } from "react-icons/hi";
 import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 import { GoHeart } from "react-icons/go";
@@ -215,19 +214,6 @@ function NoticeView(props) {
             </tr>
           </tbody>
         </table>
-
-        <div>
-          <div>
-            <Field readOnly>
-              <HStack>
-                <Icon fontSize="2xl">
-                  <HiOutlineBookOpen />
-                </Icon>{" "}
-                : {notice.views} | {creationDate}
-              </HStack>
-            </Field>
-          </div>
-        </div>
       </div>
 
       {/* 수정 modal */}
