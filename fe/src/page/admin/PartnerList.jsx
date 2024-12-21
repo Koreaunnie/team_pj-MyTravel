@@ -17,7 +17,7 @@ function MemberList(props) {
 
   return (
     <Box>
-      <h1>회원 목록</h1>
+      <h1>파트너 기업 목록</h1>
       <table className={"table-list"}>
         <thead>
           <tr>

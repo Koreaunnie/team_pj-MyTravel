@@ -1,11 +1,13 @@
-CREATE TABLE tour_review
+CREATE TABLE tour_revieww
 (
     review_id       INT PRIMARY KEY AUTO_INCREMENT,
     tour_id         INT          NOT NULL REFERENCES tour (id),
+    payment_id VARCHAR(30) REFERENCES payment(payment_id),
     writer_email    VARCHAR(30) DEFAULT 'left',
     writer_nickname VARCHAR(20) DEFAULT '탈퇴한 회원',
     review         VARCHAR(500) NOT NULL,
     inserted        DATETIME     NOT NULL DEFAULT NOW(),
+    rating int(11) DEFAULT NULL,
     CONSTRAINT fk_writer_email FOREIGN KEY (writer_email)
         REFERENCES member (email)
         ON DELETE SET DEFAULT
@@ -60,3 +62,17 @@ ORDER BY paid_at DESC;
 
 ALTER TABLE tour_review
 ADD COLUMN rating INT ;
+
+ALTER TABLE `tour_review`
+    ADD CONSTRAINT `fk_tour_review_writer_email`
+        FOREIGN KEY (`writer_email`) REFERENCES `member` (`email`)
+            ON DELETE SET NULL
+            ON UPDATE CASCADE;
+
+ALTER TABLE `tour_review`
+    ADD CONSTRAINT `fk_writer_nickname`
+        FOREIGN KEY (`writer_nickname`) REFERENCES `member` (`nickname`)
+            ON DELETE SET NULL
+            ON UPDATE CASCADE;
+
+SHOW CREATE TABLE tour_review;

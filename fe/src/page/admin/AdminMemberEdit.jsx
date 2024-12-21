@@ -17,15 +17,16 @@ import {
 import { toaster } from "../../components/ui/toaster.jsx";
 import { ProfileImageView } from "../../components/Image/ProfileImageView.jsx";
 import randomString from "../../components/login/RandomString.jsx";
-import "./Member.css";
+import "/src/page/member/Member.css";
 import {
   FileUploadList,
   FileUploadRoot,
   FileUploadTrigger,
 } from "../../components/ui/file-button.jsx";
 import { HiUpload } from "react-icons/hi";
+import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 
-export function MemberEdit() {
+export function AdminMemberEdit() {
   const [member, setMember] = useState(null);
   const [password, setPassword] = useState("");
   const [oldPassword, setOldPassword] = useState("");
@@ -70,6 +71,7 @@ export function MemberEdit() {
           type: message.type,
           description: message.text,
         });
+        navigate(`/member/${email}`);
       })
       .catch((e) => {
         const message = e.response.data.message;
@@ -109,6 +111,12 @@ export function MemberEdit() {
 
   return (
     <div className={"member-edit"}>
+      <Breadcrumb
+        depth1={"관리자 모드"}
+        navigateToDepth1={() => navigate(`/admin`)}
+        depth2={"회원 정보 수정"}
+        navigateToDepth2={() => {}}
+      />
       <h1>회원 정보 수정</h1>
 
       <ProfileImageView files={member.profile} />
@@ -129,11 +137,13 @@ export function MemberEdit() {
               </FileUploadRoot>
             </li>
 
-            <li>
-              <label htmlFor="email">이메일</label>
-              <input type={"text"} id={email} value={member.email} readOnly />
-              <span>이메일은 수정이 불가합니다.</span>
-            </li>
+            {member.kakao || (
+              <li>
+                <label htmlFor="email">이메일</label>
+                <input type={"text"} id={email} value={member.email} readOnly />
+                <span>이메일은 수정이 불가합니다.</span>
+              </li>
+            )}
 
             <li>
               <Field label={"닉네임"}>
@@ -191,6 +201,13 @@ export function MemberEdit() {
 
       <Stack>
         <Center>
+          <button
+            className={"btn btn-dark-outline"}
+            onClick={() => navigate(`/member/${email}`)}
+          >
+            취소
+          </button>
+
           {member.kakao || (
             <Box>
               <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>

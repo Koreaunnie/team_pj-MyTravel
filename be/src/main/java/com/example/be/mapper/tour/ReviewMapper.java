@@ -113,4 +113,11 @@ public interface ReviewMapper {
         AND name=#{file}
         """)
     int deleteImageByReviewIdAndName(Integer reviewId, String file);
+
+    @Select("""
+        SELECT review_id
+        FROM tour_review
+        WHERE writer_email=#{email}
+        """)
+    List<Integer> selectReviewByEmail(String email);
 }

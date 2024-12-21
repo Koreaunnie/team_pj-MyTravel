@@ -6,6 +6,7 @@ import com.example.be.dto.member.MemberPicture;
 import com.example.be.mapper.community.CommunityMapper;
 import com.example.be.mapper.member.MemberMapper;
 import com.example.be.mapper.notice.NoticeMapper;
+import com.example.be.mapper.tour.ReviewMapper;
 import com.example.be.mapper.tour.TourMapper;
 import com.example.be.service.tour.TourService;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +42,7 @@ public class MemberService {
     private final MemberMapper memberMapper;
     private final CommunityMapper communityMapper;
     private final NoticeMapper noticeMapper;
+    private final ReviewMapper reviewMapper;
 
     @Value("${image.src.prefix}")
     String imageSrcPrefix;
@@ -57,10 +59,10 @@ public class MemberService {
 
                 String objectKey = "teamPrj1126/member/" + member.getEmail() + "/" + file.getOriginalFilename();
                 PutObjectRequest por = PutObjectRequest.builder()
-                        .bucket(bucketName)
-                        .key(objectKey)
-                        .acl(ObjectCannedACL.PUBLIC_READ)
-                        .build();
+                    .bucket(bucketName)
+                    .key(objectKey)
+                    .acl(ObjectCannedACL.PUBLIC_READ)
+                    .build();
                 try {
                     s3.putObject(por, RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
                 } catch (IOException e) {
@@ -86,12 +88,12 @@ public class MemberService {
 
         if (profileName == null || profileName.endsWith("kakaocdn.net/account_images/default_profile.jpeg")) {
             MemberPicture PicSrc = new MemberPicture(
-                    "카톡 기본.jpeg", imageSrcPrefix + "/74/%EC%B9%B4%ED%86%A1%20%EA%B8%B0%EB%B3%B8.jpeg"
+                "카톡 기본.jpeg", imageSrcPrefix + "/74/%EC%B9%B4%ED%86%A1%20%EA%B8%B0%EB%B3%B8.jpeg"
             );
             member.setProfile(List.of(PicSrc));
         } else {
             MemberPicture PicSrc = new MemberPicture(
-                    profileName, imageSrcPrefix + "/member/" + email + "/" + profileName);
+                profileName, imageSrcPrefix + "/member/" + email + "/" + profileName);
             member.setProfile(List.of(PicSrc));
         }
         return member;
@@ -118,23 +120,25 @@ public class MemberService {
             String profile = mapper.selectPictureByEmail(db.getEmail());
             String key = "teamPrj1126/member/" + member.getEmail() + "/" + profile;
             DeleteObjectRequest dor = DeleteObjectRequest.builder()
-                    .bucket(bucketName)
-                    .key(key)
-                    .build();
+                .bucket(bucketName)
+                .key(key)
+                .build();
             s3.deleteObject(dor);
 
             //멤버의 장바구니 삭제
             mapper.deleteCartByMemberEmail(member.getEmail());
 
-
-            //멤버의 구매 이력 관리
-//      for (Integer tourBoard : tourBoards) {
-//      }
-
             //tour partner와 partnerEmail 탈퇴한 회원으로 변경
             for (Integer tourId : tourBoards) {
                 mapper.updatePartnerToLeft(tourId);
             }
+
+            //리뷰 writer_email writer_nickname 탈퇴한 회원으로 변경
+            List<Integer> leftReviews = reviewMapper.selectReviewByEmail(member.getEmail());
+            for (Integer reviewId : leftReviews) {
+                mapper.updateEmailToLeft(reviewId);
+            }
+
 
             //community writer 탈퇴한 회원으로 변경
             List<Integer> wholeCommunityId = communityMapper.selectWholeCommunityIdByWriter(db.getNickname());
@@ -180,9 +184,9 @@ public class MemberService {
                 String oldPicture = mapper.selectPictureByEmail(db.getEmail());
                 String key = "teamPrj1126/member/" + member.getEmail() + "/" + oldPicture;
                 DeleteObjectRequest dor = DeleteObjectRequest.builder()
-                        .bucket(bucketName)
-                        .key(key)
-                        .build();
+                    .bucket(bucketName)
+                    .key(key)
+                    .build();
                 s3.deleteObject(dor);
 
 
@@ -192,10 +196,10 @@ public class MemberService {
                 //s3 이미지 업로드
                 String objectKey = "teamPrj1126/member/" + member.getEmail() + "/" + uploadFiles.getOriginalFilename();
                 PutObjectRequest por = PutObjectRequest.builder()
-                        .bucket(bucketName)
-                        .key(objectKey)
-                        .acl(ObjectCannedACL.PUBLIC_READ)
-                        .build();
+                    .bucket(bucketName)
+                    .key(objectKey)
+                    .acl(ObjectCannedACL.PUBLIC_READ)
+                    .build();
 
                 try {
                     s3.putObject(por, RequestBody.fromInputStream(uploadFiles.getInputStream(), uploadFiles.getSize()));
@@ -213,20 +217,20 @@ public class MemberService {
         Member db = mapper.selectByEmail(member.getEmail());
         List<String> auths = mapper.selectAuthByMemberEmail(member.getEmail());
         String authsString = auths.stream()
-                .collect(Collectors.joining(" "));
+            .collect(Collectors.joining(" "));
 
         //이메일에 해당하는 회원이 있다면.
         if (db != null) {
             if (db.getPassword().equals(member.getPassword())) {
                 //token 생성
                 JwtClaimsSet claims = JwtClaimsSet.builder()
-                        .issuer("self")
-                        .subject(member.getEmail())
-                        .issuedAt(Instant.now())
-                        .expiresAt(Instant.now().plusSeconds(60 * 60 * 24 * 7))
-                        .claim("scope", authsString)
-                        .claim("nickname", db.getNickname())
-                        .build();
+                    .issuer("self")
+                    .subject(member.getEmail())
+                    .issuedAt(Instant.now())
+                    .expiresAt(Instant.now().plusSeconds(60 * 60 * 24 * 7))
+                    .claim("scope", authsString)
+                    .claim("nickname", db.getNickname())
+                    .build();
                 return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
             }
         }
@@ -245,12 +249,12 @@ public class MemberService {
 
     public boolean isAdmin(Authentication auth) {
         return auth.getAuthorities().stream().map(e -> e.toString())
-                .anyMatch(s -> s.equals("SCOPE_admin"));
+            .anyMatch(s -> s.equals("SCOPE_admin"));
     }
 
     public boolean isPartner(Authentication auth) {
         return auth.getAuthorities().stream().map(e -> e.toString())
-                .anyMatch(s -> s.equals("SCOPE_partner"));
+            .anyMatch(s -> s.equals("SCOPE_partner"));
     }
 
     public List<Member> partnerList() {
