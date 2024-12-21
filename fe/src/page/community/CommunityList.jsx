@@ -165,7 +165,7 @@ function CommunityList(props) {
             >
               <div className={"community-header"}>
                 <li className="community-title">{c.title}</li>
-                <li>{c.writer}</li>
+                <li className="community-writer">{c.writer}</li>
                 {c.existOfFiles ? <IoMdPhotos /> : " "}
               </div>
 

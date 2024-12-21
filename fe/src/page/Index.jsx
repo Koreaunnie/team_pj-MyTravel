@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import "./Index.css";
@@ -8,6 +8,7 @@ import { IndexSlider } from "./IndexSlider.jsx";
 import Calendar from "react-calendar";
 import { formatNumberWithCommas } from "../components/utils/FormatNumberWithCommas.jsx";
 import { formattedDate } from "../components/utils/FormattedDate.jsx";
+import { AuthenticationContext } from "../components/context/AuthenticationProvider.jsx";
 
 export function Index() {
   const [search, setSearch] = useState("");
@@ -20,6 +21,7 @@ export function Index() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedPlans, setSelectedPlans] = useState([]);
   const navigate = useNavigate();
+  const { isAuthenticated } = useContext(AuthenticationContext);
 
   useEffect(() => {
     axios
@@ -256,14 +258,16 @@ export function Index() {
       </section>
 
       {/* 회원가입 유도 배너 */}
-      <section className={"info-banner"}>
-        <div className={"info-banner-wrap"}>
-          <p>회원가입 없이도 투어 상품을 둘러보실 수 있습니다.</p>
-          <button type={"button"} onClick={() => navigate("/member/login")}>
-            회원가입 후 더 많은 혜택 누리기
-          </button>
-        </div>
-      </section>
+      {isAuthenticated || (
+        <section className={"info-banner"}>
+          <div className={"info-banner-wrap"}>
+            <p>회원가입 없이도 투어 상품을 둘러보실 수 있습니다.</p>
+            <button type={"button"} onClick={() => navigate("/member/login")}>
+              회원가입 후 더 많은 혜택 누리기
+            </button>
+          </div>
+        </section>
+      )}
 
       {/* 투어 */}
       <section className={"index-tour-container"}>
@@ -348,8 +352,8 @@ export function Index() {
                     key={community.id}
                     onClick={() => navigate(`/community/view/${community.id}`)}
                   >
-                    <li className={"description"}>{community.title}</li>
-                    <li className={"location"}>{community.writer}</li>
+                    <li>{community.title}</li>
+                    <li>{community.writer}</li>
                   </ul>
                 ))}
               </div>

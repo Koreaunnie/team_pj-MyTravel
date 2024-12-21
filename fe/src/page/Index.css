@@ -195,14 +195,14 @@
 section.plan-container {
     margin-top: 100px;
     width: 100%;
-    height: 400px;
+    height: 360px;
     background: var(--bg-light-blue-color);
     display: block;
 }
 
 .plan-container .plan-container-wrap {
     width: 1000px;
-    margin: 20px auto 0 auto;
+    margin: 0 auto;
 }
 
 .plan-container .plan-container-wrap .plan-container-header {
@@ -220,6 +220,7 @@ section.plan-container {
     color: #000;
     font-weight: bold;
     cursor: pointer;
+    margin-right: 10px;
 }
 
 .plan-container .plan-container-wrap .plan-container-card {
@@ -338,7 +339,7 @@ section.plan-container {
     cursor: pointer;
     font-weight: bold;
     font-size: 0.9rem;
-
+    margin-right: 10px;
 }
 
 .index-tour-container .index-tour-container-body .index-tour-container-card {
@@ -452,7 +453,7 @@ section.plan-container {
 
 /*------------------- 커뮤니티 -------------------*/
 .index-community-container {
-    width: 1000px;
+    width: 980px;
     margin: 0 auto;
     background: var(--bg-dark-blue-color);
     border-radius: 10px;
@@ -496,8 +497,19 @@ section.plan-container {
     cursor: pointer;
 }
 
+.index-community-container .index-community-container-wrap .index-community-container-list ul li:nth-child(1) {
+    height: 1.5rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 80%;
+}
+
 .index-community-container .index-community-container-wrap .index-community-container-list ul li:nth-child(2) {
     font-size: 0.9rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 19%;
+    text-align: right;
     font-weight: bold;
 }
 
@@ -611,7 +623,8 @@ section.plan-container {
     }
 
     .ad {
-        width: 80%;
+        width: 100%;
+        margin: 50px auto;
     }
 
     /*------------------- calendar -------------------*/
@@ -780,29 +793,48 @@ section.plan-container {
     }
 
     /*------------------- 커뮤니티 -------------------*/
-    .community-container {
-        width: 80%;
+    .index-community-container {
+        width: 95%;
         padding: 10px;
+        margin-top: 50px;
     }
 
-    .community-container .community-container-wrap {
+    .index-community-container .index-community-container-wrap {
         display: block;
     }
 
-    .community-container .community-container-wrap .community-container-header {
+    .index-community-container .index-community-container-wrap .index-community-container-header {
+        width: 100%;
+        margin: 10px;
+    }
+
+    .index-community-container .index-community-container-wrap .index-community-container-header h1 {
+        font-size: 1.3rem;
+        margin: 0;
+    }
+
+    .index-community-container .index-community-container-wrap .index-community-container-header .more-btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .index-community-container .index-community-container-wrap .index-community-container-body {
         width: 100%;
         margin: 0;
-        text-align: center;
+        padding: 5px 15px;
     }
 
-    .community-container .community-container-wrap .community-container-header h1 {
-        font-size: 1.7rem;
-        margin-bottom: 0;
+    .index-community-container .index-community-container-wrap .index-community-container-list ul {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        margin: 10px 0;
+        cursor: pointer;
     }
 
-    .community-container .community-container-wrap .community-container-body {
-        width: 90%;
-        margin: 20px auto;
+    .index-community-container .index-community-container-wrap .index-community-container-list ul li:nth-child(2) {
+        font-size: 0.9rem;
+        font-weight: bold;
     }
 
 
@@ -812,28 +844,31 @@ section.plan-container {
         height: auto;
         padding: 30px;
         display: block;
+        margin: 0 auto;
     }
 
     /*------------------- 연락처 -------------------*/
     .divided-container .tel-container {
-        width: 400px;
+        width: 100%;
         margin-top: 0;
     }
 
     .divided-container .tel-container h3 {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
 
     .divided-container .tel-container h5 {
-        font-size: 1.5rem;
+        font-size: 1.3em;
     }
 
     .divided-container .tel-container ul {
-        margin: 30px 100px;
+        margin: 10px auto 20px auto;
+        text-align: center;
     }
 
     .divided-container .tel-container ul li {
-        font-size: 1.1rem;
+        font-size: 1rem;
+        margin: 0;
     }
 
     /*------------------- 공지사항 -------------------*/
@@ -876,10 +911,6 @@ section.plan-container {
 @media (max-width: 480px) {
     .main-section-wrap {
         width: 95%;
-    }
-
-    .ad {
-        width: 100%;
     }
 
     /*------------------- plan -------------------*/
