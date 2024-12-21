@@ -75,6 +75,15 @@ function Navbar() {
             </div>
           )}
 
+          {isAuthenticated && (
+            <li
+              className={`mobile-displayed ${isActive("/tour") ? "active" : ""}`}
+              onClick={() => handleNavigate("/cart")}
+            >
+              장바구니
+            </li>
+          )}
+
           {isAuthenticated || (
             <li onClick={() => handleNavigate("/member/login")}>로그인</li>
           )}
@@ -130,6 +139,7 @@ function Navbar() {
 
           {isAuthenticated && (
             <li
+              className={"mobile-displayed"}
               onClick={() => {
                 logout();
                 handleNavigate("/member/login");
@@ -161,18 +171,13 @@ function Navbar() {
                     회원 정보
                   </li>
                   <li
-                    className={isActive("/payment/history") ? "active" : ""}
-                    onClick={() => handleNavigate(`/payment/history/${email}`)}
-                  >
-                    결제 내역
-                  </li>
-                  <li
                     className={isActive("/cart") ? "active" : ""}
                     onClick={() => handleNavigate("/cart")}
                   >
                     {" "}
                     장바구니
                   </li>
+
                   <li
                     onClick={() => {
                       logout();

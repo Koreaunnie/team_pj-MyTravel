@@ -45,7 +45,9 @@
     margin: 10px 25px;
 }
 
-.navbar .nav-container .mobile-mypage {
+.navbar .nav-container .mobile-mypage,
+.navbar .nav-container .mobile-displayed
+{
     display: none;
 }
 
@@ -165,6 +167,7 @@
 .hamburger.active .bar:nth-child(3) {
     transform: rotate(-45deg) translate(8px, -8px);
 }
+
 
 @media (max-width: 1200px) {
     .pc-user-container .user-info {

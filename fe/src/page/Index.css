@@ -43,8 +43,8 @@
     display: flex;
     position: relative;
     width: 1000px;
-    height: 380px;
-    margin: 50px auto;
+    height: 370px;
+    margin: 50px auto 10px auto;
     box-sizing: border-box;
 }
 

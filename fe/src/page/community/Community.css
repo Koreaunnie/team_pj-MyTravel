@@ -129,6 +129,16 @@
     bottom: 23px;
 }
 
+/*------------------- 내가 쓴 글 -------------------*/
+.community-mylist {
+    margin: 40px 30px;
+    width: calc(100% - 50px);
+    height: calc(100vh - 250px);
+}
+
+.community-mylist h1{
+    margin-bottom: 40px;
+}
 
 /*------------------- 화면 크기가 768px 이하 (태블릿 화면) -------------------*/
 @media (max-width: 768px) {

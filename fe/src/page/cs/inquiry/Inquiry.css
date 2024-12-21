@@ -2,6 +2,7 @@
     width: 100%;
     margin-top: 30px;
     padding-top: 30px;
+    height: calc(100vh - 170px);
 }
 
 /*------------------- inquiry form -------------------*/
@@ -43,6 +44,7 @@
 
 .inquiry .table-list tbody tr td {
     font-size: 0.9rem;
+    cursor: pointer;
 }
 
 .inquiry .table-list tbody tr td:nth-child(1) {

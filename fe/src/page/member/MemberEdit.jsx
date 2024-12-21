@@ -113,7 +113,7 @@ export function MemberEdit() {
 
       <ProfileImageView files={member.profile} />
 
-      <div className={"form-wrap body-normal"}>
+      <div className={"form-wrap"}>
         <fieldset>
           <ul>
             <li style={{ marginBottom: "20px" }}>

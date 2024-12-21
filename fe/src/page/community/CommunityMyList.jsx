@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaRegQuestionCircle } from "react-icons/fa";
+import { formattedDateTime } from "../../components/utils/FormattedDateTime.jsx";
 
 function CommunityMyList(props) {
   const [communityList, setCommunityList] = useState([]);
@@ -50,7 +51,7 @@ function CommunityMyList(props) {
               <tr key={c.id} onClick={() => handleRowClick(c.id)}>
                 <td>{c.id}</td>
                 <td>{c.title}</td>
-                <td>{c.creationDate}</td>
+                <td>{formattedDateTime(c.creationDate)}</td>
               </tr>
             ))}
           </tbody>
