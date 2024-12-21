@@ -240,7 +240,8 @@
     }
 
     .navbar .nav-container .active {
-        border-bottom: 2px solid var(--font-gray-color);
+        background: var(--bg-gray-color);
+        box-shadow: var(--box-shadow-inset);
     }
 
     .hamburger {

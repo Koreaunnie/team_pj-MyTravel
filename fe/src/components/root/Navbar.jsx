@@ -62,24 +62,22 @@ function Navbar() {
 
       <div className={`nav-container ${menuOpen ? "show" : ""}`}>
         <ul>
-          { isAuthenticated && (
-          <div className={"mobile-mypage"}>
-            <p className={"mobile-user-info"}>{nickname} 님</p>
+          {isAuthenticated && (
+            <div className={"mobile-mypage"}>
+              <p className={"mobile-user-info"}>{nickname} 님</p>
 
-            <p
-              className={"mobile-user-mypage"}
-              onClick={() => handleNavigate(`/mypage/${email}`)}
-            >
-              마이페이지
-            </p>
-          </div>
+              <p
+                className={"mobile-user-mypage"}
+                onClick={() => handleNavigate(`/mypage/${email}`)}
+              >
+                마이페이지
+              </p>
+            </div>
           )}
 
-          <li
-            onClick={() => handleNavigate("/member/login")}
-          >
-            로그인
-          </li>
+          {isAuthenticated || (
+            <li onClick={() => handleNavigate("/member/login")}>로그인</li>
+          )}
 
           <li
             className={isActive("/tour") ? "active" : ""}
@@ -93,7 +91,7 @@ function Navbar() {
           >
             커뮤니티
           </li>
-          {isAuthenticated && (
+          { isAuthenticated && (
             <>
               <li
                 className={isActive("/plan") ? "active" : ""}
@@ -130,15 +128,15 @@ function Navbar() {
             </li>
           )}
 
-          {isAuthenticated &&(
-          <li
-            onClick={() => {
-              logout();
-              handleNavigate("/member/login");
-            }}
-          >
-            로그아웃
-          </li>
+          {isAuthenticated && (
+            <li
+              onClick={() => {
+                logout();
+                handleNavigate("/member/login");
+              }}
+            >
+              로그아웃
+            </li>
           )}
         </ul>
       </div>
