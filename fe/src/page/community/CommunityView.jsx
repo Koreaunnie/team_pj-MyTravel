@@ -8,29 +8,15 @@ import {
 } from "react-router-dom";
 import {
   Box,
-  DialogTitle,
+  Center,
   HStack,
+  Icon,
   Image,
-  Input,
   Stack,
   Table,
-  Textarea,
 } from "@chakra-ui/react";
-import { Field } from "../../components/ui/field.jsx";
-import { Button } from "../../components/ui/button.jsx";
-import {
-  DialogActionTrigger,
-  DialogBody,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogRoot,
-  DialogTrigger,
-} from "../../components/ui/dialog.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
-import { FiMessageSquare } from "react-icons/fi";
-import { LuPencilLine } from "react-icons/lu";
-import { IoMdPhotos } from "react-icons/io";
+import { IoMdHeart, IoMdHeartEmpty, IoMdPhotos } from "react-icons/io";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { HiOutlineBookOpen } from "react-icons/hi";
 import { GoHeart } from "react-icons/go";
@@ -39,6 +25,12 @@ import { toaster } from "../../components/ui/toaster.jsx";
 import CommentContainer from "./comment/CommentContainer.jsx";
 import { Modal } from "../../components/root/Modal.jsx";
 import { formattedDateTime } from "../../components/utils/FormattedDateTime.jsx";
+import {
+  PaginationItems,
+  PaginationNextTrigger,
+  PaginationPrevTrigger,
+  PaginationRoot,
+} from "../../components/ui/pagination.jsx";
 
 function ImageFileView({ files }) {
   return (
@@ -59,21 +51,23 @@ function CommunityView(props) {
   const { id } = useParams();
   const [community, setCommunity] = useState({});
   const navigate = useNavigate();
-  const [comment, setComment] = useState("");
   const [commentList, setCommentList] = useState([]);
   const [countCommunity, setCountCommunity] = useState(0);
-  const [commentContent, setCommentContent] = useState("");
   const [myCommunityLike, setMyCommunityLike] = useState(false);
   const [communityList, setCommunityList] = useState([]);
   const [searchParams] = useSearchParams();
   const authentication = useContext(AuthenticationContext);
-  const { hasAccessByNickName, isAdmin } = useContext(AuthenticationContext);
+  const { hasAccessByNickName } = useContext(AuthenticationContext);
   const { pathname } = useLocation();
   const [titleLength, setTitleLength] = useState("");
   const [creationDate, setCreationDate] = useState("");
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [likeModalOpen, setLikeModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(
+    parseInt(searchParams.get("page")) || 1,
+  );
+  const [search, setSearch] = useState({ type: "all", keyword: "" });
 
   useEffect(() => {
     axios
@@ -150,84 +144,6 @@ function CommunityView(props) {
     });
   };
 
-  const handleCommentSaveClick = () => {
-    axios
-      .post(`/api/community/comment/write`, {
-        comment,
-        communityId: community.id,
-      })
-      .then((e) => {
-        const writeSuccess = e.data.message;
-        toaster.create({
-          type: writeSuccess.type,
-          description: writeSuccess.text,
-        });
-        fetch();
-      })
-      .catch((e) => {
-        const writeFailure = e.request.response;
-        const parsingKey = JSON.parse(writeFailure);
-        const type = parsingKey.message.type;
-        const text = parsingKey.message.text;
-        toaster.create({
-          type: type,
-          description: text,
-        });
-      })
-      .finally(() => setComment(""));
-  };
-
-  const handleCommentDeleteClick = (id) => {
-    axios
-      .delete(`/api/community/comment/delete/${id}`)
-      .then((e) => {
-        const deleteSuccess = e.data.message;
-        toaster.create({
-          type: deleteSuccess.type,
-          description: deleteSuccess.text,
-        });
-        fetch();
-      })
-      .catch((e) => {
-        const deleteFailure = e.request.response;
-        const parsingKey = JSON.parse(deleteFailure);
-        const type = parsingKey.message.type;
-        const text = parsingKey.message.text;
-        toaster.create({
-          type: type,
-          description: text,
-        });
-      });
-  };
-
-  const handleCommentChange = (id, value) => {
-    setCommentContent((prev) => ({ ...prev, [id]: value }));
-  };
-
-  const handleCommentUpdateClick = (id) => {
-    const updatedComment = commentContent[id]; // 수정된 댓글 가져오기
-    axios
-      .put(`/api/community/comment/edit/${id}`, { comment: updatedComment })
-      .then((e) => {
-        const updateSuccess = e.data.message;
-        toaster.create({
-          type: updateSuccess.type,
-          description: updateSuccess.text,
-        });
-        fetch();
-      })
-      .catch((e) => {
-        const updateFailure = e.request.response;
-        const parsingKey = JSON.parse(updateFailure);
-        const type = parsingKey.message.type;
-        const text = parsingKey.message.text;
-        toaster.create({
-          type: type,
-          description: text,
-        });
-      });
-  };
-
   const handleLikeClick = () => {
     axios
       .post(`/api/community/like/${id}`)
@@ -256,6 +172,23 @@ function CommunityView(props) {
 
   function handleLoginClick() {
     navigate(`/member/login`);
+  }
+
+  function handlePageChangeClick(e) {
+    const pageNumber = { page: e.page };
+    const pageQuery = new URLSearchParams(pageNumber);
+    const searchInfo = { type: search.type, keyword: search.keyword };
+    const searchQuery = new URLSearchParams(searchInfo);
+    navigate(
+      axios
+        .get(
+          `/api/community/list?${searchQuery.toString()}&${pageQuery.toString()}`,
+        )
+        .then((res) => {
+          setCommunityList(res.data.list);
+          setCountCommunity(res.data.countCommunity);
+        }),
+    );
   }
 
   return (
@@ -311,6 +244,25 @@ function CommunityView(props) {
           )}
         </div>
 
+        <div className={"like-wrap"}>
+          <ul>
+            <li className={"icon"}>
+              <Icon
+                color="red.600"
+                onClick={() => {
+                  if (authentication.isAuthenticated) {
+                    handleLikeClick(); // 로그인한 경우 좋아요 처리
+                  } else {
+                    setLikeModalOpen(true);
+                  }
+                }}
+              >
+                {myCommunityLike ? <IoMdHeart /> : <IoMdHeartEmpty />}
+              </Icon>
+            </li>
+            <li>{community.like}</li>
+          </ul>
+        </div>
         <div>
           <table className={"table-view"}>
             <thead>
@@ -329,7 +281,9 @@ function CommunityView(props) {
             <tbody>
               <tr className={"tbody-content"}>
                 <td>{community.content}</td>
-                <td>{community.files}</td>
+                <td>
+                  <ImageFileView files={community.files} />
+                </td>
               </tr>
             </tbody>
           </table>
@@ -340,147 +294,6 @@ function CommunityView(props) {
               communityWriter={community.writer}
             />
           </div>
-
-          <Box>
-            <Stack>
-              <Field fontSize="xl">
-                <strong>
-                  <HStack>
-                    <FiMessageSquare />
-                    코멘트 ({commentList.length})
-                  </HStack>
-                </strong>
-              </Field>
-
-              <Field>
-                {commentList.map((list) => (
-                  <Box value={list.id}>
-                    <HStack>
-                      <Stack>
-                        <HStack>
-                          <Field w={300}>{list.writer}</Field>
-                          <Field>{list.creationDate}</Field>
-                        </HStack>
-                        <HStack>
-                          <Input value={list.comment} readOnly w={450} />
-                          {/* TODO : 권한받은 유저만 보이게 */}
-                          <Box>
-                            <HStack>
-                              {hasAccessByNickName(list.writer) && (
-                                <DialogRoot>
-                                  <DialogTrigger asChild>
-                                    <div>
-                                      <Button
-                                        className={"btn btn-blue"}
-                                        variant="outline"
-                                      >
-                                        수정
-                                      </Button>
-                                    </div>
-                                  </DialogTrigger>
-                                  <DialogContent>
-                                    <DialogHeader>
-                                      <DialogTitle>댓글 수정</DialogTitle>
-                                    </DialogHeader>
-                                    <DialogBody pb="4">
-                                      <Stack gap="4">
-                                        <Field>
-                                          <HStack>
-                                            <LuPencilLine /> 수정하기
-                                          </HStack>
-                                          <Textarea
-                                            defaultValue={list.comment} // 기존 댓글 내용 표시
-                                            onChange={
-                                              (e) =>
-                                                handleCommentChange(
-                                                  list.id,
-                                                  e.target.value,
-                                                ) // 변경 이벤트 핸들러
-                                            }
-                                            placeholder="내용을 입력해주세요."
-                                          />
-                                        </Field>
-                                      </Stack>
-                                    </DialogBody>
-                                    <DialogFooter>
-                                      <DialogActionTrigger asChild>
-                                        <div>
-                                          <button
-                                            className={"btn btn-dark-outline"}
-                                            variant="outline"
-                                          >
-                                            취소
-                                          </button>
-                                        </div>
-                                      </DialogActionTrigger>
-                                      <DialogActionTrigger>
-                                        <div>
-                                          <Button
-                                            className={"btn btn-blue"}
-                                            onClick={() =>
-                                              handleCommentUpdateClick(list.id)
-                                            }
-                                          >
-                                            수정
-                                          </Button>
-                                        </div>
-                                      </DialogActionTrigger>
-                                    </DialogFooter>
-                                  </DialogContent>
-                                </DialogRoot>
-                              )}
-                              {(hasAccessByNickName(list.writer) ||
-                                authentication.isAdmin) && (
-                                <DialogRoot>
-                                  <DialogTrigger>
-                                    <div>
-                                      <Button className={"btn btn-warning"}>
-                                        삭제
-                                      </Button>
-                                    </div>
-                                  </DialogTrigger>
-                                  <DialogContent>
-                                    <DialogHeader>글 삭제</DialogHeader>
-                                    <DialogBody>
-                                      해당 댓글을 정말 삭제하시겠습니까?
-                                    </DialogBody>
-                                    <DialogFooter>
-                                      <DialogActionTrigger>
-                                        <div>
-                                          <button
-                                            className={"btn btn-dark-outline"}
-                                          >
-                                            취소
-                                          </button>
-                                        </div>
-                                      </DialogActionTrigger>
-                                      <DialogActionTrigger>
-                                        <div>
-                                          <Button
-                                            className={"btn btn-warning"}
-                                            onClick={() =>
-                                              handleCommentDeleteClick(list.id)
-                                            }
-                                          >
-                                            삭제
-                                          </Button>
-                                        </div>
-                                      </DialogActionTrigger>
-                                    </DialogFooter>
-                                  </DialogContent>
-                                </DialogRoot>
-                              )}
-                            </HStack>
-                          </Box>
-                        </HStack>
-                      </Stack>
-                    </HStack>
-                  </Box>
-                ))}
-              </Field>
-            </Stack>
-          </Box>
-
           <br />
           <br />
           <Box>
@@ -521,6 +334,24 @@ function CommunityView(props) {
               </Table.Body>
             </Table.Root>
           </Box>
+          <div className={"pagination"}>
+            <Center>
+              <PaginationRoot
+                count={countCommunity}
+                pageSize={10}
+                defaultPage={currentPage}
+                onPageChange={handlePageChangeClick}
+                siblingCount={2}
+                variant="solid"
+              >
+                <HStack>
+                  <PaginationPrevTrigger />
+                  <PaginationItems />
+                  <PaginationNextTrigger />
+                </HStack>
+              </PaginationRoot>
+            </Center>
+          </div>
         </div>
       </div>
 
