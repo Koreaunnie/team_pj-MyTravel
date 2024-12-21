@@ -6,9 +6,17 @@ import {
   useParams,
   useSearchParams,
 } from "react-router-dom";
-import { Box, Center, HStack, Image, Stack, Table } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  HStack,
+  Icon,
+  Image,
+  Stack,
+  Table,
+} from "@chakra-ui/react";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
-import { IoMdPhotos } from "react-icons/io";
+import { IoMdHeart, IoMdHeartEmpty, IoMdPhotos } from "react-icons/io";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { HiOutlineBookOpen } from "react-icons/hi";
 import { GoHeart } from "react-icons/go";
@@ -236,6 +244,25 @@ function CommunityView(props) {
           )}
         </div>
 
+        <div className={"like-wrap"}>
+          <ul>
+            <li className={"icon"}>
+              <Icon
+                color="red.600"
+                onClick={() => {
+                  if (authentication.isAuthenticated) {
+                    handleLikeClick(); // 로그인한 경우 좋아요 처리
+                  } else {
+                    setLikeModalOpen(true);
+                  }
+                }}
+              >
+                {myCommunityLike ? <IoMdHeart /> : <IoMdHeartEmpty />}
+              </Icon>
+            </li>
+            <li>{community.like}</li>
+          </ul>
+        </div>
         <div>
           <table className={"table-view"}>
             <thead>
