@@ -63,7 +63,7 @@ function MyPage(props) {
           navigate("/admin");
         } else {
           logout();
-          navigate(`/member/signup`);
+          navigate(`/`);
         }
       })
       .catch((e) => {
@@ -147,19 +147,20 @@ function MyPage(props) {
             </li>
 
             <li>
-              {kakao || (
-                <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
-                  <DialogTrigger>
-                    <button className={"btn btn-warning"}>계정 탈퇴</button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>탈퇴 확인</DialogTitle>
-                    </DialogHeader>
+              <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
+                <DialogTrigger>
+                  <button className={"btn btn-warning"}>계정 탈퇴</button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>탈퇴 확인</DialogTitle>
+                  </DialogHeader>
+                  {kakao || (
                     <DialogBody>
                       <Stack>
-                        <Field label={"비밀번호"}>
-                          <p>회원 탈퇴를 위하여 비밀번호를 입력해 주십시오.</p>
+                        <p>회원 탈퇴를 위하여 비밀번호를 입력해 주십시오.</p>
+
+                        <Field>
                           <Input
                             placeholder={"비밀번호 입력"}
                             onChange={(e) => setPassword(e.target.value)}
@@ -167,24 +168,8 @@ function MyPage(props) {
                         </Field>
                       </Stack>
                     </DialogBody>
-                    <DialogFooter>
-                      <DialogActionTrigger>
-                        <button className={"btn btn-dark-outline"}>취소</button>
-                      </DialogActionTrigger>
-                      <Button onClick={handleDeleteClick}>탈퇴</Button>
-                    </DialogFooter>
-                  </DialogContent>
-                </DialogRoot>
-              )}
-              {kakao && (
-                <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
-                  <DialogTrigger>
-                    <button className={"btn btn-warning"}>계정 탈퇴</button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>탈퇴 확인</DialogTitle>
-                    </DialogHeader>
+                  )}
+                  {kakao && (
                     <DialogBody>
                       <Stack>
                         <p>
@@ -199,15 +184,15 @@ function MyPage(props) {
                         </Field>
                       </Stack>
                     </DialogBody>
-                    <DialogFooter>
-                      <DialogActionTrigger>
-                        <Button variant={"outline"}>취소</Button>
-                      </DialogActionTrigger>
-                      <Button onClick={handleDeleteClick}>탈퇴</Button>
-                    </DialogFooter>
-                  </DialogContent>
-                </DialogRoot>
-              )}
+                  )}
+                  <DialogFooter>
+                    <DialogActionTrigger>
+                      <button className={"btn btn-dark-outline"}>취소</button>
+                    </DialogActionTrigger>
+                    <Button onClick={handleDeleteClick}>탈퇴</Button>
+                  </DialogFooter>
+                </DialogContent>
+              </DialogRoot>
             </li>
           </ul>
         </nav>

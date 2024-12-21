@@ -50,12 +50,7 @@ function AdminMemberView(props) {
           type: message.type,
           description: message.text,
         });
-        if (isAdmin) {
-          navigate("/admin");
-        } else {
-          logout();
-          navigate(`/member/signup`);
-        }
+        navigate("/admin");
       })
       .catch((e) => {
         const message = e.response.data.message;
