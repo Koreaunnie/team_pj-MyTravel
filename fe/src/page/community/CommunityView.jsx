@@ -6,7 +6,7 @@ import {
   useParams,
   useSearchParams,
 } from "react-router-dom";
-import { Box, HStack, Image, Stack, Table } from "@chakra-ui/react";
+import { Box, Center, HStack, Image, Stack, Table } from "@chakra-ui/react";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import { IoMdPhotos } from "react-icons/io";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
@@ -17,6 +17,12 @@ import { toaster } from "../../components/ui/toaster.jsx";
 import CommentContainer from "./comment/CommentContainer.jsx";
 import { Modal } from "../../components/root/Modal.jsx";
 import { formattedDateTime } from "../../components/utils/FormattedDateTime.jsx";
+import {
+  PaginationItems,
+  PaginationNextTrigger,
+  PaginationPrevTrigger,
+  PaginationRoot,
+} from "../../components/ui/pagination.jsx";
 
 function ImageFileView({ files }) {
   return (
@@ -37,21 +43,23 @@ function CommunityView(props) {
   const { id } = useParams();
   const [community, setCommunity] = useState({});
   const navigate = useNavigate();
-  const [comment, setComment] = useState("");
   const [commentList, setCommentList] = useState([]);
   const [countCommunity, setCountCommunity] = useState(0);
-  const [commentContent, setCommentContent] = useState("");
   const [myCommunityLike, setMyCommunityLike] = useState(false);
   const [communityList, setCommunityList] = useState([]);
   const [searchParams] = useSearchParams();
   const authentication = useContext(AuthenticationContext);
-  const { hasAccessByNickName, isAdmin } = useContext(AuthenticationContext);
+  const { hasAccessByNickName } = useContext(AuthenticationContext);
   const { pathname } = useLocation();
   const [titleLength, setTitleLength] = useState("");
   const [creationDate, setCreationDate] = useState("");
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [likeModalOpen, setLikeModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(
+    parseInt(searchParams.get("page")) || 1,
+  );
+  const [search, setSearch] = useState({ type: "all", keyword: "" });
 
   useEffect(() => {
     axios
@@ -82,8 +90,8 @@ function CommunityView(props) {
       setCommunityList(res.data.list);
       setCountCommunity(res.data.countCommunity);
     });
-  }, [pathname || <CommentContainer />]);
-  console.log(<CommentContainer />);
+  }, [pathname]);
+
   const handleDeleteClick = () => {
     axios
       .delete(`/api/community/delete/${id}`)
@@ -156,6 +164,23 @@ function CommunityView(props) {
 
   function handleLoginClick() {
     navigate(`/member/login`);
+  }
+
+  function handlePageChangeClick(e) {
+    const pageNumber = { page: e.page };
+    const pageQuery = new URLSearchParams(pageNumber);
+    const searchInfo = { type: search.type, keyword: search.keyword };
+    const searchQuery = new URLSearchParams(searchInfo);
+    navigate(
+      axios
+        .get(
+          `/api/community/list?${searchQuery.toString()}&${pageQuery.toString()}`,
+        )
+        .then((res) => {
+          setCommunityList(res.data.list);
+          setCountCommunity(res.data.countCommunity);
+        }),
+    );
   }
 
   return (
@@ -282,6 +307,24 @@ function CommunityView(props) {
               </Table.Body>
             </Table.Root>
           </Box>
+          <div className={"pagination"}>
+            <Center>
+              <PaginationRoot
+                count={countCommunity}
+                pageSize={10}
+                defaultPage={currentPage}
+                onPageChange={handlePageChangeClick}
+                siblingCount={2}
+                variant="solid"
+              >
+                <HStack>
+                  <PaginationPrevTrigger />
+                  <PaginationItems />
+                  <PaginationNextTrigger />
+                </HStack>
+              </PaginationRoot>
+            </Center>
+          </div>
         </div>
       </div>
 
