@@ -62,12 +62,17 @@ function Navbar() {
 
       <div className={`nav-container ${menuOpen ? "show" : ""}`}>
         <ul>
-          <li
-            className={`mobile-mypage ${isActive("/mypage") ? "active" : ""}`}
-            onClick={() => handleNavigate(`/mypage/${email}`)}
-          >
-            마이페이지
-          </li>
+          <div className={"mobile-mypage"}>
+            <p className={"mobile-user-info"}>{nickname} 님</p>
+
+            <p
+              className={"mobile-user-mypage"}
+              onClick={() => handleNavigate(`/mypage/${email}`)}
+            >
+              마이페이지
+            </p>
+          </div>
+
           <li
             className={isActive("/tour") ? "active" : ""}
             onClick={() => handleNavigate("/tour/list")}
