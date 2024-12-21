@@ -167,4 +167,9 @@ public class NoticeService {
         return viewer;
 
     }
+
+    // 메인 화면에 필요한 일부 plan 리스트 가져오기 (최신 5개)
+    public List<Notice> getMainPageNotice() {
+        return mapper.getTop5ByOrderByInserted();
+    }
 }

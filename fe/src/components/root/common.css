@@ -52,6 +52,7 @@ font-family: "Inter", serif;
 
     --box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.05);
     --box-shadow-hover: 1px 1px 7px rgba(0, 0, 0, 0.1);
+    --box-shadow-reverse: -3px -3px 10px rgba(0, 0, 0, 0.05);
 
     --input-border-color: #dee2e6;
 }

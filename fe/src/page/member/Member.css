@@ -15,7 +15,7 @@
 
 .member-mypage .mypage-nav {
     position: fixed;
-    width: 260px;
+    width: 200px;
     height: 100vh;
     background: #fff;
     border-left: 1px solid var(--table-border-color);
@@ -23,6 +23,7 @@
     z-index: 1;
     top: 100px;
     box-shadow: var(--box-shadow);
+    font-size: 1rem;
 }
 
 .member-mypage .mypage-nav ul {
@@ -48,7 +49,7 @@
 }
 
 .member-mypage .mypage-body {
-    width: calc(100% - 260px);
+    width: calc(100% - 200px);
 }
 
 /*-------------------  -------------------*/

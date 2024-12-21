@@ -226,6 +226,7 @@ section.plan-container {
     height: 210px;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
     gap: 30px;
 }
 
@@ -233,7 +234,7 @@ section.plan-container {
     flex: 1 1 calc(25% - 30px); /* 너비 */
     background-color: #fff;
     border-radius: 20px;
-    padding: 30px;
+    padding: 25px;
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0px 48px 48px -12px rgba(46, 107, 170, .12);
@@ -256,10 +257,15 @@ section.plan-container {
     font-size: 0.9rem;
 }
 
+.plan-container .plan-container-wrap .plan-container-card li:nth-child(2) {
+    height: 75px;
+    overflow: hidden;
+}
+
 .plan-container .plan-container-wrap .plan-container-card li:nth-child(3) {
     font-weight: bold;
     position: absolute;
-    bottom: 50px;
+    bottom: 45px;
 }
 
 .plan-container .plan-container-wrap .plan-container-card li:nth-child(4) {
@@ -267,7 +273,7 @@ section.plan-container {
     font-weight: bold;
     color: var(--font-gray-color);
     position: absolute;
-    bottom: 25px;
+    bottom: 21px;
 }
 
 /*------------------- banner -------------------*/
@@ -540,7 +546,7 @@ section.plan-container {
 
 /*------------------- 공지사항 -------------------*/
 .notice-section-wrap {
-    width: calc(100% - 400px);;
+    width: calc(100% - 400px);
     border: 1px solid var(--table-border-color);
     border-radius: 15px;
     background: #fff;
@@ -553,8 +559,14 @@ section.plan-container {
     border-bottom: 1px solid var(--table-border-color);
 }
 
+.notice-section-wrap .notice-section-header h1 {
+    font-size: 1.3rem;
+    margin: 10px 0;
+}
+
 .notice-section-wrap .notice-section-body {
-    padding: 20px 40px;
+    padding: 20px 30px;
+    position: relative;
 }
 
 .notice-section-wrap .notice-section-body .notice-section-list {
@@ -567,6 +579,18 @@ section.plan-container {
     cursor: pointer;
 }
 
+.notice-section-wrap .notice-section-body .notice-section-list li:nth-child(2) {
+    font-weight: bold;
+    position: absolute;
+    right: 130px;
+}
+
+.notice-section-wrap .notice-section-body .notice-section-list li:nth-child(3) {
+    font-size: 0.9rem;
+    color: var(--font-gray-color);
+    position: absolute;
+    right: 30px;
+}
 
 /*------------------- 화면 크기가 768px 이하 (태블릿 화면) -------------------*/
 @media (max-width: 768px) {
@@ -589,6 +613,80 @@ section.plan-container {
     .ad {
         width: 80%;
     }
+
+    /*------------------- calendar -------------------*/
+    .main-calendar-section-wrap {
+        display: none;
+    }
+
+    /*------------------- plan -------------------*/
+    section.plan-container {
+        margin-top: 0;
+        height: 320px;
+    }
+
+    .plan-container .plan-container-wrap {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .plan-container .plan-container-wrap .plan-container-header {
+        margin-bottom: 0;
+        display: block;
+    }
+
+    .plan-container .plan-container-wrap .plan-container-header h1 {
+        width: 100%;
+        font-size: 1.4rem;
+        margin: 10px 0 0 0;
+        text-align: center;
+    }
+
+    .plan-container .plan-container-wrap .plan-container-header .more-btn {
+        width: 100%;
+        padding: 10px 20px;
+        color: var(--font-dark-blue-color);
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+    }
+
+    .plan-container .plan-container-wrap .plan-container-card {
+        height: 180px;
+        display: flex;
+        justify-content: space-between;
+        overflow: hidden;
+        gap: 20px;
+    }
+
+    .plan-container .plan-container-wrap .plan-container-card ul {
+        flex: 1 1 calc(33% - 30px);
+        min-height: 180px;
+        padding: 18px 22px;
+        box-shadow: none;
+    }
+
+    .plan-container .plan-container-wrap .plan-container-card ul:hover {
+        transform: translateY(-1px);
+        box-shadow: none;
+    }
+
+    .plan-container .plan-container-wrap .plan-container-card .title {
+        font-size: 1rem;
+        margin-bottom: 7px;
+    }
+
+    .plan-container .plan-container-wrap .plan-container-card li:nth-child(2) {
+        min-height: 60px;
+    }
+
+    .plan-container .plan-container-wrap .plan-container-card li:nth-child(3) {
+        bottom: 41px;
+    }
+
+    .plan-container .plan-container-wrap .plan-container-card li:nth-child(4) {
+        bottom: 17px;
+    }
+
 
     /*------------------- banner -------------------*/
     .info-banner {
@@ -624,9 +722,9 @@ section.plan-container {
     /*------------------- tour -------------------*/
     .index-tour-container {
         width: 80%;
-        height: 800px;
+        height: 780px;
         position: relative;
-        margin: 40px auto;
+        margin: 30px auto;
     }
 
     .index-tour-container .index-tour-container-header {
@@ -634,9 +732,9 @@ section.plan-container {
     }
 
     .index-tour-container .index-tour-container-header h1 {
-        margin: 0 auto;
+        margin: 5px auto;
         font-weight: bold;
-        font-size: 25px;
+        font-size: 1.3rem;
     }
 
     .index-tour-container .index-tour-container-header .more-btn {
@@ -655,9 +753,9 @@ section.plan-container {
     }
 
     .index-tour-container .index-tour-container-body .index-tour-container-card ul {
-        flex: 1 1 calc(25% - 30px); /* 너비 */
+        flex: 1 1 100%;
         height: 150px;
-        margin: 10px;
+        margin: 10px 0;
         border: 1px solid var(--table-border-color);
         position: relative;
         display: flex;
@@ -709,22 +807,17 @@ section.plan-container {
 
 
     /*------------------- 고객센터 -------------------*/
-    .divided-container {
-        background: var(--bg-gray-color);
-        border: 1px solid green;
-    }
-
     .divided-container .divided-container-wrap {
+        width: 100%;
         height: auto;
         padding: 30px;
         display: block;
-        border: 1px solid red;
     }
 
     /*------------------- 연락처 -------------------*/
     .divided-container .tel-container {
         width: 400px;
-        margin-top: 10px;
+        margin-top: 0;
     }
 
     .divided-container .tel-container h3 {
@@ -745,26 +838,37 @@ section.plan-container {
 
     /*------------------- 공지사항 -------------------*/
     .notice-section-wrap {
-        width: 80%;
+        width: 100%;
+        border-radius: 10px;
     }
 
     .notice-section-wrap .notice-section-header {
-        display: flex;
-        justify-content: space-between;
         padding: 5px 20px;
     }
 
     .notice-section-wrap .notice-section-header h1 {
         font-size: 1.2rem;
+        margin: 10px 0;
     }
 
     .notice-section-wrap .notice-section-body {
         padding: 10px 20px;
     }
 
+
     .notice-section-wrap .notice-section-body .notice-section-list li {
-        margin: 4px 0;
-        font-size: 0.9rem;
+        margin: 6px 0;
+        cursor: pointer;
+    }
+
+    .notice-section-wrap .notice-section-body .notice-section-list li:nth-child(2) {
+        display: none;
+    }
+
+    .notice-section-wrap .notice-section-body .notice-section-list li:nth-child(3) {
+        right: 20px;
+        font-size: 0.8rem;
+        font-weight: bold;
     }
 }
 
@@ -776,6 +880,14 @@ section.plan-container {
 
     .ad {
         width: 100%;
+    }
+
+    /*------------------- plan -------------------*/
+    .plan-container .plan-container-wrap .plan-container-card ul {
+        flex: 1 1 100%;
+        min-height: 180px;
+        padding: 18px 22px;
+        box-shadow: none;
     }
 
     /*------------------- banner -------------------*/

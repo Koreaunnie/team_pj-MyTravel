@@ -6,10 +6,12 @@ import { AuthenticationContext } from "../context/AuthenticationProvider.jsx";
 
 function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const dropdownRef = useRef(null);
+  const navContainerRef = useRef(null);
+  const hamburgerRef = useRef(null);
   const { email, nickname, isAdmin, isAuthenticated, logout } = useContext(
     AuthenticationContext,
   );
@@ -20,16 +22,36 @@ function Navbar() {
 
   const toggleHamburgerMenu = () => setMenuOpen((prev) => !prev);
 
+  const handleNavigate = (path) => {
+    navigate(path);
+    setMenuOpen(false);
+    setDropdownOpen(false);
+  };
+
   useEffect(() => {
     const handleClickOutside = (event) => {
+      // Handle dropdown menu clicks
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropdownOpen(false);
       }
+
+      // Handle mobile menu clicks
+      // Don't close if clicking the hamburger button itself
+      if (hamburgerRef.current && hamburgerRef.current.contains(event.target)) {
+        return;
+      }
+
+      // Close mobile menu if clicking outside nav container
+      if (
+        navContainerRef.current &&
+        !navContainerRef.current.contains(event.target)
+      ) {
+        setMenuOpen(false);
+      }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
@@ -40,15 +62,26 @@ function Navbar() {
 
       <div className={`nav-container ${menuOpen ? "show" : ""}`}>
         <ul>
+          <div className={"mobile-mypage"}>
+            <p className={"mobile-user-info"}>{nickname} 님</p>
+
+            <p
+              className={"mobile-user-mypage"}
+              onClick={() => handleNavigate(`/mypage/${email}`)}
+            >
+              마이페이지
+            </p>
+          </div>
+
           <li
             className={isActive("/tour") ? "active" : ""}
-            onClick={() => navigate("/tour/list")}
+            onClick={() => handleNavigate("/tour/list")}
           >
             투어
           </li>
           <li
             className={isActive("/community") ? "active" : ""}
-            onClick={() => navigate("/community/list")}
+            onClick={() => handleNavigate("/community/list")}
           >
             커뮤니티
           </li>
@@ -56,13 +89,13 @@ function Navbar() {
             <>
               <li
                 className={isActive("/plan") ? "active" : ""}
-                onClick={() => navigate("/plan/list")}
+                onClick={() => handleNavigate("/plan/list")}
               >
                 내 여행
               </li>
               <li
                 className={isActive("/wallet") ? "active" : ""}
-                onClick={() => navigate("/wallet/list")}
+                onClick={() => handleNavigate("/wallet/list")}
               >
                 내 지갑
               </li>
@@ -70,20 +103,20 @@ function Navbar() {
           )}
           <li
             className={isActive("/notice") ? "active" : ""}
-            onClick={() => navigate("/notice/list")}
+            onClick={() => handleNavigate("/notice/list")}
           >
             공지사항
           </li>
           <li
             className={isActive("/cs") ? "active" : ""}
-            onClick={() => navigate("/cs/index")}
+            onClick={() => handleNavigate("/cs/index")}
           >
             고객센터
           </li>
           {isAdmin && (
             <li
               className={`admin ${isActive("/admin") ? "active" : ""}`}
-              onClick={() => navigate("/admin")}
+              onClick={() => handleNavigate("/admin")}
             >
               관리자
             </li>
@@ -104,17 +137,29 @@ function Navbar() {
             {dropdownOpen && (
               <div className={"mypage-toggle-container"}>
                 <ul>
-                  <li onClick={() => navigate(`/mypage/${email}`)}>
+                  <li
+                    className={isActive("/mypage") ? "active" : ""}
+                    onClick={() => handleNavigate(`/mypage/${email}`)}
+                  >
                     회원 정보
                   </li>
-                  <li onClick={() => navigate(`/payment/history/${email}`)}>
+                  <li
+                    className={isActive("/payment/history") ? "active" : ""}
+                    onClick={() => handleNavigate(`/payment/history/${email}`)}
+                  >
                     결제 내역
                   </li>
-                  <li onClick={() => navigate("/cart")}>장바구니</li>
+                  <li
+                    className={isActive("/cart") ? "active" : ""}
+                    onClick={() => handleNavigate("/cart")}
+                  >
+                    {" "}
+                    장바구니
+                  </li>
                   <li
                     onClick={() => {
                       logout();
-                      navigate("/member/login");
+                      handleNavigate("/member/login");
                     }}
                   >
                     로그아웃
@@ -129,7 +174,7 @@ function Navbar() {
           <div>
             <button
               className={"user-button"}
-              onClick={() => navigate("/member/login")}
+              onClick={() => handleNavigate("/member/login")}
             >
               Login
             </button>
@@ -137,7 +182,10 @@ function Navbar() {
         )}
       </div>
 
-      <button className="hamburger" onClick={toggleHamburgerMenu}>
+      <button
+        className={`hamburger ${menuOpen ? "active" : ""}`}
+        onClick={toggleHamburgerMenu}
+      >
         <span className="bar"></span>
         <span className="bar"></span>
         <span className="bar"></span>

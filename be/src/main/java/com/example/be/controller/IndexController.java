@@ -1,6 +1,7 @@
 package com.example.be.controller;
 
 import com.example.be.service.community.CommunityService;
+import com.example.be.service.notice.NoticeService;
 import com.example.be.service.plan.PlanService;
 import com.example.be.service.tour.TourService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class IndexController {
     private final PlanService planService;
     private final TourService tourService;
     private final CommunityService communityService;
+    private final NoticeService noticeService;
 
     // 메인 화면에 필요한 일부 list 를 가져오기
     @GetMapping
@@ -34,6 +36,7 @@ public class IndexController {
         result.put("plans", planService.getMainPagePlans(keyword, writer));
         result.put("tours", tourService.getMainPageTours(keyword));
         result.put("community", communityService.getMainPageCommunity(keyword));
+        result.put("notice", noticeService.getMainPageNotice());
         return result;
     }
 }
