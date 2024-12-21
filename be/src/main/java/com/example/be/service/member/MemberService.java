@@ -27,6 +27,7 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -78,8 +79,20 @@ public class MemberService {
         return mapper.selectByEmail(email) != null;
     }
 
-    public List<Member> list() {
-        return mapper.selectAll();
+    public Map<String, Object> list(Integer page, String searchType, String keyword) {
+        int offset = (page - 1) * 10;
+
+        //list
+        List<Member> memberList = mapper.searchResult(offset, searchType, keyword);
+
+        //개수
+        Integer count = mapper.countResult(searchType, keyword);
+
+        if (memberList == null || memberList.isEmpty()) {
+            return Map.of("memberList", List.of());
+        }
+
+        return Map.of("memberList", memberList, "count", count);
     }
 
     public Member get(String email) {
