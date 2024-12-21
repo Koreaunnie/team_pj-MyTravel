@@ -1,12 +1,16 @@
 .cart-list {
     background: var(--bg-gray-color);
-    min-height: calc(100vh - 300px);
+    min-height: calc(100vh - 160px);
+    padding-top: 30px;
+    width: 100%;
 }
 
 .cart-list .table-list {
-    margin-top: 30px;
+    width: 100%;
+    margin-top: 50px;
     background: #fff;
     border-radius: 10px;
+    margin-left: 30px;
 }
 
 .cart-list .table-list tr td {
@@ -44,4 +48,8 @@
 
 .cart-list .btn-wrap {
     justify-content: center;
+}
+
+.selected-cart-list{
+    margin-top: 50px;
 }

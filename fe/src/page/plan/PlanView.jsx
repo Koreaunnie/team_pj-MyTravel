@@ -25,7 +25,7 @@ function PlanView(props) {
       // planFields 배열 (응답이 없으면 빈 배열)
       setPlanFields(res.data.planFields || []);
     });
-  }, []);
+  }, [planFields]);
 
   if (plan === null) {
     return <Spinner />;
@@ -198,6 +198,7 @@ function PlanView(props) {
 
           <div className={"plan-view-map"}>
             <GoogleMapsView
+              key={planFields.length}
               placeIds={planFields.map((field) => field.placeId)}
             />
           </div>

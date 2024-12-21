@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { Spinner } from "@chakra-ui/react";
@@ -36,6 +36,7 @@ function PlanEdit(props) {
     },
   ]);
   const navigate = useNavigate();
+  const fieldRefs = useRef([]);
 
   useEffect(() => {
     axios.get(`/api/plan/view/${id}`).then((res) => {
@@ -48,37 +49,41 @@ function PlanEdit(props) {
     return <Spinner />;
   }
 
-  // field 입력값을 상태로 업데이트하는 함수
-  const handleFieldChange = (index, field, value) => {
-    const updatedFields = [...planFields];
-    updatedFields[index][field] = value;
-    setPlanFields(updatedFields);
-  };
+  // // field 입력값을 상태로 업데이트하는 함수
+  // const handleFieldChange = (index, field, value) => {
+  //   const updatedFields = [...planFields];
+  //   updatedFields[index][field] = value;
+  //   setPlanFields(updatedFields);
+  // };
 
   const handlePlaceSelected = (index, location) => {
-    // location 객체에서 필요한 정보만 추출
-    const { placeId, address, lat, lng } = location;
-    // 필요한 정보만 저장
-    handleFieldChange(index, "place", `${address}`);
-    handleFieldChange(index, "placeId", `${placeId}`);
+    const { placeId, address } = location;
+    const updatedFields = [...planFields];
+    updatedFields[index] = {
+      ...updatedFields[index],
+      place: address,
+      placeId: placeId,
+    };
+    setPlanFields(updatedFields);
   };
 
   // + 버튼 클릭 시 새로운 필드 추가
   function handleAddField() {
-    setFields([
-      ...fields,
+    setPlanFields((prev) => [
+      ...prev,
       {
         date: "",
         time: "",
         schedule: "",
         place: "",
+        placeId: "",
         memo: "",
       },
     ]);
 
     // 비동기적으로 스크롤 이동
     setTimeout(() => {
-      const newFieldIndex = fields.length; // 새로 추가된 필드의 인덱스
+      const newFieldIndex = planFields.length; // 새로 추가된 필드의 인덱스
       const newFieldRef = fieldRefs.current[newFieldIndex];
       if (newFieldRef) {
         newFieldRef.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -88,7 +93,7 @@ function PlanEdit(props) {
 
   // - 버튼 클릭 시 필드 삭제
   function handleDeleteField(index) {
-    setFields(fields.filter((_, i) => i !== index));
+    setPlanFields(planFields.filter((_, i) => i !== index));
 
     // 삭제 후 마지막 필드로 스크롤
     setTimeout(() => {
@@ -232,7 +237,11 @@ function PlanEdit(props) {
 
           <div className={"plan-body"}>
             {planFields.map((field, index) => (
-              <ul key={index} className={"plan-body-box"}>
+              <ul
+                key={index}
+                className={"plan-body-box"}
+                ref={(el) => (fieldRefs.current[index] = el)}
+              >
                 <li className={"input-design-wrap  schedule"}>
                   <input
                     name="schedule"
@@ -275,6 +284,7 @@ function PlanEdit(props) {
                   <GoogleMapsEdit
                     id="place"
                     initialPlaceIds={[field.placeId]}
+                    value={field.place}
                     onPlaceSelected={(location) =>
                       handlePlaceSelected(index, location)
                     }
