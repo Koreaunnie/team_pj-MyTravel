@@ -20,7 +20,7 @@ function PaymentHistory(props) {
         <thead>
           <tr>
             <th>결제일</th>
-            <th>구매자</th>
+            <th>구매자 email</th>
             <th>결제 번호</th>
             <th>상품</th>
             <th>가격</th>

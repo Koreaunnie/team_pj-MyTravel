@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { toaster } from "../../components/ui/toaster.jsx";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -46,7 +46,7 @@ function MemberSignup(props) {
           type: message.type,
           description: message.text,
         });
-        navigate(`/member/login`);
+        navigate(`/`);
       })
       .catch((e) => {
         const message = e.response.data.message;

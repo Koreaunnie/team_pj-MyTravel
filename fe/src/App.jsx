@@ -6,11 +6,8 @@ import CommunityWrite from "./page/community/CommunityWrite.jsx";
 import CommunityView from "./page/community/CommunityView.jsx";
 import CommunityList from "./page/community/CommunityList.jsx";
 import CommunityEdit from "./page/community/CommunityEdit.jsx"; // import reactLogo from './assets/react.svg'
-import MemberList from "./page/member/MemberList.jsx";
 import MemberSignup from "./page/member/MemberSignup.jsx";
-import MemberInfo from "./page/member/MemberInfo.jsx";
 import MemberLogin from "./page/member/MemberLogin.jsx";
-import { MemberEdit } from "./page/member/MemberEdit.jsx";
 import { TourAdd } from "./page/tour/TourAdd.jsx";
 import TourList from "./page/tour/TourList.jsx";
 import TourView from "./page/tour/TourView.jsx";
@@ -50,6 +47,10 @@ import NoticeWrite from "./page/notice/NoticeWrite.jsx";
 import NoticeView from "./page/notice/NoticeView.jsx";
 import NoticeEdit from "./page/notice/NoticeEdit.jsx";
 import Access from "./components/context/Access.jsx";
+import MemberList from "./page/admin/MemberList.jsx";
+import AdminMemberView from "./page/admin/AdminMemberView.jsx";
+import { AdminMemberEdit } from "./page/admin/AdminMemberEdit.jsx";
+import MemberInfo from "./page/member/MemberInfo.jsx";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -244,26 +245,30 @@ const router = createBrowserRouter([
       },
       // 회원 관리
       {
+        path: "mypage/:email",
+        element: <MyPage />,
+      },
+      {
+        path: "mypage/member/:email",
+        element: <MemberInfo />,
+      },
+
+      // 관리자
+      {
+        path: "admin",
+        element: <AdminPage />,
+      },
+      {
         path: "member/list",
         element: <MemberList />,
       },
       {
         path: "member/:email",
-        element: <MemberInfo />,
+        element: <AdminMemberView />,
       },
       {
         path: "member/edit/:email",
-        element: <MemberEdit />,
-      },
-
-      {
-        path: "mypage/:email",
-        element: <MyPage />,
-      },
-      // 관리자
-      {
-        path: "admin",
-        element: <AdminPage />,
+        element: <AdminMemberEdit />,
       },
       // 접근 제한
       {

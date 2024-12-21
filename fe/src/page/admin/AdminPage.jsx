@@ -2,11 +2,11 @@ import React, { useContext, useState } from "react";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import PaymentHistoryAll from "../payment/PaymentHistoryAll.jsx";
-import MemberList from "../member/MemberList.jsx";
-import PartnerList from "../member/PartnerList.jsx";
 import "./admin.css";
 import AdminCs from "./AdminCs.jsx";
 import Access from "../../components/context/Access.jsx";
+import PartnerList from "./PartnerList.jsx";
+import MemberList from "./MemberList.jsx";
 
 function MyPage(props) {
   const [selectedMenu, setSelectedMenu] = useState("home");
@@ -26,6 +26,18 @@ function MyPage(props) {
       <Breadcrumb
         depth1={"관리자 모드"}
         navigateToDepth1={() => navigate(`/admin`)}
+        depth2={
+          selectedMenu === "home"
+            ? "관리자 홈"
+            : selectedMenu === "memberList"
+              ? "회원 관리"
+              : selectedMenu === "partnerList"
+                ? "파트너 기업 관리"
+                : selectedMenu === "paymentAll"
+                  ? `결제 내역 관리`
+                  : "고객 센터 관리"
+        }
+        navigateToDepth2={() => {}}
       />
 
       <nav className={"admin-aside"}>
