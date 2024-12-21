@@ -7,6 +7,7 @@ import { FaArrowRight, FaPlus } from "react-icons/fa6";
 import { IndexSlider } from "./IndexSlider.jsx";
 import Calendar from "react-calendar";
 import { formatNumberWithCommas } from "../components/utils/FormatNumberWithCommas.jsx";
+import { formattedDate } from "../components/utils/FormattedDate.jsx";
 
 export function Index() {
   const [search, setSearch] = useState("");
@@ -15,6 +16,7 @@ export function Index() {
   const [planList, setPlanList] = useState([]);
   const [tourList, setTourList] = useState([]);
   const [communityList, setCommunityList] = useState([]);
+  const [noticeList, setNoticeList] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedPlans, setSelectedPlans] = useState([]);
   const navigate = useNavigate();
@@ -29,8 +31,7 @@ export function Index() {
         setPlanList(res.data.plans);
         setTourList(res.data.tours);
         setCommunityList(res.data.community);
-        console.log(communityList);
-        console.log(tourList);
+        setNoticeList(res.data.notice);
       })
       .catch((error) => {
         console.error("Error fetching index data:", error);
@@ -386,22 +387,22 @@ export function Index() {
             </div>
 
             <div className={"notice-section-body"}>
-              {isEmpty(communityList) ? (
+              {isEmpty(noticeList) ? (
                 <div className={"empty-container"}>
                   <p className={"empty-container-title"}>
                     공지사항이 없습니다.
                   </p>
                 </div>
               ) : (
-                communityList.map((community) => (
+                noticeList.map((notice) => (
                   <ul
                     className={"notice-section-list"}
-                    key={community.id}
-                    onClick={() => navigate(`/community/view/${community.id}`)}
+                    key={notice.id}
+                    onClick={() => navigate(`/notice/view/${notice.id}`)}
                   >
-                    <li>{community.title}</li>
-                    <li>{community.writer}</li>
-                    <li>{community.inserted}</li>
+                    <li>{notice.title}</li>
+                    <li>{notice.writer}</li>
+                    <li>{formattedDate(notice.creationDate)}</li>
                   </ul>
                 ))
               )}
