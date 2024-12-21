@@ -27,21 +27,21 @@ import { Button } from "../../components/ui/button.jsx";
 
 function MyPage(props) {
   const [selectedMenu, setSelectedMenu] = useState("profile");
-  const { email } = useParams();
-  const [member, setMember] = useState(null);
+  const [kakao, setKakao] = useState(false);
   const [password, setPassword] = useState("");
   const [open, setOpen] = useState(false);
   const { logout, isPartner, isAdmin } = useContext(AuthenticationContext);
+  const { email } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
     axios
       .get(`/api/member/${email}`)
       .then((res) => {
-        setMember(res.data);
-        console.log(member);
+        setKakao(res.data.kakao);
+        setPassword(res.data.password);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.error("에러 읽기", err));
   }, []);
 
   const handleMenuClick = (menu) => {
@@ -114,6 +114,12 @@ function MyPage(props) {
               내 프로필
             </li>
             <li
+              className={selectedMenu === "memberEdit" ? "active" : ""}
+              onClick={() => handleMenuClick("memberEdit")}
+            >
+              프로필 수정
+            </li>
+            <li
               className={selectedMenu === "cart" ? "active" : ""}
               onClick={() => handleMenuClick("cart")}
             >
@@ -139,75 +145,69 @@ function MyPage(props) {
             >
               내가 쓴 글
             </li>
-            <li
-              className={selectedMenu === "memberEdit" ? "active" : ""}
-              onClick={() => handleMenuClick("memberEdit")}
-            >
-              프로필 수정
-            </li>
+
             <li>
-              {/*{member.kakao || (*/}
-              <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
-                <DialogTrigger>
-                  <button className={"btn btn-warning"}>계정 탈퇴</button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>탈퇴 확인</DialogTitle>
-                  </DialogHeader>
-                  <DialogBody>
-                    <Stack>
-                      <Field label={"비밀번호"}>
-                        <Input
-                          placeholder={"비밀번호 입력"}
-                          onChange={(e) => setPassword(e.target.value)}
-                          value={password}
-                        />
-                      </Field>
-                    </Stack>
-                  </DialogBody>
-                  <DialogFooter>
-                    <DialogActionTrigger>
-                      <button className={"btn btn-dark-outline"}>취소</button>
-                    </DialogActionTrigger>
-                    <Button onClick={handleDeleteClick}>탈퇴</Button>
-                  </DialogFooter>
-                </DialogContent>
-              </DialogRoot>
-              {/*)}*/}
-              {/*{member.kakao && (*/}
-              {/*  <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>*/}
-              {/*    <DialogTrigger>*/}
-              {/*      <button className={"btn btn-warning"}>계정 탈퇴</button>*/}
-              {/*    </DialogTrigger>*/}
-              {/*    <DialogContent>*/}
-              {/*      <DialogHeader>*/}
-              {/*        <DialogTitle>탈퇴 확인</DialogTitle>*/}
-              {/*      </DialogHeader>*/}
-              {/*      <DialogBody>*/}
-              {/*        <Stack>*/}
-              {/*          <p>*/}
-              {/*            회원 정보 삭제를 확인하려면 텍스트 입력 필드에{" "}*/}
-              {/*            {member.password}을 따라 입력해 주십시오*/}
-              {/*          </p>*/}
-              {/*          <Field>*/}
-              {/*            <Input*/}
-              {/*              placeholder={member.password}*/}
-              {/*              onChange={(e) => setPassword(e.target.value)}*/}
-              {/*              value={password}*/}
-              {/*            />*/}
-              {/*          </Field>*/}
-              {/*        </Stack>*/}
-              {/*      </DialogBody>*/}
-              {/*      <DialogFooter>*/}
-              {/*        <DialogActionTrigger>*/}
-              {/*          <Button variant={"outline"}>취소</Button>*/}
-              {/*        </DialogActionTrigger>*/}
-              {/*        <Button onClick={handleDeleteClick}>탈퇴</Button>*/}
-              {/*      </DialogFooter>*/}
-              {/*    </DialogContent>*/}
-              {/*  </DialogRoot>*/}
-              {/*)}*/}
+              {kakao || (
+                <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
+                  <DialogTrigger>
+                    <button className={"btn btn-warning"}>계정 탈퇴</button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>탈퇴 확인</DialogTitle>
+                    </DialogHeader>
+                    <DialogBody>
+                      <Stack>
+                        <Field label={"비밀번호"}>
+                          <p>회원 탈퇴를 위하여 비밀번호를 입력해 주십시오.</p>
+                          <Input
+                            placeholder={"비밀번호 입력"}
+                            onChange={(e) => setPassword(e.target.value)}
+                          />
+                        </Field>
+                      </Stack>
+                    </DialogBody>
+                    <DialogFooter>
+                      <DialogActionTrigger>
+                        <button className={"btn btn-dark-outline"}>취소</button>
+                      </DialogActionTrigger>
+                      <Button onClick={handleDeleteClick}>탈퇴</Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </DialogRoot>
+              )}
+              {kakao && (
+                <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
+                  <DialogTrigger>
+                    <button className={"btn btn-warning"}>계정 탈퇴</button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>탈퇴 확인</DialogTitle>
+                    </DialogHeader>
+                    <DialogBody>
+                      <Stack>
+                        <p>
+                          회원 정보 삭제를 확인하려면 텍스트 입력 필드에{" "}
+                          {password}을 따라 입력해 주십시오
+                        </p>
+                        <Field>
+                          <Input
+                            placeholder={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                          />
+                        </Field>
+                      </Stack>
+                    </DialogBody>
+                    <DialogFooter>
+                      <DialogActionTrigger>
+                        <Button variant={"outline"}>취소</Button>
+                      </DialogActionTrigger>
+                      <Button onClick={handleDeleteClick}>탈퇴</Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </DialogRoot>
+              )}
             </li>
           </ul>
         </nav>

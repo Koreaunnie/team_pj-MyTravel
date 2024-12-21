@@ -129,13 +129,11 @@ export function MemberEdit() {
               </FileUploadRoot>
             </li>
 
-            {member.kakao || (
-              <li>
-                <label htmlFor="email">이메일</label>
-                <input type={"text"} id={email} value={member.email} readOnly />
-                <span>이메일은 수정이 불가합니다.</span>
-              </li>
-            )}
+            <li>
+              <label htmlFor="email">이메일</label>
+              <input type={"text"} id={email} value={member.email} readOnly />
+              <span>이메일은 수정이 불가합니다.</span>
+            </li>
 
             <li>
               <Field label={"닉네임"}>
