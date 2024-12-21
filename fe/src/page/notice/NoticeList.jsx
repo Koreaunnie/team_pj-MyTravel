@@ -29,6 +29,9 @@ function NoticeList(props) {
   const [searchParams] = useSearchParams();
   const [countNotice, setCountNotice] = useState("");
   const authentication = useContext(AuthenticationContext);
+  const [currentPage, setCurrentPage] = useState(
+    parseInt(searchParams.get("page")) || 1,
+  );
 
   useEffect(() => {
     axios.get(`/api/notice/list?${searchParams.toString()}`).then((res) => {
@@ -36,6 +39,11 @@ function NoticeList(props) {
       setCountNotice(res.data.countNotice);
     });
     window.scrollTo(0, 0);
+  }, [searchParams]);
+
+  useEffect(() => {
+    const page = parseInt(searchParams.get("page")) || 1;
+    setCurrentPage(page);
   }, [searchParams]);
 
   function handleWriteClick() {
@@ -57,7 +65,6 @@ function NoticeList(props) {
     const pageQuery = new URLSearchParams(pageNumber);
     const searchInfo = { type: search.type, keyword: search.keyword };
     const searchQuery = new URLSearchParams(searchInfo);
-    // const pageURL = new URL(`http://localhost:5173/community/list?${pageQuery.toString()}`);
     navigate(`/notice/list?${searchQuery.toString()}&${pageQuery.toString()}`);
   }
 
@@ -184,7 +191,7 @@ function NoticeList(props) {
               <PaginationRoot
                 count={countNotice}
                 pageSize={10}
-                defaultPage={1}
+                defaultPage={currentPage}
                 onPageChange={handlePageChangeClick}
                 siblingCount={2}
                 variant="solid"
