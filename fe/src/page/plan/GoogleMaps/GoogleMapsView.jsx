@@ -14,6 +14,7 @@ const libraries = ["places"];
 export function GoogleMapsView({ placeIds }) {
   const [placesDetails, setPlacesDetails] = useState([]);
   const [selectedPlaceId, setSelectedPlaceId] = useState(null);
+  const [mapBounds, setMapBounds] = useState(null);
   const mapInstanceRef = useRef(null);
 
   const { isLoaded } = useLoadScript({
@@ -48,9 +49,28 @@ export function GoogleMapsView({ placeIds }) {
             }),
         );
 
-        // API 요청 완료 후 placesDetails 상태를 갱신
+        // Promise.all 부분을 다음과 같이 수정하세요
         Promise.all(promises).then((details) => {
-          setPlacesDetails(details.filter(Boolean)); // null 값 제외
+          const validDetails = details.filter(Boolean); // null 값 제외
+          setPlacesDetails(validDetails);
+
+          // 모든 마커를 포함하는 bounds 계산
+          if (validDetails.length > 0) {
+            const bounds = new google.maps.LatLngBounds();
+            validDetails.forEach((place) => {
+              bounds.extend(place.geometry.location);
+            });
+            setMapBounds(bounds);
+
+            // 지도가 로드된 상태라면 바로 bounds 적용
+            if (mapInstanceRef.current) {
+              mapInstanceRef.current.fitBounds(bounds);
+              // 마커가 하나일 경우 적절한 줌 레벨 설정
+              if (validDetails.length === 1) {
+                mapInstanceRef.current.setZoom(15);
+              }
+            }
+          }
         });
       }
 
@@ -61,6 +81,13 @@ export function GoogleMapsView({ placeIds }) {
 
   const handleMapLoad = (map) => {
     mapInstanceRef.current = map;
+    // 초기 로드 시 저장된 bounds가 있다면 적용
+    if (mapBounds) {
+      map.fitBounds(mapBounds);
+      if (placesDetails.length === 1) {
+        map.setZoom(15);
+      }
+    }
   };
 
   if (!isLoaded) return <Spinner />;
