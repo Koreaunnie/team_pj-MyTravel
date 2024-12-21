@@ -20,6 +20,7 @@ import {
 import "./Notice.css";
 import { formattedDate } from "../../components/utils/FormattedDate.jsx";
 import { IoIosRefresh } from "react-icons/io";
+import { HiOutlineBookOpen } from "react-icons/hi";
 
 function NoticeList(props) {
   const [noticeList, setNoticeList] = useState([]);
@@ -159,7 +160,16 @@ function NoticeList(props) {
                     <p className={"title"}>{n.title}</p>
                     <div className="info">
                       <span>❤️ {n.numberOfLikes}</span>
-                      <span>💬 {n.numberOfViews}</span>
+                      <span>
+                        <HiOutlineBookOpen
+                          style={{
+                            display: "inline",
+                            marginTop: "0px",
+                            marginRight: "4px",
+                          }}
+                        />{" "}
+                        {n.numberOfViews}
+                      </span>
                     </div>
                   </td>
                   <td className={"writer"}>{n.writer}</td>
