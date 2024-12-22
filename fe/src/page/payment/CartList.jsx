@@ -180,7 +180,7 @@ function CartList() {
         )}
 
         {cartList.length === 0 || (
-          <div>
+          <div className={"selected-cart-list"}>
             <h1>선택한 제품</h1>
 
             <div>

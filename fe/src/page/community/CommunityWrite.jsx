@@ -50,15 +50,14 @@ function CommunityWrite(props) {
 
   return (
     <div className={"community-form form-container"}>
-      <Breadcrumb
-        depth1={"커뮤니티"}
-        navigateToDepth1={() => navigate(`/community/list`)}
-        depth2={"게시글 작성"}
-        navigateToDepth1={() => navigate(`/community/list/write`)}
-      />
-
       {authentication.isAuthenticated && (
         <div className={"body-normal"}>
+          <Breadcrumb
+            depth1={"커뮤니티"}
+            navigateToDepth1={() => navigate(`/community/list`)}
+            depth2={"게시글 작성"}
+            navigateToDepth1={() => navigate(`/community/list/write`)}
+          />
           <div className={"form-wrap"}>
             <h1>게시글 작성</h1>
             <h2>여러분의 여행 이야기를 들려주세요.</h2>

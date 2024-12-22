@@ -29,13 +29,22 @@ function CommunityList(props) {
   const [searchParams] = useSearchParams();
   const [countCommunity, setCountCommunity] = useState("");
   const authentication = useContext(AuthenticationContext);
+  const [currentPage, setCurrentPage] = useState(
+    parseInt(searchParams.get("page")) || 1,
+  );
 
   useEffect(() => {
     axios.get(`/api/community/list?${searchParams.toString()}`).then((res) => {
       setCommunityList(res.data.list);
       setCountCommunity(res.data.countCommunity);
+      console.log(res.data);
     });
     window.scrollTo(0, 0);
+  }, [searchParams]);
+
+  useEffect(() => {
+    const page = parseInt(searchParams.get("page")) || 1;
+    setCurrentPage(page);
   }, [searchParams]);
 
   function handleWriteClick() {
@@ -165,7 +174,7 @@ function CommunityList(props) {
             >
               <div className={"community-header"}>
                 <li className="community-title">{c.title}</li>
-                <li>{c.writer}</li>
+                <li className="community-writer">{c.writer}</li>
                 {c.existOfFiles ? <IoMdPhotos /> : " "}
               </div>
 
@@ -202,7 +211,7 @@ function CommunityList(props) {
             <PaginationRoot
               count={countCommunity}
               pageSize={10}
-              defaultPage={1}
+              defaultPage={currentPage}
               onPageChange={handlePageChangeClick}
               siblingCount={2}
               variant="solid"

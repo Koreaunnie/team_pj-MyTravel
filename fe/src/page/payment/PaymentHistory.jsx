@@ -84,7 +84,6 @@ function PaymentHistory(props) {
   return (
     <div className={"payment-history"}>
       <h1>내 결제 내역</h1>
-      <h2>결제하신 상품을 확인할 수 있습니다.</h2>
 
       <div className={"body-normal"}>
         {paidList.length === 0 ? (

@@ -120,12 +120,6 @@ function MyPage(props) {
               프로필 수정
             </li>
             <li
-              className={selectedMenu === "cart" ? "active" : ""}
-              onClick={() => handleMenuClick("cart")}
-            >
-              장바구니
-            </li>
-            <li
               className={selectedMenu === "paymentHistory" ? "active" : ""}
               onClick={() => handleMenuClick("paymentHistory")}
             >
@@ -149,7 +143,7 @@ function MyPage(props) {
             <li>
               <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
                 <DialogTrigger>
-                  <button className={"btn btn-warning"}>계정 탈퇴</button>
+                  <p style={{ cursor: "pointer" }}>회원 탈퇴</p>
                 </DialogTrigger>
                 <DialogContent>
                   <DialogHeader>

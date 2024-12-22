@@ -62,16 +62,31 @@ function Navbar() {
 
       <div className={`nav-container ${menuOpen ? "show" : ""}`}>
         <ul>
-          <div className={"mobile-mypage"}>
-            <p className={"mobile-user-info"}>{nickname} 님</p>
+          {isAuthenticated && (
+            <div className={"mobile-mypage"}>
+              <p className={"mobile-user-info"}>{nickname} 님</p>
 
-            <p
-              className={"mobile-user-mypage"}
-              onClick={() => handleNavigate(`/mypage/${email}`)}
+              <p
+                className={"mobile-user-mypage"}
+                onClick={() => handleNavigate(`/mypage/${email}`)}
+              >
+                마이페이지
+              </p>
+            </div>
+          )}
+
+          {isAuthenticated && (
+            <li
+              className={`mobile-displayed ${isActive("/tour") ? "active" : ""}`}
+              onClick={() => handleNavigate("/cart")}
             >
-              마이페이지
-            </p>
-          </div>
+              장바구니
+            </li>
+          )}
+
+          {isAuthenticated || (
+            <li onClick={() => handleNavigate("/member/login")}>로그인</li>
+          )}
 
           <li
             className={isActive("/tour") ? "active" : ""}
@@ -85,7 +100,7 @@ function Navbar() {
           >
             커뮤니티
           </li>
-          {isAuthenticated && (
+          { isAuthenticated && (
             <>
               <li
                 className={isActive("/plan") ? "active" : ""}
@@ -121,6 +136,18 @@ function Navbar() {
               관리자
             </li>
           )}
+
+          {isAuthenticated && (
+            <li
+              className={"mobile-displayed"}
+              onClick={() => {
+                logout();
+                handleNavigate("/member/login");
+              }}
+            >
+              로그아웃
+            </li>
+          )}
         </ul>
       </div>
 
@@ -144,18 +171,13 @@ function Navbar() {
                     회원 정보
                   </li>
                   <li
-                    className={isActive("/payment/history") ? "active" : ""}
-                    onClick={() => handleNavigate(`/payment/history/${email}`)}
-                  >
-                    결제 내역
-                  </li>
-                  <li
                     className={isActive("/cart") ? "active" : ""}
                     onClick={() => handleNavigate("/cart")}
                   >
                     {" "}
                     장바구니
                   </li>
+
                   <li
                     onClick={() => {
                       logout();
