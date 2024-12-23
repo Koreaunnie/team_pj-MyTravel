@@ -46,8 +46,7 @@
 }
 
 .navbar .nav-container .mobile-mypage,
-.navbar .nav-container .mobile-displayed
-{
+.navbar .nav-container .mobile-displayed {
     display: none;
 }
 
@@ -238,7 +237,8 @@
         background: #fff;
     }
 
-    .navbar .nav-container .mobile-mypage {
+    .navbar .nav-container .mobile-mypage,
+    .navbar .nav-container .mobile-displayed {
         display: block;
     }
 
