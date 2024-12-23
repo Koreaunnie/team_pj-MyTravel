@@ -56,7 +56,6 @@
 .member-info {
     padding: 30px 50px;
     background: var(--bg-gray-color);
-    height: calc(100vh - 200px);
 }
 
 .member-info li {
@@ -77,7 +76,6 @@
 .member-edit {
     padding: 30px 50px;
     background: var(--bg-gray-color);
-    height: calc(100vh - 200px);
 }
 
 .member-edit li {
