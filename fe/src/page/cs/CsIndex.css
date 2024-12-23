@@ -136,7 +136,7 @@
 }
 
 /*------------------- 화면 크기가 768px 이하 (태블릿 화면) -------------------*/
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
 
     .cs section {
         margin: 20px 0;

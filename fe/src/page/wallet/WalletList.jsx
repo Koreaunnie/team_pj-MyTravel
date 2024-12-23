@@ -16,6 +16,7 @@ function WalletList(props) {
   const [currentYear, setCurrentYear] = useState(); // 현재 년도
   const [selectedDate, setSelectedDate] = useState(); // 선택된 날짜
   const [filteredWallet, setFilteredWallet] = useState(walletList); // 필터링된 지갑 리스트
+  const [activeMonth, setActiveMonth] = useState(new Date().getMonth() + 1);
   const [activeTab, setActiveTab] = useState(0); // 카테고리 탭 활성화
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -32,16 +33,18 @@ function WalletList(props) {
       const formattedMonth = `${year}년 ${now.toLocaleString("default", {
         month: "long",
       })}`;
+
       setCurrentMonth(formattedMonth);
       setCurrentYear(year);
+      setActiveMonth(month + 1); // 현재 월 설정 (1-12)
 
-      // 월별로 필터링 처리
-      const filtered = res.data.filter((wallet) => {
-        const walletDate = new Date(wallet.date);
-        return (
-          walletDate.getMonth() === month && walletDate.getFullYear() === year
-        );
-      });
+      // 현재 월 데이터로 필터링
+      const filtered = filterWalletsByMonthAndCategory(
+        res.data,
+        month,
+        year,
+        categories[activeTab],
+      );
       setFilteredWallet(filtered);
     });
   }, []);
@@ -105,38 +108,62 @@ function WalletList(props) {
     setFilteredWallet(filtered); // 필터링된 데이터를 상태에 저장
   }, [walletList]);
 
-  const handleMonthClick = (month) => {
-    const newMonth = moment(`${currentYear}-${month}`, "YYYY-M");
-    setCurrentMonth(newMonth.format("YYYY년 M월")); // 새로운 월로 currentMonth 업데이트
+  const handleMonthClick = (monthNumber) => {
+    setActiveMonth(monthNumber);
+    const newMonth = moment(`${currentYear}-${monthNumber}`, "YYYY-M");
+    const formattedMonth = newMonth.format("YYYY년 M월");
+    setCurrentMonth(formattedMonth);
+    setSelectedDate(null); // 선택된 날짜 초기화
 
-    // 해당 월에 맞는 데이터 필터링
+    // 직접 필터링 로직 실행
     const filtered = walletList.filter((wallet) => {
       const walletDate = new Date(wallet.date);
       return (
-        walletDate.getMonth() === newMonth.month() &&
-        walletDate.getFullYear() === newMonth.year()
+        walletDate.getMonth() === monthNumber - 1 && // JavaScript의 month는 0-based
+        walletDate.getFullYear() === currentYear
       );
     });
-    setFilteredWallet(filtered); // 필터링된 데이터를 상태에 저장
+
+    // 카테고리 필터링 추가
+    if (categories[activeTab] && categories[activeTab] !== "전체") {
+      const categoryFiltered = filtered.filter(
+        (wallet) => wallet.category === categories[activeTab],
+      );
+      setFilteredWallet(categoryFiltered);
+    } else {
+      setFilteredWallet(filtered);
+    }
   };
 
   // 이번 달 보기
   const handleMonthView = () => {
-    const now = moment();
-    const formattedMonth = now.format("YYYY년 M월");
-    setCurrentMonth(formattedMonth);
+    const now = new Date();
+    const month = now.getMonth();
+    const year = now.getFullYear();
+    const formattedMonth = `${year}년 ${now.toLocaleString("default", {
+      month: "long",
+    })}`;
 
-    const filtered = walletList.filter((wallet) => {
-      const walletDate = new Date(wallet.date);
-      return (
-        walletDate.getMonth() === now.month() &&
-        walletDate.getFullYear() === now.year()
-      );
-    });
+    setCurrentMonth(formattedMonth);
+    setCurrentYear(year);
+    setActiveMonth(month + 1);
+
+    const filtered = filterWalletsByMonthAndCategory(
+      walletList,
+      month,
+      year,
+      categories[activeTab],
+    );
     setFilteredWallet(filtered);
   };
 
-  // 새로운 유틸리티 함수: 월과 카테고리로 필터링
+  // 전체 보기
+  const handleAllView = () => {
+    setActiveMonth(null); // 월 탭 활성화 제거
+    setFilteredWallet(walletList);
+  };
+
+  // 필터링 유틸리티 함수
   const filterWalletsByMonthAndCategory = (wallets, month, year, category) => {
     let filtered = wallets.filter((wallet) => {
       const walletDate = new Date(wallet.date);
@@ -159,11 +186,6 @@ function WalletList(props) {
       return walletDate.getFullYear() === currentYear; // 현재 연도만 필터링
     });
     setFilteredWallet(filtered);
-  };
-
-  // 전체 보기
-  const handleAllView = () => {
-    setFilteredWallet(walletList);
   };
 
   // 서버에서 카테고리 받아오기
@@ -367,6 +389,8 @@ function WalletList(props) {
           walletList={walletList}
           categories={categories}
           getFilteredDate={getFilteredDate}
+          selectedDate={selectedDate}
+          currentMonth={currentMonth}
         />
       </div>
 
@@ -416,10 +440,19 @@ function WalletList(props) {
 
         <div className="month-tab">
           <ul>
-            <li onClick={handleYearView}>{currentYear}</li>
+            <li
+              className={activeMonth === null ? "active" : ""}
+              onClick={handleYearView}
+            >
+              {currentYear}
+            </li>
             {Array.from({ length: 12 }, (_, index) => (
-              <li key={index} onClick={() => handleMonthClick(index + 1)}>
-                {index + 1}
+              <li
+                key={index}
+                className={activeMonth === index + 1 ? "active" : ""}
+                onClick={() => handleMonthClick(index + 1)}
+              >
+                {index + 1}월
               </li>
             ))}
           </ul>

@@ -5,6 +5,8 @@ export function WalletCategory({
   filteredWallet,
   categories,
   getFilteredDate,
+  selectedDate,
+  currentMonth,
 }) {
   const calculateFilteredDateTotalExpenseByCategory = (category) => {
     if (category === "전체") {
@@ -33,7 +35,11 @@ export function WalletCategory({
         <div className={"category-table"}>
           <table>
             <caption>
-              <p className={"highlight"}>{getFilteredDate()}</p>
+              {selectedDate ? (
+                <p className={"highlight"}>{getFilteredDate()}</p>
+              ) : (
+                <span className={"highlight"}>{currentMonth}</span>
+              )}
               <br />
               지출 항목별 합계
             </caption>

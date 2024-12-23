@@ -141,6 +141,7 @@ section {
     margin: 0 1px;
     border-radius: 0 0 5px 5px;
     font-size: 0.9rem;
+    border: 1px solid var(--table-border-color);
 }
 
 .right-section .month-tab ul li:hover {
@@ -154,7 +155,6 @@ section {
     border-bottom: 1px solid var(--font-light-gray-color);
     font-weight: bold;
     box-shadow: var(--box-shadow);
-
 }
 
 .right-section .month-title {
@@ -236,6 +236,10 @@ section {
         width: 100%;
     }
 
+    .wallet-form .body-normal {
+        width: 90%;
+    }
+
     /*-------------------- WalletList --------------------*/
     .wallet .calendar {
         display: none;
@@ -277,9 +281,5 @@ section {
         text-align: right;
     }
 
-
-}
-
-@media (max-width: 480px) {
 
 }

@@ -201,7 +201,7 @@
 .tour-list-container .tour-list .tour-list-review {
     position: absolute;
     left: 20px;
-    bottom: 15px;
+    bottom: 10px;
     font-size: 0.9rem;
 }
 
@@ -452,7 +452,9 @@
     .tour-list-container .tour-list .tour-list-review {
         left: 10px;
         bottom: 10px;
+        height: 10px;
     }
+
 
     .tour-list-container .tour-list .tour-list-price {
         right: 15px;
