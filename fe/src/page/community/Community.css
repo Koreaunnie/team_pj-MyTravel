@@ -130,6 +130,17 @@
     text-overflow: ellipsis;
 }
 
+.community-title {
+    display: inline-flex;
+    align-items: center;
+}
+
+.community-title span {
+    margin-left: 8px; /* 아이콘과 텍스트 간격 조정 */
+    display: flex;
+    align-items: center;
+}
+
 .community-header .community-writer {
     flex-shrink: 0;
 }
