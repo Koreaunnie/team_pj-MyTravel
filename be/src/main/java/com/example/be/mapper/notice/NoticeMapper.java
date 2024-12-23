@@ -185,6 +185,7 @@ public interface NoticeMapper {
             SELECT title, writer, inserted creationDate
             FROM notice
             ORDER BY inserted DESC
+            LIMIT 5
             """)
     List<Notice> getTop5ByOrderByInserted();
 }
