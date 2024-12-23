@@ -1,18 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { Button } from "../../components/ui/button.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
-import {
-  DialogActionTrigger,
-  DialogBody,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogRoot,
-  DialogTitle,
-  DialogTrigger,
-} from "../../components/ui/dialog.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import "./Tour.css";
@@ -34,6 +23,7 @@ function TourView() {
   const [saveModalOpen, setSaveModalOpen] = useState(false);
   const [endDate, setEndDate] = useState("");
   const [loginModalOpen, setLoginModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [reviewUpdated, setReviewUpdated] = useState(false);
   const reviewRef = useRef(null);
 
@@ -133,38 +123,25 @@ function TourView() {
           <button className={"btn-back"} onClick={handleToListClick}>
             <IoIosArrowBack />
           </button>
-
-          {/*관리 버튼*/}
-          {(hasAccess(tour.partnerEmail) || isAdmin) && (
-            <div className={"btn-admin"}>
-              <button
-                className={"btn btn-dark"}
-                onClick={() => navigate(`/tour/update/${id}`)}
-              >
-                수정
-              </button>
-              <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
-                <DialogTrigger>
-                  <button className={"btn btn-warning"}>삭제</button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>삭제 확인</DialogTitle>
-                  </DialogHeader>
-                  <DialogBody>
-                    <p>{tour.title} 게시물을 삭제하시겠습니까?</p>
-                  </DialogBody>
-                  <DialogFooter>
-                    <DialogActionTrigger>
-                      <Button>취소</Button>
-                    </DialogActionTrigger>
-                    <Button onClick={handleDeleteClick}>삭제</Button>
-                  </DialogFooter>
-                </DialogContent>
-              </DialogRoot>
-            </div>
-          )}
         </div>
+
+        {/*관리 버튼*/}
+        {(hasAccess(tour.partnerEmail) || isAdmin) && (
+          <div className={"btn-admin-wrap"}>
+            <button
+              className={"btn btn-dark"}
+              onClick={() => navigate(`/tour/update/${id}`)}
+            >
+              수정
+            </button>
+            <button
+              className={"btn btn-warning"}
+              onClick={() => setDeleteModalOpen(true)}
+            >
+              삭제
+            </button>
+          </div>
+        )}
       </div>
 
       <div className={"body-normal"}>
@@ -277,6 +254,14 @@ function TourView() {
           onConfirm={() => navigate(`/member/login`)}
           message={"로그인 후 사용 가능합니다."}
           buttonMessage={"로그인 페이지로"}
+        />
+        {/* 삭제 modal */}
+        <Modal
+          isOpen={deleteModalOpen}
+          onClose={() => setDeleteModalOpen(false)}
+          onConfirm={handleDeleteClick}
+          message="게시물을 삭제하시겠습니까?"
+          buttonMessage="삭제"
         />
       </div>
     </div>

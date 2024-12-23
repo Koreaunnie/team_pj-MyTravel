@@ -11,7 +11,6 @@
     border-right: 1px solid var(--table-border-color);
 }
 
-
 .member-mypage .mypage-nav {
     position: fixed;
     width: 200px;
@@ -56,7 +55,6 @@
 .member-info {
     padding: 30px 50px;
     background: var(--bg-gray-color);
-    height: calc(100vh - 200px);
 }
 
 .member-info li {
@@ -77,7 +75,6 @@
 .member-edit {
     padding: 30px 50px;
     background: var(--bg-gray-color);
-    height: calc(100vh - 200px);
 }
 
 .member-edit li {
@@ -196,7 +193,61 @@
 
 
 /*------------------- 화면 크기가 768px 이하 (태블릿 화면) -------------------*/
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
+    .member-mypage {
+        display: block;
+        justify-content: space-between;
+        border-right: 0;
+        margin-top: 30px;
+        width: 100%;
+    }
+
+    .member-mypage h1 {
+        font-size: 1.3rem;
+        margin-bottom: 25px;
+    }
+
+    .member-mypage .mypage-nav {
+        position: inherit;
+        top: 0;
+        width: 100%;
+        height: auto;
+        background: #fff;
+        border: 1px solid var(--table-border-color);
+        border-top: none;
+        padding: 0;
+        z-index: 1;
+        box-shadow: none;
+    }
+
+    .member-mypage .mypage-nav ul {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .member-mypage .mypage-nav ul li {
+        width: 20%;
+        text-align: center;
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+
+    .member-mypage .mypage-nav ul li:last-child {
+        border-bottom: 0;
+    }
+
+    .member-mypage .mypage-nav .active,
+    .member-mypage .mypage-nav li:last-child.active {
+        background: none;
+        box-shadow: none;
+        border-bottom: 2px solid #000;
+    }
+
+    .member-mypage .mypage-body {
+        width: 100%;
+    }
+
 
 }
 
@@ -208,9 +259,16 @@
         text-align: center;
     }
 
-
     .move-to-button .link {
         margin: 0;
+    }
+
+    .member-info {
+        padding: 20px;
+    }
+
+    .member-edit {
+        padding: 20px;
     }
 
 }

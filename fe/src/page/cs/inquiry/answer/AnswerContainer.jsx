@@ -21,7 +21,7 @@ export function AnswerContainer({ inquiryId }) {
   }, [inquiryId]);
 
   return (
-    <div>
+    <div className={"body-normal"}>
       <AnswerList
         inquiryId={inquiryId}
         answerList={answerList}

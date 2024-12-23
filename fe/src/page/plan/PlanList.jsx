@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { HStack } from "@chakra-ui/react";
+import { Center, HStack } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
@@ -321,19 +321,21 @@ function PlanList(props) {
 
             {/* pagination */}
             <div className="pagination">
-              <PaginationRoot
-                onPageChange={handlePageChange}
-                count={count}
-                pageSize={10}
-                page={page}
-                variant="solid"
-              >
-                <HStack>
-                  <PaginationPrevTrigger />
-                  <PaginationItems />
-                  <PaginationNextTrigger />
-                </HStack>
-              </PaginationRoot>
+              <Center>
+                <PaginationRoot
+                  onPageChange={handlePageChange}
+                  count={count}
+                  pageSize={10}
+                  page={page}
+                  variant="solid"
+                >
+                  <HStack>
+                    <PaginationPrevTrigger />
+                    <PaginationItems />
+                    <PaginationNextTrigger />
+                  </HStack>
+                </PaginationRoot>
+              </Center>
             </div>
           </div>
         </div>

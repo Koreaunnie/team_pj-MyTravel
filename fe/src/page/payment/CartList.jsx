@@ -108,9 +108,9 @@ function CartList() {
 
   return (
     <div className={"cart-list"}>
-      <h1>장바구니</h1>
+      <div className={"body-wide"}>
+        <h1>장바구니</h1>
 
-      <div className={"body-normal"}>
         {isCartEmpty ? (
           <div className={"empty-container"}>
             <p>
@@ -160,7 +160,7 @@ function CartList() {
                     <td>
                       {cart.startDate} ~ {cart.endDate}
                     </td>
-                    <td>
+                    <td className={"btn-delete"}>
                       <button
                         className={"btn btn-warning"}
                         key={cart.id}
@@ -179,7 +179,7 @@ function CartList() {
           </div>
         )}
 
-        {cartList.length === 0 || (
+        {cartList.length > 0 && checkedList.length > 0 && (
           <div className={"selected-cart-list"}>
             <h1>선택한 제품</h1>
 
@@ -187,23 +187,15 @@ function CartList() {
               <table className={"table-list"}>
                 <thead>
                   <tr>
-                    <th>
-                      <label htmlFor="product">상품</label>
-                    </th>
-                    <th>
-                      <label htmlFor="price">가격</label>
-                    </th>
+                    <th>상품</th>
+                    <th>가격</th>
                   </tr>
                 </thead>
                 <tbody>
                   {checkedList.map((cart) => (
                     <tr>
-                      <td>
-                        <input value={cart.product} />
-                      </td>
-                      <td>
-                        <input value={formatNumberWithCommas(cart.price)} />
-                      </td>
+                      <td>{cart.product}</td>
+                      <td>{formatNumberWithCommas(cart.price)}</td>
                     </tr>
                   ))}
                 </tbody>

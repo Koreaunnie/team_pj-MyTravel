@@ -1,22 +1,24 @@
 .cart-list {
-    background: var(--bg-gray-color);
     min-height: calc(100vh - 160px);
-    padding-top: 30px;
+    padding-top: 10px;
     width: 100%;
+}
+
+.cart-list h1 {
+    background: none;
 }
 
 .cart-list .table-list {
     width: 100%;
-    margin-top: 50px;
+    margin-top: 30px;
     background: #fff;
     border-radius: 10px;
-    margin-left: 30px;
 }
 
 .cart-list .table-list tr td {
     margin: 0;
-    padding: 10px;
     text-align: left;
+    background: #fff;
 }
 
 .cart-list .table-list tr td img {
@@ -43,13 +45,42 @@
 
 .cart-list .table-list tr td:nth-child(6) {
     font-weight: bold;
-
 }
 
 .cart-list .btn-wrap {
     justify-content: center;
 }
 
-.selected-cart-list{
-    margin-top: 50px;
+.cart-list .btn-delete button {
+    padding: 3px 5px;
+    font-size: 0.8rem;
+    min-width: 40px;
+}
+
+.selected-cart-list {
+    margin-top: 30px;
+    padding-bottom: 30px;
+}
+
+.selected-cart-list .table-list {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.selected-cart-list .table-list tr th {
+    padding: 0 15px;
+}
+
+
+/*------------------- 화면 크기가 768px 이하 (태블릿 화면) -------------------*/
+@media (max-width: 1200px) {
+    .cart-list .body-wide {
+        width: 95%;
+    }
+}
+
+@media (max-width: 768px) {
+    .cart-list .table-list tr td:nth-child(2) {
+        display: none;
+    }
 }
