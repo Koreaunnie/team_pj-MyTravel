@@ -18,7 +18,10 @@ public interface MemberMapper {
 
     @Select("""
         SELECT * FROM member
-        WHERE email = #{email}""")
+        LEFT JOIN auth
+            ON auth.member_email =member.email
+        WHERE email = #{email}
+        """)
     Member selectByEmail(String email);
 
     @Select("""

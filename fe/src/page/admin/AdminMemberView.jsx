@@ -156,16 +156,17 @@ function AdminMemberView(props) {
           >
             수정
           </button>
-          {member.kakao || (
-            <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
-              <DialogTrigger>
-                <button className={"btn btn-warning"}>탈퇴</button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>탈퇴 확인</DialogTitle>
-                </DialogHeader>
-                <DialogBody>
+
+          <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
+            <DialogTrigger>
+              <button className={"btn btn-warning"}>탈퇴</button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>탈퇴 확인</DialogTitle>
+              </DialogHeader>
+              <DialogBody>
+                {member.kakao || (
                   <Stack>
                     <Field label={"비밀번호"}>
                       <Input
@@ -175,26 +176,8 @@ function AdminMemberView(props) {
                       />
                     </Field>
                   </Stack>
-                </DialogBody>
-                <DialogFooter>
-                  <DialogActionTrigger>
-                    <Button variant={"outline"}>취소</Button>
-                  </DialogActionTrigger>
-                  <Button onClick={handleDeleteClick}>탈퇴</Button>
-                </DialogFooter>
-              </DialogContent>
-            </DialogRoot>
-          )}{" "}
-          {member.kakao && (
-            <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
-              <DialogTrigger>
-                <button className={"btn btn-warning"}>탈퇴</button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>탈퇴 확인</DialogTitle>
-                </DialogHeader>
-                <DialogBody>
+                )}
+                {member.kakao && (
                   <Stack>
                     <p>
                       회원 정보 삭제를 확인하려면 텍스트 입력 필드에{" "}
@@ -208,15 +191,18 @@ function AdminMemberView(props) {
                       />
                     </Field>
                   </Stack>
-                </DialogBody>
-                <DialogFooter>
-                  <DialogActionTrigger>
-                    <Button variant={"outline"}>취소</Button>
-                  </DialogActionTrigger>
-                  <Button onClick={handleDeleteClick}>탈퇴</Button>
-                </DialogFooter>
-              </DialogContent>
-            </DialogRoot>
+                )}
+              </DialogBody>
+              <DialogFooter>
+                <DialogActionTrigger>
+                  <Button variant={"outline"}>취소</Button>
+                </DialogActionTrigger>
+                <Button onClick={handleDeleteClick}>탈퇴</Button>
+              </DialogFooter>
+            </DialogContent>
+          </DialogRoot>
+          {member.auth ? null : (
+            <button className={"btn btn-blue"}>파트너로 변경</button>
           )}
         </Box>
       </div>

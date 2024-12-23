@@ -42,3 +42,9 @@ WHERE
     email LIKE CONCAT('%', '@', '%')
    OR phone LIKE CONCAT('%', '010', '%'))
 ORDER BY inserted DESC;
+
+SELECT *
+FROM member
+LEFT JOIN auth
+ON auth.member_email =member.email
+WHERE email = 'admin'

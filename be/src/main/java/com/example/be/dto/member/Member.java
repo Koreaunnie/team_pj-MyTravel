@@ -7,12 +7,13 @@ import java.util.List;
 
 @Data
 public class Member {
-  private String email;
-  private String nickname;
-  private String password;
-  private String name;
-  private String phone;
-  private LocalDateTime inserted;
-  private Boolean kakao;
-  private List<MemberPicture> profile;
+    private String email;
+    private String nickname;
+    private String password;
+    private String name;
+    private String phone;
+    private LocalDateTime inserted;
+    private Boolean kakao;
+    private String auth;
+    private List<MemberPicture> profile;
 }
