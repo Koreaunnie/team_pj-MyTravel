@@ -308,12 +308,40 @@
 
 
 /*------------------- 화면 크기가 768px 이하 (태블릿 화면) -------------------*/
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
+    .plan-wide .calendar-list {
+        width: 100%;
+    }
+
+    .plan-wide .calendar {
+        display: none;
+    }
+
+    .plan-view-container {
+        width: 100%;
+    }
+
+    .plan-wide .day-list {
+        left: 0;
+        width: 100%;
+    }
+
+    .plan-wide .day-list {
+        left: 0;
+        width: 100%;
+    }
+
+    .plan-list-wrap {
+        margin: 0;
+        padding: 30px;
+    }
+
+    .plan-wide .card-wrap {
+        width: 100%;
+    }
 
 }
 
 /*------------------- 화면 크기가 480px 이하 (모바일 화면) -------------------*/
-@media (max-width: 480px) {
-
-
+@media (max-width: 720px) {
 }

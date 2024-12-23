@@ -115,7 +115,7 @@ function PlanView(props) {
               </button>
 
               <button
-                className={"btn btn-dark"}
+                className={"btn btn-blue"}
                 onClick={() => setAddModalOpen(true)}
               >
                 새 여행 작성
