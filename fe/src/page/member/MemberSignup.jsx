@@ -46,7 +46,7 @@ function MemberSignup(props) {
           type: message.type,
           description: message.text,
         });
-        navigate(`/`);
+        navigate(`/member/login`);
       })
       .catch((e) => {
         const message = e.response.data.message;
@@ -121,12 +121,11 @@ function MemberSignup(props) {
     <div className={"member body-narrow"}>
       <h1>회원 가입</h1>
 
-      <form className={"member-form"}>
+      <div className={"member-form"}>
         <fieldset>
           <ul>
             <li>
               <label htmlFor="">프로필 사진</label>
-
               <div className={"attached"} style={{ marginTop: "10px" }}>
                 <FileUploadRoot
                   value={files}
@@ -154,63 +153,72 @@ function MemberSignup(props) {
             </li>
 
             <li className={"check-form"}>
-              <label htmlFor="email">
-                이메일
-                <span className={"required"}>&#42;</span>
-              </label>
-
-              <input
-                placeholder={"중복 확인을 해주세요."}
-                id={"email"}
-                type="email"
-                maxLength="30"
-                required
-                value={email}
-                onChange={(e) => {
-                  setEmailCheck(false);
-                  setEmail(e.target.value);
-                }}
-              />
-              <button
-                className={"btn-search btn-dark"}
-                onClick={handleEmailCheckClick}
-              >
-                중복 확인
-              </button>
+              <form>
+                <label htmlFor="email">
+                  이메일
+                  <span className={"required"}>&#42;</span>
+                </label>
+              </form>
+              <div className={"duplicate-check"}>
+                <input
+                  placeholder={"중복 확인을 해주세요."}
+                  id={"email"}
+                  type="email"
+                  maxLength="30"
+                  required
+                  value={email}
+                  onChange={(e) => {
+                    setEmailCheck(false);
+                    setEmail(e.target.value);
+                  }}
+                />
+                <button
+                  className={"btn-check btn-dark"}
+                  onClick={handleEmailCheckClick}
+                >
+                  중복 확인
+                </button>
+              </div>
             </li>
 
             <li className={"check-form"}>
-              <label htmlFor="nickname">
-                닉네임
-                <span className={"required"}>&#42;</span>
-              </label>
-
-              <input
-                placeholder={"중복 확인을 해주세요."}
-                id={"nickname"}
-                type={"text"}
-                maxLength="20"
-                required
-                value={nickname}
-                onChange={(e) => {
-                  setNicknameCheck(false);
-                  setNickname(e.target.value);
-                }}
-              />
-              <button
-                className={"btn-search btn-dark"}
-                onClick={handleNicknameCheckClick}
-                disabled={nicknameCheckButtonDisabled}
-              >
-                중복 확인
-              </button>
+              <form>
+                <label htmlFor="nickname">
+                  닉네임
+                  <span className={"required"}>&#42;</span>
+                </label>
+              </form>
+              <div className={"duplicate-check"}>
+                <input
+                  placeholder={"중복 확인을 해주세요."}
+                  id={"nickname"}
+                  type={"text"}
+                  maxLength="20"
+                  required
+                  value={nickname}
+                  onChange={(e) => {
+                    setNicknameCheck(false);
+                    setNickname(e.target.value);
+                  }}
+                />
+                <button
+                  className={"btn-check btn-dark"}
+                  onClick={handleNicknameCheckClick}
+                  disabled={nicknameCheckButtonDisabled}
+                >
+                  중복 확인
+                </button>
+              </div>
             </li>
 
             <li>
-              <label htmlFor="password">
-                비밀번호
-                <span className={"required"}>&#42;</span>
-              </label>
+              <form>
+                <label htmlFor="password">
+                  비밀번호
+                  <span className={"required"}>&#42;</span>
+                </label>
+              </form>
+
               <input
                 placeholder={"30자 이내"}
                 maxLength="30"
@@ -223,10 +231,12 @@ function MemberSignup(props) {
             </li>
 
             <li>
-              <label htmlFor="password-check">
-                비밀번호 확인
-                <span className={"required"}>&#42;</span>
-              </label>
+              <form>
+                <label htmlFor="password-check">
+                  비밀번호 확인
+                  <span className={"required"}>&#42;</span>
+                </label>
+              </form>
               <input
                 placeholder={"비밀번호를 다시 한 번 입력해주세요."}
                 maxLength="30"
@@ -245,10 +255,12 @@ function MemberSignup(props) {
             </li>
 
             <li>
-              <label htmlFor="name">
-                이름
-                <span className={"required"}>&#42;</span>
-              </label>
+              <form>
+                <label htmlFor="name">
+                  이름
+                  <span className={"required"}>&#42;</span>
+                </label>
+              </form>
               <input
                 placeholder={"20자 이내"}
                 maxLength="20"
@@ -260,10 +272,12 @@ function MemberSignup(props) {
               />
             </li>
             <li>
-              <label htmlFor="phone">
-                전화번호
-                <span className={"required"}>&#42;</span>
-              </label>
+              <form>
+                <label htmlFor="phone">
+                  전화번호
+                  <span className={"required"}>&#42;</span>
+                </label>
+              </form>
               <input
                 placeholder={"숫자만 입력해주세요."}
                 maxLength="20"
@@ -297,7 +311,7 @@ function MemberSignup(props) {
             로그인
           </p>
         </div>
-      </form>
+      </div>
     </div>
   );
 }

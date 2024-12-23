@@ -158,6 +158,11 @@
     width: calc(100% - 85px);
 }
 
+.duplicate-check {
+    display: flex;
+    alignItems: "center"
+}
+
 .btn-kakao {
     background: #FEE500;
 }

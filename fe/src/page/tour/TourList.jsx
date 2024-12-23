@@ -291,7 +291,7 @@ function TourList() {
             <Center>
               <PaginationRoot
                 count={count}
-                pageSize={10}
+                pageSize={12}
                 defaultPage={currentPage}
                 onPageChange={handlePageChange}
                 variant="solid"
