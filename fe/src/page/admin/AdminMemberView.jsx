@@ -82,8 +82,16 @@ function AdminMemberView(props) {
       <Breadcrumb
         depth1={"관리자 모드"}
         navigateToDepth1={() => navigate(`/admin`)}
-        depth2={member.nickname + "의 프로필"}
-        navigateToDepth2={() => {}}
+        depth2={member.auth === "partner" ? "파트너 관리" : "회원 관리"}
+        navigateToDepth2={() => {
+          if (member.auth === "partner") {
+            navigate(`/admin?menu=partnerList`);
+          } else {
+            navigate(`/admin?menu=memberList`);
+          }
+        }}
+        depth3={member.nickname + "의 프로필"}
+        navigateToDepth3={() => {}}
       />
       <h1>회원 정보</h1>
 
@@ -154,14 +162,25 @@ function AdminMemberView(props) {
         </fieldset>
 
         <Box>
-          <button
-            className={"btn btn-dark-outline"}
-            onClick={() => {
-              navigate(`/admin?menu=memberList`);
-            }}
-          >
-            관리자 창으로
-          </button>
+          {member.auth === "partner" ? (
+            <button
+              className={"btn btn-dark-outline"}
+              onClick={() => {
+                navigate(`/admin?menu=partnerList`);
+              }}
+            >
+              파트너 목록으로
+            </button>
+          ) : (
+            <button
+              className={"btn btn-dark-outline"}
+              onClick={() => {
+                navigate(`/admin?menu=memberList`);
+              }}
+            >
+              회원 목록으로
+            </button>
+          )}
           <button
             className={"btn btn-dark"}
             onClick={() => navigate(`/member/edit/${email}`)}
