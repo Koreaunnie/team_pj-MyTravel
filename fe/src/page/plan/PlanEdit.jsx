@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { Spinner } from "@chakra-ui/react";
@@ -49,12 +49,12 @@ function PlanEdit(props) {
     return <Spinner />;
   }
 
-  // // field 입력값을 상태로 업데이트하는 함수
-  // const handleFieldChange = (index, field, value) => {
-  //   const updatedFields = [...planFields];
-  //   updatedFields[index][field] = value;
-  //   setPlanFields(updatedFields);
-  // };
+  // field 입력값을 상태로 업데이트하는 함수
+  const handleFieldChange = (index, field, value) => {
+    const updatedFields = [...planFields];
+    updatedFields[index][field] = value;
+    setPlanFields(updatedFields);
+  };
 
   const handlePlaceSelected = (index, location) => {
     const { placeId, address } = location;
