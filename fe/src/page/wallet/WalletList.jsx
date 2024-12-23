@@ -26,7 +26,6 @@ function WalletList(props) {
     axios.get("/api/wallet/list").then((res) => {
       setWalletList(res.data);
 
-      // 현재 월에 해당하는 데이터 필터링
       const now = new Date();
       const month = now.getMonth();
       const year = now.getFullYear();
@@ -36,7 +35,8 @@ function WalletList(props) {
       setCurrentMonth(formattedMonth);
       setCurrentYear(year);
 
-      const filtered = walletList.filter((wallet) => {
+      // 월별로 필터링 처리
+      const filtered = res.data.filter((wallet) => {
         const walletDate = new Date(wallet.date);
         return (
           walletDate.getMonth() === month && walletDate.getFullYear() === year
@@ -46,16 +46,13 @@ function WalletList(props) {
     });
   }, []);
 
-  // 월별 필터링
+  // currentMonth가 변경될 때마다 필터링된 리스트 업데이트
   useEffect(() => {
     if (walletList.length > 0 && currentMonth) {
       const [year, month] = currentMonth
         .split("년 ")
         .map((str) => str.replace("월", ""));
-      const date = new Date(year, month - 1, 1); // currentMonth에서 년도와 월을 파싱하여 Date 객체 생성
-
-      // 선택된 날짜를 해당 월의 첫째 날로 설정
-      setSelectedDate(date);
+      const date = new Date(year, month - 1, 1);
 
       const filtered = walletList.filter((wallet) => {
         const walletDate = new Date(wallet.date);
@@ -77,7 +74,7 @@ function WalletList(props) {
       );
       setFilteredWallet(filtered);
     } else {
-      setFilteredWallet(walletList); // 날짜 선택 안 하면 전체 내역 표시
+      setFilteredWallet(walletList); // 날짜를 선택하지 않으면 전체 리스트 표시
     }
   }, [selectedDate, walletList]);
 
@@ -91,30 +88,68 @@ function WalletList(props) {
     }
   }, [currentMonth]);
 
-  const prevMonth = () => {
-    const newDate = moment(currentMonth, "YYYY년 M월").subtract(1, "month");
-    setCurrentMonth(newDate.format("YYYY년 M월"));
-  };
+  useEffect(() => {
+    const now = moment(); // 현재 날짜를 moment로 처리
+    const formattedMonth = now.format("YYYY년 M월"); // 이번 달의 포맷
+    setCurrentMonth(formattedMonth); // currentMonth 초기값 설정
+    setCurrentYear(now.year()); // currentYear 설정
 
-  const nextMonth = () => {
-    const newDate = moment(currentMonth, "YYYY년 M월").add(1, "month");
-    setCurrentMonth(newDate.format("YYYY년 M월"));
+    // 이번 달에 해당하는 데이터 필터링
+    const filtered = walletList.filter((wallet) => {
+      const walletDate = new Date(wallet.date);
+      return (
+        walletDate.getMonth() === now.month() &&
+        walletDate.getFullYear() === now.year()
+      );
+    });
+    setFilteredWallet(filtered); // 필터링된 데이터를 상태에 저장
+  }, [walletList]);
+
+  const handleMonthClick = (month) => {
+    const newMonth = moment(`${currentYear}-${month}`, "YYYY-M");
+    setCurrentMonth(newMonth.format("YYYY년 M월")); // 새로운 월로 currentMonth 업데이트
+
+    // 해당 월에 맞는 데이터 필터링
+    const filtered = walletList.filter((wallet) => {
+      const walletDate = new Date(wallet.date);
+      return (
+        walletDate.getMonth() === newMonth.month() &&
+        walletDate.getFullYear() === newMonth.year()
+      );
+    });
+    setFilteredWallet(filtered); // 필터링된 데이터를 상태에 저장
   };
 
   // 이번 달 보기
   const handleMonthView = () => {
-    const now = new Date(); // 현재 날짜 가져오기
-    const month = now.getMonth(); // 현재 월 (0부터 시작)
-    const year = now.getFullYear(); // 현재 연도
+    const now = moment();
+    const formattedMonth = now.format("YYYY년 M월");
+    setCurrentMonth(formattedMonth);
 
     const filtered = walletList.filter((wallet) => {
+      const walletDate = new Date(wallet.date);
+      return (
+        walletDate.getMonth() === now.month() &&
+        walletDate.getFullYear() === now.year()
+      );
+    });
+    setFilteredWallet(filtered);
+  };
+
+  // 새로운 유틸리티 함수: 월과 카테고리로 필터링
+  const filterWalletsByMonthAndCategory = (wallets, month, year, category) => {
+    let filtered = wallets.filter((wallet) => {
       const walletDate = new Date(wallet.date);
       return (
         walletDate.getMonth() === month && walletDate.getFullYear() === year
       );
     });
-    setFilteredWallet(filtered);
-    setSelectedDate(null);
+
+    if (category && category !== "전체") {
+      filtered = filtered.filter((wallet) => wallet.category === category);
+    }
+
+    return filtered;
   };
 
   // 년도 별로 보기
@@ -153,17 +188,21 @@ function WalletList(props) {
 
   // 카테고리 탭 활성화
   const handleTabClick = (index) => {
-    setSelectedDate(null);
     setActiveTab(index);
-    if (index === 0) {
-      // "전체"
-      setFilteredWallet(walletList);
-    } else {
-      const filtered = walletList.filter(
-        (wallet) => wallet.category === categories[index],
-      );
-      setFilteredWallet(filtered);
-    }
+    setSelectedDate(null);
+
+    const [year, month] = currentMonth
+      .split("년 ")
+      .map((str) => str.replace("월", ""));
+    const currentMonthDate = new Date(year, parseInt(month) - 1);
+
+    const filtered = filterWalletsByMonthAndCategory(
+      walletList,
+      currentMonthDate.getMonth(),
+      currentMonthDate.getFullYear(),
+      categories[index],
+    );
+    setFilteredWallet(filtered);
   };
 
   const isCategoryFiltered = activeTab !== 0; // "전체"가 아닌 카테고리가 선택되었을 때만 tfoot 표시
@@ -343,25 +382,17 @@ function WalletList(props) {
           <button
             className={"btn btn-dark-outline"}
             style={{ marginLeft: "15px" }}
+            onClick={handleAllView}
+          >
+            전체 내역 보기
+          </button>
+
+          <button
+            className={"btn btn-dark-outline"}
+            style={{ marginLeft: "15px" }}
             onClick={handleMonthView}
           >
             이번 달
-          </button>
-
-          <button
-            className={"btn btn-dark-outline"}
-            style={{ marginLeft: "15px" }}
-            onClick={handleYearView}
-          >
-            {currentYear}
-          </button>
-
-          <button
-            className={"btn btn-dark-outline"}
-            style={{ marginLeft: "15px" }}
-            onClick={handleAllView}
-          >
-            전체
           </button>
 
           <button
@@ -383,23 +414,18 @@ function WalletList(props) {
           )}
         </div>
 
-        <div className={"month-wrap"}>
+        <div className="month-tab">
           <ul>
-            <li>
-              <button type={"button"} onClick={prevMonth}>
-                &#10094;
-              </button>
-            </li>
-            <li>
-              <h1>{currentMonth}</h1>
-            </li>
-            <li>
-              <button type={"button"} onClick={nextMonth}>
-                &#10095;
-              </button>
-            </li>
+            <li onClick={handleYearView}>{currentYear}</li>
+            {Array.from({ length: 12 }, (_, index) => (
+              <li key={index} onClick={() => handleMonthClick(index + 1)}>
+                {index + 1}
+              </li>
+            ))}
           </ul>
         </div>
+
+        <h1 className={"month-title"}>{currentMonth}</h1>
 
         <div className={"category-tab"}>
           <ul>

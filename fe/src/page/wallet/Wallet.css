@@ -1,6 +1,6 @@
 .wallet {
     width: 100%;
-    min-height: calc(100vh - 170px);
+    min-height: calc(100vh - 140px);
     overflow: hidden;
 }
 
@@ -35,7 +35,7 @@ section {
     position: fixed;
     left: 530px;
     width: 350px;
-    height: calc(100vh - 260px);
+    height: calc(100vh - 230px);
     margin-top: 65px;
     border: 1px solid var(--table-border-color);
     border-radius: 10px;
@@ -100,7 +100,7 @@ section {
     margin: 65px 0;
     left: 910px;
     width: calc(100% - 940px);
-    height: calc(100vh - 260px);
+    height: calc(100vh - 230px);
     overflow: hidden;
     overflow-y: auto;
     border: 1px solid var(--table-border-color);
@@ -120,15 +120,44 @@ section {
     text-align: right;
 }
 
-.right-section .month-wrap ul {
-    margin-top: 20px;
+.right-section .month-tab {
+    text-align: center;
+}
+
+.right-section .month-tab ul {
+    width: 100%;
+    margin: 0 auto;
     display: flex;
     justify-content: center;
 }
 
-.right-section .month-wrap ul li button {
-    margin: 20px;
+.right-section .month-tab ul li {
+    text-align: center;
+    width: calc(100% / 12);
+    padding: 5px;
+    background-color: #f5f5f5;
     cursor: pointer;
+    margin: 0 1px;
+    border-radius: 0 0 5px 5px;
+    font-size: 0.9rem;
+}
+
+.right-section .month-tab ul li:hover {
+    background: #ecebeb;
+}
+
+.right-section .month-tab ul li.active {
+    background: #fff;
+    border-left: 1px solid var(--font-light-gray-color);
+    border-right: 1px solid var(--font-light-gray-color);
+    border-bottom: 1px solid var(--font-light-gray-color);
+    font-weight: bold;
+    box-shadow: var(--box-shadow);
+
+}
+
+.right-section .month-title {
+    margin: 30px 0;
 }
 
 .right-section .category-tab {
@@ -199,7 +228,7 @@ section {
 }
 
 
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
 
     /*-------------------- WalletAdd, WalletEdit --------------------*/
     .form-table {
@@ -207,15 +236,19 @@ section {
     }
 
     /*-------------------- WalletList --------------------*/
+    .wallet .calendar {
+        display: none;
+    }
+
     .middle-section {
         display: none;
     }
 
     .right-section {
         position: inherit;
-        margin: 65px 20px;
+        margin: 55px 20px;
         left: 0;
-        width: 100%;
+        width: 95%;
         height: 100vh;
         overflow: scroll;
         overflow-y: auto;
@@ -223,6 +256,7 @@ section {
         border-radius: 10px;
         box-shadow: var(--box-shadow);
         padding: 10px;
+        max-height: 80vh;
     }
 
     .right-section .fixed-list-head-wrap {
