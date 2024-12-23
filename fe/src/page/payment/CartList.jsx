@@ -108,9 +108,9 @@ function CartList() {
 
   return (
     <div className={"cart-list"}>
-      <h1>장바구니</h1>
-
       <div className={"body-wide"}>
+        <h1>장바구니</h1>
+
         {isCartEmpty ? (
           <div className={"empty-container"}>
             <p>

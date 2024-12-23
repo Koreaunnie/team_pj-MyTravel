@@ -73,11 +73,13 @@
 
 
 /*------------------- 화면 크기가 768px 이하 (태블릿 화면) -------------------*/
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
     .cart-list .body-wide {
         width: 95%;
     }
+}
 
+@media (max-width: 768px) {
     .cart-list .table-list tr td:nth-child(2) {
         display: none;
     }
