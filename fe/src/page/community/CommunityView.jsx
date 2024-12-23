@@ -74,7 +74,7 @@ function CommunityView(props) {
       .get(`/api/community/view/${id}`, { id })
       .then((e) => {
         setCommunity(e.data);
-        console.log("초기", e.data);
+        // console.log("초기", e.data);
         setCommentList(e.data.commentList); //초기 댓글 목록
         setMyCommunityLike(e.data.myCommunityLike);
         setTitleLength(e.data.title.length);
@@ -100,7 +100,7 @@ function CommunityView(props) {
     axios
       .get(`/api/community/comment/list/${id}`)
       .then((res) => {
-        console.log("업데이트", res.data);
+        // console.log("업데이트", res.data);
         setCommentList(res.data);
       })
       .catch((err) => console.error(err));
