@@ -27,6 +27,11 @@
     font-weight: normal;
 }
 
+.community .table-view tr td {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
 
 /* ---------------- CommunityList ----------------*/
 .community {
@@ -90,7 +95,7 @@
     text-overflow: ellipsis;
 }
 
-.community-header .community-writer{
+.community-header .community-writer {
     flex-shrink: 0;
 }
 
@@ -136,7 +141,7 @@
     height: calc(100vh - 250px);
 }
 
-.community-mylist h1{
+.community-mylist h1 {
     margin-bottom: 40px;
 }
 
