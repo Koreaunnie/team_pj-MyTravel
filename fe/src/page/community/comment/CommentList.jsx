@@ -1,38 +1,48 @@
 import { Textarea } from "@chakra-ui/react";
 import { Button } from "../../../components/ui/button.jsx";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { AuthenticationContext } from "../../../components/context/AuthenticationProvider.jsx";
 import axios from "axios";
 import { toaster } from "../../../components/ui/toaster.jsx";
 import { formattedDateTime } from "../../../components/utils/FormattedDateTime.jsx";
 import "./Comment.css";
 
-export function CommentList({ communityId }) {
-  const [commentList, setCommentList] = useState([]);
+export function CommentList({
+  communityId,
+  commentList,
+  setCommentList,
+  fetchComments,
+}) {
   const [commentContent, setCommentContent] = useState("");
   const [editMode, setEditMode] = useState(null);
   const { hasAccessByNickName } = useContext(AuthenticationContext);
   const authentication = useContext(AuthenticationContext);
 
-  useEffect(() => {
-    // 댓글 목록을 가져옵니다.
-    axios
-      .get(`/api/community/comment/list/${communityId}`)
-      .then((res) => {
-        setCommentList(res.data);
-      })
-      .catch((err) => console.error(err));
-  }, [communityId || commentList]);
+  // // 댓글 목록을 가져옵니다.
+  // const refreshCommentList = () => {
+  //   axios
+  //     .get(`/api/community/comment/list/${communityId}`)
+  //     .then((res) => {
+  //       setCommentList(res.data);
+  //     })
+  //     .catch((err) => console.error(err));
+  // };
+  //
+  // useEffect(() => {
+  //   if (communityId) {
+  //     refreshCommentList();
+  //   }
+  // }, [communityId]);
 
-  // 댓글 목록을 다시 가져오는 함수
-  const fetch = () => {
-    axios
-      .get(`/api/community/fetch/${communityId}`)
-      .then((res) => {
-        setCommentList(res.data.commentList);
-      })
-      .catch((err) => console.error(err));
-  };
+  // // 댓글 목록을 다시 가져오는 함수
+  // const fetch = () => {
+  //   axios
+  //     .get(`/api/community/fetch/${communityId}`)
+  //     .then((res) => {
+  //       setCommentList(res.data.commentList);
+  //     })
+  //     .catch((err) => console.error(err));
+  // };
 
   // 댓글 저장 함수
   const handleCommentSaveClick = () => {
@@ -47,7 +57,7 @@ export function CommentList({ communityId }) {
           type: writeSuccess.type,
           description: writeSuccess.text,
         });
-        fetch();
+        fetchComments();
       })
       .catch((e) => {
         const writeFailure = e.request.response;
@@ -75,7 +85,7 @@ export function CommentList({ communityId }) {
         });
 
         // 댓글 목록을 갱신
-        fetch();
+        fetchComments();
 
         // 수정 모드 종료
         setEditMode(null);
@@ -101,7 +111,7 @@ export function CommentList({ communityId }) {
           type: deleteSuccess.type,
           description: deleteSuccess.text,
         });
-        fetch();
+        fetchComments();
       })
       .catch((e) => {
         const deleteFailure = e.request.response;
