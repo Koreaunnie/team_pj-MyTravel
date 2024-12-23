@@ -21,33 +21,53 @@ function MemberList(props) {
   const [memberList, setMemberList] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [count, setCount] = useState(0);
-  const [currentPage, setCurrentPage] = useState(
-    parseInt(searchParams.get("page")) || 1,
-  );
-  const [search, setSearch] = useState({
-    type: searchParams.get("type") ?? "all",
-    keyword: searchParams.get("key") ?? "",
-  });
+  // const [currentPage, setCurrentPage] = useState(
+  //   parseInt(searchParams.get("page")) || 1,
+  // );
+  const [search, setSearch] = useState({ type: "all", keyword: "" });
   const navigate = useNavigate();
 
   useEffect(() => {
-    const controller = new AbortController();
+    // const controller = new AbortController();
     axios
       .get("/api/member/list", {
-        params: searchParams,
-        signal: controller.signal,
+        params: {
+          menu: "memberList",
+          type: search.type,
+          key: search.keyword,
+          page: pageParam,
+        },
+        // signal: controller.signal,
       })
       .then((res) => {
         setMemberList(res.data.memberList);
         setCount(res.data.count);
       });
-    return () => {
-      controller.abort();
-    };
-  }, []);
+    // return () => {
+    //   controller.abort();
+    // };
+  }, [searchParams]);
 
-  const pageParam = searchParams.get("page") ?? "1";
-  const page = Number(pageParam);
+  useEffect(() => {
+    const nextSearch = { ...search };
+
+    if (searchParams.get("type")) {
+      nextSearch.type = searchParams.get("type");
+    } else {
+      nextSearch.type = "all";
+    }
+
+    if (searchParams.get("key")) {
+      nextSearch.keyword = searchParams.get("key");
+    } else {
+      nextSearch.keyword = "";
+    }
+
+    setSearch(nextSearch);
+  }, [searchParams]);
+
+  // const pageParam = searchParams.get("page") ?? "1";
+  // const page = Number(pageParam);
 
   function handleRowClick(email) {
     navigate(`/member/${email}`);
@@ -64,27 +84,38 @@ function MemberList(props) {
   });
 
   function handleSearchClick() {
+    const nextSearchParam = new URLSearchParams(searchParams);
+
     if (search.keyword.trim().length > 0) {
-      const nextSearchParam = new URLSearchParams(searchParams);
       nextSearchParam.set("type", search.type);
       nextSearchParam.set("key", search.keyword);
-      nextSearchParam.set("page", currentPage.toString());
-      setSearchParams(nextSearchParam);
     } else {
-      const nextSearchParam = new URLSearchParams(searchParams);
       nextSearchParam.delete("type");
       nextSearchParam.delete("key");
-      nextSearchParam.delete("page", currentPage.toString());
-      setSearchParams(nextSearchParam);
     }
+
+    setSearchParams(nextSearchParam);
   }
 
+  // function handlePageChange(e) {
+  //   const pageNumber = { page: e.page };
+  //   const pageQuery = new URLSearchParams(pageNumber);
+  //   const searchInfo = { type: search.type, key: search.keyword };
+  //   const searchQuery = new URLSearchParams(searchInfo);
+  //   navigate(
+  //     `/admin?menu=memberList&${searchQuery.toString()}&${pageQuery.toString()}`,
+  //   );
+  // }
+
+  //pagination
+  const pageParam = searchParams.get("page") ?? "1";
+  const page = Number(pageParam);
+
+  // 페이지 번호 변경 시 URL 의 쿼리 파라미터를 업데이트
   function handlePageChange(e) {
-    const pageNumber = { page: e.page };
-    const pageQuery = new URLSearchParams(pageNumber);
-    const searchInfo = { type: search.type, key: search.keyword };
-    const searchQuery = new URLSearchParams(searchInfo);
-    navigate(`/admin?${searchQuery.toString()}&${pageQuery.toString()}`);
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.set("page", e.page);
+    setSearchParams(nextSearchParams);
   }
 
   return (
@@ -98,6 +129,7 @@ function MemberList(props) {
 
             // 2. URL 검색 파라미터 초기화
             const nextSearchParam = new URLSearchParams();
+            nextSearchParam.set("menu", "memberList");
             nextSearchParam.set("type", "all");
             nextSearchParam.set("key", "");
 
@@ -127,20 +159,21 @@ function MemberList(props) {
           </SelectContent>
         </SelectRoot>
 
-        <input
-          type={"text"}
-          className={"search-form-input"}
-          value={search.keyword}
-          onChange={(e) => setSearch({ ...search, keyword: e.target.value })}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              handleSearchClick();
-            }
-          }}
-        />
-        <button className={"btn-search btn-dark"} onClick={handleSearchClick}>
-          검색
-        </button>
+        <div className={"search-form-input"}>
+          <input
+            type={"text"}
+            value={search.keyword}
+            onChange={(e) => setSearch({ ...search, keyword: e.target.value })}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSearchClick();
+              }
+            }}
+          />
+          <button className={"btn-search btn-dark"} onClick={handleSearchClick}>
+            검색
+          </button>
+        </div>
       </div>
       <div>
         <table className={"table-list"}>
@@ -172,7 +205,6 @@ function MemberList(props) {
           <PaginationRoot
             count={count}
             pageSize={10}
-            defaultPage={currentPage}
             page={page}
             onPageChange={handlePageChange}
             variant="solid"

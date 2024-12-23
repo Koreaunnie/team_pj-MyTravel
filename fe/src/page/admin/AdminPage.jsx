@@ -7,29 +7,33 @@ import AdminCs from "./AdminCs.jsx";
 import Access from "../../components/context/Access.jsx";
 import PartnerList from "./PartnerList.jsx";
 import MemberList from "./MemberList.jsx";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 function MyPage(props) {
-  const [selectedMenu, setSelectedMenu] = useState("home");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [selectedMenu, setSelectedMenu] = useState(
+    searchParams.get("menu") || "home",
+  );
   const { isAdmin, nickname } = useContext(AuthenticationContext);
   const navigate = useNavigate();
   const location = useLocation();
 
-  // URL 변경 시 메뉴 동기화
   useEffect(() => {
-    const path = location.pathname.split("/").pop();
-    setSelectedMenu(path || "home");
-  }, [location.pathname]);
+    const menuParam = searchParams.get("menu");
+    if (menuParam) {
+      setSelectedMenu(menuParam);
+    }
+  }, [searchParams]);
+
+  const handleMenuClick = (menu) => {
+    setSelectedMenu(menu);
+    setSearchParams({ menu: menu });
+    window.scrollTo(0, 0); // 페이지 상단으로 스크롤
+  };
 
   if (!isAdmin) {
     return <Access />;
   }
-
-  const handleMenuClick = (menu) => {
-    setSelectedMenu(menu);
-    // navigate(`/admin/${menu}`); // URL 변경
-    window.scrollTo(0, 0); // 페이지 상단으로 스크롤
-  };
 
   return (
     <div className={"member"}>

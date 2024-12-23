@@ -50,7 +50,7 @@ function AdminMemberView(props) {
           type: message.type,
           description: message.text,
         });
-        navigate("/admin");
+        navigate("/admin?menu=memberList");
       })
       .catch((e) => {
         const message = e.response.data.message;
@@ -145,7 +145,7 @@ function AdminMemberView(props) {
           <button
             className={"btn btn-dark-outline"}
             onClick={() => {
-              navigate(`/admin`);
+              navigate(`/admin?menu=memberList`);
             }}
           >
             관리자 창으로
