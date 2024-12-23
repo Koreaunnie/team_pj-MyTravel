@@ -77,8 +77,17 @@ public class PlanController {
     // 내 여행 수정
     @PutMapping("update")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Map<String, Object>> update(@RequestBody Plan plan) {
-        // 유효성 검사
+    public ResponseEntity<Map<String, Object>> update(@RequestBody Plan plan, Authentication authentication) {
+        // 0. 권한 확인
+        String writer = authentication.getName();
+        if ((!plan.getWriter().equals(writer))) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Map.of("message", Map.of(
+                            "type", "error",
+                            "text", "수정 권한이 없습니다.")));
+        }
+
+        // 1. 유효성 검사
         boolean isValid = service.validate(plan);
         if (!isValid) {
             // 유효하지 않으면 바로 반환
@@ -86,7 +95,7 @@ public class PlanController {
                     .body(Map.of("message", Map.of("type", "warning", "text", "여행명은 비어있을 수 없습니다.")));
         }
 
-        // 유효성 검사 후 업데이트
+        // 2. 업데이트
         boolean isUpdated = service.update(plan);
 
         if (isUpdated) {
