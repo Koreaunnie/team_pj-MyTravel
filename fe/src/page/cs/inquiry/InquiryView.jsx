@@ -69,7 +69,9 @@ function InquiryView(props) {
       />
 
       <div className={"body-normal"}>
-        <div>
+        <h1>문의 게시판</h1>
+
+        <div className={"btn-wrap"}>
           <button
             type={"button"}
             className={"btn btn-dark-outline"}
@@ -79,23 +81,23 @@ function InquiryView(props) {
           </button>
 
           {hasAccess(inquiry.writer) && (
-            <button
-              type={"button"}
-              className={"btn btn-dark"}
-              onClick={() => setEditModalOpen(true)}
-            >
-              수정
-            </button>
-          )}
+            <div>
+              <button
+                type={"button"}
+                className={"btn btn-dark"}
+                onClick={() => setEditModalOpen(true)}
+              >
+                수정
+              </button>
 
-          {hasAccess(inquiry.writer) && (
-            <button
-              type={"button"}
-              className={"btn btn-warning"}
-              onClick={() => setDeleteModalOpen(true)}
-            >
-              삭제
-            </button>
+              <button
+                type={"button"}
+                className={"btn btn-warning"}
+                onClick={() => setDeleteModalOpen(true)}
+              >
+                삭제
+              </button>
+            </div>
           )}
         </div>
 
@@ -118,7 +120,7 @@ function InquiryView(props) {
         </table>
       </div>
 
-      {isAdmin && <AnswerContainer inquiryId={inquiry.id} />}
+      <AnswerContainer inquiryId={inquiry.id} />
 
       {/* 수정 modal */}
       <Modal

@@ -299,17 +299,17 @@ function CommunityView(props) {
 
             <tbody>
               <tr className={"tbody-content"}>
-                <td colSpan={2}>{community.content}</td>
-              </tr>
-              <tr>
-                <td>
-                  <ImageFileView files={community.files} />
+                <td colSpan={2}>
+                  {community.content}
+                  <div className={"image"}>
+                    <ImageFileView files={community.files} />
+                  </div>
                 </td>
               </tr>
             </tbody>
           </table>
 
-          <div style={{ border: "1px solid red" }}>
+          <div>
             <CommentContainer
               communityId={community.id}
               communityWriter={community.writer}

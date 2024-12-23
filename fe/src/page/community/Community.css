@@ -6,6 +6,9 @@
 }
 
 /* ---------------- CommunityView----------------*/
+.community .body-normal {
+    padding-top: 60px
+}
 
 .community .like-wrap ul {
     display: flex;
@@ -58,6 +61,11 @@
 .community .table-view .views {
     text-align: right;
     padding-right: 15px;
+    border-bottom: 0;
+}
+
+.community .table-view .image {
+    margin-top: 50px;
 }
 
 
@@ -68,7 +76,6 @@
 }
 
 .community .body-normal {
-    padding-top: 60px;
     background-color: #fff;
     margin-bottom: 0;
     border-left: 1px solid var(--input-border-color);

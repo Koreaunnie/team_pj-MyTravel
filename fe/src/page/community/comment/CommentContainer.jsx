@@ -10,16 +10,17 @@ function CommentContainer({
   setCommentList,
 }) {
   return (
-    <div className={"community body-normal"}>
-      <CommentInput
-        communityId={communityId}
-        communityWriter={communityWriter}
-        fetchComments={fetchComments}
-      />
+    <div>
       <CommentList
         communityId={communityId}
         commentList={commentList}
         setCommentList={setCommentList}
+        fetchComments={fetchComments}
+      />
+
+      <CommentInput
+        communityId={communityId}
+        communityWriter={communityWriter}
         fetchComments={fetchComments}
       />
     </div>
