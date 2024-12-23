@@ -77,7 +77,7 @@ function Navbar() {
 
           {isAuthenticated && (
             <li
-              className={`mobile-displayed ${isActive("/tour") ? "active" : ""}`}
+              className={`mobile-displayed ${isActive("/cart") ? "active" : ""}`}
               onClick={() => handleNavigate("/cart")}
             >
               장바구니
@@ -100,7 +100,7 @@ function Navbar() {
           >
             커뮤니티
           </li>
-          { isAuthenticated && (
+          {isAuthenticated && (
             <>
               <li
                 className={isActive("/plan") ? "active" : ""}
