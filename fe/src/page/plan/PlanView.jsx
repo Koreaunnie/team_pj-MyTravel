@@ -115,7 +115,7 @@ function PlanView(props) {
               </button>
 
               <button
-                className={"btn btn-dark"}
+                className={"btn btn-blue"}
                 onClick={() => setAddModalOpen(true)}
               >
                 새 여행 작성
@@ -135,9 +135,9 @@ function PlanView(props) {
                 삭제
               </button>
 
-              <button type={"button"} onClick={handleExcelDownload}>
-                엑셀로 저장
-              </button>
+              {/*<button type={"button"} onClick={handleExcelDownload}>*/}
+              {/*  엑셀로 저장*/}
+              {/*</button>*/}
             </div>
 
             <div className={"plan-view-title"}>
@@ -196,12 +196,16 @@ function PlanView(props) {
             ))}
           </div>
 
-          <div className={"plan-view-map"}>
-            <GoogleMapsView
-              key={planFields.length}
-              placeIds={planFields.map((field) => field.placeId)}
-            />
-          </div>
+          {planFields.some((field) => field.placeId) && (
+            <div className={"plan-view-map"}>
+              <GoogleMapsView
+                key={planFields.length}
+                placeIds={planFields
+                  .filter((field) => field.placeId) // undefined나 null이 아닌 placeId만 필터링
+                  .map((field) => field.placeId)}
+              />
+            </div>
+          )}
         </div>
 
         {/* 추가 modal */}

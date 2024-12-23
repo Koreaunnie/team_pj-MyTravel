@@ -16,6 +16,7 @@ function WalletList(props) {
   const [currentYear, setCurrentYear] = useState(); // 현재 년도
   const [selectedDate, setSelectedDate] = useState(); // 선택된 날짜
   const [filteredWallet, setFilteredWallet] = useState(walletList); // 필터링된 지갑 리스트
+  const [activeMonth, setActiveMonth] = useState(new Date().getMonth() + 1);
   const [activeTab, setActiveTab] = useState(0); // 카테고리 탭 활성화
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -26,36 +27,35 @@ function WalletList(props) {
     axios.get("/api/wallet/list").then((res) => {
       setWalletList(res.data);
 
-      // 현재 월에 해당하는 데이터 필터링
       const now = new Date();
       const month = now.getMonth();
       const year = now.getFullYear();
       const formattedMonth = `${year}년 ${now.toLocaleString("default", {
         month: "long",
       })}`;
+
       setCurrentMonth(formattedMonth);
       setCurrentYear(year);
+      setActiveMonth(month + 1); // 현재 월 설정 (1-12)
 
-      const filtered = walletList.filter((wallet) => {
-        const walletDate = new Date(wallet.date);
-        return (
-          walletDate.getMonth() === month && walletDate.getFullYear() === year
-        );
-      });
+      // 현재 월 데이터로 필터링
+      const filtered = filterWalletsByMonthAndCategory(
+        res.data,
+        month,
+        year,
+        categories[activeTab],
+      );
       setFilteredWallet(filtered);
     });
   }, []);
 
-  // 월별 필터링
+  // currentMonth가 변경될 때마다 필터링된 리스트 업데이트
   useEffect(() => {
     if (walletList.length > 0 && currentMonth) {
       const [year, month] = currentMonth
         .split("년 ")
         .map((str) => str.replace("월", ""));
-      const date = new Date(year, month - 1, 1); // currentMonth에서 년도와 월을 파싱하여 Date 객체 생성
-
-      // 선택된 날짜를 해당 월의 첫째 날로 설정
-      setSelectedDate(date);
+      const date = new Date(year, month - 1, 1);
 
       const filtered = walletList.filter((wallet) => {
         const walletDate = new Date(wallet.date);
@@ -77,7 +77,7 @@ function WalletList(props) {
       );
       setFilteredWallet(filtered);
     } else {
-      setFilteredWallet(walletList); // 날짜 선택 안 하면 전체 내역 표시
+      setFilteredWallet(walletList); // 날짜를 선택하지 않으면 전체 리스트 표시
     }
   }, [selectedDate, walletList]);
 
@@ -91,30 +91,92 @@ function WalletList(props) {
     }
   }, [currentMonth]);
 
-  const prevMonth = () => {
-    const newDate = moment(currentMonth, "YYYY년 M월").subtract(1, "month");
-    setCurrentMonth(newDate.format("YYYY년 M월"));
-  };
+  useEffect(() => {
+    const now = moment(); // 현재 날짜를 moment로 처리
+    const formattedMonth = now.format("YYYY년 M월"); // 이번 달의 포맷
+    setCurrentMonth(formattedMonth); // currentMonth 초기값 설정
+    setCurrentYear(now.year()); // currentYear 설정
 
-  const nextMonth = () => {
-    const newDate = moment(currentMonth, "YYYY년 M월").add(1, "month");
-    setCurrentMonth(newDate.format("YYYY년 M월"));
+    // 이번 달에 해당하는 데이터 필터링
+    const filtered = walletList.filter((wallet) => {
+      const walletDate = new Date(wallet.date);
+      return (
+        walletDate.getMonth() === now.month() &&
+        walletDate.getFullYear() === now.year()
+      );
+    });
+    setFilteredWallet(filtered); // 필터링된 데이터를 상태에 저장
+  }, [walletList]);
+
+  const handleMonthClick = (monthNumber) => {
+    setActiveMonth(monthNumber);
+    const newMonth = moment(`${currentYear}-${monthNumber}`, "YYYY-M");
+    const formattedMonth = newMonth.format("YYYY년 M월");
+    setCurrentMonth(formattedMonth);
+    setSelectedDate(null); // 선택된 날짜 초기화
+
+    // 직접 필터링 로직 실행
+    const filtered = walletList.filter((wallet) => {
+      const walletDate = new Date(wallet.date);
+      return (
+        walletDate.getMonth() === monthNumber - 1 && // JavaScript의 month는 0-based
+        walletDate.getFullYear() === currentYear
+      );
+    });
+
+    // 카테고리 필터링 추가
+    if (categories[activeTab] && categories[activeTab] !== "전체") {
+      const categoryFiltered = filtered.filter(
+        (wallet) => wallet.category === categories[activeTab],
+      );
+      setFilteredWallet(categoryFiltered);
+    } else {
+      setFilteredWallet(filtered);
+    }
   };
 
   // 이번 달 보기
   const handleMonthView = () => {
-    const now = new Date(); // 현재 날짜 가져오기
-    const month = now.getMonth(); // 현재 월 (0부터 시작)
-    const year = now.getFullYear(); // 현재 연도
+    const now = new Date();
+    const month = now.getMonth();
+    const year = now.getFullYear();
+    const formattedMonth = `${year}년 ${now.toLocaleString("default", {
+      month: "long",
+    })}`;
 
-    const filtered = walletList.filter((wallet) => {
+    setCurrentMonth(formattedMonth);
+    setCurrentYear(year);
+    setActiveMonth(month + 1);
+
+    const filtered = filterWalletsByMonthAndCategory(
+      walletList,
+      month,
+      year,
+      categories[activeTab],
+    );
+    setFilteredWallet(filtered);
+  };
+
+  // 전체 보기
+  const handleAllView = () => {
+    setActiveMonth(null); // 월 탭 활성화 제거
+    setFilteredWallet(walletList);
+  };
+
+  // 필터링 유틸리티 함수
+  const filterWalletsByMonthAndCategory = (wallets, month, year, category) => {
+    let filtered = wallets.filter((wallet) => {
       const walletDate = new Date(wallet.date);
       return (
         walletDate.getMonth() === month && walletDate.getFullYear() === year
       );
     });
-    setFilteredWallet(filtered);
-    setSelectedDate(null);
+
+    if (category && category !== "전체") {
+      filtered = filtered.filter((wallet) => wallet.category === category);
+    }
+
+    return filtered;
   };
 
   // 년도 별로 보기
@@ -124,11 +186,6 @@ function WalletList(props) {
       return walletDate.getFullYear() === currentYear; // 현재 연도만 필터링
     });
     setFilteredWallet(filtered);
-  };
-
-  // 전체 보기
-  const handleAllView = () => {
-    setFilteredWallet(walletList);
   };
 
   // 서버에서 카테고리 받아오기
@@ -153,17 +210,21 @@ function WalletList(props) {
 
   // 카테고리 탭 활성화
   const handleTabClick = (index) => {
-    setSelectedDate(null);
     setActiveTab(index);
-    if (index === 0) {
-      // "전체"
-      setFilteredWallet(walletList);
-    } else {
-      const filtered = walletList.filter(
-        (wallet) => wallet.category === categories[index],
-      );
-      setFilteredWallet(filtered);
-    }
+    setSelectedDate(null);
+
+    const [year, month] = currentMonth
+      .split("년 ")
+      .map((str) => str.replace("월", ""));
+    const currentMonthDate = new Date(year, parseInt(month) - 1);
+
+    const filtered = filterWalletsByMonthAndCategory(
+      walletList,
+      currentMonthDate.getMonth(),
+      currentMonthDate.getFullYear(),
+      categories[index],
+    );
+    setFilteredWallet(filtered);
   };
 
   const isCategoryFiltered = activeTab !== 0; // "전체"가 아닌 카테고리가 선택되었을 때만 tfoot 표시
@@ -328,6 +389,8 @@ function WalletList(props) {
           walletList={walletList}
           categories={categories}
           getFilteredDate={getFilteredDate}
+          selectedDate={selectedDate}
+          currentMonth={currentMonth}
         />
       </div>
 
@@ -343,25 +406,17 @@ function WalletList(props) {
           <button
             className={"btn btn-dark-outline"}
             style={{ marginLeft: "15px" }}
+            onClick={handleAllView}
+          >
+            전체 내역 보기
+          </button>
+
+          <button
+            className={"btn btn-dark-outline"}
+            style={{ marginLeft: "15px" }}
             onClick={handleMonthView}
           >
             이번 달
-          </button>
-
-          <button
-            className={"btn btn-dark-outline"}
-            style={{ marginLeft: "15px" }}
-            onClick={handleYearView}
-          >
-            {currentYear}
-          </button>
-
-          <button
-            className={"btn btn-dark-outline"}
-            style={{ marginLeft: "15px" }}
-            onClick={handleAllView}
-          >
-            전체
           </button>
 
           <button
@@ -383,23 +438,27 @@ function WalletList(props) {
           )}
         </div>
 
-        <div className={"month-wrap"}>
+        <div className="month-tab">
           <ul>
-            <li>
-              <button type={"button"} onClick={prevMonth}>
-                &#10094;
-              </button>
+            <li
+              className={activeMonth === null ? "active" : ""}
+              onClick={handleYearView}
+            >
+              {currentYear}
             </li>
-            <li>
-              <h1>{currentMonth}</h1>
-            </li>
-            <li>
-              <button type={"button"} onClick={nextMonth}>
-                &#10095;
-              </button>
-            </li>
+            {Array.from({ length: 12 }, (_, index) => (
+              <li
+                key={index}
+                className={activeMonth === index + 1 ? "active" : ""}
+                onClick={() => handleMonthClick(index + 1)}
+              >
+                {index + 1}월
+              </li>
+            ))}
           </ul>
         </div>
+
+        <h1 className={"month-title"}>{currentMonth}</h1>
 
         <div className={"category-tab"}>
           <ul>
@@ -487,18 +546,21 @@ function WalletList(props) {
           )}
 
           {/* 전체 보기 상태가 아닐 때만 tfoot 렌더링 */}
-          {filteredWallet.length !== walletList.length && (
-            <tfoot>
-              <tr>
-                <th colSpan={4}>{getFilteredDate()}의 지출</th>
-                <td colSpan={1}>{formatNumberWithCommas(getOneDayIncome())}</td>
-                <td colSpan={1}>
-                  {formatNumberWithCommas(getOneDayExpense())}
-                </td>
-                <td></td>
-              </tr>
-            </tfoot>
-          )}
+          {filteredWallet.length !== walletList.length &&
+            !isCategoryFiltered && (
+              <tfoot className={"table-total-wrap"}>
+                <tr>
+                  <th colSpan={4}>합계</th>
+                  <td colSpan={1}>
+                    {formatNumberWithCommas(getOneDayIncome())}
+                  </td>
+                  <td colSpan={1}>
+                    {formatNumberWithCommas(getOneDayExpense())}
+                  </td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            )}
 
           {/* 카테고리별 합계가 필터링된 경우에만 표시 */}
           {isCategoryFiltered && (

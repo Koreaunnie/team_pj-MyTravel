@@ -10,167 +10,173 @@ import java.util.List;
 public interface PlanMapper {
 
     // 내 여행 추가
-    // 1. plan header 항목 추가
+    // 1. plan 항목 추가
     @Insert("""
-        INSERT INTO plan
-            (inserted, title, description, destination, startDate, endDate, writer, payment_detail_id)
-        VALUES 
-            (NOW(), #{title}, #{description}, #{destination}, #{startDate}, #{endDate}, #{writer}, #{paymentDetailId})
-        """)
+            INSERT INTO plan
+                (inserted, title, description, destination, startDate, endDate, writer, payment_detail_id)
+            VALUES 
+                (NOW(), #{title}, #{description}, #{destination}, #{startDate}, #{endDate}, #{writer}, #{paymentDetailId})
+            """)
     @Options(keyProperty = "id", useGeneratedKeys = true)
     int insertPlan(Plan plan);
 
-    // 2. plan body 항목 추가
+    // 2. planField 항목 추가
     @Insert("""
-        INSERT INTO plan_field
-            (plan_id, date, time, schedule, place, place_id, memo)
-        VALUES 
-            (#{planId}, #{date}, #{time}, #{schedule}, #{place}, #{placeId}, #{memo})
-        """)
+            INSERT INTO plan_field
+                (plan_id, date, time, schedule, place, place_id, memo)
+            VALUES 
+                (#{planId}, #{date}, #{time}, #{schedule}, #{place}, #{placeId}, #{memo})
+            """)
     @Options(keyProperty = "id", useGeneratedKeys = true)
     int insertPlanField(PlanField field);
 
     // 내 여행 목록 조회
     // 1. pagination : 한 행에 10개씩 조회
     @Select("""
-        <script>
-            SELECT * 
-            FROM plan p 
-                JOIN plan_field pf
-                ON p.id = pf.plan_id
-           WHERE p.writer = #{writer}
-               <if test="searchKeyword != null and searchKeyword != ''">
-                     AND (
-                         <trim prefixOverrides="OR">
-                             <if test="searchType == 'all' or searchType == 'title'">
-                                 p.title LIKE CONCAT('%', #{searchKeyword}, '%')
-                             </if>
-                             <if test="searchType == 'all' or searchType == 'destination'">
-                                 OR p.destination LIKE CONCAT('%', #{searchKeyword}, '%')
-                             </if>
-                         </trim>
-                     )
-                 </if>
-            GROUP BY p.id
-            ORDER BY p.pinned DESC, p.updated DESC, p.inserted DESC
-            LIMIT #{offset}, 10;
-        </script>
-        """)
+            <script>
+                SELECT * 
+                FROM plan p 
+                    JOIN plan_field pf
+                    ON p.id = pf.plan_id
+               WHERE p.writer = #{writer}
+                   <if test="searchKeyword != null and searchKeyword != ''">
+                         AND (
+                             <trim prefixOverrides="OR">
+                                 <if test="searchType == 'all' or searchType == 'title'">
+                                     p.title LIKE CONCAT('%', #{searchKeyword}, '%')
+                                 </if>
+                                 <if test="searchType == 'all' or searchType == 'destination'">
+                                     OR p.destination LIKE CONCAT('%', #{searchKeyword}, '%')
+                                 </if>
+                             </trim>
+                         )
+                     </if>
+                GROUP BY p.id
+                ORDER BY p.pinned DESC, p.updated DESC, p.inserted DESC
+                LIMIT #{offset}, 10;
+            </script>
+            """)
     List<Plan> selectPlanByPageOffset(Integer offset, String searchType, String searchKeyword, String writer);
 
     // 2. pagination : 전체 plan 개수 조회
     @Select("""
-        <script>
-            SELECT COUNT(*)
-            FROM plan
-            WHERE writer = #{writer}
-                <if test="searchKeyword != null and searchKeyword != ''">
-                     AND (
-                         <trim prefixOverrides="OR">
-                             <if test="searchType == 'all' or searchType == 'title'">
-                                 title LIKE CONCAT('%', #{searchKeyword}, '%')
-                             </if>
-                             <if test="searchType == 'all' or searchType == 'destination'">
-                                 OR destination LIKE CONCAT('%', #{searchKeyword}, '%')
-                             </if>
-                         </trim>
-                     )
-                 </if>
-        </script>
-        """)
+            <script>
+                SELECT COUNT(*)
+                FROM plan
+                WHERE writer = #{writer}
+                    <if test="searchKeyword != null and searchKeyword != ''">
+                         AND (
+                             <trim prefixOverrides="OR">
+                                 <if test="searchType == 'all' or searchType == 'title'">
+                                     title LIKE CONCAT('%', #{searchKeyword}, '%')
+                                 </if>
+                                 <if test="searchType == 'all' or searchType == 'destination'">
+                                     OR destination LIKE CONCAT('%', #{searchKeyword}, '%')
+                                 </if>
+                             </trim>
+                         )
+                     </if>
+            </script>
+            """)
     Integer countAll(String searchType, String searchKeyword, String writer);
 
     // 3. pinned : 상단 고정
     @Update("""
-        UPDATE plan 
-        SET pinned = NOT pinned 
-        WHERE id = #{id}
-        """)
+            UPDATE plan 
+            SET pinned = NOT pinned 
+            WHERE id = #{id}
+            """)
     int togglePinned(int id);
 
     // 내 여행 세부사항
     // 1. Plan
     @Select("""
-        SELECT *
-        FROM plan
-        WHERE id = #{id} AND writer = #{writer};
-        """)
+            SELECT *
+            FROM plan
+            WHERE id = #{id} AND writer = #{writer};
+            """)
     Plan selectPlanById(int id, String writer);
 
     // 2. PlanField
     @Select("""
-        SELECT *
-        FROM plan_field
-        WHERE plan_id = #{id};
-        """)
+            SELECT *
+            FROM plan_field
+            WHERE plan_id = #{id};
+            """)
     List<PlanField> selectPlanFieldsByPlanId(int id);
 
     // 내 여행 수정
     // 1. Plan
     @Update("""
-        UPDATE plan 
-        SET title=#{title}, 
-            description=#{description}, 
-            destination=#{destination}, 
-            startDate=#{startDate},
-            endDate=#{endDate},
-            updated=NOW()
-        WHERE id = #{id};
-        """)
+            UPDATE plan 
+            SET title=#{title}, 
+                description=#{description}, 
+                destination=#{destination}, 
+                startDate=#{startDate},
+                endDate=#{endDate},
+                updated=NOW()
+            WHERE id = #{id};
+            """)
     int updatePlanById(Plan plan);
 
     // 2. PlanField
     @Update("""
-        UPDATE plan_field
-        SET date=#{date}, 
-            time=#{time}, 
-            schedule=#{schedule}, 
-            place=#{place}, 
-            place_id=#{placeId}, 
-            memo=#{memo}
-        WHERE id = #{id};
-        """)
+            UPDATE plan_field
+            SET date=#{date}, 
+                time=#{time}, 
+                schedule=#{schedule}, 
+                place=#{place}, 
+                place_id=#{placeId}, 
+                memo=#{memo}
+            WHERE id = #{id};
+            """)
     int updatePlanFieldByPlanId(PlanField planField);
 
     @Delete("""
-        DELETE FROM plan
-        WHERE id = #{id}
-        """)
+            DELETE FROM plan
+            WHERE id = #{id}
+            """)
     int deleteById(int id);
+
+    @Delete("""
+            DELETE FROM plan_field
+            WHERE plan_id = #{planId}
+            """)
+    int deletePlanFieldsByPlanId(Integer planId);
 
     // 메인 화면에 필요한 일부 plan 리스트 가져오기
     @Select("""
-        <script>
-            SELECT DISTINCT p.* 
-            FROM plan p
-                LEFT JOIN plan_field pf
-                ON p.id = pf.plan_id
-            WHERE writer = #{writer}
-                AND (
-                    <trim prefixOverrides="OR">
-                        p.title LIKE CONCAT('%', #{keyword}, '%')
-                        OR p.description LIKE CONCAT('%', #{keyword}, '%')
-                        OR p.destination LIKE CONCAT('%', #{keyword}, '%')
-                        OR p.startDate LIKE CONCAT('%', #{keyword}, '%')
-                        OR p.endDate LIKE CONCAT('%', #{keyword}, '%')
-                        OR pf.date LIKE CONCAT('%', #{keyword}, '%')
-                        OR pf.time LIKE CONCAT('%', #{keyword}, '%')
-                        OR pf.schedule LIKE CONCAT('%', #{keyword}, '%')
-                        OR pf.place LIKE CONCAT('%', #{keyword}, '%')
-                        OR pf.memo LIKE CONCAT('%', #{keyword}, '%')  
-                    </trim>
-                )
-            ORDER BY updated DESC
-            LIMIT 4
-        </script>
-        """)
+            <script>
+                SELECT DISTINCT p.* 
+                FROM plan p
+                    LEFT JOIN plan_field pf
+                    ON p.id = pf.plan_id
+                WHERE writer = #{writer}
+                    AND (
+                        <trim prefixOverrides="OR">
+                            p.title LIKE CONCAT('%', #{keyword}, '%')
+                            OR p.description LIKE CONCAT('%', #{keyword}, '%')
+                            OR p.destination LIKE CONCAT('%', #{keyword}, '%')
+                            OR p.startDate LIKE CONCAT('%', #{keyword}, '%')
+                            OR p.endDate LIKE CONCAT('%', #{keyword}, '%')
+                            OR pf.date LIKE CONCAT('%', #{keyword}, '%')
+                            OR pf.time LIKE CONCAT('%', #{keyword}, '%')
+                            OR pf.schedule LIKE CONCAT('%', #{keyword}, '%')
+                            OR pf.place LIKE CONCAT('%', #{keyword}, '%')
+                            OR pf.memo LIKE CONCAT('%', #{keyword}, '%')  
+                        </trim>
+                    )
+                ORDER BY updated DESC
+                LIMIT 4
+            </script>
+            """)
     List<Plan> getTop4ByOrderByUpdated(String keyword, String writer);
 
     // 달력에 표시하기 위한 모든 일정 (페이지네이션 상관 없이)
     @Select("""
-        SELECT *
-        FROM plan
-        WHERE writer = #{writer}
-        """)
+            SELECT *
+            FROM plan
+            WHERE writer = #{writer}
+            """)
     List<Plan> selectAll(String writer);
 }

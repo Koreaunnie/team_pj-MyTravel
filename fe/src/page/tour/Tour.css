@@ -201,7 +201,7 @@
 .tour-list-container .tour-list .tour-list-review {
     position: absolute;
     left: 20px;
-    bottom: 15px;
+    bottom: 10px;
     font-size: 0.9rem;
 }
 
@@ -249,19 +249,10 @@
     width: 800px;
 }
 
-.tour-view .btn-back-wrap .btn-admin {
-    width: 800px;
-    margin: 0 auto;
+.tour-view .btn-admin-wrap {
     position: absolute;
-    top: 55%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.tour-view .btn-back-wrap .btn-admin button {
-    float: right;
-    right: 0;
-    margin: 0 5px;
+    top: 93px;
+    right: 10px;
 }
 
 .tour-view .tour-view-container .img {
@@ -395,11 +386,21 @@
     border-radius: 10px;
 }
 
+.tour-mylist {
+    width: calc(100% - 60px);
+    margin: 0 auto;
+    height: calc(100vh - 190px);
+}
+
 
 /*------------------- 화면 크기가 768px 이하 (태블릿 화면) -------------------*/
 @media (max-width: 768px) {
 
     /*------------------- tourList -------------------*/
+    .tour .body-wide {
+        width: 95%;
+    }
+
     .tour-search-wrap {
         width: 90%;
     }
@@ -451,7 +452,9 @@
     .tour-list-container .tour-list .tour-list-review {
         left: 10px;
         bottom: 10px;
+        height: 10px;
     }
+
 
     .tour-list-container .tour-list .tour-list-price {
         right: 15px;

@@ -212,7 +212,13 @@ function TourList() {
                         <li>{tour.location}</li>
                         <li>{formatNumberWithCommas(tour.price)}원</li>
                         <li className={"tour-list-review"}>
-                          <Rating readOnly value={tour.rateAvg} />
+                          <Rating
+                            readOnly
+                            value={tour.rateAvg}
+                            colorPalette="orange"
+                            size={"sm"}
+                            style={{ marginRight: "5px" }}
+                          />
                           <span className={"review-count"}>
                             (리뷰 {tour.reviewCnt}개)
                           </span>
@@ -255,7 +261,18 @@ function TourList() {
                         {tour.product}
                       </li>
                       <li className={"tour-list-location"}>{tour.location}</li>
-                      <li className={"tour-list-review"}>★★★★★ (리뷰 00개)</li>
+                      <li className={"tour-list-review"}>
+                        <Rating
+                          readOnly
+                          value={tour.rateAvg}
+                          colorPalette="orange"
+                          size={"sm"}
+                          style={{ marginRight: "5px" }}
+                        />
+                        <span className={"review-count"}>
+                          (리뷰 {tour.reviewCnt}개)
+                        </span>
+                      </li>
                       <li className={"tour-list-price"}>
                         {formatNumberWithCommas(tour.price)} 원
                       </li>

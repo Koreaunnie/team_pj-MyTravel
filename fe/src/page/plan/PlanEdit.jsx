@@ -31,7 +31,7 @@ function PlanEdit(props) {
       time: "",
       schedule: "",
       place: "",
-      placeId: "",
+      placeId: null,
       memo: "",
     },
   ]);
@@ -76,7 +76,7 @@ function PlanEdit(props) {
         time: "",
         schedule: "",
         place: "",
-        placeId: "",
+        placeId: null,
         memo: "",
       },
     ]);
@@ -93,16 +93,20 @@ function PlanEdit(props) {
 
   // - 버튼 클릭 시 필드 삭제
   function handleDeleteField(index) {
-    setPlanFields(planFields.filter((_, i) => i !== index));
+    setPlanFields((prevFields) => {
+      const updatedFields = prevFields.filter((_, i) => i !== index);
 
-    // 삭제 후 마지막 필드로 스크롤
-    setTimeout(() => {
-      const lastFieldIndex = Math.max(0, fields.length - 2); // 삭제 후 마지막 남은 필드
-      const lastFieldRef = fieldRefs.current[lastFieldIndex];
-      if (lastFieldRef) {
-        lastFieldRef.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-    }, 0);
+      // 삭제 후 마지막 필드로 스크롤
+      setTimeout(() => {
+        const lastFieldIndex = updatedFields.length - 1; // 삭제 후 마지막 남은 필드
+        const lastFieldRef = fieldRefs.current[lastFieldIndex];
+        if (lastFieldRef) {
+          lastFieldRef.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }, 0);
+
+      return updatedFields;
+    });
   }
 
   // 저장 폼 제출 처리 함수
@@ -135,212 +139,217 @@ function PlanEdit(props) {
   }
 
   return (
-    <div className={"plan-form"}>
-      <Breadcrumb
-        depth1={"내 여행"}
-        navigateToDepth1={() => navigate(`/plan/list`)}
-        depth2={"수정"}
-        navigateToDepth2={() => navigate(`/plan/edit/${id}`)}
-      />
+    <div>
+      <div className={"plan-form"}>
+        <Breadcrumb
+          depth1={"내 여행"}
+          navigateToDepth1={() => navigate(`/plan/list`)}
+          depth2={"수정"}
+          navigateToDepth2={() => navigate(`/plan/edit/${id}`)}
+        />
 
-      <div className={"body-normal"}>
-        <div className={"btn-wrap"}>
-          <button
-            className={"btn btn-dark-outline"}
-            onClick={() => setBackToListModalOpen(true)}
-          >
-            목록
-          </button>
+        <div className={"body-normal"}>
+          <div className={"btn-wrap"}>
+            <button
+              className={"btn btn-dark-outline"}
+              onClick={() => setBackToListModalOpen(true)}
+            >
+              목록
+            </button>
 
-          <button
-            className={"btn btn-dark"}
-            onClick={() => setSaveModalOpen(true)}
-          >
-            저장
-          </button>
-        </div>
+            <button
+              className={"btn btn-dark"}
+              onClick={() => setSaveModalOpen(true)}
+            >
+              저장
+            </button>
+          </div>
 
-        <h1>여행 일정 작성</h1>
-        <h2>하나의 여행에 여러 일정을 추가할 수 있어요.</h2>
+          <h1>여행 일정 작성</h1>
+          <h2>하나의 여행에 여러 일정을 추가할 수 있어요.</h2>
 
-        <form className={"plan-container"}>
-          <div>
-            <ul className={"plan-head"}>
-              <li className={"input-design-wrap plan"}>
-                <input
-                  type="text"
-                  id="name"
-                  size="50"
-                  value={plan.title}
-                  onChange={(e) => setPlan({ ...plan, title: e.target.value })}
-                />
-                <label htmlFor="title">여행명</label>
-                <span></span>
-              </li>
+          <form className={"plan-container"}>
+            <div>
+              <ul className={"plan-head"}>
+                <li className={"input-design-wrap plan"}>
+                  <input
+                    type="text"
+                    id="name"
+                    size="50"
+                    value={plan.title}
+                    onChange={(e) =>
+                      setPlan({ ...plan, title: e.target.value })
+                    }
+                  />
+                  <label htmlFor="title">여행명</label>
+                  <span></span>
+                </li>
 
-              <li className={"input-design-wrap"}>
-                <input
-                  type="text"
-                  id="description"
-                  size="100"
-                  value={plan.description}
-                  onChange={(e) =>
-                    setPlan({ ...plan, description: e.target.value })
-                  }
-                />
-                <label htmlFor="description">설명</label>
-                <span></span>
-              </li>
-
-              <div className={"plan-head-info"}>
                 <li className={"input-design-wrap"}>
                   <input
                     type="text"
-                    id="destination"
-                    size="20"
-                    value={plan.destination}
-                    onChange={
-                      (e) => setPlan({ ...plan, destination: e.target.value }) // plan.destination만 변경
-                    }
-                  />
-                  <label htmlFor="destination">여행지</label>
-                  <span></span>
-                </li>
-
-                <li className={"input-design-wrap"}>
-                  <input
-                    type="date"
-                    id="startDate"
-                    value={plan.startDate}
-                    onChange={
-                      (e) => setPlan({ ...plan, startDate: e.target.value }) // plan.destination만 변경
-                    }
-                  />
-                  <label htmlFor="startDate">시작일</label>
-                  <span></span>
-                </li>
-                <li className={"input-design-wrap"}>
-                  <input
-                    type="date"
-                    id="endDate"
-                    value={plan.endDate}
-                    onChange={
-                      (e) => setPlan({ ...plan, endDate: e.target.value }) // plan.destination만 변경
-                    }
-                  />
-                  <label htmlFor="endDate">종료일</label>
-                  <span></span>
-                </li>
-              </div>
-            </ul>
-          </div>
-
-          <div className={"plan-body"}>
-            {planFields.map((field, index) => (
-              <ul
-                key={index}
-                className={"plan-body-box"}
-                ref={(el) => (fieldRefs.current[index] = el)}
-              >
-                <li className={"input-design-wrap  schedule"}>
-                  <input
-                    name="schedule"
-                    value={field.schedule}
+                    id="description"
+                    size="100"
+                    value={plan.description}
                     onChange={(e) =>
-                      handleFieldChange(index, "schedule", e.target.value)
+                      setPlan({ ...plan, description: e.target.value })
                     }
                   />
-                  <label htmlFor="schedule">일정</label>
+                  <label htmlFor="description">설명</label>
+                  <span></span>
                 </li>
 
-                <div className={"date-time-wrap"}>
+                <div className={"plan-head-info"}>
                   <li className={"input-design-wrap"}>
                     <input
-                      name="date"
+                      type="text"
+                      id="destination"
+                      size="20"
+                      value={plan.destination}
+                      onChange={
+                        (e) => setPlan({ ...plan, destination: e.target.value }) // plan.destination만 변경
+                      }
+                    />
+                    <label htmlFor="destination">여행지</label>
+                    <span></span>
+                  </li>
+
+                  <li className={"input-design-wrap"}>
+                    <input
                       type="date"
-                      value={field.date}
-                      onChange={(e) =>
-                        handleFieldChange(index, "date", e.target.value)
+                      id="startDate"
+                      value={plan.startDate}
+                      onChange={
+                        (e) => setPlan({ ...plan, startDate: e.target.value }) // plan.destination만 변경
                       }
                     />
-                    <label htmlFor="date">날짜</label>
+                    <label htmlFor="startDate">시작일</label>
+                    <span></span>
                   </li>
-
                   <li className={"input-design-wrap"}>
                     <input
-                      name="time"
-                      type="time"
-                      value={field.time}
-                      onChange={(e) =>
-                        handleFieldChange(index, "time", e.target.value)
+                      type="date"
+                      id="endDate"
+                      value={plan.endDate}
+                      onChange={
+                        (e) => setPlan({ ...plan, endDate: e.target.value }) // plan.destination만 변경
                       }
                     />
-                    <label htmlFor="time">시간</label>
+                    <label htmlFor="endDate">종료일</label>
+                    <span></span>
                   </li>
-                </div>
-
-                <li className={"input-design-wrap place-label"}>
-                  <label htmlFor="place">장소</label>
-                  <GoogleMapsEdit
-                    id="place"
-                    initialPlaceIds={[field.placeId]}
-                    value={field.place}
-                    onPlaceSelected={(location) =>
-                      handlePlaceSelected(index, location)
-                    }
-                  />
-                </li>
-
-                <li className={"memo-label"}>
-                  <label htmlFor="memo">메모</label>
-                  <textarea
-                    name="memo"
-                    rows={3}
-                    value={field.memo}
-                    onChange={(e) =>
-                      handleFieldChange(index, "memo", e.target.value)
-                    }
-                  />
-                </li>
-
-                <div className={"btn-wrap"}>
-                  <button
-                    className={"plan-handle-btn"}
-                    type="button"
-                    onClick={handleAddField}
-                  >
-                    <FaPlus />
-                  </button>
-                  <button
-                    className={"plan-handle-btn"}
-                    type="button"
-                    onClick={() => handleDeleteField(index)}
-                  >
-                    <FaMinus />
-                  </button>
                 </div>
               </ul>
-            ))}
-          </div>
-        </form>
+            </div>
 
-        {/* 목록 modal */}
-        <Modal
-          isOpen={backToListModalOpen}
-          onClose={() => setBackToListModalOpen(false)}
-          onConfirm={() => navigate(`/plan/list`)}
-          message="목록으로 돌아가면 작성한 내용이 사라집니다."
-          buttonMessage="목록"
-        />
+            <div className={"plan-body"}>
+              {planFields.map((field, index) => (
+                <ul
+                  key={index}
+                  className={"plan-body-box"}
+                  ref={(el) => (fieldRefs.current[index] = el)}
+                >
+                  <li className={"input-design-wrap  schedule"}>
+                    <input
+                      type="text"
+                      name="schedule"
+                      value={field.schedule}
+                      onChange={(e) =>
+                        handleFieldChange(index, "schedule", e.target.value)
+                      }
+                    />
+                    <label htmlFor="schedule">일정</label>
+                  </li>
 
-        {/* 저장 modal */}
-        <Modal
-          isOpen={saveModalOpen}
-          onClose={() => setSaveModalOpen(false)}
-          onConfirm={handleSaveButton}
-          message="여행을 저장하시겠습니까?"
-          buttonMessage="저장"
-        />
+                  <div className={"date-time-wrap"}>
+                    <li className={"input-design-wrap"}>
+                      <input
+                        name="date"
+                        type="date"
+                        value={field.date}
+                        onChange={(e) =>
+                          handleFieldChange(index, "date", e.target.value)
+                        }
+                      />
+                      <label htmlFor="date">날짜</label>
+                    </li>
+
+                    <li className={"input-design-wrap"}>
+                      <input
+                        name="time"
+                        type="time"
+                        value={field.time}
+                        onChange={(e) =>
+                          handleFieldChange(index, "time", e.target.value)
+                        }
+                      />
+                      <label htmlFor="time">시간</label>
+                    </li>
+                  </div>
+
+                  <li className={"input-design-wrap place-label"}>
+                    <label htmlFor="place">장소</label>
+                    <GoogleMapsEdit
+                      id="place"
+                      initialPlaceIds={field.placeId ? [field.placeId] : []} // placeId가 있을 때만 배열에 포함
+                      value={field.place}
+                      onPlaceSelected={(location) =>
+                        handlePlaceSelected(index, location)
+                      }
+                    />
+                  </li>
+
+                  <li className={"memo-label"}>
+                    <label htmlFor="memo">메모</label>
+                    <textarea
+                      name="memo"
+                      rows={3}
+                      value={field.memo}
+                      onChange={(e) =>
+                        handleFieldChange(index, "memo", e.target.value)
+                      }
+                    />
+                  </li>
+
+                  <div className={"btn-wrap"}>
+                    <button
+                      className={"plan-handle-btn"}
+                      type="button"
+                      onClick={handleAddField}
+                    >
+                      <FaPlus />
+                    </button>
+                    <button
+                      className={"plan-handle-btn"}
+                      type="button"
+                      onClick={() => handleDeleteField(index)}
+                    >
+                      <FaMinus />
+                    </button>
+                  </div>
+                </ul>
+              ))}
+            </div>
+          </form>
+
+          {/* 목록 modal */}
+          <Modal
+            isOpen={backToListModalOpen}
+            onClose={() => setBackToListModalOpen(false)}
+            onConfirm={() => navigate(`/plan/list`)}
+            message="목록으로 돌아가면 작성한 내용이 사라집니다."
+            buttonMessage="목록"
+          />
+
+          {/* 저장 modal */}
+          <Modal
+            isOpen={saveModalOpen}
+            onClose={() => setSaveModalOpen(false)}
+            onConfirm={handleSaveButton}
+            message="여행을 저장하시겠습니까?"
+            buttonMessage="저장"
+          />
+        </div>
       </div>
     </div>
   );
