@@ -119,8 +119,8 @@
 
 /*------------------- 화면 크기가 768px 이하 (태블릿 화면) -------------------*/
 @media (max-width: 768px) {
-    .table-list th:nth-child(2),
-    .table-list td:nth-child(2) {
+    .notice .table-list th:nth-child(2),
+    .notice .table-list td:nth-child(2) {
         display: none;
     }
 }

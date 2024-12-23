@@ -1,5 +1,5 @@
 .cs {
-    margin-top: 40px;
+    margin-top: 25px;
 }
 
 .cs .body-normal {
@@ -102,7 +102,7 @@
 
 .cs .cs-wrap .inquiry-container ul .secret .icon {
     margin-right: 5px;
-    margin-top: 11px
+    margin-top: 10px
 }
 
 .cs .cs-wrap .inquiry-container ul .date {
@@ -138,10 +138,114 @@
 /*------------------- 화면 크기가 768px 이하 (태블릿 화면) -------------------*/
 @media (max-width: 768px) {
 
+    .cs section {
+        margin: 20px 0;
+        padding: 20px 0;
+    }
+
+    .cs section h3 {
+        font-weight: bold;
+        font-size: 1.4rem;
+    }
+
+    /*------------------- 자주 묻는 질문 -------------------*/
+    .cs .faq-container {
+        width: 90%;
+        margin-top: 20px;
+    }
+
+    .cs .faq-container ul {
+        margin: 20px 0;
+    }
+
+    .cs .faq-container ul li {
+        font-size: 1rem;
+        height: 45px;
+        line-height: 45px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /*------------------- 문의 게시판 -------------------*/
+    .cs .cs-wrap .body-normal {
+        display: block;
+        width: 90%;
+        height: auto;
+        padding-top: 10px;
+    }
+
+    .cs .cs-wrap .inquiry-container {
+        padding-top: 30px;
+        border-radius: 15px;
+    }
+
+    .cs .cs-wrap .inquiry-container h3 {
+        margin-bottom: 25px;
+    }
+
+    .cs .cs-wrap .inquiry-container ul {
+        margin: 0 30px;
+        height: 35px;
+        line-height: 35px;
+    }
+
+    .cs .cs-wrap .inquiry-container ul li {
+        cursor: pointer;
+        display: flex;
+    }
+
+    .cs .cs-wrap .inquiry-container ul li:first-child {
+        cursor: pointer;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 80%;
+    }
+
+    /*------------------- 고객센터 -------------------*/
+    .cs .cs-wrap .tel-container {
+        margin: 0;
+    }
+
+    .cs .cs-wrap .tel-container h5 {
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--main-blue);
+    }
+
+    .cs .cs-wrap .tel-container ul {
+        width: 100%;
+        margin: 20px 100px;
+    }
+
+    .cs .cs-wrap .tel-container ul li {
+        font-size: 1.1rem;
+        margin: 5px 0;
+    }
+
+    .cs .cs-wrap .tel-container ul li:last-child {
+        font-size: 0.9rem;
+        margin: 10px 0;
+    }
+
 }
 
 /*------------------- 화면 크기가 480px 이하 (모바일 화면) -------------------*/
 @media (max-width: 480px) {
+
+    .cs .faq-container {
+        width: 95%;
+    }
+
+    .cs .cs-wrap .body-normal {
+        width: 95%;
+    }
+
+    .cs .cs-wrap .inquiry-container ul li:last-child {
+        display: none;
+    }
 
 }
 
