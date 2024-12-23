@@ -80,9 +80,11 @@ function MemberList(props) {
   }
 
   function handlePageChange(e) {
-    const nextSearchParams = new URLSearchParams(searchParams);
-    nextSearchParams.set("page", e.page);
-    setSearchParams(nextSearchParams);
+    const pageNumber = { page: e.page };
+    const pageQuery = new URLSearchParams(pageNumber);
+    const searchInfo = { type: search.type, key: search.keyword };
+    const searchQuery = new URLSearchParams(searchInfo);
+    navigate(`/admin?${searchQuery.toString()}&${pageQuery.toString()}`);
   }
 
   return (
@@ -167,7 +169,14 @@ function MemberList(props) {
       {/* pagination */}
       <div className="pagination">
         <Center>
-          <PaginationRoot pageSize={10} page={page} variant="solid">
+          <PaginationRoot
+            count={count}
+            pageSize={10}
+            defaultPage={currentPage}
+            page={page}
+            onPageChange={handlePageChange}
+            variant="solid"
+          >
             <HStack>
               <PaginationPrevTrigger />
               <PaginationItems />
