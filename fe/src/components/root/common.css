@@ -309,6 +309,18 @@ form .required {
     min-width: 60px;
 }
 
+.btn-check {
+    cursor: pointer;
+    border-radius: 0 5px 5px 0;
+    padding: 8px 15px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: -5px;
+    vertical-align: top;
+    min-width: 100px;
+}
+
 .btn-back {
     margin: 10px;
     font-size: 2rem;
