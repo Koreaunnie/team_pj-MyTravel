@@ -20,11 +20,13 @@ import { ProfileImageView } from "../../components/Image/ProfileImageView.jsx";
 import Access from "../../components/context/Access.jsx";
 import "/src/page/member/Member.css";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
+import { Modal } from "../../components/root/Modal.jsx";
 
 function AdminMemberView(props) {
   const [member, setMember] = useState(null);
   const [password, setPassword] = useState("");
   const [open, setOpen] = useState(false);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
   const { email } = useParams();
   const navigate = useNavigate();
   const { logout, isAdmin, isPartner } = useContext(AuthenticationContext);
@@ -72,8 +74,15 @@ function AdminMemberView(props) {
           type: message.type,
           description: message.text,
         });
+        navigate(`/admin?menu=partnerList`);
       })
-      .catch((err) => console.error(err))
+      .catch((e) => {
+        const data = e.response.data;
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+      })
       .finally();
   }
 
@@ -233,11 +242,23 @@ function AdminMemberView(props) {
             </DialogContent>
           </DialogRoot>
           {member.auth ? null : (
-            <button className={"btn btn-blue"} onClick={handleAuthClick}>
+            <button
+              className={"btn btn-blue"}
+              onClick={() => setAuthModalOpen(true)}
+            >
               파트너로 변경
             </button>
           )}
         </Box>
+
+        {/*권한 추가 Modal*/}
+        <Modal
+          isOpen={authModalOpen}
+          onClose={() => setAuthModalOpen(false)}
+          onConfirm={handleAuthClick}
+          message={"해당 회원을 파트너 기업으로 설정하시겠습니까?"}
+          buttonMessage={"파트너로 변경"}
+        />
       </div>
     </div>
   );
