@@ -30,3 +30,21 @@ WHERE email = 'hana';
 SELECT email
 FROM member
 WHERE email = 'hana'
+
+
+SELECT *
+FROM member
+LEFT JOIN auth
+ON auth.member_email = member.email
+WHERE
+    auth.auth IS NULL
+    AND(
+    email LIKE CONCAT('%', '@', '%')
+   OR phone LIKE CONCAT('%', '010', '%'))
+ORDER BY inserted DESC;
+
+SELECT *
+FROM member
+LEFT JOIN auth
+ON auth.member_email =member.email
+WHERE email = 'admin'

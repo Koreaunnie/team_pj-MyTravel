@@ -58,11 +58,48 @@ public interface PaymentMapper {
     List<PaymentHistory> myPaymentHistory(String email);
 
     @Select("""
-        SELECT paid_at, buyer_email, p.payment_id, product, pd.price, currency
+        <script>
+        SELECT paid_at, buyer_email, p.payment_id as paymentId, product, pd.price, currency
         FROM payment p
         RIGHT JOIN payment_detail pd ON p.payment_id = pd.payment_id
         LEFT JOIN tour ON tour.id=pd.tour_id
-        ORDER BY paid_at DESC;
+        WHERE 
+            <trim prefixOverrides="OR">
+                <if test="searchType=='all' or searchType=='buyerEmail'">
+                    buyer_email LIKE CONCAT('%', #{keyword}, '%')
+                </if>            
+                <if test="searchType == 'all' or searchType == 'paymentId'">
+                    OR p.payment_id LIKE CONCAT('%', #{keyword}, '%')
+                </if>
+                <if test="searchType == 'all' or searchType == 'product'">
+                    OR product LIKE CONCAT('%', #{keyword}, '%')
+                </if>      
+            </trim>
+        ORDER BY paid_at DESC
+        LIMIT #{offset}, 10
+        </script>
         """)
-    List<PaymentHistory> allPayment();
+    List<PaymentHistory> allPayment(Integer offset, String searchType, String keyword);
+
+    @Select("""
+            <script>
+            SELECT COUNT(*)
+            FROM payment p
+            RIGHT JOIN payment_detail pd ON p.payment_id = pd.payment_id
+            LEFT JOIN tour ON tour.id=pd.tour_id
+            WHERE 
+                <trim prefixOverrides="OR">
+                    <if test="searchType=='all' or searchType=='buyerEmail'">
+                        buyer_email LIKE CONCAT('%', #{keyword}, '%')
+                    </if>            
+                    <if test="searchType == 'all' or searchType == 'paymentId'">
+                        OR pd.payment_id LIKE CONCAT('%', #{keyword}, '%')
+                    </if>
+                    <if test="searchType == 'all' or searchType == 'product'">
+                        OR product LIKE CONCAT('%', #{keyword}, '%')
+                    </if>      
+                </trim>
+            </script>
+        """)
+    Integer countPayment(String searchType, String keyword);
 }

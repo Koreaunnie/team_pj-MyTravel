@@ -114,8 +114,16 @@ export function AdminMemberEdit() {
       <Breadcrumb
         depth1={"관리자 모드"}
         navigateToDepth1={() => navigate(`/admin`)}
-        depth2={"회원 정보 수정"}
-        navigateToDepth2={() => {}}
+        depth2={member.auth === "partner" ? "파트너 관리" : "회원 관리"}
+        navigateToDepth2={() => {
+          if (member.auth === "partner") {
+            navigate(`/admin?menu=partnerList`);
+          } else {
+            navigate(`/admin?menu=memberList`);
+          }
+        }}
+        depth3={"프로필 정보 수정"}
+        navigateToDepth3={() => {}}
       />
       <h1>회원 정보 수정</h1>
 
