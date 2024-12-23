@@ -2,7 +2,7 @@
     width: 100%;
     margin-top: 30px;
     padding-top: 30px;
-    height: calc(100vh - 170px);
+    min-height: calc(100vh - 170px);
 }
 
 /*------------------- inquiry form -------------------*/
@@ -45,6 +45,8 @@
 .inquiry .table-list tbody tr td {
     font-size: 0.9rem;
     cursor: pointer;
+    overflow: hidden;
+    text-wrap: nowrap;
 }
 
 .inquiry .table-list tbody tr td:nth-child(1) {
@@ -53,19 +55,11 @@
 }
 
 .inquiry .table-list tbody tr td:nth-child(2) {
-    width: 250px;
+    width: 350px;
 }
 
 .inquiry .table-list tbody tr td:nth-child(3) {
-    width: 100px;
-}
-
-.inquiry .table-list tbody tr td:nth-child(4) {
-    width: 80px;
-}
-
-.inquiry .table-list tbody tr td:nth-child(5) {
-    width: 100px;
+    width: 150px;
 }
 
 .inquiry .table-list .secret {
@@ -106,12 +100,17 @@
 }
 
 /*------------------- InquiryView -------------------*/
+.inquiry .table-view {
+    margin-top: 5px;
+}
+
 .inquiry .table-view .thead-sub-title {
     height: 30px;
 }
 
 .inquiry .table-view .thead-sub-title th {
     font-weight: normal;
+    margin: 10px;
 }
 
 .inquiry .table-view .thead-sub-title th:first-child {

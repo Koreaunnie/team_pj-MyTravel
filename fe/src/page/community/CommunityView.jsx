@@ -280,28 +280,36 @@ function CommunityView(props) {
           <table className={"table-view"}>
             <thead>
               <tr className={"thead-title"}>
-                <th colSpan={2}>{community.title}</th>
+                <th colSpan={2} className={"title"}>
+                  {community.title}
+                </th>
               </tr>
               <tr className={"thead-sub-title1"}>
-                <th>{community.writer}</th>
-                <th>{formattedDateTime(community.creationDate)}</th>
+                <th className={"writer"}>{community.writer}</th>
+                <th className={"date"}>
+                  {formattedDateTime(community.creationDate)}
+                </th>
               </tr>
               <tr className={"thead-sub-title2"}>
-                <th colSpan={2}>조회수 {community.views}</th>
+                <th colSpan={2} className={"views"}>
+                  조회수 {community.views}
+                </th>
               </tr>
             </thead>
 
             <tbody>
               <tr className={"tbody-content"}>
-                <td>{community.content}</td>
-                <td>
-                  <ImageFileView files={community.files} />
+                <td colSpan={2}>
+                  {community.content}
+                  <div className={"image"}>
+                    <ImageFileView files={community.files} />
+                  </div>
                 </td>
               </tr>
             </tbody>
           </table>
 
-          <div style={{ border: "1px solid red" }}>
+          <div>
             <CommentContainer
               communityId={community.id}
               communityWriter={community.writer}

@@ -1,19 +1,21 @@
 .community-comment {
     background: var(--bg-gray-color);
-    padding: 10px;
-}
-
-.community-comment .comment-input {
-    margin: 10px;
+    width: 100%;
+    padding: 30px;
+    border-bottom: 1px solid var(--font-light-gray-color);
 }
 
 .community-comment .comment-list {
-    margin: 30px;
+    margin: 30px 0;
     padding: 20px;
     background: #fff;
     position: relative;
     border-radius: 10px;
     border: 1px solid var(--font-light-gray-color);
+}
+
+.community-comment .comment-list:last-child {
+    margin-bottom: 10px;
 }
 
 .community-comment .comment-list .comment-btn-wrap {
@@ -42,4 +44,12 @@
 .community-comment .comment-list .comment-list-body .date {
     font-size: 0.9rem;
     color: var(--font-gray-color);
+}
+
+.community-comment .comment-input {
+    margin: 0;
+}
+
+.community-comment .comment-input textarea {
+    width: 100%;
 }

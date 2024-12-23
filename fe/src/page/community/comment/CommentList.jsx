@@ -136,58 +136,52 @@ export function CommentList({
   };
 
   return (
-    <div className={"community-comment body-normal"}>
-      <div>
-        <div>💬 댓글 {commentList.length} 개</div>
+    <div className={"community-comment"}>
+      <p>💬 댓글 {commentList.length} 개</p>
 
-        {commentList.map((list) => (
-          <div className={"comment-list"} key={list.id}>
-            <ul className={"comment-btn-wrap"}>
-              {hasAccessByNickName(list.writer) && (
-                <li
-                  onClick={() => handleCommentEditClick(list.id, list.comment)}
-                >
-                  수정
-                </li>
-              )}
-              {(hasAccessByNickName(list.writer) || authentication.isAdmin) && (
-                <li onClick={() => handleCommentDeleteClick(list.id)}>삭제</li>
-              )}
-            </ul>
-
-            {/* 댓글 목록 */}
-            <ul className={"comment-list-body"}>
-              <li className={"nickname"}>{list.writer}</li>
-              <li className={"content"}>
-                {editMode === list.id ? (
-                  <Textarea
-                    value={commentContent}
-                    onChange={(e) =>
-                      handleCommentChange(list.id, e.target.value)
-                    }
-                    placeholder="내용을 수정하세요."
-                  />
-                ) : (
-                  list.comment
-                )}
+      {commentList.map((list) => (
+        <div className={"comment-list"} key={list.id}>
+          <ul className={"comment-btn-wrap"}>
+            {hasAccessByNickName(list.writer) && (
+              <li onClick={() => handleCommentEditClick(list.id, list.comment)}>
+                수정
               </li>
-              <li className={"date"}>{formattedDateTime(list.creationDate)}</li>
-            </ul>
-
-            {/* 수정 모드 */}
-            {editMode === list.id && (
-              <div className={"comment-list-body"}>
-                <Button
-                  className={"btn btn-dark"}
-                  onClick={() => handleCommentUpdateClick(list.id)}
-                >
-                  수정
-                </Button>
-              </div>
             )}
-          </div>
-        ))}
-      </div>
+            {(hasAccessByNickName(list.writer) || authentication.isAdmin) && (
+              <li onClick={() => handleCommentDeleteClick(list.id)}>삭제</li>
+            )}
+          </ul>
+
+          {/* 댓글 목록 */}
+          <ul className={"comment-list-body"}>
+            <li className={"nickname"}>{list.writer}</li>
+            <li className={"content"}>
+              {editMode === list.id ? (
+                <Textarea
+                  value={commentContent}
+                  onChange={(e) => handleCommentChange(list.id, e.target.value)}
+                  placeholder="내용을 수정하세요."
+                />
+              ) : (
+                list.comment
+              )}
+            </li>
+            <li className={"date"}>{formattedDateTime(list.creationDate)}</li>
+          </ul>
+
+          {/* 수정 모드 */}
+          {editMode === list.id && (
+            <div className={"comment-list-body"}>
+              <Button
+                className={"btn btn-dark"}
+                onClick={() => handleCommentUpdateClick(list.id)}
+              >
+                수정
+              </Button>
+            </div>
+          )}
+        </div>
+      ))}
     </div>
   );
 }

@@ -446,6 +446,8 @@ form .required {
 
 .table-list tbody tr td {
     border-bottom: 1px solid var(--table-border-color);
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 
 .table-list tbody tr:last-child {

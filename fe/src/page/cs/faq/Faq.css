@@ -19,3 +19,11 @@
     text-align: left;
 }
 
+@media (max-width: 768px) {
+    .faq .table-list th:nth-child(1),
+    .faq .table-list th:nth-child(3),
+    .faq .table-list td:nth-child(1),
+    .faq .table-list td:nth-child(3) {
+        display: none;
+    }
+}
