@@ -78,15 +78,6 @@ public class PlanController {
     @PutMapping("update")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> update(@RequestBody Plan plan, Authentication authentication) {
-        // 0. 권한 확인
-        String writer = authentication.getName();
-        if ((!plan.getWriter().equals(writer))) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body(Map.of("message", Map.of(
-                            "type", "error",
-                            "text", "수정 권한이 없습니다.")));
-        }
-
         // 1. 유효성 검사
         boolean isValid = service.validate(plan);
         if (!isValid) {

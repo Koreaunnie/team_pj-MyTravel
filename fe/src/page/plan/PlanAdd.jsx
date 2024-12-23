@@ -24,7 +24,7 @@ function PlanAdd(props) {
       time: "",
       schedule: "",
       place: "",
-      placeId: "",
+      placeId: null,
       memo: "",
     },
   ]);
@@ -61,6 +61,7 @@ function PlanAdd(props) {
         time: "",
         schedule: "",
         place: "",
+        placeId: null,
         memo: "",
       },
     ]);
@@ -263,6 +264,7 @@ function PlanAdd(props) {
                     <label htmlFor="place">장소</label>
                     <GoogleMapsAdd
                       id="place"
+                      initialPlaceIds={field.placeId ? [field.placeId] : []}
                       onPlaceSelected={(location) =>
                         handlePlaceSelected(index, location)
                       }

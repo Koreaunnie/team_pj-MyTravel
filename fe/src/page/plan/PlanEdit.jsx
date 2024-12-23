@@ -31,7 +31,7 @@ function PlanEdit(props) {
       time: "",
       schedule: "",
       place: "",
-      placeId: "",
+      placeId: null,
       memo: "",
     },
   ]);
@@ -76,7 +76,7 @@ function PlanEdit(props) {
         time: "",
         schedule: "",
         place: "",
-        placeId: "",
+        placeId: null,
         memo: "",
       },
     ]);
@@ -93,16 +93,20 @@ function PlanEdit(props) {
 
   // - 버튼 클릭 시 필드 삭제
   function handleDeleteField(index) {
-    setPlanFields(planFields.filter((_, i) => i !== index));
+    setPlanFields((prevFields) => {
+      const updatedFields = prevFields.filter((_, i) => i !== index);
 
-    // 삭제 후 마지막 필드로 스크롤
-    setTimeout(() => {
-      const lastFieldIndex = Math.max(0, fields.length - 2); // 삭제 후 마지막 남은 필드
-      const lastFieldRef = fieldRefs.current[lastFieldIndex];
-      if (lastFieldRef) {
-        lastFieldRef.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-    }, 0);
+      // 삭제 후 마지막 필드로 스크롤
+      setTimeout(() => {
+        const lastFieldIndex = updatedFields.length - 1; // 삭제 후 마지막 남은 필드
+        const lastFieldRef = fieldRefs.current[lastFieldIndex];
+        if (lastFieldRef) {
+          lastFieldRef.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }, 0);
+
+      return updatedFields;
+    });
   }
 
   // 저장 폼 제출 처리 함수
@@ -287,7 +291,7 @@ function PlanEdit(props) {
                     <label htmlFor="place">장소</label>
                     <GoogleMapsEdit
                       id="place"
-                      initialPlaceIds={[field.placeId]}
+                      initialPlaceIds={field.placeId ? [field.placeId] : []} // placeId가 있을 때만 배열에 포함
                       value={field.place}
                       onPlaceSelected={(location) =>
                         handlePlaceSelected(index, location)

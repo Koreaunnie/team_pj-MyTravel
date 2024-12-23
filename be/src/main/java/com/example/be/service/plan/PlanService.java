@@ -120,17 +120,19 @@ public class PlanService {
             // Plan 객체 수정
             int cntPlan = mapper.updatePlanById(plan);
 
-            // 해당 Plan에 대한 PlanField 목록 수정
+            // 2. 기존 planField 전체 삭제
+            mapper.deletePlanFieldsByPlanId(plan.getId());
+
+            // 3. 새로운 planField 전체 추가
             for (PlanField field : plan.getPlanFieldList()) {
-                // PlanField 날짜와 시간을 처리
                 NullCheckUtils.handleNullOrEmptyDate(field);
-                mapper.updatePlanFieldByPlanId(field);
+                field.setPlanId(plan.getId());
+                mapper.insertPlanField(field);
             }
 
-            // cntPlan이 1인 경우 수정 성공, 그렇지 않으면 실패
             return cntPlan == 1;
+
         } catch (Exception e) {
-            // 예외 발생 시 false 반환
             return false;
         }
     }

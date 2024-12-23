@@ -200,7 +200,9 @@ function PlanView(props) {
             <div className={"plan-view-map"}>
               <GoogleMapsView
                 key={planFields.length}
-                placeIds={planFields.map((field) => field.placeId)}
+                placeIds={planFields
+                  .filter((field) => field.placeId) // undefined나 null이 아닌 placeId만 필터링
+                  .map((field) => field.placeId)}
               />
             </div>
           )}
