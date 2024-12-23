@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import "./Index.css";
@@ -384,7 +384,7 @@ export function Index() {
               <h1>공지사항</h1>
               <button
                 className={"more-btn"}
-                onClick={() => navigate(`/community/list`)}
+                onClick={() => navigate(`/notice/list`)}
               >
                 <FaPlus className={"pointer"} />
               </button>
