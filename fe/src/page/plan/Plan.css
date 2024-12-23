@@ -1,8 +1,11 @@
 /*-------------------- PlanAdd --------------------*/
 .plan-form {
     background: var(--bg-gray-color);
-    width: 1000px;
     margin: 0 auto;
+}
+
+.plan-form .body-normal {
+    margin-top: -5px;
 }
 
 .plan-container {
@@ -169,6 +172,7 @@
     width: 100%;
     margin: 0 auto;
     background: var(--bg-gray-color);
+    min-height: calc(100vh - 140px);
 }
 
 .plan-view-container {
