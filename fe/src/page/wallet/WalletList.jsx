@@ -513,18 +513,21 @@ function WalletList(props) {
           )}
 
           {/* 전체 보기 상태가 아닐 때만 tfoot 렌더링 */}
-          {filteredWallet.length !== walletList.length && (
-            <tfoot>
-              <tr>
-                <th colSpan={4}>{getFilteredDate()}의 지출</th>
-                <td colSpan={1}>{formatNumberWithCommas(getOneDayIncome())}</td>
-                <td colSpan={1}>
-                  {formatNumberWithCommas(getOneDayExpense())}
-                </td>
-                <td></td>
-              </tr>
-            </tfoot>
-          )}
+          {filteredWallet.length !== walletList.length &&
+            !isCategoryFiltered && (
+              <tfoot className={"table-total-wrap"}>
+                <tr>
+                  <th colSpan={4}>합계</th>
+                  <td colSpan={1}>
+                    {formatNumberWithCommas(getOneDayIncome())}
+                  </td>
+                  <td colSpan={1}>
+                    {formatNumberWithCommas(getOneDayExpense())}
+                  </td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            )}
 
           {/* 카테고리별 합계가 필터링된 경우에만 표시 */}
           {isCategoryFiltered && (
