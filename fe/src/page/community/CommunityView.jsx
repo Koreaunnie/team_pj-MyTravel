@@ -74,7 +74,8 @@ function CommunityView(props) {
       .get(`/api/community/view/${id}`, { id })
       .then((e) => {
         setCommunity(e.data);
-        setCommentList(e.data.commentList);
+        // console.log("초기", e.data);
+        setCommentList(e.data.commentList); //초기 댓글 목록
         setMyCommunityLike(e.data.myCommunityLike);
         setTitleLength(e.data.title.length);
         setCreationDate(e.data.creationDate.substring(0, 19));
@@ -92,6 +93,18 @@ function CommunityView(props) {
       });
     window.scrollTo(0, 0);
   }, [pathname]);
+
+  //댓글 호출을 상위 폴더에서
+  const fetchComments = () => {
+    // 업데이트 시 댓글 목록을 불러오는 함수
+    axios
+      .get(`/api/community/comment/list/${id}`)
+      .then((res) => {
+        // console.log("업데이트", res.data);
+        setCommentList(res.data);
+      })
+      .catch((err) => console.error(err));
+  };
 
   useEffect(() => {
     axios.get(`/api/community/list?${searchParams.toString()}`).then((res) => {
@@ -292,6 +305,9 @@ function CommunityView(props) {
             <CommentContainer
               communityId={community.id}
               communityWriter={community.writer}
+              commentList={commentList} //댓 현재 상태 전달
+              setCommentList={setCommentList}
+              fetchComments={fetchComments} // 댓 갱신 전달
             />
           </div>
           <br />

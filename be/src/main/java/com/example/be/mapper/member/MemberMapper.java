@@ -136,4 +136,52 @@ public interface MemberMapper {
         WHERE review_id=#{reviewId}
         """)
     int updateEmailToLeft(Integer reviewId);
+
+    @Select("""
+        <script>
+        SELECT *
+        FROM member
+        WHERE 
+            <trim prefixOverrides="OR">
+                <if test="searchType=='all' or searchType=='email'">
+                    email LIKE CONCAT('%', #{keyword}, '%')
+                </if>            
+                <if test="searchType == 'all' or searchType == 'nickname'">
+                    OR nickname LIKE CONCAT('%', #{keyword}, '%')
+                </if>
+                <if test="searchType == 'all' or searchType == 'name'">
+                    OR name LIKE CONCAT('%', #{keyword}, '%')
+                </if>
+                <if test="searchType == 'all' or searchType == 'phone'">
+                    OR phone LIKE CONCAT('%', #{keyword}, '%')
+                </if>        
+            </trim>
+        ORDER BY inserted DESC
+        LIMIT #{offset}, 10;
+        </script>    
+        """)
+    List<Member> searchResult(int offset, String searchType, String keyword);
+
+    @Select("""
+            <script>
+            SELECT COUNT(*)
+            FROM member
+            WHERE 
+                <trim prefixOverrides="OR">
+                    <if test="searchType == 'all' or searchType == 'email'">
+                        email LIKE CONCAT('%', #{keyword}, '%')
+                    </if>
+                    <if test="searchType == 'all' or searchType == 'nickname'">
+                        OR nickname LIKE CONCAT('%', #{keyword}, '%')
+                    </if>
+                    <if test="searchType == 'all' or searchType == 'name'">
+                        OR name LIKE CONCAT('%', #{keyword}, '%')
+                    </if>
+                    <if test="searchType == 'all' or searchType == 'phone'">
+                        OR phone LIKE CONCAT('%', #{keyword}, '%')
+                    </if>
+                </trim>
+            </script>
+        """)
+    Integer countResult(String searchType, String keyword);
 }
