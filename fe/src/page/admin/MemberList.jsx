@@ -21,14 +21,10 @@ function MemberList(props) {
   const [memberList, setMemberList] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [count, setCount] = useState(0);
-  // const [currentPage, setCurrentPage] = useState(
-  //   parseInt(searchParams.get("page")) || 1,
-  // );
   const [search, setSearch] = useState({ type: "all", keyword: "" });
   const navigate = useNavigate();
 
   useEffect(() => {
-    // const controller = new AbortController();
     axios
       .get("/api/member/list", {
         params: {
@@ -37,15 +33,11 @@ function MemberList(props) {
           key: searchParams.get("key") || "", // use URL params directly
           page: searchParams.get("page") || "1",
         },
-        // signal: controller.signal,
       })
       .then((res) => {
         setMemberList(res.data.memberList);
         setCount(res.data.count);
       });
-    // return () => {
-    //   controller.abort();
-    // };
   }, [searchParams]);
 
   useEffect(() => {
@@ -65,9 +57,6 @@ function MemberList(props) {
 
     setSearch(nextSearch);
   }, [searchParams]);
-
-  // const pageParam = searchParams.get("page") ?? "1";
-  // const page = Number(pageParam);
 
   function handleRowClick(email) {
     navigate(`/member/${email}`);
@@ -97,16 +86,6 @@ function MemberList(props) {
 
     setSearchParams(nextSearchParam);
   }
-
-  // function handlePageChange(e) {
-  //   const pageNumber = { page: e.page };
-  //   const pageQuery = new URLSearchParams(pageNumber);
-  //   const searchInfo = { type: search.type, key: search.keyword };
-  //   const searchQuery = new URLSearchParams(searchInfo);
-  //   navigate(
-  //     `/admin?menu=memberList&${searchQuery.toString()}&${pageQuery.toString()}`,
-  //   );
-  // }
 
   //pagination
   const pageParam = searchParams.get("page") ?? "1";

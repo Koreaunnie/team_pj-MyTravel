@@ -172,8 +172,8 @@ function AdminCs(props) {
               // 2. URL 검색 파라미터 초기화
               const nextSearchParam = new URLSearchParams();
               nextSearchParam.set("menu", "csList");
-              nextSearchParam.set("type", "all");
-              nextSearchParam.set("key", "");
+              nextSearchParam.set("st", "all");
+              nextSearchParam.set("sk", "");
 
               setSearchParams(nextSearchParam);
             }}
