@@ -26,9 +26,12 @@ function AdminCs(props) {
       .get("/api/cs/inquiry/list", {
         params: {
           menu: "csList",
-          st: search.type,
-          sk: search.keyword,
-          page: pageParam,
+          // st: search.type,
+          // sk: search.keyword,
+          // page: pageParam,
+          st: searchParams.get("st") || "all", // use URL params directly
+          sk: searchParams.get("sk") || "", // use URL params directly
+          page: searchParams.get("page") || "1",
         },
       })
       .then((res) => res.data)

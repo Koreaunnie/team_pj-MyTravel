@@ -33,9 +33,9 @@ function MemberList(props) {
       .get("/api/member/list", {
         params: {
           menu: "memberList",
-          type: search.type,
-          key: search.keyword,
-          page: pageParam,
+          type: searchParams.get("type") || "all", // use URL params directly
+          key: searchParams.get("key") || "", // use URL params directly
+          page: searchParams.get("page") || "1",
         },
         // signal: controller.signal,
       })
@@ -89,6 +89,7 @@ function MemberList(props) {
     if (search.keyword.trim().length > 0) {
       nextSearchParam.set("type", search.type);
       nextSearchParam.set("key", search.keyword);
+      nextSearchParam.set("page", "1");
     } else {
       nextSearchParam.delete("type");
       nextSearchParam.delete("key");
