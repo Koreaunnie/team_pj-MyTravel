@@ -199,4 +199,10 @@ public interface MemberMapper {
             </script>
         """)
     Integer countResult(String searchType, String keyword);
+
+    @Insert("""
+        INSERT INTO auth
+        VALUE (#{email}, 'partner')
+        """)
+    int giveAuth(String email);
 }

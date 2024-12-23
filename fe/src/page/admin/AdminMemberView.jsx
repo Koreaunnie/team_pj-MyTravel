@@ -33,8 +33,6 @@ function AdminMemberView(props) {
     axios.get(`/api/member/${email}`).then((res) => setMember(res.data));
   }, []);
 
-  console.log(email);
-
   if (!member) {
     return <Access />;
   }
@@ -63,6 +61,20 @@ function AdminMemberView(props) {
         setOpen(false);
         setPassword("");
       });
+  }
+
+  function handleAuthClick() {
+    axios
+      .put(`/api/member/auth/${email}`, { email })
+      .then((res) => {
+        const message = res.data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+      })
+      .catch((err) => console.error(err))
+      .finally();
   }
 
   return (
@@ -202,7 +214,9 @@ function AdminMemberView(props) {
             </DialogContent>
           </DialogRoot>
           {member.auth ? null : (
-            <button className={"btn btn-blue"}>파트너로 변경</button>
+            <button className={"btn btn-blue"} onClick={handleAuthClick}>
+              파트너로 변경
+            </button>
           )}
         </Box>
       </div>
