@@ -29,7 +29,7 @@ function TourList() {
     type: searchParams.get("type") ?? "all",
     keyword: searchParams.get("key") ?? "",
   });
-  console.log(currentPage);
+  // console.log(currentPage);
 
   const { isPartner, isAdmin } = useContext(AuthenticationContext);
   const navigate = useNavigate();

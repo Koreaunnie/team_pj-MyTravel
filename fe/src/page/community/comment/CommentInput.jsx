@@ -9,36 +9,27 @@ import {
   DialogTrigger,
 } from "../../../components/ui/dialog.jsx";
 import { HStack } from "@chakra-ui/react";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { AuthenticationContext } from "../../../components/context/AuthenticationProvider.jsx";
 import axios from "axios";
 import { toaster } from "../../../components/ui/toaster.jsx";
 import { useNavigate } from "react-router-dom";
 
-export function CommentInput({ communityId, communityWriter }) {
+export function CommentInput({ communityId, communityWriter, fetchComments }) {
   const [comment, setComment] = useState("");
-  const [commentList, setCommentList] = useState([]); // 댓글 목록 상태 추가
+  // const [commentList, setCommentList] = useState([]); // 댓글 목록 상태 추가
   const navigate = useNavigate();
   const authentication = useContext(AuthenticationContext);
 
-  useEffect(() => {
-    // 댓글 목록을 불러오는 함수
-    axios
-      .get(`/api/community/comment/list/${communityId}`, { communityId })
-      .then((res) => {
-        setCommentList(res.data); // 댓글 목록 업데이트
-      });
-  }, [communityId]); // communityId가 변경될 때마다 댓글 목록을 불러옴
-
-  const fetch = () => {
-    axios
-      .get(`/api/community/fetch/${communityId}`)
-      .then((res) => {
-        console.log(res.data);
-        setCommentList(res.data.commentList);
-      })
-      .catch((err) => console.error(err));
-  };
+  // const fetch = () => {
+  //   axios
+  //     .get(`/api/community/fetch/${communityId}`)
+  //     .then((res) => {
+  //       console.log(res.data);
+  //       setCommentList(res.data.commentList);
+  //     })
+  //     .catch((err) => console.error(err));
+  // };
 
   const handleCommentSaveClick = () => {
     if (!comment.trim()) {
@@ -50,17 +41,14 @@ export function CommentInput({ communityId, communityWriter }) {
     }
 
     axios
-      .post(`/api/community/comment/write`, {
-        comment,
-        communityId: communityId,
-      })
+      .post(`/api/community/comment/write`, { comment, communityId })
       .then((res) => {
         const writeSuccess = res.data.message;
         toaster.create({
           type: writeSuccess.type,
           description: writeSuccess.text,
         });
-        fetch();
+        fetchComments();
       })
       .finally(() => setComment(""));
   };

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { toaster } from "../../../../components/ui/toaster.jsx";
 
-export function AnswerInput({ inquiryId }) {
+export function AnswerInput({ inquiryId, fetchAnswerList }) {
   const [answer, setAnswer] = useState("");
 
   function handleSaveButton() {
@@ -18,6 +18,8 @@ export function AnswerInput({ inquiryId }) {
           description: res.data.message.text,
         });
         setAnswer("");
+        //추가된 답변 갱신
+        fetchAnswerList();
       })
       .catch((e) => {
         toaster.create({
