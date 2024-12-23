@@ -6,20 +6,27 @@
 }
 
 /* ---------------- CommunityView----------------*/
-.community .table-view thead .thead-sub-title1 {
-    height: 40px;
-}
 
 .community .like-wrap ul {
     display: flex;
     justify-content: end;
-    margin: 10px;
-    font-size: 1.5rem;
+    margin: 10px 20px;
+    font-size: 1.3rem;
+}
+
+.community .like-wrap ul .icon {
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.community .table-view thead .thead-sub-title1 {
+    height: 35px;
 }
 
 .community .table-view thead .thead-sub-title2 {
-    height: 35px;
+    height: 30px;
     text-align: right;
+    background: none;
 }
 
 .community .table-view thead .thead-sub-title2 th {
@@ -30,6 +37,27 @@
 .community .table-view tr td {
     white-space: pre-wrap;
     word-wrap: break-word;
+}
+
+.community .table-view .title {
+    padding: 10px;
+}
+
+.community .table-view .writer {
+    text-align: left;
+    padding-left: 15px;
+    font-size: 0.9rem;
+}
+
+.community .table-view .date {
+    text-align: right;
+    padding-right: 15px;
+    font-size: 0.9rem;
+}
+
+.community .table-view .views {
+    text-align: right;
+    padding-right: 15px;
 }
 
 
@@ -69,7 +97,7 @@
 
 .community-list {
     height: 150px;
-    padding: 20px 30px;
+    padding: 18px 25px;
     border-bottom: 1px solid var(--input-border-color);
     position: relative;
     cursor: pointer;
@@ -100,19 +128,24 @@
 }
 
 .community-content {
-    height: 60px;
-    padding: 7px 0;
+    height: auto; /* height 대신 line-clamp로 높이 제어 */
+    margin: 5px 0 10px 0;
     font-size: 0.9rem;
     color: var(--font-gray-color);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
     overflow: hidden;
-    white-space: nowrap;
-    text-overflow: initial;
+    text-overflow: ellipsis;
 }
 
 .community-footer {
     font-size: 0.8rem;
     color: var(--font-gray-color);
     display: flex;
+    position: absolute;
+    left: 20px;
+    bottom: 18px;
 }
 
 .community-footer li {
@@ -131,7 +164,7 @@
     color: var(--font-gray-color);
     position: absolute;
     right: 20px;
-    bottom: 23px;
+    bottom: 18px;
 }
 
 /*------------------- 내가 쓴 글 -------------------*/
@@ -147,12 +180,13 @@
 
 /*------------------- 화면 크기가 768px 이하 (태블릿 화면) -------------------*/
 @media (max-width: 768px) {
+    .community .body-normal {
+        width: 90%;
+    }
+
     .community-container {
         width: 100%;
         padding: 0;
-    }
-
-    .community-list {
     }
 }
 

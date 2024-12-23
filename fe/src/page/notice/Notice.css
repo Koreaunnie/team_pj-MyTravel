@@ -13,12 +13,54 @@
 .notice .like-wrap ul {
     display: flex;
     justify-content: end;
-    margin: 10px;
-    font-size: 1.5rem;
+    margin: 10px 20px;
+    font-size: 1.3rem;
 }
 
 .notice .like-wrap ul .icon {
-    margin: -2px 7px 0 0;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.notice .table-view thead .thead-sub-title1 {
+    height: 35px;
+}
+
+.notice .table-view thead .thead-sub-title2 {
+    height: 30px;
+    text-align: right;
+    background: none;
+}
+
+.notice .table-view thead .thead-sub-title2 th {
+    font-size: 0.9rem;
+    font-weight: normal;
+}
+
+.notice .table-view tr td {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.notice .table-view .title {
+    padding: 10px;
+}
+
+.notice .table-view .writer {
+    text-align: left;
+    padding-left: 15px;
+    font-size: 0.9rem;
+}
+
+.notice .table-view .date {
+    text-align: right;
+    padding-right: 15px;
+    font-size: 0.9rem;
+}
+
+.notice .table-view .views {
+    text-align: right;
+    padding-right: 15px;
 }
 
 /*------------------- NoticeWrite, NoticeEdit -------------------*/
@@ -32,7 +74,10 @@
 .notice-form .btn-wrap {
     display: flex;
     justify-content: space-between;
+    border: 1px solid red;
 }
+
+/*------------------- NoticeList -------------------*/
 
 .notice .notice-search {
     margin: 30px 0 30px 0;
@@ -43,7 +88,6 @@
 }
 
 .notice .table-list tbody td .title {
-    width: calc(100% - 250px);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -70,4 +114,13 @@
 
 .notice .table-list tbody td:nth-child(3) {
     width: 100px;
+}
+
+
+/*------------------- 화면 크기가 768px 이하 (태블릿 화면) -------------------*/
+@media (max-width: 768px) {
+    .table-list th:nth-child(2),
+    .table-list td:nth-child(2) {
+        display: none;
+    }
 }

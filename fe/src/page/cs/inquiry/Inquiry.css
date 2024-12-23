@@ -2,7 +2,7 @@
     width: 100%;
     margin-top: 30px;
     padding-top: 30px;
-    height: calc(100vh - 170px);
+    min-height: calc(100vh - 170px);
 }
 
 /*------------------- inquiry form -------------------*/

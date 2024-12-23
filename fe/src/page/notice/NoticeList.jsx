@@ -156,7 +156,7 @@ function NoticeList(props) {
               <tr>
                 <th>제목</th>
                 <th>작성자</th>
-                <th>작성일시</th>
+                <th>작성일</th>
               </tr>
             </thead>
 

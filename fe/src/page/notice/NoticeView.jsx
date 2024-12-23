@@ -9,9 +9,7 @@ import { AuthenticationContext } from "../../components/context/AuthenticationPr
 import axios from "axios";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import { Icon } from "@chakra-ui/react";
-import { HiOutlineBookOpen } from "react-icons/hi";
 import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
-import { GoHeart } from "react-icons/go";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { formattedDateTime } from "../../components/utils/FormattedDateTime.jsx";
 import { Modal } from "../../components/root/Modal.jsx";
@@ -189,28 +187,26 @@ function NoticeView(props) {
         <table className={"table-view"}>
           <thead>
             <tr className={"thead-title"}>
-              <th colSpan={2}>{notice.title}</th>
-            </tr>
-            <tr className={"thead-sub-title"}>
-              <th>{notice.writer}</th>
-              <th>{formattedDateTime(notice.creationDate)}</th>
-            </tr>
-            <tr className={"thead-sub-title"}>
-              <th>
-                <GoHeart /> {notice.numberOfLikes} |{" "}
-              </th>
-              <th>
-                <HiOutlineBookOpen /> {notice.numberOfViews}
+              <th colSpan={2} className={"title"}>
+                {notice.title}
               </th>
             </tr>
-            <tr>
-              <th colSpan={2}>조회수 {notice.views}</th>
+            <tr className={"thead-sub-title1"}>
+              <th className={"writer"}>{notice.writer}</th>
+              <th className={"date"}>
+                {formattedDateTime(notice.creationDate)}
+              </th>
+            </tr>
+            <tr className={"thead-sub-title2"}>
+              <th colSpan={2} className={"views"}>
+                조회수 {notice.views}
+              </th>
             </tr>
           </thead>
 
           <tbody>
             <tr className={"tbody-content"}>
-              <td>{notice.content}</td>
+              <td colSpan={2}>{notice.content}</td>
             </tr>
           </tbody>
         </table>
