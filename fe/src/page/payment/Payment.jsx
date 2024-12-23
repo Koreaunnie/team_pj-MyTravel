@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Center, Image } from "@chakra-ui/react";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
-// import * as PortOne from "/libs/browser-sdk";
+import * as PortOne from "/libs/browser-sdk";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import RandomString from "../../components/login/RandomString.jsx";
 import { formatNumberWithCommas } from "../../components/utils/FormatNumberWithCommas.jsx";
