@@ -1,3 +1,16 @@
+.payment {
+    min-height: calc(100vh - 140px);
+    padding: 60px 0;
+}
+
+.payment h2 {
+    margin-bottom: 20px;
+}
+
+.payment .payment-method button {
+    margin: 0 10px;
+}
+
 .payment-history {
     background: var(--bg-gray-color);
     min-height: calc(100vh - 170px);
@@ -78,6 +91,11 @@
 
 /*------------------- 화면 크기가 768px 이하 (태블릿 화면) -------------------*/
 @media (max-width: 768px) {
+
+    .payment .body-normal {
+        width: 95%;
+    }
+
     .payment-history .body-normal {
         width: 95%;
     }

@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 
 import { useLocation, useNavigate } from "react-router-dom";
-import { Image } from "@chakra-ui/react";
+import { Center, Image } from "@chakra-ui/react";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 // import * as PortOne from "/libs/browser-sdk";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import RandomString from "../../components/login/RandomString.jsx";
+import { formatNumberWithCommas } from "../../components/utils/FormatNumberWithCommas.jsx";
 
 const { VITE_STORE_ID, VITE_KAKAOPAY_CHANNEL_KEY, VITE_TOSSPAY_CHANNEL_KEY } =
   import.meta.env;
@@ -192,7 +193,7 @@ function Payment() {
   };
 
   return (
-    <div className={"tour"}>
+    <div className={"payment"}>
       <Breadcrumb
         depth1={"투어"}
         navigateToDepth1={() => navigate(`/tour/list`)}
@@ -202,7 +203,8 @@ function Payment() {
         navigateToDepth3={() => navigate(`/payment`)}
       />
       <h1>결제</h1>
-      <main>
+
+      <div className={"body-normal"}>
         <form>
           <h2>결제 내역</h2>
           <div>
@@ -229,7 +231,7 @@ function Payment() {
                     <td>
                       {product.startDate} ~ {product.endDate}
                     </td>
-                    <td>{product.price}</td>
+                    <td>{formatNumberWithCommas(product.price)}</td>
                   </tr>
                 </tbody>
               ))}
@@ -238,44 +240,47 @@ function Payment() {
                 <tr>
                   <td colSpan={2}></td>
                   <th>결제 금액</th>
-                  <td>{totalPrice()}</td>
+                  <td>{formatNumberWithCommas(totalPrice())}</td>
                 </tr>
               </tfoot>
             </table>
           </div>
 
           <br />
-          <div>
+
+          <div className={"payment-method"}>
             <h2>결제 방법</h2>
-            <button
-              type={"button"}
-              onClick={handleKakaoSubmit}
-              style={{ cursor: "pointer" }}
-              aria-busy={waitingPayment}
-              disabled={waitingPayment}
-            >
-              <img
-                src="https://prj241114-j19121m.s3.ap-northeast-2.amazonaws.com/teamPrj1126/74/pay.jpg"
-                alt="결제 버튼"
-                width="100"
-              />
-            </button>
-            <button
-              type={"button"}
-              onClick={handleTossSubmit}
-              style={{ cursor: "pointer" }}
-              aria-busy={waitingPayment}
-              disabled={waitingPayment}
-            >
-              <img
-                src="https://prj241114-j19121m.s3.ap-northeast-2.amazonaws.com/teamPrj1126/74/toss.jpg"
-                alt="결제 버튼"
-                width="100"
-              />
-            </button>
+            <Center>
+              <button
+                type={"button"}
+                onClick={handleKakaoSubmit}
+                style={{ cursor: "pointer" }}
+                aria-busy={waitingPayment}
+                disabled={waitingPayment}
+              >
+                <img
+                  src="https://prj241114-j19121m.s3.ap-northeast-2.amazonaws.com/teamPrj1126/74/pay.jpg"
+                  alt="결제 버튼"
+                  width="100"
+                />
+              </button>
+              <button
+                type={"button"}
+                onClick={handleTossSubmit}
+                style={{ cursor: "pointer" }}
+                aria-busy={waitingPayment}
+                disabled={waitingPayment}
+              >
+                <img
+                  src="https://prj241114-j19121m.s3.ap-northeast-2.amazonaws.com/teamPrj1126/74/toss.jpg"
+                  alt="결제 버튼"
+                  width="100"
+                />
+              </button>
+            </Center>
           </div>
         </form>
-      </main>
+      </div>
 
       {/*<div>예약자: personal info 불러오기 (수정 가능)</div>*/}
       {/*<div>여행자 정보: input text</div>*/}
