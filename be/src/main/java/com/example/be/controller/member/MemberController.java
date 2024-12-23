@@ -23,6 +23,18 @@ public class MemberController {
     final MemberService service;
     final InquiryService inquiryService;
 
+    @PutMapping("auth/{email}")
+    public ResponseEntity<Map<String, Object>> giveAuth(@PathVariable String email) {
+        System.out.println(email);
+        if (service.giveAuth(email)) {
+            return ResponseEntity.ok(Map.of("message",
+                Map.of("type", "success", "text", "파트너 기업으로 변경되었습니다.")));
+        } else {
+            return ResponseEntity.status(401).body(Map.of("message",
+                Map.of("type", "warning", "text", "오류가 발생했습니다.")));
+        }
+    }
+
     @PostMapping("login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody Member member) {
         String token = service.token(member);

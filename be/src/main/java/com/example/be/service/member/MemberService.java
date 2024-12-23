@@ -282,4 +282,9 @@ public class MemberService {
         Member member = mapper.selectByEmail(email);
         return member.getPassword().equals(password);
     }
+
+    public boolean giveAuth(String email) {
+        int cnt = mapper.giveAuth(email);
+        return cnt != 0;
+    }
 }

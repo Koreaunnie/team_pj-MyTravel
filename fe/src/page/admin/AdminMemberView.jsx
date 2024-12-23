@@ -20,11 +20,13 @@ import { ProfileImageView } from "../../components/Image/ProfileImageView.jsx";
 import Access from "../../components/context/Access.jsx";
 import "/src/page/member/Member.css";
 import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
+import { Modal } from "../../components/root/Modal.jsx";
 
 function AdminMemberView(props) {
   const [member, setMember] = useState(null);
   const [password, setPassword] = useState("");
   const [open, setOpen] = useState(false);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
   const { email } = useParams();
   const navigate = useNavigate();
   const { logout, isAdmin, isPartner } = useContext(AuthenticationContext);
@@ -32,8 +34,6 @@ function AdminMemberView(props) {
   useEffect(() => {
     axios.get(`/api/member/${email}`).then((res) => setMember(res.data));
   }, []);
-
-  console.log(email);
 
   if (!member) {
     return <Access />;
@@ -50,7 +50,7 @@ function AdminMemberView(props) {
           type: message.type,
           description: message.text,
         });
-        navigate("/admin");
+        navigate("/admin?menu=memberList");
       })
       .catch((e) => {
         const message = e.response.data.message;
@@ -65,13 +65,42 @@ function AdminMemberView(props) {
       });
   }
 
+  function handleAuthClick() {
+    axios
+      .put(`/api/member/auth/${email}`, { email })
+      .then((res) => {
+        const message = res.data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+        navigate(`/admin?menu=partnerList`);
+      })
+      .catch((e) => {
+        const data = e.response.data;
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+      })
+      .finally();
+  }
+
   return (
     <div className={"member-info"}>
       <Breadcrumb
         depth1={"관리자 모드"}
         navigateToDepth1={() => navigate(`/admin`)}
-        depth2={member.nickname + "의 프로필"}
-        navigateToDepth2={() => {}}
+        depth2={member.auth === "partner" ? "파트너 관리" : "회원 관리"}
+        navigateToDepth2={() => {
+          if (member.auth === "partner") {
+            navigate(`/admin?menu=partnerList`);
+          } else {
+            navigate(`/admin?menu=memberList`);
+          }
+        }}
+        depth3={member.nickname + "의 프로필"}
+        navigateToDepth3={() => {}}
       />
       <h1>회원 정보</h1>
 
@@ -142,30 +171,42 @@ function AdminMemberView(props) {
         </fieldset>
 
         <Box>
-          <button
-            className={"btn btn-dark-outline"}
-            onClick={() => {
-              navigate(`/admin`);
-            }}
-          >
-            관리자 창으로
-          </button>
+          {member.auth === "partner" ? (
+            <button
+              className={"btn btn-dark-outline"}
+              onClick={() => {
+                navigate(`/admin?menu=partnerList`);
+              }}
+            >
+              파트너 목록으로
+            </button>
+          ) : (
+            <button
+              className={"btn btn-dark-outline"}
+              onClick={() => {
+                navigate(`/admin?menu=memberList`);
+              }}
+            >
+              회원 목록으로
+            </button>
+          )}
           <button
             className={"btn btn-dark"}
             onClick={() => navigate(`/member/edit/${email}`)}
           >
             수정
           </button>
-          {member.kakao || (
-            <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
-              <DialogTrigger>
-                <button className={"btn btn-warning"}>탈퇴</button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>탈퇴 확인</DialogTitle>
-                </DialogHeader>
-                <DialogBody>
+
+          <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
+            <DialogTrigger>
+              <button className={"btn btn-warning"}>탈퇴</button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>탈퇴 확인</DialogTitle>
+              </DialogHeader>
+              <DialogBody>
+                {member.kakao || (
                   <Stack>
                     <Field label={"비밀번호"}>
                       <Input
@@ -175,26 +216,8 @@ function AdminMemberView(props) {
                       />
                     </Field>
                   </Stack>
-                </DialogBody>
-                <DialogFooter>
-                  <DialogActionTrigger>
-                    <Button variant={"outline"}>취소</Button>
-                  </DialogActionTrigger>
-                  <Button onClick={handleDeleteClick}>탈퇴</Button>
-                </DialogFooter>
-              </DialogContent>
-            </DialogRoot>
-          )}{" "}
-          {member.kakao && (
-            <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
-              <DialogTrigger>
-                <button className={"btn btn-warning"}>탈퇴</button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>탈퇴 확인</DialogTitle>
-                </DialogHeader>
-                <DialogBody>
+                )}
+                {member.kakao && (
                   <Stack>
                     <p>
                       회원 정보 삭제를 확인하려면 텍스트 입력 필드에{" "}
@@ -208,17 +231,34 @@ function AdminMemberView(props) {
                       />
                     </Field>
                   </Stack>
-                </DialogBody>
-                <DialogFooter>
-                  <DialogActionTrigger>
-                    <Button variant={"outline"}>취소</Button>
-                  </DialogActionTrigger>
-                  <Button onClick={handleDeleteClick}>탈퇴</Button>
-                </DialogFooter>
-              </DialogContent>
-            </DialogRoot>
+                )}
+              </DialogBody>
+              <DialogFooter>
+                <DialogActionTrigger>
+                  <Button variant={"outline"}>취소</Button>
+                </DialogActionTrigger>
+                <Button onClick={handleDeleteClick}>탈퇴</Button>
+              </DialogFooter>
+            </DialogContent>
+          </DialogRoot>
+          {member.auth ? null : (
+            <button
+              className={"btn btn-blue"}
+              onClick={() => setAuthModalOpen(true)}
+            >
+              파트너로 변경
+            </button>
           )}
         </Box>
+
+        {/*권한 추가 Modal*/}
+        <Modal
+          isOpen={authModalOpen}
+          onClose={() => setAuthModalOpen(false)}
+          onConfirm={handleAuthClick}
+          message={"해당 회원을 파트너 기업으로 설정하시겠습니까?"}
+          buttonMessage={"파트너로 변경"}
+        />
       </div>
     </div>
   );

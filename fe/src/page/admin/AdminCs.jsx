@@ -25,9 +25,13 @@ function AdminCs(props) {
     axios
       .get("/api/cs/inquiry/list", {
         params: {
-          st: search.type,
-          sk: search.keyword,
-          page: pageParam,
+          menu: "csList",
+          // st: search.type,
+          // sk: search.keyword,
+          // page: pageParam,
+          st: searchParams.get("st") || "all", // use URL params directly
+          sk: searchParams.get("sk") || "", // use URL params directly
+          page: searchParams.get("page") || "1",
         },
       })
       .then((res) => res.data)
@@ -167,8 +171,9 @@ function AdminCs(props) {
 
               // 2. URL 검색 파라미터 초기화
               const nextSearchParam = new URLSearchParams();
-              nextSearchParam.set("type", "all");
-              nextSearchParam.set("key", "");
+              nextSearchParam.set("menu", "csList");
+              nextSearchParam.set("st", "all");
+              nextSearchParam.set("sk", "");
 
               setSearchParams(nextSearchParam);
             }}
@@ -193,6 +198,11 @@ function AdminCs(props) {
               onChange={(e) =>
                 setSearch({ ...search, keyword: e.target.value.trim() })
               }
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSearchButton();
+                }
+              }}
             />
             <button
               className={"btn-search btn-dark"}

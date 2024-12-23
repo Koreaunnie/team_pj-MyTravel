@@ -17,30 +17,35 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("api/payment")
 public class PaymentController {
-  final PaymentService service;
-  private final MemberService memberService;
+    final PaymentService service;
+    private final MemberService memberService;
 
-  @GetMapping("list")
-  public List<PaymentHistory> PaymentList() {
-    return service.allPayment();
-  }
-
-  @PostMapping("payment")
-  public ResponseEntity<Map<String, Object>> completePayment(
-          @RequestBody Payment payment) {
-    Map<String, Object> response = new HashMap<>();
-    if (service.add(payment)) {
-      response.put("status", "SUCCESS");
+    @GetMapping("list")
+    public Map<String, Object> PaymentList(
+        @RequestParam(value = "page", defaultValue = "1") Integer page,
+        @RequestParam(value = "type", defaultValue = "all") String searchType,
+        @RequestParam(value = "key", defaultValue = "") String keyword) {
+        System.out.println("type: " + searchType);
+        System.out.println("key: " + keyword);
+        return service.allPayment(page, searchType, keyword);
     }
-    return ResponseEntity.ok(response);
-  }
 
-  @GetMapping("list/{email}")
-  public List<PaymentHistory> paymentHistory(@PathVariable String email, Authentication auth) {
-    if (memberService.hasAccess(email, auth)) {
-      return service.myPaymentHistory(email);
-    } else {
-      return null;
+    @PostMapping("payment")
+    public ResponseEntity<Map<String, Object>> completePayment(
+        @RequestBody Payment payment) {
+        Map<String, Object> response = new HashMap<>();
+        if (service.add(payment)) {
+            response.put("status", "SUCCESS");
+        }
+        return ResponseEntity.ok(response);
     }
-  }
+
+    @GetMapping("list/{email}")
+    public List<PaymentHistory> paymentHistory(@PathVariable String email, Authentication auth) {
+        if (memberService.hasAccess(email, auth)) {
+            return service.myPaymentHistory(email);
+        } else {
+            return null;
+        }
+    }
 }
