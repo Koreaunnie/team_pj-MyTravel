@@ -1,15 +1,21 @@
 .inquiry-answer {
-    padding: 10px;
-    margin-top: 0;
+    background: var(--bg-gray-color);
+    width: 100%;
+    padding: 30px;
+    border-bottom: 1px solid var(--font-light-gray-color);
 }
 
 .inquiry-answer .answer-list {
     margin: 30px 0;
     padding: 20px;
-    background: var(--bg-gray-color);
+    background: #fff;
     position: relative;
     border-radius: 10px;
     border: 1px solid var(--font-light-gray-color);
+}
+
+.inquiry-answer .answer-list:last-child {
+    margin-bottom: 10px;
 }
 
 .inquiry-answer .answer-list .answer-btn-wrap {
@@ -19,7 +25,7 @@
     top: 10px;
 }
 
-.inquiry-answer .answer-list .answer-btn-wrap li {
+.inquiry-answer .answer-list- .answer-btn-wrap li {
     cursor: pointer;
     margin: 5px;
     font-size: 0.9rem;
@@ -39,3 +45,14 @@
     font-size: 0.9rem;
     color: var(--font-gray-color);
 }
+
+.inquiry-answer .answer-input {
+    margin: 0;
+}
+
+.inquiry-answer .answer-input textarea {
+    width: 100%;
+}
+
+
+

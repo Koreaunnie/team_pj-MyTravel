@@ -1,23 +1,14 @@
-import { Button } from "../../../components/ui/button.jsx";
-import {
-  DialogActionTrigger,
-  DialogBody,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogRoot,
-  DialogTrigger,
-} from "../../../components/ui/dialog.jsx";
-import { HStack } from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
 import { AuthenticationContext } from "../../../components/context/AuthenticationProvider.jsx";
 import axios from "axios";
 import { toaster } from "../../../components/ui/toaster.jsx";
 import { useNavigate } from "react-router-dom";
+import { Modal } from "../../../components/root/Modal.jsx";
 
 export function CommentInput({ communityId, communityWriter, fetchComments }) {
   const [comment, setComment] = useState("");
   // const [commentList, setCommentList] = useState([]); // 댓글 목록 상태 추가
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
   const navigate = useNavigate();
   const authentication = useContext(AuthenticationContext);
 
@@ -58,7 +49,7 @@ export function CommentInput({ communityId, communityWriter, fetchComments }) {
   }
 
   return (
-    <div className={"body-normal"}>
+    <div className={"community-comment"}>
       <div className={"comment-input"}>
         {authentication.isAuthenticated ? (
           <div>
@@ -78,41 +69,24 @@ export function CommentInput({ communityId, communityWriter, fetchComments }) {
             </button>
           </div>
         ) : (
-          <DialogRoot>
-            <DialogTrigger>
-              <HStack>
-                <textarea
-                  rows={5}
-                  placeholder="로그인 후 댓글을 작성하실 수 있습니다."
-                />
-                <div>
-                  <button className={"btn btn-dark"}>댓글 등록</button>
-                </div>
-              </HStack>
-
-              <DialogContent>
-                <DialogHeader>MyTravel</DialogHeader>
-                <DialogBody>
-                  로그인을 한 회원만 댓글 작성이 가능합니다.
-                </DialogBody>
-                <DialogFooter>
-                  <DialogActionTrigger>
-                    <div>
-                      <Button
-                        className={"btn btn-dark"}
-                        onClick={handleLoginClick}
-                      >
-                        확인
-                      </Button>
-                    </div>
-                  </DialogActionTrigger>
-                </DialogFooter>
-              </DialogContent>
-            </DialogTrigger>
-          </DialogRoot>
+          <div>
+            <textarea
+              rows={5}
+              placeholder="로그인 후 댓글을 작성하실 수 있습니다."
+              onClick={() => setLoginModalOpen(true)}
+            />
+          </div>
         )}
+
+        {/* 로그인 modal */}
+        <Modal
+          isOpen={loginModalOpen}
+          onClose={() => setLoginModalOpen(false)}
+          onConfirm={() => navigate(`/member/login`)}
+          message="로그인 후 댓글을 작성하실 수 있습니다."
+          buttonMessage="로그인"
+        />
       </div>
-      <br />
     </div>
   );
 }

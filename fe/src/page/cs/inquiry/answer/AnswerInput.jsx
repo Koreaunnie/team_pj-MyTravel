@@ -30,7 +30,7 @@ export function AnswerInput({ inquiryId, fetchAnswerList }) {
   }
 
   return (
-    <div className={"body-normal"}>
+    <div className={"inquiry-answer"}>
       <div className={"answer-input"}>
         <textarea
           rows={5}

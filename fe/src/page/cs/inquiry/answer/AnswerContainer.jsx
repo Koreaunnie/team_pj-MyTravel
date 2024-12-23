@@ -1,11 +1,13 @@
 import "./Answer.css";
 import { AnswerList } from "./AnswerList.jsx";
 import { AnswerInput } from "./AnswerInput.jsx";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { AuthenticationContext } from "../../../../components/context/AuthenticationProvider.jsx";
 
 export function AnswerContainer({ inquiryId }) {
   const [answerList, setAnswerList] = useState([]);
+  const { isAdmin } = useContext(AuthenticationContext);
 
   const fetchAnswerList = () => {
     axios
@@ -19,13 +21,16 @@ export function AnswerContainer({ inquiryId }) {
   }, [inquiryId]);
 
   return (
-    <div className={"inquiry body-normal"}>
-      <AnswerInput inquiryId={inquiryId} fetchAnswerList={fetchAnswerList} />
+    <div>
       <AnswerList
         inquiryId={inquiryId}
         answerList={answerList}
         setAnswerList={setAnswerList}
       />
+
+      {isAdmin && (
+        <AnswerInput inquiryId={inquiryId} fetchAnswerList={fetchAnswerList} />
+      )}
     </div>
   );
 }
