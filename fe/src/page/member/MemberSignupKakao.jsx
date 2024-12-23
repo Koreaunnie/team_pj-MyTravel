@@ -136,24 +136,26 @@ function MemberSignupKakao() {
                   <span className={"required"}>&#42;</span>
                 </label>
               </form>
-              <input
-                id={"nickname"}
-                type={"text"}
-                maxLength="20"
-                required
-                defaultValue={kakaoNickname}
-                onChange={(e) => {
-                  setNicknameCheck(false);
-                  setNickname(e.target.value);
-                }}
-              />
-              <button
-                className={"btn-search btn-dark"}
-                onClick={handleKakaoNicknameCheck}
-                disabled={nicknameCheckButtonDisabled}
-              >
-                중복 확인
-              </button>
+              <div className={"duplicate-check"}>
+                <input
+                  id={"nickname"}
+                  type={"text"}
+                  maxLength="20"
+                  required
+                  defaultValue={kakaoNickname}
+                  onChange={(e) => {
+                    setNicknameCheck(false);
+                    setNickname(e.target.value);
+                  }}
+                />
+                <button
+                  className={"btn-check btn-dark"}
+                  onClick={handleKakaoNicknameCheck}
+                  disabled={nicknameCheckButtonDisabled}
+                >
+                  중복 확인
+                </button>
+              </div>
             </li>
 
             <li>
