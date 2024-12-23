@@ -141,21 +141,27 @@ public interface MemberMapper {
         <script>
         SELECT *
         FROM member
-        WHERE 
-            <trim prefixOverrides="OR">
-                <if test="searchType=='all' or searchType=='email'">
-                    email LIKE CONCAT('%', #{keyword}, '%')
-                </if>            
-                <if test="searchType == 'all' or searchType == 'nickname'">
-                    OR nickname LIKE CONCAT('%', #{keyword}, '%')
-                </if>
-                <if test="searchType == 'all' or searchType == 'name'">
-                    OR name LIKE CONCAT('%', #{keyword}, '%')
-                </if>
-                <if test="searchType == 'all' or searchType == 'phone'">
-                    OR phone LIKE CONCAT('%', #{keyword}, '%')
-                </if>        
-            </trim>
+        LEFT JOIN auth
+            ON auth.member_email = member.email
+        WHERE auth.auth IS NULL 
+            <if test="keyword!=null and keyword.trim() !=''">
+                AND (
+                <trim prefixOverrides="OR">
+                    <if test="searchType=='all' or searchType=='email'">
+                        email LIKE CONCAT('%', #{keyword}, '%')
+                    </if>            
+                    <if test="searchType == 'all' or searchType == 'nickname'">
+                        OR nickname LIKE CONCAT('%', #{keyword}, '%')
+                    </if>
+                    <if test="searchType == 'all' or searchType == 'name'">
+                        OR name LIKE CONCAT('%', #{keyword}, '%')
+                    </if>
+                    <if test="searchType == 'all' or searchType == 'phone'">
+                        OR phone LIKE CONCAT('%', #{keyword}, '%')
+                    </if>        
+                </trim>
+            )
+            </if>
         ORDER BY inserted DESC
         LIMIT #{offset}, 10;
         </script>    
@@ -166,21 +172,27 @@ public interface MemberMapper {
             <script>
             SELECT COUNT(*)
             FROM member
-            WHERE 
-                <trim prefixOverrides="OR">
-                    <if test="searchType == 'all' or searchType == 'email'">
-                        email LIKE CONCAT('%', #{keyword}, '%')
-                    </if>
-                    <if test="searchType == 'all' or searchType == 'nickname'">
-                        OR nickname LIKE CONCAT('%', #{keyword}, '%')
-                    </if>
-                    <if test="searchType == 'all' or searchType == 'name'">
-                        OR name LIKE CONCAT('%', #{keyword}, '%')
-                    </if>
-                    <if test="searchType == 'all' or searchType == 'phone'">
-                        OR phone LIKE CONCAT('%', #{keyword}, '%')
-                    </if>
-                </trim>
+            LEFT JOIN auth
+                ON auth.member_email = member.email
+            WHERE auth.auth IS NULL 
+                <if test="keyword!=null and keyword.trim() !=''">
+                    AND (
+                        <trim prefixOverrides="OR">
+                            <if test="searchType == 'all' or searchType == 'email'">
+                                email LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
+                            <if test="searchType == 'all' or searchType == 'nickname'">
+                                OR nickname LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
+                            <if test="searchType == 'all' or searchType == 'name'">
+                                OR name LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
+                            <if test="searchType == 'all' or searchType == 'phone'">
+                                OR phone LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
+                        </trim>
+                    )
+                </if>
             </script>
         """)
     Integer countResult(String searchType, String keyword);
