@@ -18,7 +18,7 @@ function GoogleMapsContainer(props) {
       .importLibrary("maps")
       .then(({ Map }) => {
         new Map(document.getElementById("map"), mapObject);
-        console.log("Map JS API Loaded!");
+        // console.log("Map JS API Loaded!");
       })
       .catch((e) => {
         console.log("Failed to load Google Maps:", e);

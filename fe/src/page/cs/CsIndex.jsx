@@ -23,7 +23,7 @@ function CsIndex(props) {
 
   // 비밀글 여부 확인
   const checkSecretOrNot = (inquiry) => {
-    console.log(inquiry.secret, inquiry.writerNickname, nickname);
+    // console.log(inquiry.secret, inquiry.writerNickname, nickname);
     if (inquiry.secret && inquiry.writerNickname != nickname) {
       toaster.create({
         type: "warning",

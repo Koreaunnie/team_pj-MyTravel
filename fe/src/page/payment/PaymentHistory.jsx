@@ -19,7 +19,7 @@ function PaymentHistory(props) {
     });
   }, []);
 
-  console.log(paidList);
+  // console.log(paidList);
 
   function handleRowClick(tourId) {
     navigate(`/tour/view/${tourId}`);

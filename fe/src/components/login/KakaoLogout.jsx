@@ -11,7 +11,7 @@ export function KakaoLogout() {
         },
       })
       .then((data) => {
-        console.log("연결 해제 성공:", data);
+        // console.log("연결 해제 성공:", data);
       })
       .catch((error) => console.error("연결 해제 실패:", error));
   };

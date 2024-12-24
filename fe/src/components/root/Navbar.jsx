@@ -16,7 +16,7 @@ function Navbar() {
   const { email, isAdmin, isAuthenticated, logout, updatedNickname } =
     useContext(AuthenticationContext);
 
-  console.log("확인용", updatedNickname);
+  // console.log("확인용", updatedNickname);
   const isActive = (path) => location.pathname.startsWith(path);
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);

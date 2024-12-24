@@ -142,8 +142,8 @@ export function GoogleMapsSearchBox(props) {
                   index,
                   onClick: (event) => {
                     setPlaceId(item.id);
-                    console.log(item.id);
-                    console.log(setPlaceId());
+                    // console.log(item.id);
+                    // console.log(setPlaceId());
                   },
                 })}
               >

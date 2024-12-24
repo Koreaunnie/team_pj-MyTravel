@@ -49,7 +49,7 @@ function MemberSignupKakao() {
           description: message.text,
         });
         //로그인 처리
-        console.log("사용자 데이터", data);
+        // console.log("사용자 데이터", data);
         login(data.token);
         navigate("/");
       })

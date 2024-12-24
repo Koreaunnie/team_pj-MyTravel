@@ -71,8 +71,8 @@ export function GoogleMapsPlaceAutocomplete({
       setSelected(location); // 선택된 장소를 부모 컴포넌트에 전달
       setMapCenter({ lat, lng }); // 지도 중심 업데이트
       hasInitialSet.current = true; // 초기 장소가 아닌 선택된 장소로 고정
-      console.log(setValue);
-      console.log(setSelected);
+      // console.log(setValue);
+      // console.log(setSelected);
     } catch (e) {
       console.error("Error getting geocode or setting marker:", e);
     }
