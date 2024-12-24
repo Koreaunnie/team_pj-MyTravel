@@ -425,7 +425,11 @@ export function Index() {
                     key={notice.id}
                     onClick={() => navigate(`/notice/view/${notice.id}`)}
                   >
-                    <li>{notice.title}</li>
+                    <li>
+                      {notice.title.length > 25
+                        ? `${notice.title.substring(0, 29)}...`
+                        : notice.title}
+                    </li>
                     <li>{notice.writer}</li>
                     <li>{formattedDate(notice.creationDate)}</li>
                   </ul>
