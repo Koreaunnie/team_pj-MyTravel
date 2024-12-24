@@ -25,7 +25,7 @@ export function GoogleMapsEdit({ initialPlaceIds, onPlaceSelected }) {
 
   // 기존 장소
   useEffect(() => {
-    console.log("기존 장소", initialPlaceIds);
+    // console.log("기존 장소", initialPlaceIds);
 
     if (initialPlaceIds && isLoaded && mapInstanceRef.current) {
       const service = new google.maps.places.PlacesService(
@@ -69,7 +69,7 @@ export function GoogleMapsEdit({ initialPlaceIds, onPlaceSelected }) {
 
   // 장소 선택
   const handlePlaceSelected = (place) => {
-    console.log("바뀐 장소", onPlaceSelected(place));
+    // console.log("바뀐 장소", onPlaceSelected(place));
 
     if (!place || !mapInstanceRef.current) return;
 

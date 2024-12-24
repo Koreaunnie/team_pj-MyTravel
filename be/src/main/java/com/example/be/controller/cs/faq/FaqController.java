@@ -48,9 +48,9 @@ public class FaqController {
         @RequestParam(value = "page", defaultValue = "1") Integer page,
         @RequestParam(value = "type", defaultValue = "all") String type,
         @RequestParam(value = "key", defaultValue = "") String keyword) {
-        System.out.println(page);
-        System.out.println(type);
-        System.out.println(keyword);
+//        System.out.println(page);
+//        System.out.println(type);
+//        System.out.println(keyword);
         return service.list(page, type, keyword);
     }
 

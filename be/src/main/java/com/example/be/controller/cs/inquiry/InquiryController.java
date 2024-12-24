@@ -108,7 +108,7 @@ public class InquiryController {
             )));
         }
 
-        if (service.delete(id, authentication.getName())) {
+        if (service.delete(id)) {
             // 성공
             return ResponseEntity.ok(Map.of("message", Map.of(
                 "type", "success", "text", "문의 글이 삭제되었습니다.")));

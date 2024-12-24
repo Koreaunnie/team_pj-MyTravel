@@ -47,8 +47,8 @@ function FaqList(props) {
     };
   }, [searchParams]);
 
-  console.log("searchParams", searchParams.toString());
-  console.log("검색 조건", search);
+  // console.log("searchParams", searchParams.toString());
+  // console.log("검색 조건", search);
 
   // 날짜 포맷을 yyyy-MM-dd 형식으로 변환
   const formatDate = (date) => {

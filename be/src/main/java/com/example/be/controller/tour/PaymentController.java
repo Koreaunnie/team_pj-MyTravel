@@ -25,8 +25,8 @@ public class PaymentController {
         @RequestParam(value = "page", defaultValue = "1") Integer page,
         @RequestParam(value = "type", defaultValue = "all") String searchType,
         @RequestParam(value = "key", defaultValue = "") String keyword) {
-        System.out.println("type: " + searchType);
-        System.out.println("key: " + keyword);
+//        System.out.println("type: " + searchType);
+//        System.out.println("key: " + keyword);
         return service.allPayment(page, searchType, keyword);
     }
 

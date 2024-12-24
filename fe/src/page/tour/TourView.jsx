@@ -20,11 +20,12 @@ function TourView() {
   const [open, setOpen] = useState(false);
   const [cart, setCart] = useState({ cart: false });
   const [startDate, setStartDate] = useState("");
-  const [saveModalOpen, setSaveModalOpen] = useState(false);
   const [endDate, setEndDate] = useState("");
+  const [saveModalOpen, setSaveModalOpen] = useState(false);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [reviewUpdated, setReviewUpdated] = useState(false);
+
   const reviewRef = useRef(null);
 
   const { hasAccess, isAuthenticated, isAdmin } = useContext(
@@ -109,6 +110,23 @@ function TourView() {
     navigate("/tour/list");
   };
 
+  // 오늘 날짜를 "yyyy-MM-dd" 형식으로 반환하는 함수
+  const getTodayDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
+  const handleStartDateChange = (e) => {
+    const value = e.target.value;
+    setStartDate(value);
+
+    // 종료 날짜의 최소값을 시작 날짜로 설정
+    document.getElementById("endDate").min = value;
+  };
+
   return (
     <div className={"tour-view"}>
       <Breadcrumb
@@ -191,15 +209,17 @@ function TourView() {
                 <div>
                   <label htmlFor="startDate">시작 날짜</label>
                   <input
+                    min={getTodayDate()}
                     type="date"
                     id="startDate"
-                    onChange={(e) => setStartDate(e.target.value)}
+                    onChange={handleStartDateChange}
                   />
                 </div>
 
                 <div>
                   <label htmlFor="endDate">종료 날짜</label>
                   <input
+                    min={startDate || getTodayDate()}
                     type="date"
                     id="endDate"
                     onChange={(e) => setEndDate(e.target.value)}

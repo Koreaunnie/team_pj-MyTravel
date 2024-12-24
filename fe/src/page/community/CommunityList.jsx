@@ -37,7 +37,7 @@ function CommunityList(props) {
     axios.get(`/api/community/list?${searchParams.toString()}`).then((res) => {
       setCommunityList(res.data.list);
       setCountCommunity(res.data.countCommunity);
-      console.log(res.data);
+      // console.log(res.data);
     });
     window.scrollTo(0, 0);
   }, [searchParams]);

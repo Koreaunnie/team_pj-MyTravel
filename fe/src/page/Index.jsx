@@ -158,19 +158,36 @@ export function Index() {
 
         <div className={"section-right"}>
           <div className={"index-calendar-btn-wrap"}>
-            <button
-              className={"index-calendar-btn"}
-              onClick={() => navigate(`/plan/list`)}
-            >
-              내 여행 일정 보기
-            </button>
-
-            <button
-              className={"index-calendar-btn"}
-              onClick={() => navigate(`/wallet/list`)}
-            >
-              내 지갑 내역 보기
-            </button>
+            {isAuthenticated ? (
+              <button
+                className={"index-calendar-btn"}
+                onClick={() => navigate(`/plan/list`)}
+              >
+                내 여행 일정 보기
+              </button>
+            ) : (
+              <button
+                className={"index-calendar-btn"}
+                onClick={() => navigate(`/member/login`)}
+              >
+                내 여행 일정 짜기
+              </button>
+            )}
+            {isAuthenticated ? (
+              <button
+                className={"index-calendar-btn"}
+                onClick={() => navigate(`/wallet/list`)}
+              >
+                내 지갑 내역 보기
+              </button>
+            ) : (
+              <button
+                className={"index-calendar-btn"}
+                onClick={() => navigate(`/member/login`)}
+              >
+                내 지갑 만들기
+              </button>
+            )}
           </div>
 
           {selectedDate ? (
@@ -209,60 +226,64 @@ export function Index() {
       </section>
 
       {/* 내 여행 */}
-      <section className={"plan-container"}>
-        <div className={"plan-container-wrap"}>
-          <div className={"plan-container-header"}>
-            <h1>내 여행</h1>
-            <button
-              className={"more-btn"}
-              onClick={() => navigate(`/plan/list`)}
-            >
-              일정 관리하러 가기
-              <FaArrowRight
-                style={{
-                  display: "inline",
-                  marginLeft: "4px",
-                  marginTop: "-3px",
-                }}
-              />
-            </button>
-          </div>
+      {isAuthenticated ? (
+        <section className={"plan-container"}>
+          <div className={"plan-container-wrap"}>
+            <div className={"plan-container-header"}>
+              <h1>내 여행</h1>
+              <button
+                className={"more-btn"}
+                onClick={() => navigate(`/plan/list`)}
+              >
+                일정 관리하러 가기
+                <FaArrowRight
+                  style={{
+                    display: "inline",
+                    marginLeft: "4px",
+                    marginTop: "-3px",
+                  }}
+                />
+              </button>
+            </div>
 
-          <div className={"plan-container-body"}>
-            {isEmpty(planList) ? (
-              <div className={"empty-container"}>
-                <p className={"empty-container-title"}>여행 계획이 없습니다.</p>
-                <p className={"empty-container-description"}>
-                  새로운 계획을 추가해보세요!
-                </p>
-              </div>
-            ) : (
-              <div className={"plan-container-card"}>
-                {planList.map((plan) => (
-                  <ul
-                    key={plan.id}
-                    onClick={() => navigate(`/plan/view/${plan.id}`)}
-                  >
-                    <li className={"title"}>{plan.title}</li>
-                    <li>{plan.description}</li>
-                    <li>{plan.destination}</li>
-                    <li>
-                      {plan.startDate} ~ {plan.endDate}
-                    </li>
-                  </ul>
-                ))}
-              </div>
-            )}
+            <div className={"plan-container-body"}>
+              {isEmpty(planList) ? (
+                <div className={"empty-container"}>
+                  <p className={"empty-container-title"}>
+                    여행 계획이 없습니다.
+                  </p>
+                  <p className={"empty-container-description"}>
+                    새로운 계획을 추가해보세요!
+                  </p>
+                </div>
+              ) : (
+                <div className={"plan-container-card"}>
+                  {planList.map((plan) => (
+                    <ul
+                      key={plan.id}
+                      onClick={() => navigate(`/plan/view/${plan.id}`)}
+                    >
+                      <li className={"title"}>{plan.title}</li>
+                      <li>{plan.description}</li>
+                      <li>{plan.destination}</li>
+                      <li>
+                        {plan.startDate} ~ {plan.endDate}
+                      </li>
+                    </ul>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
 
       {/* 회원가입 유도 배너 */}
       {isAuthenticated || (
         <section className={"info-banner"}>
           <div className={"info-banner-wrap"}>
             <p>회원가입 없이도 투어 상품을 둘러보실 수 있습니다.</p>
-            <button type={"button"} onClick={() => navigate("/member/login")}>
+            <button type={"button"} onClick={() => navigate("/member/signup")}>
               회원가입 후 더 많은 혜택 누리기
             </button>
           </div>
@@ -404,7 +425,11 @@ export function Index() {
                     key={notice.id}
                     onClick={() => navigate(`/notice/view/${notice.id}`)}
                   >
-                    <li>{notice.title}</li>
+                    <li>
+                      {notice.title.length > 25
+                        ? `${notice.title.substring(0, 29)}...`
+                        : notice.title}
+                    </li>
                     <li>{notice.writer}</li>
                     <li>{formattedDate(notice.creationDate)}</li>
                   </ul>

@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { AuthenticationContext } from "../context/AuthenticationProvider.jsx";
 
 function Navbar() {
+  const [member, setMember] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
@@ -12,10 +13,10 @@ function Navbar() {
   const dropdownRef = useRef(null);
   const navContainerRef = useRef(null);
   const hamburgerRef = useRef(null);
-  const { email, nickname, isAdmin, isAuthenticated, logout } = useContext(
-    AuthenticationContext,
-  );
+  const { email, isAdmin, isAuthenticated, logout, updatedNickname } =
+    useContext(AuthenticationContext);
 
+  // console.log("확인용", updatedNickname);
   const isActive = (path) => location.pathname.startsWith(path);
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
@@ -64,7 +65,7 @@ function Navbar() {
         <ul>
           {isAuthenticated && (
             <div className={"mobile-mypage"}>
-              <p className={"mobile-user-info"}>{nickname} 님</p>
+              <p className={"mobile-user-info"}>{updatedNickname} 님</p>
 
               <p
                 className={"mobile-user-mypage"}
@@ -155,7 +156,7 @@ function Navbar() {
         {isAuthenticated && (
           <div ref={dropdownRef}>
             <p className={"user-info"}>
-              <span className={"user"}>{nickname}</span>
+              <span className={"user"}>{updatedNickname}</span>
               님, 환영합니다.
             </p>
             <button className={"user-button"} onClick={toggleDropdown}>
@@ -174,7 +175,6 @@ function Navbar() {
                     className={isActive("/cart") ? "active" : ""}
                     onClick={() => handleNavigate("/cart")}
                   >
-                    {" "}
                     장바구니
                   </li>
 

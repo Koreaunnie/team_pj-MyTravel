@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -29,14 +30,24 @@ public class IndexController {
     public Map<String, Object> getIndex(@RequestParam(value = "keyword", defaultValue = "") String keyword,
                                         Authentication authentication) {
         Map<String, Object> result = new HashMap<>();
+        String writer;
 
-        String writer = authentication.getName();
+        if (authentication != null) {
+            writer = authentication.getName();
 
-        result.put("allPlans", planService.all(writer));
-        result.put("plans", planService.getMainPagePlans(keyword, writer));
-        result.put("tours", tourService.getMainPageTours(keyword));
-        result.put("community", communityService.getMainPageCommunity(keyword));
-        result.put("notice", noticeService.getMainPageNotice());
-        return result;
+            result.put("allPlans", planService.all(writer));
+            result.put("plans", planService.getMainPagePlans(keyword, writer));
+            result.put("tours", tourService.getMainPageTours(keyword));
+            result.put("community", communityService.getMainPageCommunity(keyword));
+            result.put("notice", noticeService.getMainPageNotice());
+            return result;
+        } else {
+            result.put("allPlans", List.of());
+            result.put("plans", List.of());
+            result.put("tours", tourService.getMainPageTours(keyword));
+            result.put("community", communityService.getMainPageCommunity(keyword));
+            result.put("notice", noticeService.getMainPageNotice());
+            return result;
+        }
     }
 }

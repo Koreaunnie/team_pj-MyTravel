@@ -24,7 +24,7 @@ public class WalletController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> add(@RequestBody Wallet wallet,
                                                    Authentication authentication) {
-        System.out.println(wallet);
+//        System.out.println(wallet);
         wallet.setWriter(authentication.getName());
 
         if (service.add(wallet)) {

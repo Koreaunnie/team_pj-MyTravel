@@ -52,7 +52,7 @@ function TourUpdate() {
     } else {
       setRemoveFiles(removeFiles.filter((f) => f !== fileName));
     }
-    console.log("삭제할 파일: ", removeFiles);
+    // console.log("삭제할 파일: ", removeFiles);
   };
 
   const handleSaveClick = () => {

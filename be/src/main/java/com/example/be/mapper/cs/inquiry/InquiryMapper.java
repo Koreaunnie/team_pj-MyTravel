@@ -78,9 +78,9 @@ public interface InquiryMapper {
 
     @Delete("""
         DELETE FROM inquiry
-        WHERE id = #{id} AND writer = #{writer}
+        WHERE id = #{id}
         """)
-    int deleteById(int id, String writer);
+    int deleteById(int id);
 
     @Select("""
         SELECT *
