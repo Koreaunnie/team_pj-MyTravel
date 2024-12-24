@@ -49,9 +49,10 @@ function InquiryView(props) {
         navigate("/cs/inquiry/list");
       })
       .catch((error) => {
+        console.error(error);
         toaster.create({
           type: "error",
-          description: "비밀번호가 일치하지 않습니다.",
+          description: "오류가 발생했습니다.",
         });
         setPassword("");
       });
@@ -80,8 +81,8 @@ function InquiryView(props) {
             목록
           </button>
 
-          {hasAccess(inquiry.writer) && (
-            <div>
+          <div>
+            {hasAccess(inquiry.writer) && (
               <button
                 type={"button"}
                 className={"btn btn-dark"}
@@ -89,7 +90,9 @@ function InquiryView(props) {
               >
                 수정
               </button>
+            )}
 
+            {(hasAccess(inquiry.writer) || isAdmin) && (
               <button
                 type={"button"}
                 className={"btn btn-warning"}
@@ -97,8 +100,8 @@ function InquiryView(props) {
               >
                 삭제
               </button>
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
         <table className={"table-view"}>

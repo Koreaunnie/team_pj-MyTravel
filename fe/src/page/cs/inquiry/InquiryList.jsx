@@ -175,7 +175,7 @@ function InquiryList(props) {
           <div>
             {!isAdmin && (
               <button className={"btn btn-blue"} onClick={checkLoginOrNot}>
-                작성
+                문의
               </button>
             )}
 

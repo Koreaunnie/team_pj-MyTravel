@@ -41,8 +41,8 @@ public class InquiryService {
         return cnt == 1;
     }
 
-    public boolean delete(int id, String writer) {
-        int cnt = mapper.deleteById(id, writer);
+    public boolean delete(int id) {
+        int cnt = mapper.deleteById(id);
         return cnt == 1;
     }
 

@@ -108,12 +108,14 @@ public class InquiryController {
             )));
         }
 
-        if (service.delete(id, authentication.getName())) {
+        if (service.delete(id)) {
             // 성공
+            System.out.println("성공");
             return ResponseEntity.ok(Map.of("message", Map.of(
                 "type", "success", "text", "문의 글이 삭제되었습니다.")));
         } else {
             // 실패
+            System.out.println("실패");
             return ResponseEntity.badRequest().body(Map.of("message", Map.of(
                 "type", "warning", "text", "삭제 중 오류가 생겼습니다.")));
         }
