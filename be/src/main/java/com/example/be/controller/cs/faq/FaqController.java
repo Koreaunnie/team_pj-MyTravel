@@ -82,12 +82,10 @@ public class FaqController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable int id,
                                                       Authentication authentication) {
-
-        String userEmail = authentication.getName();
-        String userNickname = memberService.getNicknameByEmail(userEmail);
+        
         Faq faq = service.view(id);
 
-        if (faq != null && faq.getWriter().equals(userNickname) && memberService.hasAccess(userEmail, authentication)) {
+        if (faq != null && memberService.isAdmin(authentication)) {
             if (service.delete(id)) {
                 return ResponseEntity.ok().body(Map.of(
                     "message", Map.of("type", "success",

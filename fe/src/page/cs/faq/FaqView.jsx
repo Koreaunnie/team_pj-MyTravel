@@ -43,6 +43,7 @@ function FaqView(props) {
           type: data.message.type,
           description: data.message.text,
         });
+        setDeleteModalOpen(false);
       });
   };
 
@@ -67,7 +68,7 @@ function FaqView(props) {
             목록
           </button>
 
-          {isAdmin && hasAccess && (
+          {isAdmin && (
             <button
               type={"button"}
               className={"btn btn-dark"}
@@ -77,7 +78,7 @@ function FaqView(props) {
             </button>
           )}
 
-          {isAdmin && hasAccess && (
+          {isAdmin && (
             <button
               type={"button"}
               className={"btn btn-warning"}
