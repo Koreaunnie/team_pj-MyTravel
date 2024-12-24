@@ -32,18 +32,18 @@ public class PlanController {
         if (service.validate(plan)) {
             if (service.add(plan, authentication)) {
                 return ResponseEntity.ok().body(Map.of(
-                        "message", Map.of("type", "success",
-                                "text", "여행이 저장되었습니다."),
-                        "id", plan.getId())); // 자동 생성된 id 응답으로 보내기
+                    "message", Map.of("type", "success",
+                        "text", "여행이 저장되었습니다."),
+                    "id", plan.getId())); // 자동 생성된 id 응답으로 보내기
             } else {
                 return ResponseEntity.internalServerError().body(Map.of(
-                        "message", Map.of("type", "warning",
-                                "text", "여행이 저장 중 문제가 발생하였습니다.")));
+                    "message", Map.of("type", "warning",
+                        "text", "여행이 저장 중 문제가 발생하였습니다.")));
             }
         } else {
             return ResponseEntity.badRequest()
-                    .body(Map.of("message", Map.of("type", "warning",
-                            "text", "여행명은 비어있을 수 없습니다.")));
+                .body(Map.of("message", Map.of("type", "warning",
+                    "text", "여행명은 비어있을 수 없습니다.")));
         }
     }
 
@@ -55,7 +55,7 @@ public class PlanController {
                                     @RequestParam(value = "sk", defaultValue = "") String searchKeyword,
                                     Authentication authentication) {
         String writer = authentication.getName();
-        System.out.println(searchKeyword);
+//        System.out.println(searchKeyword);
         return service.list(page, searchType, searchKeyword, writer);
     }
 
@@ -83,7 +83,7 @@ public class PlanController {
         if (!isValid) {
             // 유효하지 않으면 바로 반환
             return ResponseEntity.badRequest()
-                    .body(Map.of("message", Map.of("type", "warning", "text", "여행명은 비어있을 수 없습니다.")));
+                .body(Map.of("message", Map.of("type", "warning", "text", "여행명은 비어있을 수 없습니다.")));
         }
 
         // 2. 업데이트
@@ -91,10 +91,10 @@ public class PlanController {
 
         if (isUpdated) {
             return ResponseEntity.ok(Map.of("message", Map.of(
-                    "type", "success", "text", "수정되었습니다")));
+                "type", "success", "text", "수정되었습니다")));
         } else {
             return ResponseEntity.badRequest().body(Map.of("message", Map.of(
-                    "type", "warning", "text", "수정 중 문제가 발생했습니다.")));
+                "type", "warning", "text", "수정 중 문제가 발생했습니다.")));
         }
     }
 
@@ -111,11 +111,11 @@ public class PlanController {
         if (memberService.hasAccess(userEmail, authentication)) {
             service.delete(id);
             return ResponseEntity.ok().body(Map.of(
-                    "message", Map.of("type", "success", "text", "여행이 삭제되었습니다.")
+                "message", Map.of("type", "success", "text", "여행이 삭제되었습니다.")
             ));
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of(
-                    "message", Map.of("type", "warning", "text", "권한이 없습니다.")
+                "message", Map.of("type", "warning", "text", "권한이 없습니다.")
             ));
         }
     }

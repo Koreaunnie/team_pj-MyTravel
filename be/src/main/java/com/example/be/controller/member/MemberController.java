@@ -25,7 +25,7 @@ public class MemberController {
 
     @PutMapping("auth/{email}")
     public ResponseEntity<Map<String, Object>> giveAuth(@PathVariable String email) {
-        System.out.println(email);
+//        System.out.println(email);
         if (service.giveAuth(email)) {
             return ResponseEntity.ok(Map.of("message",
                 Map.of("type", "success", "text", "파트너 기업으로 변경되었습니다.")));

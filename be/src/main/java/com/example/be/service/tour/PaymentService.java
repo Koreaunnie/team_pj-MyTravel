@@ -47,7 +47,7 @@ public class PaymentService {
     }
 
     public Map<String, Object> allPayment(Integer page, String searchType, String keyword) {
-        System.out.println("서비스" + searchType);
+//        System.out.println("서비스" + searchType);
         int offset = (page - 1) * 10;
 
         //paidList
