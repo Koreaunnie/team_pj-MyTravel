@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Box, Center, Group, Input, Spinner, Stack } from "@chakra-ui/react";
 import { Field } from "../../components/ui/field.jsx";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Button } from "../../components/ui/button.jsx";
 import {
@@ -24,6 +24,7 @@ import {
   FileUploadTrigger,
 } from "../../components/ui/file-button.jsx";
 import { HiUpload } from "react-icons/hi";
+import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 
 export function MemberEdit() {
   const [member, setMember] = useState(null);
@@ -36,7 +37,9 @@ export function MemberEdit() {
   const [uploadFiles, setUploadFiles] = useState("");
 
   const { email } = useParams();
-  const navigate = useNavigate();
+  const { updatedNickname, setUpdatedNickname } = useContext(
+    AuthenticationContext,
+  );
 
   useEffect(() => {
     axios.get(`/api/member/${email}`).then((res) => {
@@ -70,6 +73,7 @@ export function MemberEdit() {
           type: message.type,
           description: message.text,
         });
+        setUpdatedNickname(nickname);
       })
       .catch((e) => {
         const message = e.response.data.message;
@@ -165,7 +169,7 @@ export function MemberEdit() {
                 <input
                   type={"password"}
                   id={"password"}
-                  value={password}
+                  defaultValue={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </li>
@@ -173,7 +177,7 @@ export function MemberEdit() {
 
             <li>
               <label htmlFor="name">이름</label>
-              <input type={"text"} id={"name"} value={member.name} />
+              <input type={"text"} id={"name"} defaultValue={member.name} />
               <span>
                 이름은 수정이 불가합니다. 수정을 원하시면 문의게시판에
                 남겨주세요.

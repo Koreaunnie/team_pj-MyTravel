@@ -3,7 +3,6 @@ import "./common.css";
 import "./Navbar.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AuthenticationContext } from "../context/AuthenticationProvider.jsx";
-import axios from "axios";
 
 function Navbar() {
   const [member, setMember] = useState([]);
@@ -14,10 +13,10 @@ function Navbar() {
   const dropdownRef = useRef(null);
   const navContainerRef = useRef(null);
   const hamburgerRef = useRef(null);
-  const { email, isAdmin, isAuthenticated, logout } = useContext(
-    AuthenticationContext,
-  );
+  const { email, isAdmin, isAuthenticated, logout, updatedNickname } =
+    useContext(AuthenticationContext);
 
+  console.log("확인용", updatedNickname);
   const isActive = (path) => location.pathname.startsWith(path);
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
@@ -56,12 +55,6 @@ function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  useEffect(() => {
-    if (email) {
-      axios.get(`/api/member/${email}`).then((res) => setMember(res.data));
-    }
-  }, [email]);
-
   return (
     <nav className="navbar">
       <h1 className="logo" onClick={() => navigate("/")}>
@@ -72,7 +65,7 @@ function Navbar() {
         <ul>
           {isAuthenticated && (
             <div className={"mobile-mypage"}>
-              <p className={"mobile-user-info"}>{member.nickname} 님</p>
+              <p className={"mobile-user-info"}>{updatedNickname} 님</p>
 
               <p
                 className={"mobile-user-mypage"}
@@ -163,7 +156,7 @@ function Navbar() {
         {isAuthenticated && (
           <div ref={dropdownRef}>
             <p className={"user-info"}>
-              <span className={"user"}>{member.nickname}</span>
+              <span className={"user"}>{updatedNickname}</span>
               님, 환영합니다.
             </p>
             <button className={"user-button"} onClick={toggleDropdown}>

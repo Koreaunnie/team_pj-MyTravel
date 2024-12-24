@@ -1,10 +1,12 @@
 import React, { createContext, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
+import axios from "axios";
 
 export const AuthenticationContext = createContext(null);
 
 function AuthenticationProvider({ children }) {
   const [userToken, setUserToken] = useState({});
+  const [updatedNickname, setUpdatedNickname] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -13,6 +15,14 @@ function AuthenticationProvider({ children }) {
       setUserToken(decoded);
     }
   }, []);
+
+  useEffect(() => {
+    if (userToken.sub) {
+      axios.get(`/api/member/${userToken.sub}`).then((res) => {
+        setUpdatedNickname(res.data.nickname);
+      });
+    }
+  }, [userToken.sub]);
 
   function login(token) {
     localStorage.setItem("token", token);
@@ -60,6 +70,8 @@ function AuthenticationProvider({ children }) {
         hasAccess,
         userToken,
         hasAccessByNickName,
+        updatedNickname,
+        setUpdatedNickname,
       }}
     >
       {children}
