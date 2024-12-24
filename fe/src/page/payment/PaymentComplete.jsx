@@ -95,7 +95,7 @@ function PaymentComplete(props) {
   };
 
   return (
-    <div className={"tour"}>
+    <div className={"payment-complete"}>
       <Breadcrumb
         depth1={"투어"}
         navigateToDepth1={() => navigate(`/tour/list`)}
@@ -105,7 +105,7 @@ function PaymentComplete(props) {
         navigateToDepth3={() => navigate(`/payment/complete`)}
       />
       <h1>결제 완료</h1>
-      <main>
+      <div className={"body-normal"}>
         <h2>결제 번호: {paymentId}</h2>
         <table className={"table-list"}>
           <thead>
@@ -182,7 +182,7 @@ function PaymentComplete(props) {
         >
           내 결제 내역으로 이동
         </button>
-      </main>
+      </div>
     </div>
   );
 }

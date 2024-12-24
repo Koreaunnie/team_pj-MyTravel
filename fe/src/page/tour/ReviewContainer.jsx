@@ -179,69 +179,70 @@ function ReviewContainer({ tourId, onReviewUpdate }) {
       </ul>
 
       {/*내역에서 후기 작성할 상품 선택: payment_id 전달*/}
-      {activeTab === "add" && paidList.length === 0 ? (
-        <div className={"empty-container"}>
-          <p>
-            <FaRegQuestionCircle
-              className={"empty-container-icon"}
-              style={{ color: "#a1a1a8" }}
-            />
-          </p>
-          <p className={"empty-container-title"}>
-            후기를 작성하실 수 없습니다.
-          </p>
-          <p className={"empty-container-description"}>
-            투어 상품을 이용하신 고객님만 후기를 작성하실 수 있습니다.
-          </p>
-        </div>
-      ) : (
-        <div>
-          {paymentHistoryCheck() ? (
-            <div className={"review-history"}>
-              <h2>후기를 작성할 내역을 선택해주세요.</h2>
+      {activeTab === "add" &&
+        (paidList.length === 0 ? (
+          <div className={"empty-container"}>
+            <p>
+              <FaRegQuestionCircle
+                className={"empty-container-icon"}
+                style={{ color: "#a1a1a8" }}
+              />
+            </p>
+            <p className={"empty-container-title"}>
+              후기를 작성하실 수 없습니다.
+            </p>
+            <p className={"empty-container-description"}>
+              투어 상품을 이용하신 고객님만 후기를 작성하실 수 있습니다.
+            </p>
+          </div>
+        ) : (
+          <div>
+            {paymentHistoryCheck() ? (
+              <div className={"review-history"}>
+                <h2>후기를 작성할 내역을 선택해주세요.</h2>
 
-              <table className={"table-list"}>
-                <thead>
-                  <tr>
-                    <th>결제일</th>
-                    <th>결제번호</th>
-                    <th>여행 일정</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {paidList.map((tour) => (
-                    <tr
-                      key={tour.paymentId}
-                      onClick={() => setSelectedPayment(tour.paymentId)}
-                      style={{
-                        backgroundColor:
-                          selectedPayment === tour.paymentId
-                            ? "#cdddff"
-                            : "transparent",
-                      }}
-                    >
-                      <td>{formattedDateTime(tour.paidAt)}</td>
-                      <td>{tour.paymentId}</td>
-                      <td>
-                        {tour.startDate} ~ {tour.endDate}
-                      </td>
+                <table className={"table-list"}>
+                  <thead>
+                    <tr>
+                      <th>결제일</th>
+                      <th>결제번호</th>
+                      <th>여행 일정</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : null}
+                  </thead>
 
-          {selectedPayment && (
-            <ReviewAdd
-              tourId={tourId}
-              onSaveClick={handleSaveReviewClick}
-              onRateChange={handleRateChange}
-            />
-          )}
-        </div>
-      )}
+                  <tbody>
+                    {paidList.map((tour) => (
+                      <tr
+                        key={tour.paymentId}
+                        onClick={() => setSelectedPayment(tour.paymentId)}
+                        style={{
+                          backgroundColor:
+                            selectedPayment === tour.paymentId
+                              ? "#cdddff"
+                              : "transparent",
+                        }}
+                      >
+                        <td>{formattedDateTime(tour.paidAt)}</td>
+                        <td>{tour.paymentId}</td>
+                        <td>
+                          {tour.startDate} ~ {tour.endDate}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : null}
+
+            {selectedPayment && (
+              <ReviewAdd
+                tourId={tourId}
+                onSaveClick={handleSaveReviewClick}
+                onRateChange={handleRateChange}
+              />
+            )}
+          </div>
+        ))}
 
       {/*목록*/}
       {activeTab === "list" &&

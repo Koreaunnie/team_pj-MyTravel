@@ -11,6 +11,15 @@
     margin: 0 10px;
 }
 
+.payment-complete {
+    min-height: calc(100vh - 140px);
+    padding: 60px;
+}
+
+.payment-complete h2 {
+    margin-bottom: 50px;
+}
+
 .payment-history {
     background: var(--bg-gray-color);
     min-height: calc(100vh - 170px);
