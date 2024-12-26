@@ -317,7 +317,6 @@ section.plan-container {
 /*------------------- tour -------------------*/
 .index-tour-container {
     width: 1000px;
-    height: 400px;
     margin: 50px auto;
     box-sizing: border-box;
 }
@@ -969,7 +968,6 @@ section.plan-container {
     /*------------------- tour -------------------*/
     .index-tour-container {
         width: 95%;
-        height: 800px;
         position: relative;
         margin: 20px auto;
     }
@@ -984,13 +982,15 @@ section.plan-container {
     }
 
     .index-tour-container .index-tour-container-header .more-btn {
-        width: 100%;
+        width: 95%;
         height: 60px;
         color: #000;
         position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
         border: 1px solid var(--table-border-color);
-        border-radius: 10px;
-        bottom: 0;
+        border-radius: 8px;
+        bottom: 20px;
     }
 
     .index-tour-container .index-tour-container-body .index-tour-container-card {
@@ -1038,6 +1038,7 @@ section.plan-container {
     .index-community-container {
         width: 95%;
         padding: 10px;
+        margin-top: 0;
     }
 
     .index-community-container .index-community-container-wrap .index-community-container-header h1 {
