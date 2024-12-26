@@ -98,15 +98,24 @@
     right: 10px;
 }
 
-/*------------------- 화면 크기가 768px 이하 (태블릿 화면) -------------------*/
-@media (max-width: 768px) {
+/*------------------- 화면 크기가 1200px 이하 -------------------*/
+@media (max-width: 1200px) {
 
     .payment .body-normal {
         width: 95%;
     }
 
+    .payment-history {
+        padding: 10px;
+    }
+
     .payment-history .body-normal {
         width: 95%;
+    }
+
+    .payment-history .payment-list {
+        width: 100%;
+        margin-top: 10px;
     }
 
     .payment-history .payment-list .payment-list-header li:nth-child(1) {

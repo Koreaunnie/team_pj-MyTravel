@@ -83,9 +83,9 @@
 }
 
 .community .btn-wrap {
-    margin: 20px 10px 0 0;
+    margin: 10px 10px 0 0;
     display: flex;
-    justify-content: space-between;
+    justify-content: end;
 }
 
 .community .btn-wrap .community-login {
@@ -197,21 +197,7 @@
 
 /*------------------- 화면 크기가 768px 이하 (태블릿 화면) -------------------*/
 @media (max-width: 768px) {
-    .community .body-normal {
-        width: 90%;
-    }
 
-    .community-container {
-        width: 100%;
-        padding: 0;
-    }
-}
-
-
-/*------------------- 화면 크기가 480px 이하 (모바일 화면) -------------------*/
-@media (max-width: 480px) {
-
-    /* ---------------- CommunityList ----------------*/
     .community {
         width: 100%;
         background: none;
@@ -224,6 +210,16 @@
         border-left: 0;
         border-right: 0;
     }
+
+    .community-container {
+        width: 100%;
+        padding: 0;
+    }
+}
+
+
+/*------------------- 화면 크기가 480px 이하 (모바일 화면) -------------------*/
+@media (max-width: 480px) {
 
     .community .btn-wrap .community-login {
         display: none;

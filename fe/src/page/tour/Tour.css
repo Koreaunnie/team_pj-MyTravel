@@ -28,7 +28,7 @@
 }
 
 .tour-search-container {
-    padding: 30px;
+    padding: 20px;
     border-bottom: 1px solid var(--table-border-color);
     position: sticky;
     top: 100px;
@@ -45,14 +45,14 @@
     border: 1px solid #dee2e6;
     box-sizing: border-box;
     border-radius: 50px;
-    height: 60px;
+    height: 50px;
     background: #fff;
 }
 
 .tour-search-wrap .tour-search-select {
     border: none;
     border-radius: 0;
-    height: 60px;
+    height: 50px;
     padding: 0 10px;
     background: none;
 }
@@ -62,7 +62,7 @@
     border: none;
     box-sizing: border-box;
     border-radius: 0;
-    height: 60px;
+    height: 50px;
     padding: 0 10px;
 }
 
@@ -71,7 +71,7 @@
 }
 
 .tour-search-wrap .tour-search-btn {
-    padding: 20px;
+    padding: 10px;
     cursor: pointer;
 }
 
@@ -169,7 +169,7 @@
 /*--------------*/
 .tour-list-container .tour-list {
     width: 100%;
-    height: 200px;
+    height: 175px;
     padding: 20px;
     border-bottom: 1px solid var(--table-border-color);
     position: relative;
@@ -185,14 +185,13 @@
 }
 
 .tour-list-container .tour-list .tour-list-description {
-    margin: 10px;
+    margin: 10px 0;
     color: var(--font-gray-color);
     font-size: 0.9rem;
-    height: 70px;
+    height: 50px;
     width: calc(100% - 250px);
     overflow: hidden;
     text-overflow: ellipsis;
-
 }
 
 .tour-list-container .tour-list .tour-list-location {
@@ -214,7 +213,7 @@
 .tour-list-container .tour-list .tour-list-price {
     position: absolute;
     right: 40px;
-    bottom: 18px;
+    bottom: 12px;
     font-weight: bold;
 }
 
@@ -223,7 +222,7 @@
     height: 110px;
     position: absolute;
     right: 30px;
-    top: 30px;
+    top: 18px;
     border-radius: 10px;
     overflow: hidden;
 }
@@ -437,12 +436,8 @@
 
     /*-------*/
     .tour-list-container .tour-list {
-        height: 180px;
         padding: 15px 5px;
-    }
-
-    .tour-list-container .tour-list .tour-list-title {
-        width: calc(100% - 130px);
+        height: 150px;
     }
 
     .tour-list-container .tour-list .tour-list-description {
@@ -452,19 +447,18 @@
 
     .tour-list-container .tour-list .tour-list-location {
         left: 10px;
-        bottom: 33px;
+        bottom: 29px;
     }
 
     .tour-list-container .tour-list .tour-list-review {
         left: 10px;
-        bottom: 10px;
+        bottom: 17px;
         height: 10px;
     }
 
-
     .tour-list-container .tour-list .tour-list-price {
-        right: 15px;
-        bottom: 13px;
+        right: 140px;
+        bottom: 20px;
     }
 
     .tour-list-container .tour-list .tour-list-img {
@@ -587,23 +581,30 @@
         right: 10px;
     }
 
-    .tour-list-container .tour-list {
-        height: 155px;
-    }
-
     .tour-list-container .tour-list .tour-list-title {
         width: 100%;
     }
 
+    .tour-list-container .tour-list {
+        height: 130px;
+    }
+
     .tour-list-container .tour-list .tour-list-description {
         width: 100%;
-        height: 50px;
+        height: 30px;
+    }
+
+    .tour-list-container .tour-list .tour-list-location {
+        bottom: 35px;
     }
 
     .tour-list-container .tour-list .tour-list-review {
-        margin-bottom: 10px;
+        bottom: 20px;
     }
 
+    .tour-list-container .tour-list .tour-list-price {
+        right: 10px;
+    }
 
     .tour-list-container .tour-list .tour-list-img {
         display: none;

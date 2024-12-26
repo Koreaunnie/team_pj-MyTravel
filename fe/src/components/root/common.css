@@ -162,7 +162,7 @@ h1 {
     text-align: center;
     font-size: 1.6rem;
     font-weight: bold;
-    margin: 15px 0;
+    margin: 10px 0;
 }
 
 h2 {
@@ -782,6 +782,11 @@ form .required {
     .body-narrow {
         width: 80%;
         display: block;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+        margin: 10px 0 5px 0;
     }
 
     .calendar-list {
