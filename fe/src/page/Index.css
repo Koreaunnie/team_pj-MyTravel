@@ -924,6 +924,11 @@ section.plan-container {
         line-height: 45px;
     }
 
+    .main-search-wrap .main-search-wrap-btn {
+        cursor: pointer;
+        padding: 10px 5px;
+    }
+
     .main-search-wrap input[type=search] {
         height: 45px;
         line-height: 45px;
