@@ -128,6 +128,7 @@
     font-weight: bold;
     font-size: 1rem;
     white-space: nowrap;
+    text-overflow: ellipsis;
     overflow: hidden;
 }
 
@@ -139,6 +140,8 @@
     margin: 5px 0;
     height: 60px;
     color: var(--font-gray-color);
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .tour-box-container .tour-box li:nth-child(3) {
@@ -177,6 +180,7 @@
     font-weight: bold;
     width: calc(100% - 250px);
     overflow: hidden;
+    text-overflow: ellipsis;
     text-wrap: nowrap;
 }
 
@@ -187,6 +191,8 @@
     height: 70px;
     width: calc(100% - 250px);
     overflow: hidden;
+    text-overflow: ellipsis;
+
 }
 
 .tour-list-container .tour-list .tour-list-location {
@@ -561,6 +567,28 @@
 
     .tour-box-container .tour-box {
         width: 100%;
+        height: 250px;
+    }
+
+    .tour-box-container .tour-box li:nth-child(2) {
+        height: 30px;
+    }
+
+    .tour-box-container .tour-box li:nth-child(3) {
+        font-size: 0.9rem;
+        bottom: 33px;
+    }
+
+    .tour-box-container .tour-box li:nth-child(4) {
+        bottom: 10px;
+    }
+
+    .tour-box-container .tour-box li:nth-child(5) {
+        right: 10px;
+    }
+
+    .tour-list-container .tour-list {
+        height: 155px;
     }
 
     .tour-list-container .tour-list .tour-list-title {
@@ -569,7 +597,13 @@
 
     .tour-list-container .tour-list .tour-list-description {
         width: 100%;
+        height: 50px;
     }
+
+    .tour-list-container .tour-list .tour-list-review {
+        margin-bottom: 10px;
+    }
+
 
     .tour-list-container .tour-list .tour-list-img {
         display: none;
