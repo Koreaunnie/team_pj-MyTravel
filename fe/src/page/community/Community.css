@@ -89,11 +89,14 @@
 }
 
 .community .btn-wrap .community-login {
+    width: 100%;
     display: flex;
+    justify-content: end;
 }
 
 .community .btn-wrap .community-login p {
     margin-top: 20px;
+    font-size: 0.9rem;
 }
 
 .community .search-form {
@@ -128,9 +131,6 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-.community-title {
     display: inline-flex;
     align-items: center;
 }

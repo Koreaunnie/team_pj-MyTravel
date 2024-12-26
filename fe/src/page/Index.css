@@ -501,14 +501,15 @@ section.plan-container {
     height: 1.5rem;
     text-overflow: ellipsis;
     overflow: hidden;
-    width: 80%;
+    flex: 1;
+    margin-right: 10px;
 }
 
 .index-community-container .index-community-container-wrap .index-community-container-list ul li:nth-child(2) {
     font-size: 0.9rem;
     text-overflow: ellipsis;
     overflow: hidden;
-    width: 19%;
+    flex-shrink: 0;
     text-align: right;
     font-weight: bold;
 }
