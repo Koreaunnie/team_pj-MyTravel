@@ -76,7 +76,7 @@
 }
 
 .community .body-normal {
-    background-color: #fff;
+    background: #fff;
     margin-bottom: 0;
     border-left: 1px solid var(--input-border-color);
     border-right: 1px solid var(--input-border-color);
@@ -128,10 +128,9 @@
     font-weight: bold;
     margin-bottom: 10px;
     flex: 1;
-    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    display: inline-flex;
+    white-space: nowrap;
     align-items: center;
 }
 
@@ -211,6 +210,36 @@
 
 /*------------------- 화면 크기가 480px 이하 (모바일 화면) -------------------*/
 @media (max-width: 480px) {
+
+    /* ---------------- CommunityList ----------------*/
+    .community {
+        width: 100%;
+        background: none;
+    }
+
+    .community .body-normal {
+        width: 100%;
+        background-color: #fff;
+        margin-bottom: 0;
+        border-left: 0;
+        border-right: 0;
+    }
+
+    .community .btn-wrap .community-login {
+        display: none;
+    }
+
+    .community-header .community-title {
+        width: 100%;
+    }
+
+    .community-header .community-title {
+        width: 100%;
+    }
+
+    .community-header .community-writer {
+        display: none;
+    }
 }
 
 
