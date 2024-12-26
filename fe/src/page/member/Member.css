@@ -258,6 +258,10 @@
 
 /*------------------- 화면 크기가 480px 이하 (모바일 화면) -------------------*/
 @media (max-width: 480px) {
+    .member .body-narrow {
+        width: 85%;
+    }
+
     .move-to-button {
         display: block;
         justify-content: center;

@@ -41,11 +41,11 @@ function MemberLogin(props) {
   }
 
   return (
-    <div className={"member body-narrow"}>
+    <div className={"member"}>
       <h1>로그인</h1>
       <h2>로그인 후 마이트래블을 이용해보세요.</h2>
 
-      <div className={"member-form"}>
+      <div className={"member-form body-narrow"}>
         <ul className={"title"}>
           <li>
             <label htmlFor="email">이메일</label>
