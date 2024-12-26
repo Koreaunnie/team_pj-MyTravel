@@ -240,6 +240,10 @@
     .community-header .community-writer {
         display: none;
     }
+
+    .community-date {
+        font-size: 0.8rem;
+    }
 }
 
 
