@@ -170,7 +170,7 @@ export function Index() {
                 className={"index-calendar-btn"}
                 onClick={() => navigate(`/member/login`)}
               >
-                내 여행 일정 짜기
+                내 여행 일정 만들기
               </button>
             )}
             {isAuthenticated ? (
