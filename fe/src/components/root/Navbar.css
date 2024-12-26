@@ -176,6 +176,10 @@
 
 
 @media (max-width: 1000px) {
+    .navbar .logo {
+        width: 100%;
+    }
+
     .navbar .nav-container {
         display: block;
         justify-content: left;
