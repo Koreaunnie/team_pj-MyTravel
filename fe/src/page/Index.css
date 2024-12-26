@@ -406,12 +406,12 @@ section.plan-container {
     font-weight: bold;
     position: absolute;
     bottom: 35px;
+    color: var(--main-blue);
 }
 
 .index-tour-container .index-tour-container-body .index-tour-container-card li:nth-child(4) {
     font-size: 0.9rem;
     font-weight: bold;
-    color: var(--font-gray-color);
     position: absolute;
     bottom: 10px;
 }

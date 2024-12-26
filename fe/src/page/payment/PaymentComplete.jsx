@@ -5,6 +5,7 @@ import { Breadcrumb } from "../../components/root/Breadcrumb.jsx";
 import axios from "axios";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
+import { formatNumberWithCommas } from "../../components/utils/FormatNumberWithCommas.jsx";
 
 function PaymentComplete(props) {
   const location = useLocation();
@@ -127,7 +128,7 @@ function PaymentComplete(props) {
                 <td>
                   {product.startDate} ~ {product.endDate}
                 </td>
-                <td>{product.price}</td>
+                <td>{formatNumberWithCommas(product.price)}</td>
                 {/*<td>*/}
                 {/*  {walletButtons[product.product] ? (*/}
                 {/*    <button*/}
