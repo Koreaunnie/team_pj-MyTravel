@@ -595,11 +595,13 @@
     }
 
     .tour-list-container .tour-list .tour-list-location {
-        bottom: 35px;
+        bottom: 37px;
+        left: 5px;
     }
 
     .tour-list-container .tour-list .tour-list-review {
-        bottom: 20px;
+        bottom: 22px;
+        left: 5px;
     }
 
     .tour-list-container .tour-list .tour-list-price {
