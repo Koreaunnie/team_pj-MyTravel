@@ -394,12 +394,19 @@ section.plan-container {
     font-size: 0.9rem;
 }
 
+.index-tour-container .index-tour-container-body .index-tour-container-card li:nth-child(1) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .index-tour-container .index-tour-container-body .index-tour-container-card li:nth-child(2) {
     color: var(--font-gray-color);
     margin-top: 5px;
     height: 45px;
     overflow: hidden;
-    text-overflow: initial;
+    text-overflow: ellipsis;
+    width: 95%;
 }
 
 .index-tour-container .index-tour-container-body .index-tour-container-card li:nth-child(3) {
@@ -499,8 +506,9 @@ section.plan-container {
 
 .index-community-container .index-community-container-wrap .index-community-container-list ul li:nth-child(1) {
     height: 1.5rem;
-    text-overflow: ellipsis;
+    white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;
     flex: 1;
     margin-right: 10px;
 }
@@ -590,6 +598,9 @@ section.plan-container {
 .notice-section-wrap .notice-section-body .notice-section-list li {
     margin: 6px 0;
     cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .notice-section-wrap .notice-section-body .notice-section-list li:nth-child(2) {
@@ -829,7 +840,7 @@ section.plan-container {
         width: 100%;
         display: flex;
         justify-content: space-between;
-        margin: 10px 0;
+        margin: 5px 0;
         cursor: pointer;
     }
 
@@ -910,6 +921,17 @@ section.plan-container {
 
 /*------------------- 화면 크기가 480px 이하 (모바일 화면) -------------------*/
 @media (max-width: 480px) {
+    .main-search-wrap {
+        width: 95%;
+        height: 45px;
+        line-height: 45px;
+    }
+
+    .main-search-wrap input[type=search] {
+        height: 45px;
+        line-height: 45px;
+    }
+
     .main-section-wrap {
         width: 95%;
     }
@@ -952,7 +974,6 @@ section.plan-container {
         height: 800px;
         position: relative;
         margin: 20px auto;
-        border: 1px solid green;
     }
 
     .index-tour-container .index-tour-container-header {
@@ -961,8 +982,7 @@ section.plan-container {
 
     .index-tour-container .index-tour-container-header h1 {
         font-weight: bold;
-        font-size: 1rem;
-        border: 1px solid red;
+        font-size: 1.1rem;
     }
 
     .index-tour-container .index-tour-container-header .more-btn {
@@ -995,29 +1015,64 @@ section.plan-container {
     }
 
     .index-tour-container .index-tour-container-body .index-tour-container-card .image {
-        width: 150px;
+        width: 0;
+        display: none;
+    }
 
+    .index-tour-container .index-tour-container-body .index-tour-container-card .image img {
+        display: none;
     }
 
     .index-tour-container .index-tour-container-body .index-tour-container-card .li-wrap {
-        padding: 20px;
+        padding: 15px;
     }
 
     .index-tour-container .index-tour-container-body .index-tour-container-card .title {
         font-size: 1rem;
+        width: 95%;
     }
 
-    .index-tour-container .index-tour-container-body .index-tour-container-card li:nth-child(2) {
-        display: none;
+    .index-tour-container .index-tour-container-body .index-tour-container-card li:nth-child(3) {
+        bottom: 33px;
     }
 
     /*------------------- 커뮤니티 -------------------*/
-    .community-container {
+    .index-community-container {
         width: 95%;
         padding: 10px;
     }
 
-    .community-container .community-container-wrap .community-container-list ul li:nth-child(2) {
+    .index-community-container .index-community-container-wrap .index-community-container-header h1 {
+        font-size: 1.1rem;
+    }
+
+    .index-community-container .index-community-container-wrap .index-community-container-header .more-btn {
+        font-size: 0.8rem;
+    }
+
+    .index-community-container .index-community-container-wrap .index-community-container-list ul li:nth-child(1) {
+        width: 100%;
+        font-size: 0.9rem;
+    }
+
+    .index-community-container .index-community-container-wrap .index-community-container-list ul li:nth-child(2) {
+        display: none;
+    }
+
+    /*------------------- 고객센터 -------------------*/
+    .divided-container .tel-container {
+        display: none;
+    }
+
+    .notice-section-wrap .notice-section-header h1 {
+        font-size: 1.1rem;
+    }
+
+    .notice-section-wrap .notice-section-body .notice-section-list li {
+        font-size: 0.9rem;
+    }
+
+    .notice-section-wrap .notice-section-body .notice-section-list li:nth-child(3) {
         display: none;
     }
 }
