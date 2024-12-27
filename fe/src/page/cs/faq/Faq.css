@@ -1,5 +1,6 @@
 .faq {
     margin-top: 60px;
+    height: calc(100vh - 200px);
 }
 
 .faq .btn-wrap {
