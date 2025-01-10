@@ -86,7 +86,12 @@ function Navbar() {
           )}
 
           {isAuthenticated || (
-            <li onClick={() => handleNavigate("/member/login")}>로그인</li>
+            <li
+              className={"mobile-displayed"}
+              onClick={() => handleNavigate("/member/login")}
+            >
+              로그인
+            </li>
           )}
 
           <li
